@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="11"/>
+    <General>
+      <Flags>
+        <MainUnitIsPascalSource Value="False"/>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+        <Runnable Value="False"/>
+        <AlwaysBuild Value="True"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <UseAppBundle Value="False"/>
+      <ResourceType Value="res"/>
+    </General>
+    <i18n>
+      <EnableI18N LFM="False"/>
+    </i18n>
+    <BuildModes Count="1" Active="Default">
+      <Item1 Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <LaunchingApplication PathPlusParams="/usr/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+          </local>
+        </Mode0>
+      </Modes>
+    </RunParams>
+    <Units Count="44">
+      <Unit0>
+        <Filename Value="iskelet.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="4" Y="19"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="../rtl/linux/canvas.pp"/>
+        <UsageCount Value="11"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="../rtl/linux/inc/writeh.inc"/>
+        <UsageCount Value="11"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../rtl/linux/inc/write.inc"/>
+        <UsageCount Value="11"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../rtl/linux/forms.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../rtl/linux/elerah.inc"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../rtl/linux/inc/formh.inc"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../rtl/linux/inc/form.inc"/>
+        <UsageCount Value="10"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../rtl/linux/inc/consts.inc"/>
+        <UsageCount Value="10"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../../../../../lazarus/fpc/2.6.2/source/rtl/inc/fpintres.pp"/>
+        <CursorPos X="5" Y="14"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="anabirim.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="42"/>
+        <CursorPos X="60" Y="50"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../rtl/linux/process.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="../rtl/linux/system.pp"/>
+        <UnitName Value="System"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="27"/>
+        <CursorPos X="13" Y="34"/>
+        <UsageCount Value="10"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../rtl/inc/intres.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="24" Y="34"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../prog_rtl/inc/intres.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="24" Y="34"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../prog_rtl/linux/forms.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="../prog_rtl/linux/inc/form.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="30" Y="20"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="../prog_rtl/linux/inc/formh.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="4"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="../prog_rtl/linux/inc/_objecth.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="../prog_rtl/linux/inc/consts.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="54" Y="22"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="../prog_rtl/linux/inc/draw.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="../../prog_rtl/linux/forms.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <CursorPos X="14" Y="30"/>
+        <UsageCount Value="10"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="../../prog_rtl/linux/canvas.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="23" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="../../prog_rtl/linux/system.pp"/>
+        <UnitName Value="System"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <CursorPos X="5" Y="34"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="../../../rtl_prog/linux/tuval.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="32" Y="31"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="../../../rtl_prog/linux/system.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
+        <CursorPos X="5" Y="33"/>
+        <UsageCount Value="11"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="../../../rtl_prog/linux/vo_form.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="44" Y="28"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="../../../rtl_prog/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
+        <CursorPos X="37" Y="12"/>
+        <UsageCount Value="11"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="../../../rtl_prog/linux/gn_pencere.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="11"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="../../../rtl_prog/inc/objpas.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="../../../rtl_prog/inc/system.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="../../../rtl_prog/linux/_object.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2"/>
+        <UsageCount Value="10"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="../../../rtl_prog/linux/elerah.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="96"/>
+        <CursorPos X="13" Y="114"/>
+        <UsageCount Value="11"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="../../../rtl_prog/objpas/objpas.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="../../../rtl_prog/linux/inc/pencereb.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="11"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="../../../rtl_prog/linux/inc/pencere.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="11"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="../../../rtl_prog/linux/inc/consts.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="235"/>
+        <CursorPos X="18" Y="243"/>
+        <UsageCount Value="10"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="../../../rtl_prog/linux/process.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="43" Y="19"/>
+        <UsageCount Value="10"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="../../../rtl_prog/linux/inc/olay.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="../../../rtl_prog/linux/inc/olayb.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="temizle.bat"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Bat"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="derle.bat"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="2"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Bat"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="iskelet.ld"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="../../../rtl_uygulama/linux/tuval.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit43>
+    </Units>
+    <JumpHistory Count="15" HistoryIndex="14">
+      <Position1>
+        <Filename Value="iskelet.lpr"/>
+        <Caret Line="13" Column="25"/>
+      </Position1>
+      <Position2>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="20" Column="23" TopLine="3"/>
+      </Position2>
+      <Position3>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="27" Column="20" TopLine="4"/>
+      </Position3>
+      <Position4>
+        <Filename Value="iskelet.lpr"/>
+        <Caret Line="18" Column="36"/>
+      </Position4>
+      <Position5>
+        <Filename Value="iskelet.lpr"/>
+      </Position5>
+      <Position6>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="13" Column="22"/>
+      </Position6>
+      <Position7>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="62" Column="37" TopLine="41"/>
+      </Position7>
+      <Position8>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="68" Column="5" TopLine="41"/>
+      </Position8>
+      <Position9>
+        <Filename Value="iskelet.lpr"/>
+        <Caret Line="20" Column="5"/>
+      </Position9>
+      <Position10>
+        <Filename Value="iskelet.lpr"/>
+        <Caret Line="16" Column="29"/>
+      </Position10>
+      <Position11>
+        <Filename Value="iskelet.lpr"/>
+      </Position11>
+      <Position12>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="30" Column="4" TopLine="16"/>
+      </Position12>
+      <Position13>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="60" Column="49" TopLine="39"/>
+      </Position13>
+      <Position14>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="60" Column="49" TopLine="39"/>
+      </Position14>
+      <Position15>
+        <Filename Value="anabirim.pas"/>
+        <Caret Line="50" Column="60" TopLine="42"/>
+      </Position15>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <Target>
+      <Filename Value="../../_g/iskelet.c"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="../../../rtl_uygulama/linux/units/i386-linux"/>
+      <UnitOutputDirectory Value="outlib"/>
+      <SrcPath Value="../../../rtl_uygulama/linux"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <SmartLinkUnit Value="True"/>
+      <TargetCPU Value="i386"/>
+      <TargetOS Value="linux"/>
+      <Optimizations>
+        <OptimizationLevel Value="0"/>
+      </Optimizations>
+      <SmallerCode Value="True"/>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+        <UseLineInfoUnit Value="False"/>
+        <StripSymbols Value="True"/>
+      </Debugging>
+      <LinkSmart Value="True"/>
+      <Options>
+        <PassLinkerOptions Value="True"/>
+        <LinkerOptions Value="-Tiskelet.ld"/>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

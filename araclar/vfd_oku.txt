@@ -1,0 +1,4 @@
+vfd uygulamasýnýn kullandýðý vfd.sys dosyasý dijital olarak imzalanmadýðý için 64 bitlik ortamda çalýþmamaktadýr. Bu sebeple; ya ilgili klasörün içerisinde mevcut .pdf dökümanýný okuyarak gerekenleri yapýnýz, ya da cmd komutunu yönetici olarak çalýþtýrdýktan sonra aþaðýdaki 2 komutu uygulayýp bilgisayarýnýzý yeniden baþlatýnýz.
+
+bcdedit -set loadoptions DISABLE_INTEGRITY_CHECKS
+bcdedit -set TESTSIGNING ON

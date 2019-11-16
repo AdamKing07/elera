@@ -1,0 +1,24 @@
+Görsel Nesne Kodlama:
+---------------------
+
+Çekirdek (kernel) Seviyesinde Kodlama:
+--------------------------------------
+1. shared.pp->TObjectType bölümünde nesne tanýmlamasý yapýlýr
+2. nesne kodlarý ilgili dosyaya yazýlýr
+3. int_vobject dosyasýnýn:
+    2.1 uses kýsmýna nesne ünite dosyasý eklenir
+	2.2 MAX_VOBJECT_NUM sayýsal deðeri bir artýrýlýr
+	2.3 ObjectCall dizisine @XXXButtonFunc iþaretçisi eklenir
+4. vo_desktop.pp dosyasýnýn uses kýsmýna nesne ünite dosya adý, Update kýsmýna nesnenin Draw çaðrýsý eklenir.
+5. vo_form.pp dosyasýnýn uses kýsmýna nesne ünite dosya adý, Update kýsmýna nesnenin Draw çaðrýsý eklenir.
+6. event.pp dosyasýnýn uses kýsmýna nesne ünite dosya adý, ProcessEvent kýsmýna nesnenin olay çaðrýsý eklenir
+
+Program (api) Seviyesinde Kodlama    :
+--------------------------------------
+1. rtl_prog\linux\inc\consts.inc dosyasýnda OBJECT_TYPE_XX deðeri ve nesnenin çaðrý sabitleri tanýmlanýr
+2. vo_xxx.pp ana nesne kodlamasý rtl_prog\linux\ klasörü altýnda yapýlýr
+3. vo_xxx.inc ve vo_xxxh.inc dosya kodlamasý rtl_prog\linux\inc\ klasörü altýnda yapýlýr
+4. vo_xxx.pp ünite dosyasý rtl_prog\linux\linux.pp dosya içeriðine eklenir
+5. vo_xxx.inc ve vo_xxxh.inc dosyalarý rtl_prog\linux\system.pp dosya içeriðine eklenir
+
+Fatih KILIÇ

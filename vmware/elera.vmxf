@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Foundry>
+<VM>
+<VMId type="string">52 fb 02 23 0a 16 15 04-c3 48 67 34 a1 fc 73 92</VMId>
+<ClientMetaData>
+<clientMetaDataAttributes/>
+<HistoryEventList/></ClientMetaData>
+<vmxPathName type="string">elera.vmx</vmxPathName></VM></Foundry>

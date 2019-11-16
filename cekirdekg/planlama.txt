@@ -1,0 +1,36 @@
+================================================================================
+                        Gerçekleþtirilecek Çalýþmalar
+================================================================================
+- usb uhci kod çalýþmalarý (usb / uhci)
+- çekirdek sürücü model çalýþmalarý (görev)
+- birden fazla kontrol amacýyla çekirdek seviyesinde çalýþan görev olacak
+- grafik yaslama (align) iþlevine FBorderSpacing deðerleri eklenecek
+- ses kartý ile ilgili iþlevler aktif ve çalýþýr hale getirilecek
+- object yapýlarý class yapýlarýna çevrilecek
+- program geliþtirmek için tasarlanan widget'in grafiksel arabirimi tasarlanacak
+- servis iþlemleri için ayrý görevler tanýmlanacak
+- utf-8 çalýþmasý (baþta fat32 olmak üzere) sistem genelinde uygulanacak
+- donanýmsal çokgörevlilik, yazýlýmsal çokgörevlilik (software multitasking) olarak deðiþtirilecek
+- sayfalama (paging) özelliði çekirdeðe eklenecek
+- tüm aygýt sürücülerinin (device driver) standartlaþmasý
+- ELF biçimindeki dosyalar hakkýnda bilgi veren bir program yazýlacak
+- dosya viçim bilgileri alýnarak program için gereken bellek belirlenecek
+- cdrom desteði eklenecek
+- sistem imajýnýn iso formatýnda oluþturulmasý saðlanacak
+- thread desteði eklenecek
+- sistemin RAM kullanýmý $100000 (1MB) adresinin üzerinde olacak, alt belleðin
+  deðiþmeyeceði garanti altýna alýnacaktýr. BIOS kullaným haritasý için: https://wiki.osdev.org/Memory_Map_(x86)
+- kum saati fare iþlevi dýþarý taþma problemi giderilecek
+- deðiþik geniþliðe sahip font tip(ler)i tanýmlanacak
+- lost_focus + got_focus olaylarý oluþturularak tüm nesnelere uygulanacak
+
+================================================================================
+                             Test Edilecek Ýþlevler
+================================================================================
+- önceki iþlem iptal edildiðinde olay yanlýþ yere yönlendirilmesi kontrol edilecek
+- program sonlandýrma iþleminde bellek azaltýlmasý kontrol edilecek
+- masaüstü uygulamasý çöktüðünde baðlý tüm nesnelerin yok edildiði kontrol edilecek
+- 4 ve 5. fare düðmeleri test edilecek
+- yazý modu ve diðer modda sonlandýrýlan iþlemlerin bellekten güvenli bir þekilde yol edilmesi saðlanacak
+- ParamStr (rtl_prog: System.pp, systemh.inc, system.inc) iþlevi dsybil programý üzerinden kontrol edilecek
+- floppy sürücü okumalarý test edilecek
