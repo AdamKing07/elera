@@ -45,4 +45,4 @@ https://www.youtube.com/watch?v=13oYpeXDYbQ)
 
 ---
 
-ELERA - Fatih KILIÇ
+ELERA - Fatih KILIÇ - hs.fatih.kilic at gmail.com
