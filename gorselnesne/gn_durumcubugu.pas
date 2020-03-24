@@ -143,7 +143,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _DurumCubugu^.GorevKimlik := AktifGorev;
+  _DurumCubugu^.GorevKimlik := CalisanGorev;
   _DurumCubugu^.AtaNesne := _AtaNesne;
   _DurumCubugu^.Hiza := hzAlt;                        // alta hizala
   _DurumCubugu^.FBoyutlar.Sol2 := A1;

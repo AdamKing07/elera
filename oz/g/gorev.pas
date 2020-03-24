@@ -403,9 +403,10 @@ begin
   _Uzunluk := FBellekUzunlugu shr 12;
 
   // uygulamanýn TSS, CS, DS seçicilerini belirle
-  _SeciciTSSSiraNo := (i * 3) + AYRILMIS_SECICISAYISI;
-  _SeciciDSSiraNo := _SeciciTSSSiraNo - 1;
-  _SeciciCSSiraNo := _SeciciDSSiraNo - 1;
+  // uygulamanýn ilk görev kimliði 2'dir. her bir program 3 seçici içerir
+  _SeciciCSSiraNo := ((i - 2) * 3) + AYRILMIS_SECICISAYISI;
+  _SeciciDSSiraNo := _SeciciCSSiraNo + 1;
+  _SeciciTSSSiraNo := _SeciciDSSiraNo + 1;
 
   // uygulama için CS selektörünü oluþtur
   // access = p, dpl3, 1, 1, conforming, readable, accessed
@@ -437,7 +438,7 @@ begin
   GorevTSSListesi[i].SS := (_SeciciDSSiraNo * 8) + 3;
   GorevTSSListesi[i].FS := (_SeciciDSSiraNo * 8) + 3;
   GorevTSSListesi[i].GS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i].SS0 := SECICI_SISTEM_VERI;
+  GorevTSSListesi[i].SS0 := SECICI_SISTEM_VERI * 8;
   GorevTSSListesi[i].ESP0 := (i * GOREV3_ESP_U) + GOREV3_ESP;
 end;
 
@@ -704,7 +705,7 @@ var
 begin
 
   // çalýþan göreve konumlan
-  _GorevKimlik := AktifGorev;
+  _GorevKimlik := CalisanGorev;
 
   // bir sonraki görevden itibaren tüm görevleri incele
   for i := 1 to USTSINIR_GOREVSAYISI do

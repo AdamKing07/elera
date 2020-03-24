@@ -50,9 +50,11 @@ const
   GERCEKBELLEK_TABLOADRESI = $610000;
 
   // seçici (selector) sabitleri
-  SECICI_SISTEM_KOD     = $08;      // seçici = selector
-  SECICI_SISTEM_VERI    = $10;
-  AYRILMIS_SECICISAYISI = 0;    // rezerv edilmiş selektör sayısı
+  SECICI_SISTEM_KOD     = 1;      // seçici = selector
+  SECICI_SISTEM_VERI    = 2;
+  SECICI_SISTEM_TSS     = 3;
+  SECICI_SISTEM_GRAFIK  = 7;
+  AYRILMIS_SECICISAYISI = 8;      // ayrılmış seçici sayısı
 
   // PIC sabitleri
   PIC1_KOMUT  = $20;
@@ -118,7 +120,6 @@ type
   THizalar = set of THiza;
 
 const
-  TOPLAM_RAM            = $4000000;         // sistemdeki toplam RAM = 64MB
   SISTEME_AYRILMIS_RAM  = $0A00000;         // çekirdek için ayrılmış RAM = 10MB
 
   BELLEK_HARITA_ADRESI: PByte = PByte($510000);
@@ -622,7 +623,7 @@ var
 
 var
   CalisanGorevSayisi,                     // oluşturulan / çalışan program sayısı
-  AktifGorev: TISayi4;                    // o an çalışan program
+  CalisanGorev: TISayi4;                    // o an çalışan program
   AktifGorevBellekAdresi: TSayi4;         // o an çalışan programın yüklendiği bellek adresi
 
 type
@@ -776,6 +777,7 @@ var
   AgYuklendi: Boolean = False;
 
   SistemSayaci: TSayi4;
+  SistemKontrolSayaci: TSayi4 = 0;
   ZamanlayiciSayaci: TSayi4 = 0;
   // görev değişiminin yapılıp yapılmaması değişkeni.
   // 0 = görev değiştirme, 1 = görev değiştir

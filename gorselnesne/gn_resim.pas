@@ -151,7 +151,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Resim^.GorevKimlik := AktifGorev;
+  _Resim^.GorevKimlik := CalisanGorev;
   _Resim^.AtaNesne := _AtaNesne;
   _Resim^.FTuvaleSigdir := False;
   _Resim^.Hiza := hzYok;

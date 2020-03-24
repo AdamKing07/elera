@@ -1,8 +1,6 @@
   + bir görsel nesneye fare ile sað / sol tuþ ile basýldýðýnda bir önceki nesnenin
-    açýk durumda olan (TGucDugme gibi) görsel nesne olmasý durumunda, görsel nesnenin
-    kapatýlmasý amacýyla CO_NORMALDURUMAGEC olayý tanýmlandý
+    açýk durumunun (TGucDugme gibi) kapatýlmasý amacýyla CO_NORMALDURUMAGEC olayý tanýmlandý
   + TMenu uygulama arabirimine (API) eleman yükseklik ve resim sýra no deðeri eklendi
-
   + hem resim hem renk gösterebilen TResimDugme nesnesi oluþturuldu
   + bmp dosyasý iþleme hatasý düzeltildi
   + ana menü resimleri deðiþtirildi
@@ -12,6 +10,8 @@
   + dsyyntcs, resimgor ve defter programlarý hizalamaya göre yeniden yapýlandýrýldý
   + TResim nesnesine resmin tuvale sýðdýrýlma iþlevi (stretch) eklendi
   + panel nesnesini test etmek için "paneller" test programý kodlandý
+  + gdt, tss deðerleri yeniden yapýlandýrýldý
+  + sistem denetimi amacýyla çekirdek içerisinde yeni iþlem (process) tasarýmýna baþlandý
 
 *******************************************************************************
   Sürüm: 0.3.4 - 27.10.2019 (R30) - Beta

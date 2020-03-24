@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2019-11-16T06:02:07Z">
+  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-03-24T16:41:57Z">
     <Description>ELERA &#x130;&#x15F;letim Sistemi (32 Bit)</Description>
     <MediaRegistry>
       <HardDisks>
@@ -19,13 +19,14 @@
       <FloppyImages>
         <Image uuid="{cefa122d-813d-44b5-9fba-613b866e45cb}" location="disket144.img"/>
         <Image uuid="{9b86e5d6-f99b-4812-892d-1f60388870c8}" location="C:/Users/fatih/Documents/bitbucket/eleraos-tools/tatOS-master/tatOS.img"/>
+        <Image uuid="{23ed8157-a314-46ff-9e9a-7a807f68d12a}" location="C:/Users/fatih/Downloads/M32-086B/M32-086B.IMG"/>
       </FloppyImages>
     </MediaRegistry>
     <ExtraData>
       <ExtraDataItem name="GUI/InformationWindowGeometry" value="507,249,598,332"/>
       <ExtraDataItem name="GUI/LastCloseAction" value="PowerOff"/>
       <ExtraDataItem name="GUI/LastGuestSizeHint" value="800,600"/>
-      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="83,66,800,642"/>
+      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="444,47,800,642"/>
       <ExtraDataItem name="GUI/LastScaleWindowPosition" value="83,66,1096,595"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeDevicesMenuActions" value="HardDrives"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeMachineMenuActions" value="SaveState,PowerOff"/>
@@ -40,6 +41,8 @@
         <HardwareVirtExLargePages enabled="false"/>
       </CPU>
       <Memory RAMSize="64"/>
+      <HID Pointing="USBTablet"/>
+      <Chipset type="ICH9"/>
       <Boot>
         <Order position="1" device="Floppy"/>
         <Order position="2" device="None"/>
@@ -76,6 +79,34 @@
         <Adapter slot="5" MACAddress="0800278660AA" cable="true" type="Am79C973"/>
         <Adapter slot="6" MACAddress="08002795A3FC" cable="true" type="Am79C973"/>
         <Adapter slot="7" MACAddress="0800272E137C" cable="true" type="Am79C973"/>
+        <Adapter slot="8" type="Am79C973"/>
+        <Adapter slot="9" type="Am79C973"/>
+        <Adapter slot="10" type="Am79C973"/>
+        <Adapter slot="11" type="Am79C973"/>
+        <Adapter slot="12" type="Am79C973"/>
+        <Adapter slot="13" type="Am79C973"/>
+        <Adapter slot="14" type="Am79C973"/>
+        <Adapter slot="15" type="Am79C973"/>
+        <Adapter slot="16" type="Am79C973"/>
+        <Adapter slot="17" type="Am79C973"/>
+        <Adapter slot="18" type="Am79C973"/>
+        <Adapter slot="19" type="Am79C973"/>
+        <Adapter slot="20" type="Am79C973"/>
+        <Adapter slot="21" type="Am79C973"/>
+        <Adapter slot="22" type="Am79C973"/>
+        <Adapter slot="23" type="Am79C973"/>
+        <Adapter slot="24" type="Am79C973"/>
+        <Adapter slot="25" type="Am79C973"/>
+        <Adapter slot="26" type="Am79C973"/>
+        <Adapter slot="27" type="Am79C973"/>
+        <Adapter slot="28" type="Am79C973"/>
+        <Adapter slot="29" type="Am79C973"/>
+        <Adapter slot="30" type="Am79C973"/>
+        <Adapter slot="31" type="Am79C973"/>
+        <Adapter slot="32" type="Am79C973"/>
+        <Adapter slot="33" type="Am79C973"/>
+        <Adapter slot="34" type="Am79C973"/>
+        <Adapter slot="35" type="Am79C973"/>
       </Network>
       <UART>
         <Port slot="0" enabled="false" IOBase="0x3f8" IRQ="4" path="C:\Users\fatih\Documents\bitbucket\eleraos\comport1.txt" hostMode="RawFile"/>
@@ -86,7 +117,7 @@
       <AudioAdapter controller="SB16" driver="DirectSound" enabled="false"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1573838724908816000" flags="RDONLYGUEST"/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1584545661345938200" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>

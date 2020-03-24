@@ -172,7 +172,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _ListeKutusu^.GorevKimlik := AktifGorev;
+  _ListeKutusu^.GorevKimlik := CalisanGorev;
   _ListeKutusu^.AtaNesne := _AtaNesne;
   _ListeKutusu^.Hiza := hzYok;
   _ListeKutusu^.FBoyutlar.Sol2 := A1;

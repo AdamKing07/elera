@@ -184,7 +184,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Pencere^.GorevKimlik := AktifGorev;
+  _Pencere^.GorevKimlik := CalisanGorev;
   _Pencere^.AtaNesne := _Masaustu;
   _Pencere^.Hiza := hzYok;
 

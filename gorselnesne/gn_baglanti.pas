@@ -116,7 +116,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Baglanti^.GorevKimlik := AktifGorev;
+  _Baglanti^.GorevKimlik := CalisanGorev;
   _Baglanti^.AtaNesne := _AtaNesne;
   _Baglanti^.Hiza := hzYok;
   _Baglanti^.FBoyutlar.Sol2 := A1;

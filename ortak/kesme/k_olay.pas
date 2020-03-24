@@ -40,7 +40,7 @@ begin
   if(_IslevNo = 1) then
   begin
 
-    _Gorev := GorevListesi[AktifGorev];
+    _Gorev := GorevListesi[CalisanGorev];
 
     // çalýþan proses'e ait olay var mý ?
     if(_Gorev^.OlayAl(_Olay)) then
@@ -75,7 +75,7 @@ begin
   else if(_IslevNo = 2) then
   begin
 
-    _Gorev := GorevListesi[AktifGorev];
+    _Gorev := GorevListesi[CalisanGorev];
 
     // uygulama için olay üretilinceye kadar bekle
     // olay olmamasý durumda bir sonraki göreve geç (mevcut görev olay bekliyor)

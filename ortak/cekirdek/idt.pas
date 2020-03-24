@@ -95,49 +95,49 @@ begin
   IDTYazmac.Baslangic := TSayi4(@IDTGirdiListesi);                  // base address (32 bit)
 
   // istisnalar - exceptions
-  KesmeGirisiBelirle($00, @KesmeIslevi00, SECICI_SISTEM_KOD, $8E);  // present, dpl0, int gate
-  KesmeGirisiBelirle($01, @KesmeIslevi01, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($02, @KesmeIslevi02, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($03, @KesmeIslevi03, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($04, @KesmeIslevi04, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($05, @KesmeIslevi05, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($06, @KesmeIslevi06, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($07, @KesmeIslevi07, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($08, @KesmeIslevi08, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($09, @KesmeIslevi09, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($0A, @KesmeIslevi0A, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($0B, @KesmeIslevi0B, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($0C, @KesmeIslevi0C, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($0D, @KesmeIslevi0D, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($0E, @KesmeIslevi0E, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($0F, @KesmeIslevi0F, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($10, @KesmeIslevi10, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($11, @KesmeIslevi11, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($12, @KesmeIslevi12, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($13, @KesmeIslevi13, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($14, @KesmeIslevi14, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($15, @KesmeIslevi15, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($16, @KesmeIslevi16, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($17, @KesmeIslevi17, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($18, @KesmeIslevi18, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($19, @KesmeIslevi19, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($1A, @KesmeIslevi1A, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($1B, @KesmeIslevi1B, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($1C, @KesmeIslevi1C, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($1D, @KesmeIslevi1D, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($1E, @KesmeIslevi1E, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($1F, @KesmeIslevi1F, SECICI_SISTEM_KOD, $8E);
+  KesmeGirisiBelirle($00, @KesmeIslevi00, SECICI_SISTEM_KOD * 8, $8E);  // present, dpl0, int gate
+  KesmeGirisiBelirle($01, @KesmeIslevi01, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($02, @KesmeIslevi02, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($03, @KesmeIslevi03, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($04, @KesmeIslevi04, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($05, @KesmeIslevi05, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($06, @KesmeIslevi06, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($07, @KesmeIslevi07, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($08, @KesmeIslevi08, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($09, @KesmeIslevi09, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($0A, @KesmeIslevi0A, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($0B, @KesmeIslevi0B, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($0C, @KesmeIslevi0C, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($0D, @KesmeIslevi0D, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($0E, @KesmeIslevi0E, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($0F, @KesmeIslevi0F, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($10, @KesmeIslevi10, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($11, @KesmeIslevi11, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($12, @KesmeIslevi12, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($13, @KesmeIslevi13, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($14, @KesmeIslevi14, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($15, @KesmeIslevi15, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($16, @KesmeIslevi16, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($17, @KesmeIslevi17, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($18, @KesmeIslevi18, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($19, @KesmeIslevi19, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($1A, @KesmeIslevi1A, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($1B, @KesmeIslevi1B, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($1C, @KesmeIslevi1C, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($1D, @KesmeIslevi1D, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($1E, @KesmeIslevi1E, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($1F, @KesmeIslevi1F, SECICI_SISTEM_KOD * 8, $8E);
 
   // yazılım kesmeleri
-  KesmeGirisiBelirle($30, @KesmeIslevi30, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($31, @KesmeIslevi31, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($32, @KesmeIslevi32, SECICI_SISTEM_KOD, $8E);
-  KesmeGirisiBelirle($33, @KesmeIslevi33, SECICI_SISTEM_KOD, $8E);
+  KesmeGirisiBelirle($30, @KesmeIslevi30, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($31, @KesmeIslevi31, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($32, @KesmeIslevi32, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($33, @KesmeIslevi33, SECICI_SISTEM_KOD * 8, $8E);
 
   // sistem ana kesmesi
   {$IFDEF GMODE}
   // present, dpl3, int gate
-  KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_SISTEM_KOD, $EE);
+  KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_SISTEM_KOD * 8, $EE);
   {$ENDIF}
 
   {$IFDEF TMODE}
@@ -223,7 +223,7 @@ asm
   push  eax
 
   // ds ve es yazmaçlarını sistem yazmaçlarına ayarla
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -273,7 +273,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -311,7 +311,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -349,7 +349,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -387,7 +387,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -425,7 +425,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -463,12 +463,12 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
 // programı sonlandır
-  mov eax,AktifGorev
+  mov eax,CalisanGorev
   dec eax
   shl eax,2
   mov esi,GorevListesi[eax]
@@ -502,7 +502,7 @@ asm
   xor   eax,eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -539,7 +539,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -577,7 +577,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -615,18 +615,18 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
 // programı sonlandır
-  mov eax,AktifGorev
+  mov eax,CalisanGorev
   dec eax
   shl eax,2
   mov esi,GorevListesi[eax]
   mov ecx,$A
   mov edx,[esi+TGorev.FGorevKimlik]
-  //mov edx,AktifGorev
+  //mov edx,CalisanGorev
   mov eax,TGorev.Sonlandir
   call eax
 
@@ -667,7 +667,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -705,18 +705,18 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
 // programı sonlandır
-  mov eax,AktifGorev
+  mov eax,CalisanGorev
   dec eax
   shl eax,2
   mov esi,GorevListesi[eax]
   mov ecx,$C
   mov edx,[esi+TGorev.FGorevKimlik]
-  //mov edx,AktifGorev
+  //mov edx,CalisanGorev
   mov eax,TGorev.Sonlandir
   call eax
 
@@ -755,18 +755,18 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
 // programı sonlandır
-  mov eax,AktifGorev
+  mov eax,CalisanGorev
   dec eax
   shl eax,2
   mov esi,GorevListesi[eax]
   mov ecx,$D
   mov edx,[esi+TGorev.FGorevKimlik]
-  //mov edx,AktifGorev
+  //mov edx,CalisanGorev
   mov eax,TGorev.Sonlandir
   call eax
 
@@ -805,7 +805,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -843,7 +843,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -881,7 +881,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -919,7 +919,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -957,7 +957,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -995,7 +995,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1033,7 +1033,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1071,7 +1071,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1109,7 +1109,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1147,7 +1147,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1185,7 +1185,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1223,7 +1223,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1261,7 +1261,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1299,7 +1299,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1337,7 +1337,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1375,7 +1375,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1413,7 +1413,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1451,7 +1451,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1493,7 +1493,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1529,7 +1529,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1565,7 +1565,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1601,7 +1601,7 @@ asm
   push  eax
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -1632,7 +1632,7 @@ asm
   push  ebx
 
   // selektörler'i sistem selektörlerine ayarla
-  mov   bx,SECICI_SISTEM_VERI
+  mov   bx,SECICI_SISTEM_VERI * 8
   mov   ds,bx
   mov   es,bx
 
@@ -1718,7 +1718,7 @@ begin
 
   // istisnayı oluşturan görev
   GAktifMasaustu^.YaziYaz(nil, 0, 0 * 16, 'GRV :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 0, True, 8, AktifGorev, RENK_BEYAZ);
+  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 0, True, 8, CalisanGorev, RENK_BEYAZ);
 
   // istisna numarası (int)
   GAktifMasaustu^.YaziYaz(nil, 0, 1 * 16, 'KESME :', RENK_BEYAZ);
@@ -1802,7 +1802,7 @@ begin
     RENK_KIRMIZI, RENK_KIRMIZI);
 
   GAktifMasaustu^.YaziYaz(nil, 0, 0 * 16, 'GRV :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 0, True, 8, AktifGorev, RENK_BEYAZ);
+  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 0, True, 8, CalisanGorev, RENK_BEYAZ);
 
   GAktifMasaustu^.YaziYaz(nil, 0, 1 * 16, 'KESME :', RENK_BEYAZ);
   GAktifMasaustu^.SayiYaz16(nil, 8 * 8, 1 * 16, True, 8, AYazmaclar1^.ISRNo, RENK_BEYAZ);

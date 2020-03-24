@@ -125,7 +125,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _DegerDugmesi^.GorevKimlik := AktifGorev;
+  _DegerDugmesi^.GorevKimlik := CalisanGorev;
   _DegerDugmesi^.AtaNesne := _AtaNesne;
   _DegerDugmesi^.Hiza := hzYok;
   _DegerDugmesi^.FBoyutlar.Sol2 := A1;

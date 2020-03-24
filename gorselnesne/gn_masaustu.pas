@@ -168,7 +168,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Masaustu^.GorevKimlik := AktifGorev;
+  _Masaustu^.GorevKimlik := CalisanGorev;
   _Masaustu^.AtaNesne := nil;
   _Masaustu^.Hiza := hzYok;
   _Masaustu^.FBoyutlar.Sol2 := 0;

@@ -6,7 +6,7 @@
   Dosya Adı: gercekbellek.pas
   Dosya İşlevi: gerçek (fiziksel) bellek yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 18/09/2019
+  Güncelleme Tarihi: 24/11/2019
 
   Bilgi: Bellek rezervasyonları 4K blok ve katları halinde yönetilmektedir
 
@@ -26,6 +26,7 @@ type
     FAyrilmisBlok, FKullanilmisBlok: TSayi4;
   public
     procedure Yukle;
+    function ToplamBellekMiktariniAl: TSayi4;
     function BosBellekBul(AIstenenBlokSayisi: TSayi4): TISayi4;
     function Ayir(AIstenenBellek: TSayi4): Isaretci;
     procedure YokEt(ABellekAdresi: Isaretci; ABellekUzunlugu: TSayi4);
@@ -38,20 +39,24 @@ type
 
 implementation
 
+uses genel;
+
 {==============================================================================
   bellek yükleme / haritalama işlevlerini gerçekleştirir
  ==============================================================================}
 procedure TGercekBellek.Yukle;
 var
-  i, ii: TSayi4;
+  i, ii, _ToplamBellekMiktari: TSayi4;
   Bellek: PSayi1;
 begin
 
+  _ToplamBellekMiktari := ToplamBellekMiktariniAl;
+
   // sistemdeki toplam RAM miktarı
-  FToplamRAM := TOPLAM_RAM;
+  FToplamRAM := _ToplamBellekMiktari;
 
   // RAM miktarını blok sayısına çevir. (1 blok = 4K)
-  FToplamBlok := (TOPLAM_RAM shr 12);
+  FToplamBlok := (FToplamRAM shr 12);
 
   // çekirdek için bellek ayrımını gerçekleştir
   ii := (SISTEME_AYRILMIS_RAM shr 12);
@@ -75,6 +80,43 @@ begin
     Bellek^ := 1;
     Inc(Bellek);
   end;
+end;
+
+{$asmmode intel}
+function TGercekBellek.ToplamBellekMiktariniAl: TSayi4;
+var
+  _ToplamBellek: TSayi4;
+begin
+
+  asm
+    pushad
+
+    // önbellek işlemini durdur
+    mov   eax, cr0
+    and   eax, not($40000000 + $20000000)
+    or    eax, $40000000
+    mov   cr0, eax
+    wbinvd
+
+    xor   edi, edi
+    mov   ebx, '1234'
+  @tekrar:
+    add     edi, $100000
+    xchg    ebx, dword [edi]
+    cmp     dword [edi], '1234'
+    xchg    ebx, dword [edi]
+    je      @tekrar
+
+    // önbellek işlemine devam et
+    and     eax, not($40000000 + $20000000)
+    mov     cr0, eax
+
+    mov   _ToplamBellek,edi
+
+    popad
+  end;
+
+  Result := _ToplamBellek;
 end;
 
 {==============================================================================

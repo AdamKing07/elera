@@ -135,7 +135,7 @@ begin
   end;
 
   // nesnenin ilk özellik değerlerini ata
-  _ResimDugme^.GorevKimlik := AktifGorev;
+  _ResimDugme^.GorevKimlik := CalisanGorev;
   _ResimDugme^.AtaNesne := _AtaNesne;
   _ResimDugme^.Hiza := hzYok;
   _ResimDugme^.FBoyutlar.Sol2 := A1;

@@ -75,7 +75,7 @@ begin
   IRQPasiflestir(0);
 
   // IRQ0 giriþ noktasýný yeniden belirle
-  KesmeGirisiBelirle($20, @OtomatikGorevDegistir, SECICI_SISTEM_KOD, $8E);   // IRQ0
+  KesmeGirisiBelirle($20, @OtomatikGorevDegistir, SECICI_SISTEM_KOD * 8, $8E);   // IRQ0
 
   // saat vuruþ frekansýný düzenle. 100 tick = 1 saniye
   ZamanlayiciFrekansiniDegistir(100);
@@ -126,7 +126,7 @@ begin
 
     //SISTEM_MESAJ_S10('Zamanlayýcý kimlik: ', _Zamanlayici^.FKimlik);
 
-    _Zamanlayici^.FGorevKimlik := AktifGorev;
+    _Zamanlayici^.FGorevKimlik := CalisanGorev;
     _Zamanlayici^.FTetiklemeSuresi := AMiliSaniye;
     _Zamanlayici^.FGeriSayimSayaci := AMiliSaniye;
 
@@ -295,7 +295,7 @@ asm
   push  eax
 
   // yazmaçlarý sistem yazmaçlarýna ayarla
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -357,7 +357,7 @@ asm
 
   // geçiþ yapýlacak bir sonraki görevi bul
   call  CalistirilacakBirSonrakiGoreviBul
-  mov AktifGorev,eax
+  mov CalisanGorev,eax
 
   // aktif görevin bellek baþlangýç adresini al
   dec eax
@@ -372,20 +372,28 @@ asm
   mov [esi + TGorev.FGorevSayaci],eax
 
   // görevin devredileceði TSS giriþini belirle
-  mov   ecx,AktifGorev
+  mov   ecx,CalisanGorev
   cmp   ecx,1
   je    @@TSS_SIS
+  cmp   ecx,2
+  je    @@TSS_GOZETCI
 
-@@TSS_UYG:      // uygulamaya geçiþ yap
-  imul  ecx,3 * 8
-  add ecx,(AYRILMIS_SECICISAYISI * 8)
-//  add   ecx,3             // DPL3 - uygulama (aktifleþtirilecek)
+@@TSS_UYG:                              // uygulamaya geçiþ yap
+  sub   ecx,2
+  imul  ecx,3
+  add   ecx,AYRILMIS_SECICISAYISI + 2
+  imul  ecx,8                           // DPL3 - uygulama (aktifleþtirilecek)
+  add   ecx,3
   mov   @@SECICI,cx
   jmp   @@son
 
 @@TSS_SIS:
-  imul  ecx,3 * 8           // DPL0 - sistem
-  add ecx,(AYRILMIS_SECICISAYISI * 8)
+  mov   ecx,SECICI_SISTEM_TSS * 8       // DPL0 - sistem
+  mov   @@SECICI,cx
+  jmp   @@son
+
+@@TSS_GOZETCI:
+  mov   ecx,6 * 8       // DPL0 - sistem
   mov   @@SECICI,cx
 
 @@son:
@@ -449,10 +457,10 @@ asm
 @@yenigorev:
 
   call  CalistirilacakBirSonrakiGoreviBul
-  mov AktifGorev,eax
+  mov CalisanGorev,eax
 
   // aktif görevin bellek baþlangýç adresini al
-  mov eax,AktifGorev
+  mov eax,CalisanGorev
   dec eax
   shl eax,2
   mov esi,GorevListesi[eax]
@@ -460,7 +468,7 @@ asm
   mov AktifGorevBellekAdresi,eax
 
   // görev deðiþiklik sayacýný bir artýr
-  mov eax,AktifGorev
+  mov eax,CalisanGorev
   dec eax
   shl eax,2
   mov esi,GorevListesi[eax]
@@ -468,21 +476,21 @@ asm
   inc eax
   mov [esi + TGorev.FGorevSayaci],eax
 
-  cmp   AktifGorev,1
+  cmp   CalisanGorev,1
   je    @@TSS_SIS
 
 @@TSS_UYG:
-  mov   eax,AktifGorev
-  imul  eax,3 * 8
-  add eax,(AYRILMIS_SECICISAYISI * 8)
-//  add   eax,3
+  mov   eax,CalisanGorev
+  sub   eax,2
+  imul  eax,3
+  add   eax,AYRILMIS_SECICISAYISI + 2
+  imul  eax,8
+  add   eax,3
   mov   @@SECICI,ax
   jmp   @@son
 
 @@TSS_SIS:
-  mov   eax,AktifGorev
-  imul  eax,3 * 8
-  add eax,(AYRILMIS_SECICISAYISI * 8)
+  mov   eax,SECICI_SISTEM_TSS * 8
   mov   @@SECICI,ax
 
 @@son:

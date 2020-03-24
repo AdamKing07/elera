@@ -159,7 +159,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Defter^.GorevKimlik := AktifGorev;
+  _Defter^.GorevKimlik := CalisanGorev;
   _Defter^.AtaNesne := _AtaNesne;
   _Defter^.Hiza := hzYok;
   _Defter^.FBoyutlar.Sol2 := A1;

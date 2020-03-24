@@ -36,10 +36,13 @@ type
 
 procedure Yukle;
 procedure SistemAnaKontrol;
+procedure SistemDenetcisiOlustur;
+procedure SistemCalismasiniDenetle;
 
 implementation
 
-uses gdt, gorev, src_klavye, genel, ag, dhcp, baglanti, zamanlayici, dns, arp;
+uses gdt, gorev, src_klavye, genel, ag, dhcp, baglanti, zamanlayici, dns, arp,
+  sistemmesaj, src_vesa20;
 
 {==============================================================================
   sistem ilk yükleme iþlevlerini gerçekleþtirir
@@ -83,13 +86,13 @@ begin
   GorevTSSListesi[1].EIP := TSayi4(@SistemAnaKontrol);
   GorevTSSListesi[1].EFLAGS := $202;
   GorevTSSListesi[1].ESP := GOREV0_ESP;
-  GorevTSSListesi[1].CS := SECICI_SISTEM_KOD;
-  GorevTSSListesi[1].DS := SECICI_SISTEM_VERI;
-  GorevTSSListesi[1].ES := SECICI_SISTEM_VERI;
-  GorevTSSListesi[1].SS := SECICI_SISTEM_VERI;
-  GorevTSSListesi[1].FS := SECICI_SISTEM_VERI;
-  GorevTSSListesi[1].GS := SECICI_SISTEM_VERI;
-  GorevTSSListesi[1].SS0 := SECICI_SISTEM_VERI;
+  GorevTSSListesi[1].CS := SECICI_SISTEM_KOD * 8;
+  GorevTSSListesi[1].DS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1].ES := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1].SS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1].FS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1].GS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1].SS0 := SECICI_SISTEM_VERI * 8;
 
   // not: sistem için CS ve DS seçicileri bilden programý tarafýndan
   // oluþturuldu. tekrar oluþturmaya gerek yok
@@ -97,16 +100,8 @@ begin
   // sistem için TSS selektörünü oluþtur
   // access = p, dpl0 0, 1, 0, 0 (non_busy), 1
   // gran = g = 0, 0, 0, avl = 1, limit (4 bit)
-  GDTRGirdisiEkle((SECICI_SISTEM_VERI div 8) + 1, TSayi4(@GorevTSSListesi[1]),
+  GDTRGirdisiEkle(SECICI_SISTEM_TSS, TSayi4(@GorevTSSListesi[1]),
     SizeOf(TTSS) - 1, $89, $10);
-
-  // ilk TSS'yi yükle
-  // not : tss'nin yükleme iþlevi görev geçiþini gerçekleþtirmez. sadece
-  // TSS'yi meþgul olarak ayarlar.
-  asm
-    mov   ax, SECICI_SISTEM_VERI + 8;
-    ltr   ax
-  end;
 
   // sistem görev deðerlerini belirle
   GorevListesi[1]^.GorevSayaci := 0;
@@ -128,7 +123,18 @@ begin
 
   // çalýþan ve oluþturulan görev deðerlerini belirle
   CalisanGorevSayisi := 1;
-  AktifGorev := CalisanGorevSayisi;
+  CalisanGorev := CalisanGorevSayisi;
+
+  // ilk TSS'yi yükle
+  // not : tss'nin yükleme iþlevi görev geçiþini gerçekleþtirmez. sadece
+  // TSS'yi meþgul olarak ayarlar.
+  asm
+    mov   ax, SECICI_SISTEM_TSS * 8;
+    ltr   ax
+  end;
+
+  // ana çekirdeðin iþleyiþini takip eden sistem denetçisini oluþtur
+  SistemDenetcisiOlustur;
 end;
 
 {==============================================================================
@@ -273,6 +279,61 @@ begin
     GEkranKartSurucusu.EkranBelleginiGuncelle;
 
   until (1 = 2);
+end;
+
+procedure SistemDenetcisiOlustur;
+var
+  _Gorev: PGorev;
+begin
+
+  GDTRGirdisiEkle(4, 0, $FFFFFFFF, $9A, $DF);
+  GDTRGirdisiEkle(5, 0, $FFFFFFFF, $92, $DF);
+  GDTRGirdisiEkle(6, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1, $89, $10);
+
+  // çekirdeðin kullanacaðý TSS'nin içeriðini sýfýrla
+  FillByte(GorevTSSListesi[2], SizeOf(TTSS), 0);
+
+  GorevTSSListesi[2].EIP := TSayi4(@SistemCalismasiniDenetle);
+  GorevTSSListesi[2].EFLAGS := $202;
+  GorevTSSListesi[2].ESP := $4000000 - $400;
+  GorevTSSListesi[2].CS := 4 * 8;
+  GorevTSSListesi[2].DS := 5 * 8;
+  GorevTSSListesi[2].ES := 5 * 8;
+  GorevTSSListesi[2].SS := 5 * 8;
+  GorevTSSListesi[2].FS := 5 * 8;
+  GorevTSSListesi[2].GS := 5 * 8;
+  GorevTSSListesi[2].SS0 := 5 * 8;
+  GorevTSSListesi[2].ESP0 := $4000000;
+
+  // sistem görev deðerlerini belirle
+  GorevListesi[2]^.GorevSayaci := 0;
+  GorevListesi[2]^.BellekBaslangicAdresi := 0;
+  GorevListesi[2]^.BellekUzunlugu := $FFFFFFFF;
+  GorevListesi[2]^.OlaySayisi := 0;
+  GorevListesi[2]^.EvBuffer := nil;
+
+  // sistem görev adý (dosya adý)
+  GorevListesi[2]^.FProgramAdi := 'denetci.???';
+
+  // sistem görevini çalýþýyor olarak iþaretle
+  _Gorev := GorevListesi[2];
+  _Gorev^.DurumDegistir(2, gdCalisiyor);
+
+  // çalýþan ve oluþturulan görev deðerlerini belirle
+  CalisanGorevSayisi := 2;
+end;
+
+procedure SistemCalismasiniDenetle;
+begin
+
+  asm
+  @@1:
+
+    mov eax,SistemKontrolSayaci
+    inc eax
+    mov SistemKontrolSayaci,eax
+  jmp @@1
+  end;
 end;
 
 end.

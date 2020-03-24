@@ -208,7 +208,7 @@ begin
   end;
 
   // nesne deðerlerini ata
-  _ListeGorunum^.GorevKimlik := AktifGorev;
+  _ListeGorunum^.GorevKimlik := CalisanGorev;
   _ListeGorunum^.AtaNesne := _AtaNesne;
   _ListeGorunum^.Hiza := hzYok;
   _ListeGorunum^.FBoyutlar.Sol2 := A1;

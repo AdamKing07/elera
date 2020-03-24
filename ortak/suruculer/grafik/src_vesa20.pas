@@ -45,7 +45,7 @@ procedure TaniBilgileriniMasaustuneYaz;
 
 implementation
 
-uses genel, donusum, gn_menu, fareimlec;
+uses genel, donusum, gn_menu, fareimlec, gdt;
 
 var
   ArkaBellek, EkranBellegi: Isaretci;
@@ -55,6 +55,9 @@ var
  ==============================================================================}
 procedure TEkranKartSurucusu.Yukle;
 begin
+
+  // grafik
+  GDTRGirdisiEkle(SECICI_SISTEM_GRAFIK, KartBilgisi.BellekAdresi, $FFFFFF, $92, $D0);
 
   // arka plan için bellek ayır
   ArkaBellek := GGercekBellek.Ayir(GEkranKartSurucusu.KartBilgisi.YatayCozunurluk *
@@ -257,11 +260,21 @@ begin
   { TODO : ileride 2 ve 4 byte'lık taşımalar gerçekleştirilerek hızlandırma artırılabilir }
   asm
     pushad
+    mov eax,SECICI_SISTEM_GRAFIK * 8
+    mov gs,ax
     mov esi,ArkaBellek
-    mov edi,EkranBellegi
+    mov edi,0
     mov ecx,i
-    cld
-    rep movsb
+    shr ecx,2
+    @1:
+    mov eax,ds:[esi]
+    mov gs:[edi],eax //dword fs:[edi], 1 // EkranBellegi
+    add esi,4
+    add edi,4
+    loop  @1
+    //mov ecx,i
+    //cld
+    //rep movsb
     popad
   end
 end;
@@ -461,8 +474,10 @@ begin
   _Masaustu^.DikdortgenDoldur(nil, 10, 10, 130, 44, $82E3DA, $82E3DA);
   _Masaustu^.YaziYaz(nil, 12, 16, 'EIP:', $6C3483);
   _Masaustu^.YaziYaz(nil, 46, 16, '0x' + hexStr(GorevTSSListesi[1].EIP, 8), $6C3483);
-  _Masaustu^.YaziYaz(nil, 12, 30, 'ESP:', $641E16);
-  _Masaustu^.YaziYaz(nil, 46, 30, '0x' + hexStr(GorevTSSListesi[1].ESP, 8), $641E16);
+  //_Masaustu^.YaziYaz(nil, 12, 30, 'ESP:', $641E16);
+  //_Masaustu^.YaziYaz(nil, 46, 30, '0x' + hexStr(GorevTSSListesi[1].ESP, 8), $641E16);
+  _Masaustu^.YaziYaz(nil, 12, 30, 'DNT:', $641E16);
+  _Masaustu^.YaziYaz(nil, 46, 30, '0x' + hexStr(SistemKontrolSayaci, 8), $641E16);
 
   Inc(GostergeDegeri, GostergeyeEklenecekDeger);
   if(GostergeDegeri >= (128 * 5)) then

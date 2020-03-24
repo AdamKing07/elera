@@ -479,11 +479,11 @@ exec_kernel:
 
         ;GDTR yazmacýnýn limit ve baþlangýç (base address) adresini belirle
         ;----------------------------------------------------------------
-        mov     word[es:edi+00],0xFFFE                  ;limit = limit-1
+        mov     word[es:edi+00],0xFFFF-1                  ;limit = limit-1
         mov     dword[es:edi+02],GDT_MEM_ADDR+8           ;baþlangýç adresi
 
 @@:
-        ;null selektör ve rezerv edilen 9 selektör
+        ;null, sistem kod / sistem data seçicisi (selector)
         ;----------------------------------------------------------------
         mov     ecx,1 ;0
         add     edi,8
@@ -492,7 +492,7 @@ exec_kernel:
         dec     ecx
         jnz     @b
 
-        ;sistem kod selektörü (0x50)
+        ;sistem kod selektörü (0x08)
         ;----------------------------------------------------------------
         add     edi,8
         mov     word[es:edi+00],0xFFFF                  ;limit 0..15
@@ -502,7 +502,7 @@ exec_kernel:
         mov     byte[es:edi+06],11011111b               ;G=1, D=1, 0, AVL=1
         mov     byte[es:edi+07],0                       ;base 24..31
 
-        ;sistem data selektörü (0x58)
+        ;sistem data selektörü (0x10)
         ;----------------------------------------------------------------
         add     edi,8
         mov     word[es:edi+00],0xFFFF                  ;limit 0..15

@@ -58,8 +58,8 @@ begin
   begin
 
     // $FF = çalışan uygulamayı sonlandır
-    p := GorevListesi[AktifGorev];
-    p^.Sonlandir(AktifGorev);
+    p := GorevListesi[CalisanGorev];
+    p^.Sonlandir(CalisanGorev);
   end
 
   // görev sayaç değerlerini al

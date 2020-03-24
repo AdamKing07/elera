@@ -144,7 +144,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Menu^.GorevKimlik := AktifGorev;
+  _Menu^.GorevKimlik := CalisanGorev;
   _Menu^.AtaNesne := GAktifMasaustu;
   _Menu^.Hiza := hzYok;
   _Menu^.FBoyutlar.Sol2 := A1;

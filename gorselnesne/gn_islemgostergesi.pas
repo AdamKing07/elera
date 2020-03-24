@@ -128,7 +128,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _IslemGostergesi^.GorevKimlik := AktifGorev;
+  _IslemGostergesi^.GorevKimlik := CalisanGorev;
   _IslemGostergesi^.AtaNesne := _AtaNesne;
   _IslemGostergesi^.Hiza := hzYok;
   _IslemGostergesi^.FBoyutlar.Sol2 := A1;

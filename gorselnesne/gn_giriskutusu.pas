@@ -155,7 +155,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _GirisKutusu^.GorevKimlik := AktifGorev;
+  _GirisKutusu^.GorevKimlik := CalisanGorev;
   _GirisKutusu^.AtaNesne := _AtaNesne;
   _GirisKutusu^.Hiza := hzYok;
   _GirisKutusu^.FBoyutlar.Sol2 := A1;

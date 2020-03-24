@@ -266,7 +266,7 @@ begin
       //if(AktifGorselNesne^.GorselNesneTipi = gntGirisKutusu) then
       begin
 
-        // odaklanan nesneye CEKIRDEK_PNC_TUSBASILDI mesajý gönder
+        // odaklanan nesneye CO_TUSBASILDI mesajý gönder
         _OlayKayit.Deger1 := TISayi4(ATus);
         _OlayKayit.Olay := CO_TUSBASILDI;
         OlaylariYonlendir(AktifGorselNesne, _OlayKayit);

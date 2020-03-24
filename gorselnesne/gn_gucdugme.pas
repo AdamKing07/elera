@@ -123,7 +123,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _GucDugme^.GorevKimlik := AktifGorev;
+  _GucDugme^.GorevKimlik := CalisanGorev;
   _GucDugme^.AtaNesne := _AtaNesne;
   _GucDugme^.Hiza := hzYok;
   _GucDugme^.FBoyutlar.Sol2 := A1;

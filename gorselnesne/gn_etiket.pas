@@ -127,7 +127,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Etiket^.GorevKimlik := AktifGorev;
+  _Etiket^.GorevKimlik := CalisanGorev;
   _Etiket^.AtaNesne := _AtaNesne;
   _Etiket^.Hiza := hzYok;
   _Etiket^.FBoyutlar.Sol2 := A1;

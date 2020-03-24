@@ -148,7 +148,7 @@ begin
   end;
 
   // nesne değerlerini ata
-  _Panel^.GorevKimlik := AktifGorev;
+  _Panel^.GorevKimlik := CalisanGorev;
   _Panel^.AtaNesne := _Pencere;
   _Panel^.Hiza := hzYok;
 

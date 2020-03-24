@@ -54,22 +54,22 @@ uses idt;
 procedure Yukle;
 begin
 
-  KesmeGirisiBelirle($20, @IRQ00Islevi, SECICI_SISTEM_KOD, $8E);    // irq00
-  KesmeGirisiBelirle($21, @IRQ01Islevi, SECICI_SISTEM_KOD, $8E);    // irq01
-  KesmeGirisiBelirle($22, @IRQ02Islevi, SECICI_SISTEM_KOD, $8E);    // irq02
-  KesmeGirisiBelirle($23, @IRQ03Islevi, SECICI_SISTEM_KOD, $8E);    // irq03
-  KesmeGirisiBelirle($24, @IRQ04Islevi, SECICI_SISTEM_KOD, $8E);    // irq04
-  KesmeGirisiBelirle($25, @IRQ05Islevi, SECICI_SISTEM_KOD, $8E);    // irq05
-  KesmeGirisiBelirle($26, @IRQ06Islevi, SECICI_SISTEM_KOD, $8E);    // irq06
-  KesmeGirisiBelirle($27, @IRQ07Islevi, SECICI_SISTEM_KOD, $8E);    // irq07
-  KesmeGirisiBelirle($28, @IRQ08Islevi, SECICI_SISTEM_KOD, $8E);    // irq08
-  KesmeGirisiBelirle($29, @IRQ09Islevi, SECICI_SISTEM_KOD, $8E);    // irq09
-  KesmeGirisiBelirle($2A, @IRQ10Islevi, SECICI_SISTEM_KOD, $8E);    // irq10
-  KesmeGirisiBelirle($2B, @IRQ11Islevi, SECICI_SISTEM_KOD, $8E);    // irq11
-  KesmeGirisiBelirle($2C, @IRQ12Islevi, SECICI_SISTEM_KOD, $8E);    // irq12
-  KesmeGirisiBelirle($2D, @IRQ13Islevi, SECICI_SISTEM_KOD, $8E);    // irq13
-  KesmeGirisiBelirle($2E, @IRQ14Islevi, SECICI_SISTEM_KOD, $8E);    // irq14
-  KesmeGirisiBelirle($2F, @IRQ15Islevi, SECICI_SISTEM_KOD, $8E);    // irq15
+  KesmeGirisiBelirle($20, @IRQ00Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq00
+  KesmeGirisiBelirle($21, @IRQ01Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq01
+  KesmeGirisiBelirle($22, @IRQ02Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq02
+  KesmeGirisiBelirle($23, @IRQ03Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq03
+  KesmeGirisiBelirle($24, @IRQ04Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq04
+  KesmeGirisiBelirle($25, @IRQ05Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq05
+  KesmeGirisiBelirle($26, @IRQ06Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq06
+  KesmeGirisiBelirle($27, @IRQ07Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq07
+  KesmeGirisiBelirle($28, @IRQ08Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq08
+  KesmeGirisiBelirle($29, @IRQ09Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq09
+  KesmeGirisiBelirle($2A, @IRQ10Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq10
+  KesmeGirisiBelirle($2B, @IRQ11Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq11
+  KesmeGirisiBelirle($2C, @IRQ12Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq12
+  KesmeGirisiBelirle($2D, @IRQ13Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq13
+  KesmeGirisiBelirle($2E, @IRQ14Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq14
+  KesmeGirisiBelirle($2F, @IRQ15Islevi, SECICI_SISTEM_KOD * 8, $8E);    // irq15
 end;
 
 {==============================================================================
@@ -174,7 +174,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -207,7 +207,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -240,7 +240,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -273,7 +273,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -306,7 +306,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -339,7 +339,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -372,7 +372,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -405,7 +405,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -438,7 +438,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -472,7 +472,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -506,7 +506,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -540,7 +540,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -574,7 +574,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -608,7 +608,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -642,7 +642,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
@@ -676,7 +676,7 @@ asm
   pushfd
   mov   ax,ds
   push  eax
-  mov   ax,SECICI_SISTEM_VERI
+  mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 

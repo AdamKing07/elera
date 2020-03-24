@@ -110,15 +110,15 @@ begin
   // limit - GDT: 15..0
   p^.Uzunluk00_15 := (AUzunluk and $FFFF);
 
+  // P(1 bit), DPL(2 bit), S(1 bit), TYPE(3 bit), A(1 bit) - GDT: 47..40
+  p^.Erisim := AErisim;
+
   // limit - GDT: 51..48
   i := (AUzunluk shr 16) and $F;
 
   // G bit, D bit, 0, AVL - GDT: 55..52
   i := (AYetki and $F0) or i;
   p^.Esneklik := i;
-
-  // P(1 bit), DPL(2 bit), S(1 bit), TYPE(3 bit), A(1 bit) - GDT: 47..40
-  p^.Erisim := AErisim;
 end;
 
 end.

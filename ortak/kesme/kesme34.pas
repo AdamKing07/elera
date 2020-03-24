@@ -46,14 +46,14 @@ asm
   push  ebx
 
   // bölütleri sistem bölütlerine ayarla
-  mov   bx,SECICI_SISTEM_VERI
+  mov   bx,SECICI_SISTEM_VERI * 8
   mov   ds,bx
   mov   es,bx
 
   // uygulamanın yığına sürdüğü değişken adresine konumlan
   mov   edx,[esp + 12 + 04]             // sistem esp (ring0)
   mov   edx,[edx + 12]                  // program esp (ring3)
-  add   edx,AktifGorevBellekAdresi  // + program bellek başlangıç adresi
+  add   edx,AktifGorevBellekAdresi      // + program bellek başlangıç adresi
   mov   UygulamaYiginAdresi,edx
 
   // eax = işlev çağrı numarası
