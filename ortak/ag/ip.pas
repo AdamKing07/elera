@@ -6,7 +6,7 @@
   Dosya Adı: ip.pas
   Dosya İşlevi: ip paket yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 29/09/2019
+  Güncelleme Tarihi: 30/03/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -19,20 +19,20 @@ uses paylasim, genel, saglama, ag, sistemmesaj;
 const
   IP_BASLIKU = 20;
 
-procedure IPPaketleriniIsle(AIPPaket: PIPBaslik; AIPPaketUzunluk: TISayi4);
+procedure IPPaketleriniIsle(AIPPaket: PIPPaket; AIPPaketUzunluk: TISayi4);
 procedure IPPaketGonder(AHedefMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdres;
   AProtokolTip: TProtokolTip; ABayrakVeParcaSiraNo: TSayi2; AVeri: Isaretci;
   AVeriUzunlugu: TSayi2);
 
 implementation
 
-uses donusum, icmp, udp, tcp;
+uses donusum, icmp, udp, tcp, baglanti;
 
 var
   GIPTanimlayici: TSayi2 = $BABA;
 
 // sisteme gelen tüm ip paketlerini işler
-procedure IPPaketleriniIsle(AIPPaket: PIPBaslik; AIPPaketUzunluk: TISayi4);
+procedure IPPaketleriniIsle(AIPPaket: PIPPaket; AIPPaketUzunluk: TISayi4);
 begin
 
   // sadece aygıta gelen ve yayın olarak gelen ip adreslerini işle
@@ -49,12 +49,12 @@ begin
     // tcp protokolü
     else if(AIPPaket^.Protokol = PROTOKOL_TCP) then
 
-      TCPPaketleriniIsle(PTCPBaslik(@AIPPaket^.Veri))
+      TCPPaketleriniIsle(AIPPaket)
 
     // udp protokolü
     else if(AIPPaket^.Protokol = PROTOKOL_UDP) then
 
-      UDPPaketleriniIsle(PUDPBaslik(@AIPPaket^.Veri));
+      UDPPaketleriniIsle(PUDPPaket(@AIPPaket^.Veri));
   end
   else
   begin
@@ -70,7 +70,7 @@ procedure IPPaketGonder(AHedefMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TI
   AProtokolTip: TProtokolTip; ABayrakVeParcaSiraNo: TSayi2; AVeri: Isaretci;
   AVeriUzunlugu: TSayi2);
 var
-  _IPPaket: PIPBaslik;
+  _IPPaket: PIPPaket;
   _Veri: PByte;
   SaglamaToplam: TSayi2;
 begin

@@ -6,7 +6,7 @@
   Dosya Adý: src_pcnet32.pas
   Dosya Ýþlevi : PCNET32 að (network) sürücüsü
 
-  Güncelleme Tarihi: 27/10/2019
+  Güncelleme Tarihi: 30/03/2020
 
   Bilgi: sadece kullanýlan sabit, deðiþken ve iþlevler türkçeye çevrilmiþtir
 
@@ -526,6 +526,7 @@ begin
 
   // bir sonraki gönderim ringini belirle
   BirSonrakiGidisSiraNo := (BirSonrakiGidisSiraNo + 1) and GIDIS_HALKA_MOD_MASKE;
+  if(BirSonrakiGidisSiraNo = 0) then Inc(BirSonrakiGidisSiraNo);
 
   CSRYaz(0, (CSR_IENA or CSR_TDMD));
 end;

@@ -6,7 +6,7 @@
   Dosya Adý: ag.pas
   Dosya Ýþlevi: að (network) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 20/10/2019
+  Güncelleme Tarihi: 30/03/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -23,7 +23,7 @@ interface
 uses paylasim, aygityonetimi, baglanti, genel;
 
 const
-  ETHERNET_BASLIKU = 14;
+  ETHERNET_BASLIKU = TSayi1(14);
 
 var
   // paket baþlýklarý da dahil olmak üzere tüm veri sayýlarýný içerir.
@@ -164,7 +164,7 @@ begin
   begin
 
     // að kartýna (ethernet) gelen ham bilgiyi al
-    { TODO : VeriAl iþlevi katý (hard code) olarak kodlanmýþtýr. Yapýsallaþtýrýlacak }
+    { TODO : VeriAl iþlevi katý (hard code) olarak kodlanmýþtýr. yapýsallaþtýrýlacak }
     VeriAl(@_Bellek, _VeriUzunluk);
     if(_VeriUzunluk > 0) then
     begin
@@ -185,6 +185,7 @@ procedure AgKartinaVeriGonder(AHedefMAC: TMACAdres; AProtokolTip: TProtokolTip;
 var
   _EthernetPaket: PEthernetPaket;
   _VeriBellekAdresi: Isaretci;
+  _IPPaket: PIPPaket;
 begin
 
   if(AgYuklendi) then
@@ -204,6 +205,13 @@ begin
       ptARP : _EthernetPaket^.PaketTip := PROTOKOL_ARP;
       ptICMP: _EthernetPaket^.PaketTip := PROTOKOL_ICMP;
     end;
+
+    _IPPaket := _EthernetPaket^.Veri;
+
+    {SISTEM_MESAJ_YAZI('ETH');
+    SISTEM_MESAJ_MAC('ETH: Kaynak MAC: ', _EthernetPaket^.KaynakMACAdres);
+    SISTEM_MESAJ_MAC('ETH: Hedef MAC: ', _EthernetPaket^.HedefMACAdres);
+    SISTEM_MESAJ_S16('ETH: PaketTip: ', _EthernetPaket^.PaketTip, 4);}
 
     _VeriBellekAdresi := @_EthernetPaket^.Veri;
     Tasi2(AVeri, _VeriBellekAdresi, AVeriUzunlugu);

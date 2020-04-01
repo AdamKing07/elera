@@ -499,7 +499,7 @@ exec_kernel:
         mov     word[es:edi+02],0                       ;base 0..15
         mov     byte[es:edi+04],0                       ;base 16..23
         mov     byte[es:edi+05],10011010b               ;p, dpl0
-        mov     byte[es:edi+06],11011111b               ;G=1, D=1, 0, AVL=1
+        mov     byte[es:edi+06],11001111b               ;G=1, D=1, 0, AVL=0
         mov     byte[es:edi+07],0                       ;base 24..31
 
         ;sistem data selektörü (0x10)
@@ -509,7 +509,7 @@ exec_kernel:
         mov     word[es:edi+02],0                       ;base 0..15
         mov     byte[es:edi+04],0                       ;base 16..23
         mov     byte[es:edi+05],10010010b               ;p, dpl0
-        mov     byte[es:edi+06],11011111b               ;G=1, D=1, 0, AVL=1
+        mov     byte[es:edi+06],11001111b               ;G=1, D=1, 0, AVL=0
         mov     byte[es:edi+07],0                       ;base 24..31
 
         pop     es

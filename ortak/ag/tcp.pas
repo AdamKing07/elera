@@ -6,7 +6,7 @@
   Dosya Adý: tcp.pas
   Dosya Ýþlevi: tcp katmaný veri iletiþimini gerçekleþtirir
 
-  Güncelleme Tarihi: 17/10/2019
+  Güncelleme Tarihi: 01/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,188 +17,196 @@ interface
 
 uses paylasim, baglanti;
 
-procedure TCPPaketleriniIsle(ATCPBaslik: PTCPBaslik);
-procedure TCPPaketGonder(ABaslikEkle: Boolean; AKaynakIPAdres: TIPAdres;
-  ABaglanti: PBaglanti; AVeriBellekAdresi: Isaretci; AVeriUzunlugu: TISayi4;
-  ADiziNo, AOnayNo: TSayi4; ABayrak: TSayi1; APencere: TSayi2);
+procedure TCPPaketleriniIsle(AIPPaket: PIPPaket);
+procedure TCPPaketGonder(AKaynakIPAdres: TIPAdres; ABaglanti: PBaglanti;
+  ABayrak: TSayi1; AVeri: Isaretci; AVeriU: TSayi4; AVeriSonEk: Boolean = False);
 
 implementation
 
 uses genel, donusum, saglama, ip, sistemmesaj;
 
-procedure TCPPaketleriniIsle(ATCPBaslik: PTCPBaslik);
+procedure TCPPaketleriniIsle(AIPPaket: PIPPaket);
 var
   _Baglanti: PBaglanti;
-  _KaynakPort, _HedefPort: TSayi2;
-  _DiziNo, _OnayNo: TSayi4;
+  ATCPPaket: PTCPPaket;
+  _SunucuYerelPort, _SistemYerelPort: TSayi2;
+  i, j: TSayi4;
 begin
+
+  ATCPPaket := PTCPPaket(@AIPPaket^.Veri);
+
+  _SunucuYerelPort := Takas2(ATCPPaket^.YerelPort);     // sunucunun yerel portu
+  _SistemYerelPort := Takas2(ATCPPaket^.UzakPort);      // sistemin yerel portu
 
   {$IFDEF TCP_BILGI}
   SISTEM_MESAJ_YAZI('-------------------------');
-  SISTEM_MESAJ_S10('TCP: Kaynak Port: ', Takas2(TSayi2(ATCPBaslik^.KaynakPort)));
-  SISTEM_MESAJ_S10('TCP: Hedef Port: ', Takas2(TSayi2(ATCPBaslik^.HedefPort)));
+  SISTEM_MESAJ_S10('TCP: Yerel Port: ', Takas2(_SistemYerelPort));
+  SISTEM_MESAJ_S10('TCP: Hedef Port: ', Takas2(_SunucuYerelPort));
   SISTEM_MESAJ_S10('TCP: Bayrak: ', ATCPBaslik^.Bayrak);
   {$ENDIF}
 
-  _KaynakPort := Takas2(ATCPBaslik^.KaynakPort);
-  if(_KaynakPort = 1871) then
+  _Baglanti := _Baglanti^.BaglantiAl(_SistemYerelPort, _SunucuYerelPort);
+  if(_Baglanti = nil) then
   begin
 
-    _HedefPort := Takas2(ATCPBaslik^.HedefPort);
-    _Baglanti := _Baglanti^.BaglantiAl(_HedefPort);
-    if(_Baglanti = nil) then
+    SISTEM_MESAJ_S10('TCP: eþleþen uzak port bulunamadý: ', _SunucuYerelPort);
+    Exit;
+  end
+  else
+  begin
+
+    if(_Baglanti^.FBaglantiDurum = bdBaglaniyor) then
     begin
 
-      SISTEM_MESAJ_S10('TCP: Eþleþen port bulunamadý: ', _HedefPort);
-      Exit;
-    end
-    else
-    begin
-
-      if(_Baglanti^.FBaglantiDurum = bdBaglaniyor) then
+      if(ATCPPaket^.Bayrak = (TCP_BAYRAK_ARZ or TCP_BAYRAK_KABUL)) then
       begin
 
-        if(ATCPBaslik^.Bayrak = (TCP_BAYRAK_ARZ or TCP_BAYRAK_KABUL)) then
-        begin
+        // gelen OnayNo deðeri benim SiraNo deðerim;
+        // gelen SiraNo deðeri benim OnayNo deðerimdir
+        i := Takas4(ATCPPaket^.OnayNo);
+        _Baglanti^.FSiraNo := i;
 
-          // gelen deðerin ACK deðeri benim SEQ,
-          // gelen deðerin SEQ deðeri benim ACK deðerimdir
-          _DiziNo := Takas4(ATCPBaslik^.OnayNo);
-          _Baglanti^.FDiziNo := _DiziNo;
+        i := Takas4(ATCPPaket^.SiraNo);
+        _Baglanti^.FOnayNo := i + 1;
 
-          _OnayNo := Takas4(ATCPBaslik^.DiziNo);
-          Inc(_OnayNo);
-          _Baglanti^.FOnayNo := _OnayNo;
+        _Baglanti^.FPencereU := $100;
 
-          TCPPaketGonder(False, AgBilgisi.IP4Adres, @_Baglanti, nil, 0, _DiziNo,
-            _OnayNo, TCP_BAYRAK_KABUL, _Baglanti^.FPencere);
+        // baðlantýnýn gerçekleþtiðine dair onay deðerini gönder
+        TCPPaketGonder(AgBilgisi.IP4Adres, _Baglanti, TCP_BAYRAK_KABUL, nil, 0);
 
-          _Baglanti^.FBaglantiDurum := bdBaglandi;
-        end;
-      end
-      else if(_Baglanti^.FBaglantiDurum = bdBaglandi) then
-      begin
-
-        // gönderilen veriden sonra sunucudan gelen PSH + ACK'e verilen cevap
-        if((ATCPBaslik^.Bayrak and (TCP_BAYRAK_GONDER or TCP_BAYRAK_KABUL)) = (TCP_BAYRAK_GONDER or TCP_BAYRAK_KABUL)) then
-        begin
-
-          _DiziNo := Takas4(ATCPBaslik^.OnayNo);
-          _Baglanti^.FDiziNo := _DiziNo;
-
-          _OnayNo := Takas4(ATCPBaslik^.DiziNo);
-          Inc(_OnayNo);
-          _Baglanti^.FOnayNo := _OnayNo;
-
-          TCPPaketGonder(False, AgBilgisi.IP4Adres, @_Baglanti, nil, 0, _DiziNo,
-            _OnayNo, TCP_BAYRAK_KABUL, _Baglanti^.FPencere);
-
-          //_Baglanti^.FBaglantiDurum := bdBaglandi;
-        end
-        else if(_Baglanti^.FBaglantiDurum = bdKapaniyor) then
-        begin
-
-          if((ATCPBaslik^.Bayrak and TCP_BAYRAK_KABUL) = TCP_BAYRAK_KABUL) then
-          begin
-
-            _DiziNo := Takas4(ATCPBaslik^.OnayNo);
-            _Baglanti^.FDiziNo := _DiziNo;
-
-            _OnayNo := Takas4(ATCPBaslik^.DiziNo);
-            //Inc(_DiziNo);
-            _Baglanti^.FOnayNo := _OnayNo;
-
-            TCPPaketGonder(False, AgBilgisi.IP4Adres, @_Baglanti, nil, 0, _DiziNo,
-              _OnayNo, TCP_BAYRAK_SON or TCP_BAYRAK_KABUL, _Baglanti^.FPencere);
-
-            _Baglanti^.FProtokol := ptBilinmiyor;
-            _Baglanti^.FHedefIPAdres := IPAdres0;
-            _Baglanti^.FKaynakPort := 0;
-            _Baglanti^.FHedefPort := 0;
-
-            GGercekBellek.YokEt(_Baglanti^.FBellek, _Baglanti^.FBellekUzunlugu);
-            _Baglanti^.FBagli := False;
-            _Baglanti^.FBaglantiDurum := bdYok;
-          end;
-        end
-        else
-        begin
-
-          {SetLength(s, 50);
-          s := 'Flag: ';
-
-          if((ATCPBaslik^.Bayrak and TCP_BAYRAK_KABUL) = TCP_BAYRAK_KABUL) then s := s + 'ACK';
-          if((ATCPBaslik^.Bayrak and TCP_BAYRAK_SON) = TCP_BAYRAK_SON) then s := s + 'FIN';
-          if((ATCPBaslik^.Bayrak and TCP_BAYRAK_ARZ) = TCP_BAYRAK_ARZ) then s := s + 'SYN';
-          if((ATCPBaslik^.Bayrak and TCP_BAYRAK_GONDER) = TCP_BAYRAK_GONDER) then s := s + 'PSH';}
-
-          //SISTEM_MESAJ_S10('TCP Onay -> SrcPort: ', Takas2(ATCPBaslik^.KaynakPort));
-          //SISTEM_MESAJ_S10('TCP Onay -> DestPort: ', Takas2(ATCPBaslik^.HedefPort));
-          //SISTEM_MESAJ_YAZI(s);
-          SISTEM_MESAJ_S16('Bayrak: ', ATCPBaslik^.Bayrak, 2);
-          SISTEM_MESAJ_S10('TCP: Onay -> DiziNo: ', Takas4(ATCPBaslik^.DiziNo));
-          SISTEM_MESAJ_S10('TCP: Onay -> OnayNo: ', Takas4(ATCPBaslik^.OnayNo));
-        end;
+        _Baglanti^.FBaglantiDurum := bdBaglandi;
       end;
+    end
+    else if(_Baglanti^.FBaglantiDurum = bdBaglandi) then
+    begin
 
-      // 8 byte, udp paket baþlýk uzunluðu
-      //if(DataLen > 8) then _Baglanti^.BellegeEkle(@UdpPacket^.Data, DataLen - 8);
+      // gönderilen verinin kabul edildiðinin teyidi
+      if(ATCPPaket^.Bayrak = TCP_BAYRAK_KABUL) then
+      begin
+
+        i := Takas4(ATCPPaket^.OnayNo);
+        _Baglanti^.FSiraNo := i;
+
+        i := Takas4(ATCPPaket^.SiraNo);
+        _Baglanti^.FOnayNo := i;
+
+        //SISTEM_MESAJ_YAZI('TCP Durum: TCP_BAYRAK_KABUL');
+      end
+      // alýnan veri
+      else if(ATCPPaket^.Bayrak = TCP_BAYRAK_GONDER or TCP_BAYRAK_KABUL) then
+      begin
+
+        i := Takas4(ATCPPaket^.OnayNo);
+        _Baglanti^.FSiraNo := i;
+
+        i := Takas4(ATCPPaket^.SiraNo);
+        j := (Takas2(AIPPaket^.ToplamUzunluk) - 40);
+        _Baglanti^.FOnayNo := i + j;
+
+        _Baglanti^.BellegeEkle(@ATCPPaket^.Secenekler, j);
+
+        //SISTEM_MESAJ_YAZI(PChar(@ATCPPaket^.Secenekler), j);
+        //SISTEM_MESAJ_YAZI(PChar(_Baglanti^.FBellek), _Baglanti^.FBellekUzunlugu);
+
+        TCPPaketGonder(AgBilgisi.IP4Adres, _Baglanti, TCP_BAYRAK_KABUL, nil, 0);
+      end;
+    end
+    else if(_Baglanti^.FBaglantiDurum = bdKapaniyor1) then
+    begin
+
+      if(ATCPPaket^.Bayrak = TCP_BAYRAK_KABUL) then
+      begin
+
+        i := Takas4(ATCPPaket^.OnayNo);
+        _Baglanti^.FSiraNo := i;
+
+        i := Takas4(ATCPPaket^.SiraNo);
+        _Baglanti^.FOnayNo := i;
+
+        TCPPaketGonder(AgBilgisi.IP4Adres, _Baglanti, TCP_BAYRAK_SON or TCP_BAYRAK_KABUL,
+          nil, 0);
+
+        _Baglanti^.FBaglantiDurum := bdKapaniyor2;
+
+        //SISTEM_MESAJ_YAZI('TCP Durum: bdKapaniyor2');
+      end;
+    end
+    else if(_Baglanti^.FBaglantiDurum = bdKapaniyor2) then
+    begin
+
+      if(ATCPPaket^.Bayrak = TCP_BAYRAK_SON or TCP_BAYRAK_KABUL) then
+      begin
+
+        i := Takas4(ATCPPaket^.OnayNo);
+        _Baglanti^.FSiraNo := i;
+
+        i := Takas4(ATCPPaket^.SiraNo);
+        _Baglanti^.FOnayNo := i + 1;
+
+        TCPPaketGonder(AgBilgisi.IP4Adres, _Baglanti, TCP_BAYRAK_KABUL, nil, 0);
+
+        _Baglanti^.FProtokol := ptBilinmiyor;
+        _Baglanti^.FHedefIPAdres := IPAdres0;
+        _Baglanti^.FYerelPort := 0;
+        _Baglanti^.FUzakPort := 0;
+
+        GGercekBellek.YokEt(_Baglanti^.FBellek, _Baglanti^.FBellekUzunlugu);
+        _Baglanti^.FBagli := False;
+        _Baglanti^.FBaglantiDurum := bdYok;
+
+        //SISTEM_MESAJ_YAZI('TCP Durum: baþlamadý');
+      end;
     end;
   end;
 end;
 
-// ABaslikEkle = tcp baþlýðýnýn sonuna eklenen 12 bytlýk verinin olup olmadýðýdýr
-procedure TCPPaketGonder(ABaslikEkle: Boolean; AKaynakIPAdres: TIPAdres;
-  ABaglanti: PBaglanti; AVeriBellekAdresi: Isaretci; AVeriUzunlugu: TISayi4;
-  ADiziNo, AOnayNo: TSayi4; ABayrak: TSayi1; APencere: TSayi2);
+procedure TCPPaketGonder(AKaynakIPAdres: TIPAdres; ABaglanti: PBaglanti;
+  ABayrak: TSayi1; AVeri: Isaretci; AVeriU: TSayi4; AVeriSonEk: Boolean = False);
 var
-  _TCPBaslik: PTCPBaslik;
+  _TCPBaslik: PTCPPaket;
   _SozdeBaslik: TSozdeBaslik;
   _Saglama: TSayi2;
   _BaslikUzunlugu: TSayi1;
   _p: PByte;
 begin
 
-  { TODO mesaj göndermeden önce hedef makinenin mac adresi arp yoluyla alýnacak }
-
-  _TCPBaslik := GGercekBellek.Ayir(TCPBASLIK_UZUNLUGU + AVeriUzunlugu);
+  _TCPBaslik := GGercekBellek.Ayir(TCPBASLIK_UZUNLUGU + AVeriU);
 
   // tcp için ek baþlýk hesaplanýyor
   _SozdeBaslik.KaynakIPAdres := AKaynakIPAdres;
   _SozdeBaslik.HedefIPAdres := ABaglanti^.FHedefIPAdres;
   _SozdeBaslik.Sifir := 0;
   _SozdeBaslik.Protokol := PROTOKOL_TCP;
-  _SozdeBaslik.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + TCPBASLIK_UZUNLUGU));
+  _SozdeBaslik.Uzunluk := Takas2(TSayi2(AVeriU + TCPBASLIK_UZUNLUGU));
 
   // tcp paketi hazýrlanýyor
-  { TODO : kaynak port numarasý almak için iþlev yazýlacak }
-  if(ABaslikEkle) then
-    _BaslikUzunlugu := (((20 + AVeriUzunlugu) shr 2) shl 4)
+  if(AVeriSonEk) then
+    _BaslikUzunlugu := (((20 + AVeriU) shr 2) shl 4)
   else _BaslikUzunlugu := ((20 shr 2) shl 4);
-  _TCPBaslik^.KaynakPort := Takas2(TSayi2(ABaglanti^.FKaynakPort));
-  _TCPBaslik^.HedefPort := Takas2(TSayi2(ABaglanti^.FHedefPort));
-  _TCPBaslik^.DiziNo := Takas4(TSayi4(ADiziNo));
-  _TCPBaslik^.OnayNo := Takas4(TSayi4(AOnayNo));
-  _TCPBaslik^.VeriKarsilik := _BaslikUzunlugu;     // üst 4 bit = _BaslikUzunlugu * 4 = baþlýk uzunluðu;
-  _TCPBaslik^.Bayrak := ABayrak; // and $3F;
-  _TCPBaslik^.Pencere := Takas2(APencere);
+  _TCPBaslik^.YerelPort := Takas2(ABaglanti^.FYerelPort);
+  _TCPBaslik^.UzakPort := Takas2(ABaglanti^.FUzakPort);
+  _TCPBaslik^.SiraNo := Takas4(ABaglanti^.FSiraNo);
+  _TCPBaslik^.OnayNo := Takas4(ABaglanti^.FOnayNo);
+  _TCPBaslik^.BaslikU := _BaslikUzunlugu;     // üst 4 bit = _BaslikUzunlugu * 4 = baþlýk uzunluðu;
+  _TCPBaslik^.Bayrak := ABayrak;
+  _TCPBaslik^.Pencere := Takas2(ABaglanti^.FPencereU);
   _TCPBaslik^.SaglamaToplam := 0;
   _TCPBaslik^.AcilIsaretci := 0;
-  if(AVeriUzunlugu > 0) then
+  if(AVeriU > 0) then
   begin
 
     _p := @_TCPBaslik^.Secenekler;
-    Tasi2(PByte(AVeriBellekAdresi), _p, AVeriUzunlugu);
+    Tasi2(PByte(AVeri), _p, AVeriU);
   end;
 
-  _Saglama := SaglamasiniYap(_TCPBaslik, TCPBASLIK_UZUNLUGU + AVeriUzunlugu,
+  _Saglama := SaglamasiniYap(_TCPBaslik, TCPBASLIK_UZUNLUGU + AVeriU,
     @_SozdeBaslik, SOZDE_TCPBASLIK_UZUNLUGU);
-  _TCPBaslik^.SaglamaToplam := Takas2(TSayi2(_Saglama));
+  _TCPBaslik^.SaglamaToplam := Takas2(_Saglama);
 
   IPPaketGonder(ABaglanti^.FHedefMACAdres, AKaynakIPAdres, ABaglanti^.FHedefIPAdres,
-    ptTCP, $4000, _TCPBaslik, TCPBASLIK_UZUNLUGU + AVeriUzunlugu);
+    ptTCP, $4000, _TCPBaslik, TCPBASLIK_UZUNLUGU + AVeriU);
 
-  GGercekBellek.YokEt(_TCPBaslik, TCPBASLIK_UZUNLUGU + AVeriUzunlugu);
+  GGercekBellek.YokEt(_TCPBaslik, TCPBASLIK_UZUNLUGU + AVeriU);
 end;
 
 end.

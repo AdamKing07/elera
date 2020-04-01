@@ -96,7 +96,7 @@ begin
   _Baglanti := GBaglanti^.Olustur(ptUDP, AgBilgisi.DNSSunucusu, DNS_KAYNAK_PORT,
     DNS_HEDEF_PORT);
 
-  _Baglanti^.VeriYaz(@_DNSPacket[0], 12 + _ToplamUzunluk + 4);
+  _Baglanti^.Yaz(@_DNSPacket[0], 12 + _ToplamUzunluk + 4);
 
   _Baglanti^.BaglantiyiKes;
 

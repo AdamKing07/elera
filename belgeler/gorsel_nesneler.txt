@@ -1,0 +1,20 @@
+Görsel Nesneler
+==================================
+TMasaustu		- masaüstü nesnesi (desktop)
+TPencere		- pencere (window)
+TDurumCubugu	- pencere alt durum çubuðu (statusbar)
+TPanel			- panel nesnesi
+TMenu			- menü nesnesi
+TDugme			- düðme nesnesi (button)
+TGucDugme		- açýk / kapalý güç düðmesi
+TEtiket			- etiket nesnesi (label)
+TSecimDugme		- seçim düðmesi (radio button)
+TOnayKutusu		- onay kutusu (checkbox)
+TIslemGostergesi- iþlem göstergesi (progressbar)
+TGirisKutusu	- veri giriþ nesnesi (edit)
+TListeKutusu	- liste kutusu (listbox)
+TListeGorunum	- çok deðerleri liste (listview)
+TResim			- resim görüntüleme nesnesi
+TBaglanti		- baðlantý nesnesi (link)
+TDefter			- yazý görüntüleme nesnesi (memo)
+TDegerNesnesi	- deðer artýrma / eksiltme düðmesi (updown)

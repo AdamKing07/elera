@@ -21,7 +21,7 @@ const
   UDP_BASLIK_UZUNLUGU = 8;
   UDP_SOZDE_UZUNLUGU  = 12;
 
-procedure UDPPaketleriniIsle(AUDPBaslik: PUDPBaslik);
+procedure UDPPaketleriniIsle(AUDPBaslik: PUDPPaket);
 procedure UDPPaketGonder(AKaynakAdres, AHedefAdres: TIPAdres; AKaynakPort, AHedefPort: TSayi2;
   AVeri: Isaretci; AVeriUzunlugu: TISayi4);
 
@@ -32,7 +32,7 @@ uses genel, saglama, ip, donusum, sistemmesaj, dhcp;
 {==============================================================================
   udp protokolüne gelen verileri ilgili kaynaklara yönlendirir
  ==============================================================================}
-procedure UDPPaketleriniIsle(AUDPBaslik: PUDPBaslik);
+procedure UDPPaketleriniIsle(AUDPBaslik: PUDPPaket);
 var
   _DNSPacket: PDNSPaket;
   _IPAdres: TIPAdres;
@@ -254,7 +254,7 @@ end;
 procedure UDPPaketGonder(AKaynakAdres, AHedefAdres: TIPAdres; AKaynakPort, AHedefPort: TSayi2;
   AVeri: Isaretci; AVeriUzunlugu: TISayi4);
 var
-  _UDPBaslik: PUDPBaslik;
+  _UDPBaslik: PUDPPaket;
   _SozdeBaslik: TSozdeBaslik;
   _SaglamaDeger: TSayi2;
   _B1: PSayi1;

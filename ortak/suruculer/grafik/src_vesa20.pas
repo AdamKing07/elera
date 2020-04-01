@@ -276,7 +276,7 @@ begin
     //cld
     //rep movsb
     popad
-  end
+  end;
 end;
 
 // görsel nesne çizimlerini arka belleğe çizer

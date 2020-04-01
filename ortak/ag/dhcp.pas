@@ -300,7 +300,7 @@ begin
   _Baglanti := GBaglanti^.Olustur(ptUDP, IPAdres255, DHCP_ISTEMCI_PORT,
     DHCP_SUNUCU_PORT);
 
-  _Baglanti^.VeriYaz(@_DHCPKayit[0], 240 + 20);
+  _Baglanti^.Yaz(@_DHCPKayit[0], 240 + 20);
 
   _Baglanti^.BaglantiyiKes;
 
@@ -412,7 +412,7 @@ begin
 
   _Baglanti := GBaglanti^.Olustur(ptUDP, IPAdres0, DHCP_ISTEMCI_PORT, DHCP_SUNUCU_PORT);
 
-  _Baglanti^.VeriYaz(@_DHCPKayit[0], 240 + 31 + _MakineAdiUz);
+  _Baglanti^.Yaz(@_DHCPKayit[0], 240 + 31 + _MakineAdiUz);
 
   _Baglanti^.BaglantiyiKes;
 

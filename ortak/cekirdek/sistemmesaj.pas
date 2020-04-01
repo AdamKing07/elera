@@ -42,6 +42,8 @@ procedure SISTEM_MESAJ_YAZI(AMesaj: string);
 procedure SISTEM_MESAJ_YAZI(AMesaj: PWideChar);
 procedure SISTEM_MESAJ_YAZI(AMesaj1, AMesaj2: string);
 procedure SISTEM_MESAJ_YAZI(AMesaj: PChar; AMesajUz: TISayi4);
+procedure SISTEM_MESAJ_YAZI(AMesaj1: PChar; AMesajUz1: TISayi4;
+  AMesaj2: PChar; AMesajUz2: TISayi4);
 procedure SISTEM_MESAJ_YAZI(ABellekAdres: Isaretci; ABellekUz: TSayi4);
 procedure SISTEM_MESAJ_S10(AMesaj: string; ASayi10: TISayi4);
 procedure SISTEM_MESAJ_S16(AMesaj: string; ASayi16, AHaneSayisi: TSayi4);
@@ -200,6 +202,29 @@ begin
   p := AMesaj;
   s := '';
   for i := 0 to AMesajUz - 1 do s := s + p[i];
+
+  // sistem mesaj servisi çalışıyorsa, mesajı kayıt listesine ekle
+  if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);
+end;
+
+{==============================================================================
+  sistem kayıtlarına mesaj ekle - sadece mesaj (pchar türünde veri)
+ ==============================================================================}
+procedure SISTEM_MESAJ_YAZI(AMesaj1: PChar; AMesajUz1: TISayi4;
+  AMesaj2: PChar; AMesajUz2: TISayi4);
+var
+  i: Integer;
+  p: PChar;
+  s: string;
+begin
+
+  s := '';
+
+  p := AMesaj1;
+  for i := 0 to AMesajUz1 - 1 do s := s + p[i];
+
+  p := AMesaj2;
+  for i := 0 to AMesajUz2 - 1 do s := s + p[i];
 
   // sistem mesaj servisi çalışıyorsa, mesajı kayıt listesine ekle
   if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);

@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: tüm birimler için ortak paylaşılan işlevleri içerir
 
-  Güncelleme Tarihi: 10/11/2019
+  Güncelleme Tarihi: 30/03/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -53,6 +53,9 @@ const
   SECICI_SISTEM_KOD     = 1;      // seçici = selector
   SECICI_SISTEM_VERI    = 2;
   SECICI_SISTEM_TSS     = 3;
+  SECICI_DENETIM_KOD    = 4;
+  SECICI_DENETIM_VERI   = 5;
+  SECICI_DENETIM_TSS    = 6;
   SECICI_SISTEM_GRAFIK  = 7;
   AYRILMIS_SECICISAYISI = 8;      // ayrılmış seçici sayısı
 
@@ -264,8 +267,8 @@ type
 
  Not2: Toplam Uzunluk: Ip uzunluğu + kendisine eklenen diğer data uzunluğu }
 type
-  PIPBaslik = ^TIPBaslik;
-  TIPBaslik = packed record
+  PIPPaket = ^TIPPaket;
+  TIPPaket = packed record
     SurumVeBaslikUzunlugu,            // Not1
     ServisTipi: TSayi1;
     ToplamUzunluk,                    // Not2
@@ -284,29 +287,29 @@ const
   SOZDE_TCPBASLIK_UZUNLUGU  = 12;
 
 type
-  PTCPBaslik = ^TTCPBaslik;
-  TTCPBaslik = packed record
+  PTCPPaket = ^TTCPPaket;
+  TTCPPaket = packed record
     {SrcIpAddr,
     DestIpAddr: TIPAdres;
     Zero: Byte;
     Protocol: Byte;
-    Length: Word;             // tcp header + data}
+    Length: Word;               // tcp header + data}
 
-    KaynakPort,
-    HedefPort: TSayi2;
-    DiziNo,                   // sequence number
+    YerelPort,
+    UzakPort: TSayi2;
+    SiraNo,                     // sequence number
     OnayNo: TSayi4;
-    VeriKarsilik: TSayi1;     // 11111000 = 111111 = Data Offset, 000 = Reserved
+    BaslikU: TSayi1;            // 11111000 = 111111 = Data Offset, 000 = Reserved
     Bayrak: TSayi1;
     Pencere: TSayi2;
     SaglamaToplam,
-    AcilIsaretci: TSayi2;     // urgent pointer
+    AcilIsaretci: TSayi2;       // urgent pointer
     Secenekler: Isaretci;
   end;
 
 type
-  PUDPBaslik = ^TUDPBaslik;
-  TUDPBaslik = packed record
+  PUDPPaket = ^TUDPPaket;
+  TUDPPaket = packed record
     KaynakPort,
     HedefPort,
     Uzunluk,                  // UDP başlık + veri uzunluğu
@@ -888,6 +891,7 @@ var
 
 procedure BellekDoldur(ABellekAdresi: Isaretci; AUzunluk: TSayi4; ADeger: TSayi1);
 procedure Tasi2(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4);
+function Karsilastir(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4): TSayi4;
 function IPKarsilastir(IP1, IP2: TIPAdres): Boolean;
 function IPKarsilastir2(AGonderenIP, ABenimIP: TIPAdres): Boolean;
 function NoktaAlanIcindeMi(ANokta: TNokta; AAlan: TAlan): Boolean;
@@ -914,6 +918,35 @@ asm
   cld
   rep movsb
   popad
+end;
+
+// 0 = eşit, 1 = eşit değil
+function Karsilastir(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4): TSayi4;
+var
+  Sonuc: TSayi4;
+begin
+asm
+  pushfd
+  pushad
+
+  mov esi,AKaynak
+  mov edi,AHedef
+  mov ecx,AUzunluk
+  cld
+  repe cmpsb
+
+  popad
+  mov Sonuc,0
+
+  je  @@exit
+
+  mov Sonuc,1
+@@exit:
+
+  popfd
+end;
+
+  Result := Sonuc;
 end;
 
 function IPKarsilastir(IP1, IP2: TIPAdres): Boolean;

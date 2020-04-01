@@ -86,7 +86,7 @@ begin
     i := PSayi4(Degiskenler + 04)^;
 
     _Baglanti := AgIletisimListesi[_BaglantiKimlik];
-    Result := _Baglanti^.VeriOku(Isaretci(i + AktifGorevBellekAdresi));
+    Result := _Baglanti^.Oku(Isaretci(i + AktifGorevBellekAdresi));
   end
   // bağlantıya veri gönder
   else if(_Islev = 6) then
@@ -97,7 +97,7 @@ begin
     j := PSayi4(Degiskenler + 08)^;
 
     _Baglanti := AgIletisimListesi[_BaglantiKimlik];
-    _Baglanti^.VeriYaz(Isaretci(i + AktifGorevBellekAdresi), j);
+    _Baglanti^.Yaz(Isaretci(i + AktifGorevBellekAdresi), j);
   end
   // bağlantıyı kapat
   else if(_Islev = 7) then

@@ -6,7 +6,7 @@
   Dosya Adý: yukleyici.pas
   Dosya Ýþlevi: sistem ilk açýlýþ yükleme iþlevleri gerçekleþtirir
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 27/03/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -26,7 +26,7 @@ implementation
 
 uses yonetim, gdt, idt, irq, pic, aygityonetimi, pci, src_klavye, genel, gorev,
   gn_islevler, dosya, sistemmesaj, bolumleme, islemci, paylasim, usb, zamanlayici,
-  ag, src_vesa20, src_com, src_sb, bmp;
+  ag, src_vesa20, src_com, src_sb, bmp, acpi;
 
 {==============================================================================
   çekirdek çevre donaným yükleme iþlevlerini gerçekleþtir
@@ -96,6 +96,9 @@ begin
 
   SISTEM_MESAJ_YAZI('+ PCI aygýtlarý aranýyor...');
   pci.Yukle;
+
+  SISTEM_MESAJ_YAZI('+ ACPI donanýmý yükleniyor...');
+  acpi.Yukle;
 
   SISTEM_MESAJ_YAZI('+ Klavye aygýtý yükleniyor...');
   src_klavye.Yukle;

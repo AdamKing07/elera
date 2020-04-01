@@ -6,7 +6,7 @@
   Dosya Adý: arp.pas
   Dosya Ýþlevi: ARP protokol yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 12/11/2019
+  Güncelleme Tarihi: 30/03/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -48,7 +48,7 @@ function MACAdresiAl(AIPAdres: TIPAdres): TMACAdres;
 
 implementation
 
-uses genel, ag, islevler;
+uses genel, ag, islevler, zamanlayici, sistemmesaj;
 
 var
   ARPKayitSayisi: TISayi4;
@@ -226,6 +226,10 @@ var
   i: TISayi4;
 begin
 
+  {SISTEM_MESAJ_IP('ARP - IP: ', AARPKayit.IPAdres);
+  SISTEM_MESAJ_MAC('ARP - MAC: ', AARPKayit.MACAdres);
+  SISTEM_MESAJ_S16('ARP - Yaþ.Süre: ', AARPKayit.YasamSuresi, 4);}
+
   // yanýtý gönderen bilgisayarýn ip adresi listede var mý ?
   for i := 1 to USTLIMIT_KAYITSAYISI do
   begin
@@ -300,6 +304,7 @@ begin
   begin
 
     _SiraNo := -1;
+
     for i := 1 to USTLIMIT_KAYITSAYISI do
     begin
 
@@ -318,9 +323,8 @@ begin
     end;
 
     Result := HATA_DEGERARALIKDISI;
-  end
 
-  else Result := HATA_DEGERARALIKDISI;
+  end else Result := HATA_DEGERARALIKDISI;
 end;
 
 end.

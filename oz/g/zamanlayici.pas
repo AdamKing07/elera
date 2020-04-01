@@ -6,7 +6,7 @@
   Dosya Adý: zamanlayici.pas
   Dosya Ýþlevi: zamanlayýcý yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 19/10/2019
+  Güncelleme Tarihi: 30/03/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -82,8 +82,6 @@ begin
 
   _ZamanlayiciU := SizeOf(TZamanlayici);
 
-  //SISTEM_MESAJ_S10('Zamanlayýcý Yapý Uzunluðu: ', _ZamanlayiciU);
-
   // uygulamalar için zamanlayýcý bilgilerinin yerleþtirileceði bellek oluþtur
   ZamanlayiciYapiBellekAdresi := GGercekBellek.Ayir(AZAMI_ZAMANLAYICI_SAYISI * _ZamanlayiciU);
 
@@ -123,8 +121,6 @@ begin
   _Zamanlayici := BosZamanlayiciBul;
   if(_Zamanlayici <> nil) then
   begin
-
-    //SISTEM_MESAJ_S10('Zamanlayýcý kimlik: ', _Zamanlayici^.FKimlik);
 
     _Zamanlayici^.FGorevKimlik := CalisanGorev;
     _Zamanlayici^.FTetiklemeSuresi := AMiliSaniye;
@@ -257,6 +253,9 @@ end;
   milisaniye cinsinden bekleme iþlemi yapar
   100 milisaniye = 1 saniye
  ==============================================================================}
+{ TODO : önemli bilgi: bu iþlev ana thread'ý bekletmekte, dolayýsýyla sistemi
+  belirtilen süre kadar kilitlemektedir. bu problemin önüne geçmek için thread
+  çalýþmasý gerçekleþtirilecek }
 procedure Bekle(AMilisaniye: TSayi4);
 var
   _Sayac: TSayi4;
@@ -264,7 +263,7 @@ begin
 
   // AMilisaniye * 100 saniye bekle
   _Sayac := ZamanlayiciSayaci + AMilisaniye;
-  while (_Sayac > ZamanlayiciSayaci) do ElleGorevDegistir;
+  while (_Sayac > ZamanlayiciSayaci) do begin asm int $20; end; end;
 end;
 
 {==============================================================================
@@ -378,22 +377,23 @@ asm
   cmp   ecx,2
   je    @@TSS_GOZETCI
 
-@@TSS_UYG:                              // uygulamaya geçiþ yap
+@@TSS_UYG:                                // uygulamaya geçiþ yap
   sub   ecx,2
   imul  ecx,3
   add   ecx,AYRILMIS_SECICISAYISI + 2
-  imul  ecx,8                           // DPL3 - uygulama (aktifleþtirilecek)
-  add   ecx,3
+  imul  ecx,8
+  add   ecx,3                             // DPL3 - uygulama
   mov   @@SECICI,cx
   jmp   @@son
 
 @@TSS_SIS:
-  mov   ecx,SECICI_SISTEM_TSS * 8       // DPL0 - sistem
+  mov   ecx,SECICI_SISTEM_TSS * 8         // DPL0 - sistem
   mov   @@SECICI,cx
   jmp   @@son
 
 @@TSS_GOZETCI:
-  mov   ecx,6 * 8       // DPL0 - sistem
+  mov   ecx,SECICI_DENETIM_TSS * 8        // DPL0 - sistem
+//  add   ecx,3
   mov   @@SECICI,cx
 
 @@son:
@@ -425,8 +425,6 @@ end;
  ==============================================================================}
 procedure ElleGorevDegistir; nostackframe; assembler;
 asm
-  int $20
-  ret
 
   // alttaki kodlar iptal edilebilir mi? test edilecek - 10.11.2019
   cli
@@ -478,6 +476,8 @@ asm
 
   cmp   CalisanGorev,1
   je    @@TSS_SIS
+  cmp   ecx,2
+  je    @@TSS_GOZETCI
 
 @@TSS_UYG:
   mov   eax,CalisanGorev
@@ -492,6 +492,12 @@ asm
 @@TSS_SIS:
   mov   eax,SECICI_SISTEM_TSS * 8
   mov   @@SECICI,ax
+  jmp   @@son
+
+@@TSS_GOZETCI:
+  mov   ecx,SECICI_DENETIM_TSS * 8
+//  add   ecx,3
+  mov   @@SECICI,cx
 
 @@son:
   popfd

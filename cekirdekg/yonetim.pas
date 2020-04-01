@@ -6,7 +6,7 @@
   Dosya Adý: yonetim.pas
   Dosya Ýþlevi: sistem ana yönetim / kontrol kýsmý
 
-  Güncelleme Tarihi: 08/11/2019
+  Güncelleme Tarihi: 01/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -42,7 +42,7 @@ procedure SistemCalismasiniDenetle;
 implementation
 
 uses gdt, gorev, src_klavye, genel, ag, dhcp, baglanti, zamanlayici, dns, arp,
-  sistemmesaj, src_vesa20;
+  sistemmesaj, src_vesa20, acpi;
 
 {==============================================================================
   sistem ilk yükleme iþlevlerini gerçekleþtirir
@@ -146,10 +146,15 @@ var
   _YerelPort: TSayi2;
   _Tus: Char;
   _Baglanti: PBaglanti;
-  _IPAdres1: TIPAdres;
+  _HedefAdres: TIPAdres;
   _TusDurum: TTusDurum;
   s: string;
 begin
+
+  _HedefAdres[0] := 193;
+  _HedefAdres[1] := 1;
+  _HedefAdres[2] := 1;
+  _HedefAdres[3] := 11;
 
   if(CalisanGorevSayisi = 1) then
   repeat
@@ -201,27 +206,17 @@ begin
           end;
           FindClose(AramaKaydi);}
         end
-        // test amaçlý
         else if(_Tus = '4') then
         begin
 
-          _IPAdres1[0] := 192;
-          _IPAdres1[1] := 168;
-          _IPAdres1[2] := 1;
-          _IPAdres1[3] := 4;
-          ARPIstegiGonder(arpIstek, @MACAdres0, @_IPAdres1);
-          //_Gorev^.Calistir('disk1:\resimgor.c');
+          ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
         end
         // test amaçlý
         else if(_Tus = '5') then
         begin
 
-          _IPAdres1[0] := 192;
-          _IPAdres1[1] := 168;
-          _IPAdres1[2] := 1;
-          _IPAdres1[3] := 4;
           _YerelPort := YerelPortAl;
-          _Baglanti := _Baglanti^.Olustur(ptTCP, _IPAdres1, _YerelPort, 1871);
+          _Baglanti := _Baglanti^.Olustur(ptTCP, _HedefAdres, _YerelPort, 1871);
           _Baglanti^.Baglan;
         end
         // test amaçlý
@@ -229,22 +224,14 @@ begin
         begin
 
           s := 'GET / HTTP/1.1' + #13#10;
-          s += 'Host: 192.168.1.4' + #13#10#13#10;
+          s += 'Host: 192.168.1.155' + #13#10#13#10;
           //s += 'Connection: Close' + #13#10#13#10;
 
-          //s := 'TCP baðlantý iþlemi tamam' + #13#10;
-
-          //s := 'merhaba, naslsn.';
-
-          _Baglanti^.VeriYaz(@s[1], Length(s));
+          _Baglanti^.Yaz(@s[1], Length(s));
         end
         else if(_Tus = '7') then
         begin
 
-          _IPAdres1[0] := 192;
-          _IPAdres1[1] := 168;
-          _IPAdres1[2] := 1;
-          _IPAdres1[3] := 4;
           _Baglanti^.BaglantiyiKes;
         end
         else if(_Tus = 'd') then
@@ -286,24 +273,40 @@ var
   _Gorev: PGorev;
 begin
 
-  GDTRGirdisiEkle(4, 0, $FFFFFFFF, $9A, $DF);
-  GDTRGirdisiEkle(5, 0, $FFFFFFFF, $92, $DF);
-  GDTRGirdisiEkle(6, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1, $89, $10);
+  {GDTRGirdisiEkle(SECICI_DENETIM_KOD, 0, $FFFFFFFF, $FA, $CF);                  // DPL 3
+  GDTRGirdisiEkle(SECICI_DENETIM_VERI, 0, $FFFFFFFF, $F2, $CF);
+  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1, $E9, $10);}
+
+  GDTRGirdisiEkle(SECICI_DENETIM_KOD, 0, $FFFFFFFF, $9A, $DF);
+  GDTRGirdisiEkle(SECICI_DENETIM_VERI, 0, $FFFFFFFF, $92, $DF);
+  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1, $89, $10);
 
   // çekirdeðin kullanacaðý TSS'nin içeriðini sýfýrla
   FillByte(GorevTSSListesi[2], SizeOf(TTSS), 0);
 
-  GorevTSSListesi[2].EIP := TSayi4(@SistemCalismasiniDenetle);
+  GorevTSSListesi[2].EIP := TSayi4(@SistemCalismasiniDenetle);    // DPL 0
   GorevTSSListesi[2].EFLAGS := $202;
   GorevTSSListesi[2].ESP := $4000000 - $400;
-  GorevTSSListesi[2].CS := 4 * 8;
-  GorevTSSListesi[2].DS := 5 * 8;
-  GorevTSSListesi[2].ES := 5 * 8;
-  GorevTSSListesi[2].SS := 5 * 8;
-  GorevTSSListesi[2].FS := 5 * 8;
-  GorevTSSListesi[2].GS := 5 * 8;
-  GorevTSSListesi[2].SS0 := 5 * 8;
+  GorevTSSListesi[2].CS := SECICI_DENETIM_KOD * 8;
+  GorevTSSListesi[2].DS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2].ES := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2].SS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2].FS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2].GS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2].SS0 := SECICI_DENETIM_VERI * 8;
   GorevTSSListesi[2].ESP0 := $4000000;
+
+  {GorevTSSListesi[2].EIP := TSayi4(@SistemCalismasiniDenetle);  // DPL 3
+  GorevTSSListesi[2].EFLAGS := $202;
+  GorevTSSListesi[2].ESP := $4000000 - $400;
+  GorevTSSListesi[2].CS := (SECICI_DENETIM_KOD * 8) + 3;
+  GorevTSSListesi[2].DS := (SECICI_DENETIM_VERI * 8) + 3;
+  GorevTSSListesi[2].ES := (SECICI_DENETIM_VERI * 8) + 3;
+  GorevTSSListesi[2].SS := (SECICI_DENETIM_VERI * 8) + 3;
+  GorevTSSListesi[2].FS := (SECICI_DENETIM_VERI * 8) + 3;
+  GorevTSSListesi[2].GS := (SECICI_DENETIM_VERI * 8) + 3;
+  GorevTSSListesi[2].SS0 := (SECICI_DENETIM_VERI * 8) + 3;
+  GorevTSSListesi[2].ESP0 := $4000000;}
 
   // sistem görev deðerlerini belirle
   GorevListesi[2]^.GorevSayaci := 0;
