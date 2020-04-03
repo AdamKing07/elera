@@ -64,6 +64,8 @@ function IntToStr1(Val: LongInt): string;
 
 {$endif defined(CPUARM) or defined(CPUM68K) or (defined(CPUSPARC) and defined(VER2_6))}
 
+{ program çaðrý baþlýk bilgileri }
+
   {$i inc/consts.inc}
 
   {$i inc/ekranb.inc}
@@ -78,7 +80,7 @@ function IntToStr1(Val: LongInt): string;
   {$i inc/gn_listekutusub.inc}
   {$i inc/listegorunumh.inc}
   {$i inc/gn_menub.inc}
-  {$i inc/islemgostergesib.inc}
+  {$i inc/gn_islemgostergesib.inc}
   {$i inc/gn_onaykutusub.inc}
   {$i inc/gn_giriskutusub.inc}
   {$i inc/gn_degerdugmesib.inc}
@@ -86,6 +88,7 @@ function IntToStr1(Val: LongInt): string;
   {$i inc/gn_durumcubugub.inc}
   {$i inc/gn_secimdugmeb.inc}
   {$i inc/gn_baglantib.inc}
+  {$i inc/gn_kaydirmacubugub.inc}
   {$i inc/olayb.inc}
   {$i inc/dosyab.inc}
   {$i inc/yazimb.inc}
@@ -277,6 +280,7 @@ begin
   end else Result := '';
 end;
 
+{ program çaðrý kod bilgileri }
 
 				 {$asmmode intel}
 				 {$I elera.inc}
@@ -293,7 +297,7 @@ end;
 				 {$i inc/gn_listekutusu.inc}
          {$i inc/listegorunum.inc}
 				 {$i inc/gn_menu.inc}
-				 {$i inc/islemgostergesi.inc}
+				 {$i inc/gn_islemgostergesi.inc}
 				 {$i inc/gn_onaykutusu.inc}
          {$i inc/gn_giriskutusu.inc}
          {$i inc/gn_degerdugmesi.inc}
@@ -301,6 +305,7 @@ end;
          {$i inc/gn_durumcubugu.inc}
          {$i inc/gn_secimdugme.inc}
          {$i inc/gn_baglanti.inc}
+         {$i inc/gn_kaydirmacubugu.inc}
 				 {$i inc/olay.inc}
 				 {$i inc/dosya.inc}
 				 {$i inc/yazim.inc}

@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: tüm birimler için ortak paylaşılan işlevleri içerir
 
-  Güncelleme Tarihi: 30/03/2020
+  Güncelleme Tarihi: 03/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -197,6 +197,10 @@ type
     Aciklama: string[50];
     Deger1, Deger2, Deger3: TSayi4;
   end;
+
+type
+  PYon = ^TYon;
+  TYon = (yYatay, yDikey);
 
 type
   PIslemciBilgisi = ^TIslemciBilgisi;
@@ -667,7 +671,7 @@ type
   TGorselNesneTipi = (gntMasaustu, gntPencere, gntDugme, gntGucDugme, gntListeKutusu,
     gntMenu, gntDefter, gntIslemGostergesi, gntIsaretKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
-    gntPanel, gntResimDugme);
+    gntPanel, gntResimDugme, gntKaydirmaCubugu);
 
 const
   ISLEV_OLUSTUR   = $01;

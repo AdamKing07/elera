@@ -6,7 +6,7 @@
   Dosya Adý: olay.pas
   Dosya Ýþlevi: olay yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 10/11/2019
+  Güncelleme Tarihi: 01/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,7 +17,7 @@ interface
 uses gorselnesne, paylasim, gn_masaustu, gn_pencere, gn_dugme, gn_gucdugme, gn_listekutusu,
   gn_menu, gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_panel, gn_resimdugme;
+  gn_panel, gn_resimdugme, gn_kaydirmacubugu;
 
 type
   TOlay = object
@@ -319,6 +319,7 @@ begin
     gntListeGorunum   : PListeGorunum(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
     gntPanel          : PPanel(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
     gntResimDugme     : PResimDugme(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
+    gntKaydirmaCubugu : PKaydirmaCubugu(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
   end;
 end;
 

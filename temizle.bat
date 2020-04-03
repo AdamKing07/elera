@@ -4,16 +4,6 @@ del bilden\bilden.bin /Q
 @echo çekirdek dizinleri temizleniyor...
 cd cekirdekg
 call temizle.bat
-del asm_kod.txt
-del adresler.txt
-cd..
-cd cekirdeky
-call temizle.bat
-del asm_kod.txt
-del adresler.txt
-cd..
-cd cekirdeka
-del kernela.bin
 cd..
 
 @echo uygulamalar dizini temizleniyor...
@@ -21,11 +11,6 @@ cd uygulamalar\mod_g
 call temizle.bat
 cd..
 del _g\*.* /Q
-cd..
-cd uygulamalar\mod_y
-call temizle.bat
-cd..
-del _y\*.* /Q
 cd..
 
 @echo rtl dizini temizleniyor...

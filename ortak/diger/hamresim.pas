@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: hamresim.pas
-  Dosya İşlevi: biçimlendirilmemiş ham resimleri içerir
+  Dosya İşlevi: renk değerleriyle kodlanmış, biçimlendirilmemiş ham resimleri içerir
 
   Güncelleme Tarihi: 09/11/2019
 

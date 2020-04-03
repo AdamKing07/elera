@@ -1,6 +1,8 @@
+  + kaydýrma çubuðu (TKaydirmaCubugu) nesnesi ve tasarým / test programý (kaydirma.c) oluþturuldu
+  + assembler ve yazý çekirdeði projeden çýkarýldý (03042020)
+
   + acpi taným iþlevleri eklendi
   + tcp istemci temel alt yapýsý tamamlandý
-
   + bir görsel nesneye fare ile sað / sol tuþ ile basýldýðýnda bir önceki nesnenin
     açýk durumunun (TGucDugme gibi) kapatýlmasý amacýyla CO_NORMALDURUMAGEC olayý tanýmlandý
   + TMenu uygulama arabirimine (API) eleman yükseklik ve resim sýra no deðeri eklendi

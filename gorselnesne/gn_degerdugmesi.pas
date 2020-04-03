@@ -16,19 +16,6 @@ interface
 
 uses gorselnesne, paylasim;
 
-const
-  UstDugme: array[1..4, 1..7] of Byte = (
-    (0, 0, 0, 1, 0, 0, 0),
-    (0, 0, 1, 1, 1, 0, 0),
-    (0, 1, 1, 1, 1, 1, 0),
-    (1, 1, 1, 1, 1, 1, 1));
-
-  AltDugme: array[1..4, 1..7] of Byte = (
-    (1, 1, 1, 1, 1, 1, 1),
-    (0, 1, 1, 1, 1, 1, 0),
-    (0, 0, 1, 1, 1, 0, 0),
-    (0, 0, 0, 1, 0, 0, 0));
-
 type
   PDegerDugmesi = ^TDegerDugmesi;
   TDegerDugmesi = object(TGorselNesne)
@@ -48,7 +35,7 @@ function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi
 
 implementation
 
-uses genel, gn_pencere, gn_islevler, temelgorselnesne;
+uses genel, gn_pencere, gn_islevler, temelgorselnesne, hamresim2;
 
 {==============================================================================
   artırma / eksiltme (updown) düğme kesme çağrılarını yönetir
@@ -259,7 +246,7 @@ begin
    i := 5
   else i := 4;
 
-  p1 := PByte(@UstDugme);
+  p1 := PByte(@OKUst);
   for B1 := 1 to 4 do
   begin
 
@@ -282,7 +269,7 @@ begin
     i := 5
   else i := 4;
 
-  p1 := PByte(@AltDugme);
+  p1 := PByte(@OKAlt);
   for B1 := 1 to 4 do
   begin
 

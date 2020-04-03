@@ -6,7 +6,7 @@
   Dosya Adı: gn_pencere.pas
   Dosya İşlevi: pencere yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 09/11/2019
+  Güncelleme Tarihi: 01/04/2020
 
   Önemli Bilgiler:
 
@@ -68,7 +68,7 @@ implementation
 uses genel, gorev, gn_islevler, gn_masaustu, gn_dugme, gn_gucdugme, gn_listekutusu,
   gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_panel, gn_resimdugme, temelgorselnesne, giysi;
+  gn_panel, gn_resimdugme, gn_kaydirmacubugu, temelgorselnesne, giysi;
 
 const
   PENCERE_ALTLIMIT_GENISLIK = 110;
@@ -607,6 +607,7 @@ begin
             end;
           end;
           gntResimDugme     : PResimDugme(_GorunurNesne)^.Ciz;
+          gntKaydirmaCubugu : PKaydirmaCubugu(_GorunurNesne)^.Ciz;
         end;
       end;
     end;

@@ -1,10 +1,16 @@
 Görsel Nesne Oluþturmanýn Çekirdek Yapýsýndaki Aþamalarý:
 
 1. paylasim.pas TGorselNesneTipi tip alanýnýn sonunda görsel nesne tipini tanýmla
-2. görsel nesneyi object nesnesi olarak oluþturarak kök dizindeki gorselnesne klasörüne gn_abcdef.pas adýyla kaydet
+2. görsel nesneyi object nesnesi olarak kodlayarak kök dizindeki gorselnesne klasörüne gn_gorselnesneadi.pas adýyla kaydet
 3. k_gorselnesne.pas dosyasýnýn uses bölümüne nesnenin dosya adýný, kesme çaðrý iþlevi olan xxxCagriIslevleri iþlevini GorselNesneListesi dizisine ekle ve MEVCUT_GN_SAYISI deðerini bir artýr
 4. temelgorselnesne.pas NesneAdiAl iþlevine görsel nesnenin ad tanýmýný ekle
 5. görsel nesne ek kaynak kullanýyorsa (TPencere, TListeGorunum gibi), ek kaynaklarýn yok edilmesi için gn_islevler GorevGorselNesneleriniYokEt iþlevinin "ek kaynak kullanan görsel nesneler" açýklama kýsmýnýn bulunduðu alana nesnenin yok edici (YokEt) iþlevini ekle
 6. olay.pas dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn OlaylariYonlendir iþlevinin "görsel nesnenin olaylarýnýn ekleneceði kýsým" bölümüne ise görsel nesnenin OlaylariIsle iþlevini ekle
 7. gn_pencere dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn Guncelle iþlevinin "pencere nesnesinin altýnda çizilecek nesneler" kýsmýna ise görsel nesnenin çizim iþlevini ekle
 
+Görsel Nesne Oluþturmanýn program RTL Yapýsýndaki Aþamalarý:
+1. rtl_uygulama\linux\inc\consts.inc dosya içeriðindeki "yeni nesne çaðrý baþlýklarý:" açýklamasýna çaðrý baþlýklarý eklenecek
+2. rtl_uygulama\linux\system.pp dosya içeriðindeki "program çaðrý baþlýk bilgileri" bölümüne gn_nesneadib.inc, "program çaðrý kod bilgileri" bölümüne gn_nesneadi.inc dosya adýný ekle
+2. rtl_uygulama\linux\linux.pp uses bölümüne gn_nesneadi.pas dosya adý eklenecek
+3. rtl_uygulama\linux dizini altýnda gn_nesneadi.pas adýnda, object sýnýf yapýsýnda nesne çaðrýlarýný oluþtur
+4. rtl_uygulama\linux\inc dizini altýnda gn_nesneadib.inc adýnda çaðrý baþlýklarýný, gn_nesneadi.inc adýnda assembler seviyesinde sistem çaðrýlarýný kodla

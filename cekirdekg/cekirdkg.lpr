@@ -1,10 +1,10 @@
 {==============================================================================
 
-                    ELERA Ýþletim Sistemi (grafik modu)
+                    ELERA Ýþletim Sistemi
 
    Genel Bilgiler:
    ----------------------------------------------------------------------------
-   Sistem Adý : Elera Ýþletim Sistemi (elera)
+   Sistem Adý : ELERA Ýþletim Sistemi (elerais)
    Kodlayan   : Fatih KILIÇ
 
    Teknik Bilgiler

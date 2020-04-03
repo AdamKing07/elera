@@ -74,6 +74,10 @@ cd iskelet
 call temizle.bat
 cd..
 
+cd kaydirma
+call temizle.bat
+cd..
+
 cd kmodtest
 call temizle.bat
 cd..

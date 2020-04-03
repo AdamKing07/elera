@@ -76,6 +76,10 @@ cd iskelet
 call derle.bat
 cd..
 
+cd kaydirma
+call derle.bat
+cd..
+
 cd kmodtest
 call derle.bat
 cd..

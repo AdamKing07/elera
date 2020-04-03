@@ -59,6 +59,8 @@ type
     procedure Dikdortgen(APencere: PGorselNesne; A1, B1, A2, B2: TISayi4;
       ACizgiRengi: TRenk);
     procedure DikdortgenDoldur(APencere: PGorselNesne; A1, B1, A2, B2: TISayi4; ACizgiRengi, ADolguRengi: TRenk);
+    procedure DikdortgenDoldur(APencere: PGorselNesne; AAlan: TAlan;
+      ACizgiRengi, ADolguRengi: TRenk);
     procedure Doldur4(APencere: PGorselNesne; Nokta4: TAlan; A1, B1, A2, B2: TISayi4;
       ACizgiRengi, ADolguRengi: TRenk);
     procedure BMPGoruntusuCiz(AGorselNesneTipi: TGorselNesneTipi; AKimlik: TKimlik;
@@ -890,6 +892,7 @@ begin
 
       GEkranKartSurucusu.NoktaYaz(@Self, _i, _j, ADolguRengi, True);
     end;
+
   end;
 end;
 
@@ -899,14 +902,30 @@ end;
 procedure TGorselNesne.DikdortgenDoldur(APencere: PGorselNesne; A1, B1, A2, B2: TISayi4;
   ACizgiRengi, ADolguRengi: TRenk);
 var
+  _Alan: TAlan;
+begin
+
+  _Alan.A1 := A1;
+  _Alan.B1 := B1;
+  _Alan.A2 := A2;
+  _Alan.B2 := B2;
+  DikdortgenDoldur(APencere, _Alan, ACizgiRengi, ADolguRengi);
+end;
+
+{==============================================================================
+  nesneye belirtilen renkte içi doldurulmuþ dikdörtgen çizer
+ ==============================================================================}
+procedure TGorselNesne.DikdortgenDoldur(APencere: PGorselNesne; AAlan: TAlan;
+  ACizgiRengi, ADolguRengi: TRenk);
+var
   _i, _j, _A1, _B1, _A2, _B2: TISayi4;
 begin
 
   // dýþ kenarlýk
-  _A1 := A1;
-  _B1 := B1;
-  _A2 := A2;
-  _B2 := B2;
+  _A1 := AAlan.A1;
+  _B1 := AAlan.B1;
+  _A2 := AAlan.A2;
+  _B2 := AAlan.B2;
   Dikdortgen(APencere, _A1, _B1, _A2, _B2, ACizgiRengi);
 
   // iç kenarlýk

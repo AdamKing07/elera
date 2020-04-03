@@ -106,6 +106,10 @@ type
   end;
 
 type
+  PYon = ^TYon;
+  TYon = (yYatay, yDikey);
+
+type
   PPencereTipi = ^TPencereTipi;
   TPencereTipi = (ptBoyutlandirilabilir, ptBasliksiz, ptIletisim);
 

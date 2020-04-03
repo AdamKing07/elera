@@ -1,15 +1,15 @@
-###ELERA İşletim Sistemi (eleraos) - 0.3.4 [R30]
+ELERA İşletim Sistemi (eleraos) - 0.3.4 [R30]
 
 ---
 Kullanılan Yazılım Araçları:
 
 * Windows 7 Professional - 64 / 32 bit
 * Lazarus 2.0.6 - FPC 3.0.4
-* ImDisk / Virtual Floppy Driver 2.1
-* Virtualbox 6.0.14
+* ImDisk
+* Virtualbox 6.1.4
 
 ---
-###Ekran Görüntüleri
+Ekran Görüntüleri
 
 ![Dosya Sistemi](masaustu1.png =800x)
 
@@ -20,14 +20,16 @@ Kullanılan Yazılım Araçları:
 ![Genel](masaustu4.png =800x)
 
 ---
-###Videolar (Virtualbox)
+Öğretici Videolar
 
-* [Elera İşletim Sistemi'nin Sanal Makinede Çalışması - Youtube](http://www.youtube.com/watch?feature=player_embedded&v=coAzcwYqHuA)
-* [ELERA İşletim Sistemi için Program Geliştirme - Youtube](
-https://www.youtube.com/watch?v=13oYpeXDYbQ)
+* [Öğretici 1 - Kaynak Kodların Depodan Alınması](https://www.youtube.com/watch?v=Zns4jp_sYag&t=6s)
+* [Öğretici 2 - Sistemin Sanal Makinede (VMware) Çalıştırılması](https://www.youtube.com/watch?v=qxFRP9_-SAU&t=8s)
+* [Öğretici 3 - Derleme Öncesi Lazarus'un Kurulumu](https://www.youtube.com/watch?v=pbPb-zUBGcc)
+* [Öğretici 4 - Grafiksel Çekirdeğin Derlenmesi](https://www.youtube.com/watch?v=bfxTdG4b25U)
+* [Öğretici 5 - ELERA İşletim Sistemi için Program Geliştirme](https://www.youtube.com/watch?v=13oYpeXDYbQ)
 
 ---
-###Elera İşletim Sistemi Nedir?
+Elera İşletim Sistemi Nedir?
 
 * Elera İşletim Sistemi; başta assembler programcıları olmak üzere diğer tüm programcıların katılımını amaç edinerek ortak bir işletim sistemi yazma amacıyla kodlanmaya başlanmıştır.
 
@@ -39,7 +41,7 @@ https://www.youtube.com/watch?v=13oYpeXDYbQ)
 
 ---
 
-###Telif Hakkı Bilgisi
+Telif Hakkı Bilgisi
 
 * Elera İşletim Sistemi'nin çalıştırılabilir / kaynak kodları tüm programcıların / kullanıcıların kullanımına, yazar / yazarların adı kaynak olarak gösterildiği takdirde tamamen açıktır.
 

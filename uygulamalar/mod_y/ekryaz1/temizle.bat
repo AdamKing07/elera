@@ -1,1 +1,0 @@
-del outlib\*.* /Q

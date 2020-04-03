@@ -1,20 +1,21 @@
 Görsel Nesneler
 ==================================
-TMasaustu		- masaüstü nesnesi (desktop)
-TPencere		- pencere (window)
-TDurumCubugu	- pencere alt durum çubuðu (statusbar)
-TPanel			- panel nesnesi
-TMenu			- menü nesnesi
-TDugme			- düðme nesnesi (button)
-TGucDugme		- açýk / kapalý güç düðmesi
-TEtiket			- etiket nesnesi (label)
-TSecimDugme		- seçim düðmesi (radio button)
-TOnayKutusu		- onay kutusu (checkbox)
-TIslemGostergesi- iþlem göstergesi (progressbar)
-TGirisKutusu	- veri giriþ nesnesi (edit)
-TListeKutusu	- liste kutusu (listbox)
-TListeGorunum	- çok deðerleri liste (listview)
-TResim			- resim görüntüleme nesnesi
 TBaglanti		- baðlantý nesnesi (link)
 TDefter			- yazý görüntüleme nesnesi (memo)
 TDegerNesnesi	- deðer artýrma / eksiltme düðmesi (updown)
+TDurumCubugu	- pencere alt durum çubuðu (statusbar)
+TDugme			- düðme nesnesi (button)
+TEtiket			- etiket nesnesi (label)
+TGirisKutusu	- veri giriþ nesnesi (edit)
+TGucDugme		- açýk / kapalý güç düðmesi
+TIslemGostergesi- iþlem göstergesi (progressbar)
+TKaydirmaCubugu	- kaydýrma çubuðu (scrollbar)
+TListeGorunum	- çok deðerleri liste (listview)
+TListeKutusu	- liste kutusu (listbox)
+TMasaustu		- masaüstü nesnesi (desktop)
+TMenu			- menü nesnesi
+TOnayKutusu		- onay kutusu (checkbox)
+TPanel			- panel nesnesi
+TPencere		- pencere (window)
+TResim			- resim görüntüleme nesnesi
+TSecimDugme		- seçim düðmesi (radio button)
