@@ -437,25 +437,25 @@ exec_kernel:
         dec     ecx
         jnz     @b
 
-        ;sistem kod selektörü (0x08)
+        ; kod seçicisi (CS) - (0x08)
         ;----------------------------------------------------------------
         add     edi,8
-        mov     word[es:edi+00],0xFFFF                  ;limit 0..15
-        mov     word[es:edi+02],0                       ;base 0..15
-        mov     byte[es:edi+04],0                       ;base 16..23
-        mov     byte[es:edi+05],10011010b               ;p, dpl0
-        mov     byte[es:edi+06],11001111b               ;G=1, D=1, 0, AVL=0
-        mov     byte[es:edi+07],0                       ;base 24..31
+        mov     word[es:edi+00],0xFFFF                  ; limit 00..15
+        mov     word[es:edi+02],0                       ; baþlangýç adresi 00..15
+        mov     byte[es:edi+04],0                       ; baþlangýç adresi 16..23
+        mov     byte[es:edi+05],10011010b               ; 1 = 1 = mevcut, 00 = DPL0, 11 = kod yazmaç, 0 = dallanýlamaz, 1 = okunabilir, 0 = eriþilmedi
+        mov     byte[es:edi+06],11011111b               ; 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
+        mov     byte[es:edi+07],0                       ; baþlangýç adresi 24..31
 
-        ;sistem data selektörü (0x10)
+        ; veri seçicisi (DS) - (0x10)
         ;----------------------------------------------------------------
         add     edi,8
-        mov     word[es:edi+00],0xFFFF                  ;limit 0..15
-        mov     word[es:edi+02],0                       ;base 0..15
-        mov     byte[es:edi+04],0                       ;base 16..23
-        mov     byte[es:edi+05],10010010b               ;p, dpl0
-        mov     byte[es:edi+06],11001111b               ;G=1, D=1, 0, AVL=0
-        mov     byte[es:edi+07],0                       ;base 24..31
+        mov     word[es:edi+00],0xFFFF                  ; limit 00..15
+        mov     word[es:edi+02],0                       ; baþlangýç adresi 00..15
+        mov     byte[es:edi+04],0                       ; baþlangýç adresi 16..23
+        mov     byte[es:edi+05],10010010b               ; 1 = mevcut, 00 = DPL0, 10 = veri yazmaç, 0 = artarak büyüyen, 1 = yazýlabilir, 0 = eriþilmedi
+        mov     byte[es:edi+06],11001111b               ; 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
+        mov     byte[es:edi+07],0                       ; baþlangýç adresi 24..31
 
         pop     es
 

@@ -409,20 +409,21 @@ begin
   _SeciciTSSSiraNo := _SeciciDSSiraNo + 1;
 
   // uygulama için CS selektörünü oluþtur
-  // access = p, dpl3, 1, 1, conforming, readable, accessed
-  // gran = gran = 1, default = 1, 0, avl = 1, _Uzunluk (4 bit)
-  GDTRGirdisiEkle(_SeciciCSSiraNo, FBellekBaslangicAdresi, _Uzunluk, $FA, $D0);
-
+  // kod seçicisi (CS)
+  // Eriþim  : 1 = mevcut, 11 = DPL3, 11 = kod segment, 0 = dallanýlamaz, 1 = okunabilir, 0 = eriþilmedi
+  // Esneklik: 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
+  GDTRGirdisiEkle(_SeciciCSSiraNo, FBellekBaslangicAdresi, _Uzunluk, %11111010, %11010000);
   // uygulama için DS selektörünü oluþtur
-  // access = p, dpl3, 1, 0, exp direction, writable, accessed
-  // gran = gran = 1, big = 1, 0, avl = 1, _Uzunluk (4 bit)
-  GDTRGirdisiEkle(_SeciciDSSiraNo, FBellekBaslangicAdresi, _Uzunluk, $F2, $D0);
-
+  // veri seçicisi (DS)
+  // Eriþim  : 1 = mevcut, 11 = DPL3, 10 = veri yazmaç, 0 = artarak büyüyen, 1 = yazýlabilir, 0 = eriþilmedi
+  // Esneklik: 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
+  GDTRGirdisiEkle(_SeciciDSSiraNo, FBellekBaslangicAdresi, _Uzunluk, %11110010, %11010000);
   // uygulama için TSS selektörünü oluþtur
-  // access = p, dpl3, 0, 1, 0, 0 (non_busy), 1
-  // gran = g = 0, 0, 0, avl = 1, _Uzunluk (4 bit)
+  // görev seçicisi (TSS)
+  // Eriþim  : 1 = mevcut, 11 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
+  // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
   GDTRGirdisiEkle(_SeciciTSSSiraNo, TSayi4(@GorevTSSListesi[i]), SizeOf(TTSS) - 1,
-    $E9, $10);
+    %11101001, %00010000);
 
   // TSS'nin içeriðini sýfýrla
   FillByte(GorevTSSListesi[i], SizeOf(TTSS), 0);

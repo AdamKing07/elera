@@ -75,7 +75,8 @@ begin
   IRQPasiflestir(0);
 
   // IRQ0 giriþ noktasýný yeniden belirle
-  KesmeGirisiBelirle($20, @OtomatikGorevDegistir, SECICI_SISTEM_KOD * 8, $8E);   // IRQ0
+  // %10001110 = 1 = mevcut, 00 = DPL0, 0, 1 = 32 bit kod, 110 - kesme kapýsý
+  KesmeGirisiBelirle($20, @OtomatikGorevDegistir, SECICI_SISTEM_KOD * 8, %10001110);
 
   // saat vuruþ frekansýný düzenle. 100 tick = 1 saniye
   ZamanlayiciFrekansiniDegistir(100);
@@ -377,7 +378,7 @@ asm
   cmp   ecx,2
   je    @@TSS_GOZETCI
 
-@@TSS_UYG:                                // uygulamaya geçiþ yap
+@@TSS_UYG:
   sub   ecx,2
   imul  ecx,3
   add   ecx,AYRILMIS_SECICISAYISI + 2
@@ -485,17 +486,17 @@ asm
   imul  eax,3
   add   eax,AYRILMIS_SECICISAYISI + 2
   imul  eax,8
-  add   eax,3
+  add   eax,3                             // DPL3 - uygulama
   mov   @@SECICI,ax
   jmp   @@son
 
 @@TSS_SIS:
-  mov   eax,SECICI_SISTEM_TSS * 8
+  mov   eax,SECICI_SISTEM_TSS * 8         // DPL0 - sistem
   mov   @@SECICI,ax
   jmp   @@son
 
 @@TSS_GOZETCI:
-  mov   ecx,SECICI_DENETIM_TSS * 8
+  mov   ecx,SECICI_DENETIM_TSS * 8        // DPL0 - sistem
 //  add   ecx,3
   mov   @@SECICI,cx
 

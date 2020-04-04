@@ -6,7 +6,7 @@
   Dosya Adı: idt.pas
   Dosya İşlevi: kesme servis rutinlerini (isr) içerir
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 04/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -18,7 +18,7 @@ interface
 uses paylasim;
 
 const
-  USTSINIR_IDT = $36;
+  USTSINIR_IDT = $35;
 
 type
   PYazmaclar0 = ^TYazmaclar0;
@@ -36,8 +36,22 @@ type
     ISRNo, HataKodu, EIP, CS, EFLAGS, OrjESP: TSayi4;
   end;
 
+type
+  PIDTGirdisi = ^TIDTGirdisi;
+  TIDTGirdisi = packed record
+    BaslangicAdresi00_15: TSayi2;
+    Secici: TSayi2;
+    Sifir: TSayi1;
+    Bayrak: TSayi1;
+    BaslangicAdresi16_31: TSayi2;
+  end;
+
+var
+  IDTYazmac: TIDTYazmac;
+  IDTGirdiListesi: array[0..$34] of TIDTGirdisi;
+
 procedure Yukle;
-procedure KesmeGirisiBelirle(AGirisNo: TSayi1; ABaslangicAdresi: Isaretci;
+procedure KesmeGirisiBelirle(AGirdiNo: TSayi4; ABaslangicAdresi: Isaretci;
   ASecici: TSayi2; ABayrak: TSayi1);
 procedure KesmeIslevi00;
 procedure KesmeIslevi01;
@@ -81,8 +95,7 @@ procedure YazmacDurumunuGoruntule2(AYazmaclar1: PYazmaclar1);
 
 implementation
 
-uses genel, {$IFDEF GMODE} kesme34, {$ENDIF} gorev{$IFDEF TMODE}, test{$ENDIF},
-  yonetim;
+uses genel, kesme34, gorev, yonetim;
 
 {==============================================================================
   kesme girişlerini belirler ve IDTYazmac'ı yükler
@@ -95,55 +108,49 @@ begin
   IDTYazmac.Baslangic := TSayi4(@IDTGirdiListesi);                  // base address (32 bit)
 
   // istisnalar - exceptions
-  KesmeGirisiBelirle($00, @KesmeIslevi00, SECICI_SISTEM_KOD * 8, $8E);  // present, dpl0, int gate
-  KesmeGirisiBelirle($01, @KesmeIslevi01, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($02, @KesmeIslevi02, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($03, @KesmeIslevi03, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($04, @KesmeIslevi04, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($05, @KesmeIslevi05, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($06, @KesmeIslevi06, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($07, @KesmeIslevi07, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($08, @KesmeIslevi08, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($09, @KesmeIslevi09, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($0A, @KesmeIslevi0A, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($0B, @KesmeIslevi0B, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($0C, @KesmeIslevi0C, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($0D, @KesmeIslevi0D, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($0E, @KesmeIslevi0E, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($0F, @KesmeIslevi0F, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($10, @KesmeIslevi10, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($11, @KesmeIslevi11, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($12, @KesmeIslevi12, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($13, @KesmeIslevi13, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($14, @KesmeIslevi14, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($15, @KesmeIslevi15, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($16, @KesmeIslevi16, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($17, @KesmeIslevi17, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($18, @KesmeIslevi18, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($19, @KesmeIslevi19, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($1A, @KesmeIslevi1A, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($1B, @KesmeIslevi1B, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($1C, @KesmeIslevi1C, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($1D, @KesmeIslevi1D, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($1E, @KesmeIslevi1E, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($1F, @KesmeIslevi1F, SECICI_SISTEM_KOD * 8, $8E);
+  // %10001110 = 1 = mevcut, 00 = DPL0, 0, 1 = 32 bit kod, 110 - kesme kapısı
+  KesmeGirisiBelirle($00, @KesmeIslevi00, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($01, @KesmeIslevi01, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($02, @KesmeIslevi02, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($03, @KesmeIslevi03, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($04, @KesmeIslevi04, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($05, @KesmeIslevi05, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($06, @KesmeIslevi06, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($07, @KesmeIslevi07, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($08, @KesmeIslevi08, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($09, @KesmeIslevi09, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($0A, @KesmeIslevi0A, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($0B, @KesmeIslevi0B, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($0C, @KesmeIslevi0C, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($0D, @KesmeIslevi0D, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($0E, @KesmeIslevi0E, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($0F, @KesmeIslevi0F, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($10, @KesmeIslevi10, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($11, @KesmeIslevi11, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($12, @KesmeIslevi12, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($13, @KesmeIslevi13, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($14, @KesmeIslevi14, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($15, @KesmeIslevi15, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($16, @KesmeIslevi16, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($17, @KesmeIslevi17, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($18, @KesmeIslevi18, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($19, @KesmeIslevi19, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($1A, @KesmeIslevi1A, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($1B, @KesmeIslevi1B, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($1C, @KesmeIslevi1C, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($1D, @KesmeIslevi1D, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($1E, @KesmeIslevi1E, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($1F, @KesmeIslevi1F, SECICI_SISTEM_KOD * 8, %10001110);
 
   // yazılım kesmeleri
-  KesmeGirisiBelirle($30, @KesmeIslevi30, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($31, @KesmeIslevi31, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($32, @KesmeIslevi32, SECICI_SISTEM_KOD * 8, $8E);
-  KesmeGirisiBelirle($33, @KesmeIslevi33, SECICI_SISTEM_KOD * 8, $8E);
+  KesmeGirisiBelirle($30, @KesmeIslevi30, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($31, @KesmeIslevi31, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($32, @KesmeIslevi32, SECICI_SISTEM_KOD * 8, %10001110);
+  KesmeGirisiBelirle($33, @KesmeIslevi33, SECICI_SISTEM_KOD * 8, %10001110);
 
   // sistem ana kesmesi
-  {$IFDEF GMODE}
-  // present, dpl3, int gate
-  KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_SISTEM_KOD * 8, $EE);
-  {$ENDIF}
-
-  {$IFDEF TMODE}
-  // present, dpl3, int gate
-  KesmeGirisiBelirle($35, TSayi4(@Isr35Handler), SEL_OS_CODE, $EE);
-  {$ENDIF}
+  // %11101110 = 1 = mevcut, 11 = DPL3, 0, 1 = 32 bit kod, 110 - kesme kapısı
+  KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_SISTEM_KOD * 8, %11101110);
 
   // IDTYazmac'ı yükle
   asm
@@ -154,38 +161,42 @@ end;
 {==============================================================================
   IDT giriş noktalarını belirler
  ==============================================================================}
-procedure KesmeGirisiBelirle(AGirisNo: TSayi1; ABaslangicAdresi: Isaretci;
+procedure KesmeGirisiBelirle(AGirdiNo: TSayi4; ABaslangicAdresi: Isaretci;
   ASecici: TSayi2; ABayrak: TSayi1);
 var
   _BaslangicAdresi: TSayi4;
 begin
 {
-       31                                 16                                0
-      +-------------------------------------+--------------------------------+
-      |         Seçici (selector)           |        Başlangıç: 15-00        |
-      +-------------------------------------+--+-----+--+-------+-----+------+
-      |       Başlangıç: 31-16              |P | DPL |S |T Y P E|     | NOT  |
-      |                                     |  |  |  |0 |1 1 1 0|0 0 0| USED |
-      +-------------------------------------+--+--+--+--+-------+-----+------+
-       63                                 48 47               40 39 37 36  32
+      +-----------------------------------------------------+
+      |31                    16|15                        00|  bit değerleri 00-31
+      +------------------------+----------------------------+
+      |   Seçici (selector)    | BaslangicAdresi 15..00     |
+      +------------------------+----------------------------+
+
+      +------------------------------+---------+------+-----+
+      |63                          48|47     43|    37|   32|
+      +------------------------------+-+-+-+-+-+------+-----+
+      |       Başlangıç: 31-16       |P|DPL|0|D|110000|     |  bit değerleri 32-63
+      +------------------------------+-+-+-+-+|+------+--|--+
+                        D = 1 = 32 bit kod  <-+          +-> kullanılmıyor
 }
 
   _BaslangicAdresi := TSayi4(ABaslangicAdresi);
 
   // temel bellek adresi (ABaslangicAdresi) - IDT: 15..00
-  IDTGirdiListesi[AGirisNo].Baslangic01 := (_BaslangicAdresi and $FFFF);
+  IDTGirdiListesi[AGirdiNo].BaslangicAdresi00_15 := (_BaslangicAdresi and $FFFF);
 
   // temel bellek adresi (ABaslangicAdresi) - IDT: 63..48
-  IDTGirdiListesi[AGirisNo].Baslangic23 := (_BaslangicAdresi shr 16) and $FFFF;
+  IDTGirdiListesi[AGirdiNo].BaslangicAdresi16_31 := (_BaslangicAdresi shr 16) and $FFFF;
 
   // seçici - IDT: 31..16
-  IDTGirdiListesi[AGirisNo].Secici := ASecici;
+  IDTGirdiListesi[AGirdiNo].Secici := ASecici;
 
   // 000 kullanılmıyor - IDT: 39..32
-  IDTGirdiListesi[AGirisNo].Sifir := 0;
+  IDTGirdiListesi[AGirdiNo].Sifir := 0;
 
   // P, DPL, S, TYPE - IDT: 47..40
-  IDTGirdiListesi[AGirisNo].Bayrak := ABayrak;
+  IDTGirdiListesi[AGirdiNo].Bayrak := ABayrak;
 end;
 
 {==============================================================================

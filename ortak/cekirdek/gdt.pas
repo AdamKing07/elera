@@ -6,7 +6,7 @@
   Dosya Adı: gdt.pas
   Dosya İşlevi: genel (global) tanımlayıcı tablo (GDTR) işlevlerini yönetir
 
-  Güncelleme Tarihi: 03/10/2019
+  Güncelleme Tarihi: 04/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -22,25 +22,29 @@ const
 
 {
       +-------------------------------------------------------------+
-      |31                         16                               0|
-      +-------------------------------------------------------------+
+      |31                         16|15                           00|  bit değerleri 00-31
+      +-----------------------------+-------------------------------+
       |   BaslangicAdresi 15..00    |      Uzunluk 15..00           |
-      +------+---+---+---+---+------+---+-----+---+-----+---+-------+
+      +-------------------------------------------------------------+
+
+      +-------------------------------------------------------------+
+      |63  56|55           52|51  48|47                  40 |39   32|  bit değerleri 32-63
+      +------+---------------+------+-----------------------+-------+
       | B.A. | G | D | 0 |AVL| Uzun.| P | DPL | S | TYPE| A | B.A.  |
       |31..24|   |   |   |   |19..16|   |  |  |   | | | |   |23..16 |
-      +------+---+---+---+---+------+---+--+--+---+-+-+-+---+-------+
-      |63  56 55           52 51  48 47                   40 39   32|
       +-------------------------------------------------------------+
+             |-> esneklik  <-|      |->    e r i ş i m    <-|
 }
 
 type
   PGDTRGirdisi = ^TGDTRGirdisi;
-  TGDTRGirdisi = packed record
-    Uzunluk00_15: TSayi2;           // 15..00
-    BaslangicAdresi00_15: TSayi2;   // 31..16
+  TGDTRGirdisi = packed record      // bit alanı - açıklama
+    Uzunluk00_15: TSayi2;           // 15..00      (Uzun.)
+    BaslangicAdresi00_15: TSayi2;   // 31..16      (B.A.)
     BaslangicAdresi16_23: TSayi1;   // 39..32
     Erisim: TSayi1;                 // 47..40
-    Esneklik: TSayi1;               // 55..48 - granularity, esneklik olarak çevrilmiştir
+    //Uzunluk16_19: TSayi1;         // 51..48      Esneklik değerinin düşük 4 bitidir
+    Esneklik: TSayi1;               // 55..52      granularity, esneklik olarak çevrilmiştir
     BaslangicAdresi24_31: TSayi1;   // 63..56
   end;
 
@@ -57,7 +61,7 @@ var
 
 procedure Yukle;
 procedure GDTRGirdisiEkle(AGirdiNo, ABaslangicAdresi, AUzunluk: TSayi4;
-  AErisim, AYetki: TSayi1);
+  AErisim, AEsneklik: TSayi1);
 
 implementation
 
@@ -90,7 +94,7 @@ end;
   GDT yazmacına girdi ekler
  ==============================================================================}
 procedure GDTRGirdisiEkle(AGirdiNo, ABaslangicAdresi, AUzunluk: TSayi4;
-  AErisim, AYetki: TSayi1);
+  AErisim, AEsneklik: TSayi1);
 var
   p: PGDTRGirdisi;
   i: TSayi1;
@@ -107,17 +111,17 @@ begin
   // temel bellek adresi (ABaslangicAdresi) - GDT: 63..56
   p^.BaslangicAdresi24_31 := (ABaslangicAdresi shr 24) and $FF;
 
-  // limit - GDT: 15..0
+  // limit - GDT: 15..00
   p^.Uzunluk00_15 := (AUzunluk and $FFFF);
 
-  // P(1 bit), DPL(2 bit), S(1 bit), TYPE(3 bit), A(1 bit) - GDT: 47..40
+  // erişim - GDT: 47..40
   p^.Erisim := AErisim;
 
   // limit - GDT: 51..48
   i := (AUzunluk shr 16) and $F;
 
-  // G bit, D bit, 0, AVL - GDT: 55..52
-  i := (AYetki and $F0) or i;
+  // esneklik - GDT: 55..52
+  i := (AEsneklik and $F0) or i;
   p^.Esneklik := i;
 end;
 

@@ -97,11 +97,11 @@ begin
   // not: sistem için CS ve DS seçicileri bilden programý tarafýndan
   // oluþturuldu. tekrar oluþturmaya gerek yok
 
-  // sistem için TSS selektörünü oluþtur
-  // access = p, dpl0 0, 1, 0, 0 (non_busy), 1
-  // gran = g = 0, 0, 0, avl = 1, limit (4 bit)
-  GDTRGirdisiEkle(SECICI_SISTEM_TSS, TSayi4(@GorevTSSListesi[1]),
-    SizeOf(TTSS) - 1, $89, $10);
+  // sistem için görev seçicisi (TSS)
+  // Eriþim  : 1 = mevcut, 00 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
+  // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
+  GDTRGirdisiEkle(SECICI_SISTEM_TSS, TSayi4(@GorevTSSListesi[1]), SizeOf(TTSS) - 1,
+    %10001001, %00010000);
 
   // sistem görev deðerlerini belirle
   GorevListesi[1]^.GorevSayaci := 0;
@@ -274,13 +274,19 @@ var
   _Gorev: PGorev;
 begin
 
-  {GDTRGirdisiEkle(SECICI_DENETIM_KOD, 0, $FFFFFFFF, $FA, $CF);                  // DPL 3
-  GDTRGirdisiEkle(SECICI_DENETIM_VERI, 0, $FFFFFFFF, $F2, $CF);
-  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1, $E9, $10);}
-
-  GDTRGirdisiEkle(SECICI_DENETIM_KOD, 0, $FFFFFFFF, $9A, $DF);
-  GDTRGirdisiEkle(SECICI_DENETIM_VERI, 0, $FFFFFFFF, $92, $DF);
-  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1, $89, $10);
+  // kod seçicisi (CS)
+  // Eriþim  : 1 = mevcut, 00 = DPL0, 11 = kod yazmaç, 0 = dallanýlamaz, 1 = okunabilir, 0 = eriþilmedi
+  // Esneklik: 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
+  GDTRGirdisiEkle(SECICI_DENETIM_KOD, 0, $FFFFFFFF, %10011010, %11011111);
+  // veri seçicisi (DS)
+  // Eriþim  : 1 = mevcut, 00 = DPL0, 10 = veri yazmaç, 0 = artarak büyüyen, 1 = yazýlabilir, 0 = eriþilmedi
+  // Esneklik: 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
+  GDTRGirdisiEkle(SECICI_DENETIM_VERI, 0, $FFFFFFFF, %10010010, %11011111);
+  // görev seçicisi (TSS)
+  // Eriþim  : 1 = mevcut, 00 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
+  // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
+  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1,
+    %10001001, %00010000);
 
   // çekirdeðin kullanacaðý TSS'nin içeriðini sýfýrla
   FillByte(GorevTSSListesi[2], SizeOf(TTSS), 0);

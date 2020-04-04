@@ -801,25 +801,11 @@ var
   GorevTSSListesi: array[1..USTSINIR_GOREVSAYISI] of TTSS;
 
 type
-  PIDTGirdisi = ^TIDTGirdisi;
-  TIDTGirdisi = packed record
-    Baslangic01: TSayi2;
-    Secici: TSayi2;
-    Sifir: TSayi1;
-    Bayrak: TSayi1;
-    Baslangic23: TSayi2;
-  end;
-
-type
   PIDTYazmac = ^TIDTYazmac;
   TIDTYazmac = packed record
     Uzunluk: TSayi2;
     Baslangic: TSayi4;
   end;
-
-var
-  IDTYazmac: TIDTYazmac;
-  IDTGirdiListesi: array[0..$34] of TIDTGirdisi;
 
 type
   TGorevDurum = (gdBos, gdOlusturuldu, gdCalisiyor, gdDurduruldu);
