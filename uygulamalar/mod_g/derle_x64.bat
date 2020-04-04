@@ -44,6 +44,10 @@ cd dsyyntcs
 call derle.bat
 cd..
 
+cd dugmeler
+call derle.bat
+cd..
+
 cd grafik1
 call derle.bat
 cd..
@@ -100,6 +104,10 @@ cd noktalar
 call derle.bat
 cd..
 
+cd paneller
+call derle.bat
+cd..
+
 cd pcibil
 call derle.bat
 cd..
@@ -121,6 +129,10 @@ call derle.bat
 cd..
 
 cd tasarim
+call derle.bat
+cd..
+
+cd testsrc
 call derle.bat
 cd..
 

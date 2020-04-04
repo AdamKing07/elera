@@ -1,1 +1,1 @@
-del outlib\*.* /Q
+del dosyalar\*.* /Q

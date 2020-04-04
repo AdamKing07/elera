@@ -42,6 +42,10 @@ cd dsyyntcs
 call temizle.bat
 cd..
 
+cd dugmeler
+call temizle.bat
+cd..
+
 cd grafik1
 call temizle.bat
 cd..
@@ -98,6 +102,10 @@ cd noktalar
 call temizle.bat
 cd..
 
+cd paneller
+call temizle.bat
+cd..
+
 cd pcibil
 call temizle.bat
 cd..
@@ -119,6 +127,10 @@ call temizle.bat
 cd..
 
 cd tasarim
+call temizle.bat
+cd..
+
+cd testsrc
 call temizle.bat
 cd..
 

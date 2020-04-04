@@ -298,7 +298,7 @@
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit43>
     </Units>
-    <JumpHistory Count="5" HistoryIndex="4">
+    <JumpHistory Count="6" HistoryIndex="5">
       <Position1>
         <Filename Value="udptest.lpr"/>
         <Caret Line="96" Column="26" TopLine="82"/>
@@ -319,6 +319,10 @@
         <Filename Value="udptest.lpr"/>
         <Caret Line="121" Column="59" TopLine="102"/>
       </Position5>
+      <Position6>
+        <Filename Value="udptest.lpr"/>
+        <Caret Line="24" Column="32"/>
+      </Position6>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -329,7 +333,7 @@
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="../../../rtl_uygulama/linux/units/i386-linux"/>
-      <UnitOutputDirectory Value="outlib"/>
+      <UnitOutputDirectory Value="dosyalar"/>
       <SrcPath Value="../../../rtl_uygulama/linux"/>
     </SearchPaths>
     <CodeGeneration>

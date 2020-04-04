@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1331391477"/>
-  <Params Value=" -Tlinux -Pi386 -MObjFPC -Scghi -CX -Xs -XX -k-Tbagla.ld -l -vewnhibq -FiC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\mod_g\dugmeler\outlib -FuC:\Users\fatih\Documents\bitbucket\elerais\rtl_uygulama\linux\units\i386-linux -FuC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\mod_g\dugmeler\ -FUC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\mod_g\dugmeler\outlib\ -FEC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\_g\ -oC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\_g\dugmeler.c dugmeler.lpr"/>
-</CONFIG>

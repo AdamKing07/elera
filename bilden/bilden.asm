@@ -31,10 +31,6 @@
         KERNEL_TEMP_ADDR        equ     0x13000
         KERNEL_LOAD_ADDR        equ     0x100000
 
-        ; WORK_MODE_SELECTION: 0 = kullanýcý seçimi
-        ; WORK_MODE_SELECTION: 1 = pascal grafik, 2 = pascal text, 3 = assembly
-        WORK_MODE_SELECTION     equ     1
-
         VModeIndex              equ     1               ; video mod index deðeri
 
         ;gerçek mod kod baþlangýç alanýna dallan
@@ -59,9 +55,7 @@ align 8
         kernel_size             dd      0
 
         bilden_ver              db      13,10,"BILDEN Surum: 0.0.1",0
-        file_kernel_g           db      "CEKIRDKGBIN"
-        file_kernel_t           db      "CEKIRDKYBIN"
-        file_kernel_a           db      "CEKIRDKABIN"
+        file_kernel             db      "CEKIRDEKBIN"
         comp_review             db      13,10,"Bilgisayariniz inceleniyor...",0
         str_video_starting      db      13,10,"Grafik ekrana gecis yapiliyor...",0
         str_video_error         db      13,10,13,10,"Desteklenmeyen Grafik Karti!",0
@@ -69,7 +63,6 @@ align 8
         str_reboot_msg          db      13,10,13,10,"Yeniden baslatmak icin bir tusa basiniz.",0
         file_not_found          db      13,10,"HATA: dosya bulunamadi.",0
         sec_read_error          db      13,10,"HATA: sektor okuma hatasi.",0
-        work_mode_select        db      13,10,13,10,"Calisma ortamini seciniz: (1=Grafiksel, 2=Yazi, 3=Yazi (Asm)) ",0
 
 video_modes:
         ;       mod    gen. yük. rezerv
@@ -116,43 +109,8 @@ start:
         mov     si,comp_review
         call    print_text
 
-        ;ekran mod seçimi
+        ;çalýþma modu = pascal grafiksel mod
         ;----------------------------------------------------------------
-mode_selection:
-
-        ; default deðer tanýmlanmýþ mý?
-        ; (WORK_MODE_SELECTION <> 0) = default deðer
-        ; (WORK_MODE_SELECTION = 0) = kullanýcý seçimi
-        ;----------------------------------------------------------------
-        mov     al,WORK_MODE_SELECTION
-        cmp     al,0
-        jne     selection3
-
-        mov     si,work_mode_select
-        call    print_text
-get_key:
-
-        xor     ax,ax
-        int     0x16
-
-; assembly kernel
-selection3:
-        cmp     al,3
-        jne     selection2
-        mov     word[kernel_work_mode],3
-        jmp     kernel_selection_ok
-
-; pascal çekirdek - yazý
-selection2:
-        cmp     al,2
-        jne     selection1
-        mov     word[kernel_work_mode],2
-        jmp     kernel_selection_ok
-
-; pascal çekirdek - grafik
-selection1:
-        cmp     al,1
-        jne     get_key
         mov     word[kernel_work_mode],1
 
 kernel_g:
@@ -264,20 +222,7 @@ kernel_selection_ok:
 
         ;çekirdek dosyasý mevcut mu ? ara.
         ;----------------------------------------------------------------
-kernel_name_a:
-        cmp     word[kernel_work_mode],3
-        jne     kernel_name_t
-        mov     si,file_kernel_a
-        jmp     kernel_file_ok
-
-kernel_name_t:
-        cmp     word[kernel_work_mode],2
-        jne     kernel_name_g
-        mov     si,file_kernel_t
-        jmp     kernel_file_ok
-
-kernel_name_g:
-        mov     si,file_kernel_g
+        mov     si,file_kernel
 
 kernel_file_ok:
         xor     di,di
@@ -558,9 +503,6 @@ pmode_start:
         mov     ecx,500000/4
         cld
         rep     movsd
-
-        cmp     word[kernel_work_mode+0x10000],3
-        je      jump_addr
 
         mov     esi,KERNEL_TEMP_ADDR+0x18
         mov     eax,[esi]

@@ -33,36 +33,31 @@
     </RunParams>
     <Units Count="5">
       <Unit0>
-        <Filename Value="kaydirma.pas"/>
+        <Filename Value="kaydirma.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <UsageCount Value="23"/>
+        <TopLine Value="33"/>
+        <CursorPos X="35" Y="43"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="bagla.ld"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="23"/>
-        <DefaultSyntaxHighlighter Value="None"/>
-      </Unit1>
-      <Unit2>
         <Filename Value="temizle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21"/>
         <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
-      </Unit2>
-      <Unit3>
+      </Unit1>
+      <Unit2>
         <Filename Value="derle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15" Y="6"/>
         <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
-      </Unit3>
-      <Unit4>
+      </Unit2>
+      <Unit3>
         <Filename Value="kaydirma.lpi"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
@@ -71,6 +66,16 @@
         <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="XML"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="kaydirma.ld"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="None"/>
       </Unit4>
     </Units>
   </ProjectOptions>
@@ -83,7 +88,7 @@
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="..\..\..\rtl_uygulama\linux\units\i386-linux"/>
-      <UnitOutputDirectory Value="outlib"/>
+      <UnitOutputDirectory Value="dosyalar"/>
       <SrcPath Value="..\..\..\rtl_uygulama\linux"/>
     </SearchPaths>
     <CodeGeneration>
@@ -102,7 +107,7 @@
       <LinkSmart Value="True"/>
       <Options>
         <PassLinkerOptions Value="True"/>
-        <LinkerOptions Value="-Tbagla.ld"/>
+        <LinkerOptions Value="-Tkaydirma.ld"/>
       </Options>
     </Linking>
   </CompilerOptions>

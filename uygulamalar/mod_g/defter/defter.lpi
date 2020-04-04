@@ -336,7 +336,7 @@
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="../../../rtl_uygulama/linux/units/i386-linux;../../../rtl_uygulama/linux;../../../rtl_uygulama/linux/inc"/>
-      <UnitOutputDirectory Value="outlib"/>
+      <UnitOutputDirectory Value="dosyalar"/>
     </SearchPaths>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>

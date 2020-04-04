@@ -242,7 +242,7 @@
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="../../../rtl_uygulama/linux/units/i386-linux"/>
-      <UnitOutputDirectory Value="outlib"/>
+      <UnitOutputDirectory Value="dosyalar"/>
       <SrcPath Value="../../../rtl_uygulama/linux"/>
     </SearchPaths>
     <CodeGeneration>

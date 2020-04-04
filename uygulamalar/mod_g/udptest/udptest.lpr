@@ -36,7 +36,7 @@ begin
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
 
   Pencere0.Tuval.KalemRengi := $000000;
-  Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 192.168.1.2, Port: 365');
+  Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 193.1.1.11, Port: 365');
   Pencere0.Tuval.YaziYaz(0, 39, 'Mesaj:');
 
   gkMesaj.Olustur(Pencere0.Kimlik, 7 * 8, 35, 170, 22, 'UDP Mesaj');
@@ -57,10 +57,10 @@ begin
   Zamanlayici0.Olustur(100);
   Zamanlayici0.Baslat;
 
-  IPAdres[0] := 192;
-  IPAdres[1] := 168;
+  IPAdres[0] := 193;
+  IPAdres[1] := 1;
   IPAdres[2] := 1;
-  IPAdres[3] := 2;
+  IPAdres[3] := 11;
   Baglanti0.Olustur(ptUdp, IPAdres, 365);
   if(Baglanti0.Baglanti <> -1) then Baglanti0.Baglan;
 
@@ -115,7 +115,7 @@ begin
     begin
 
       Pencere0.Tuval.KalemRengi := $000000;
-      Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 192.168.1.2, Port: 365');
+      Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 193.1.1.11, Port: 365');
       Pencere0.Tuval.YaziYaz(0, 39, 'Mesaj:');
 
       Pencere0.Tuval.YaziYaz(0, 70, 'Son Gelen Mesaj:');

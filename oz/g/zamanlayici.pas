@@ -445,7 +445,7 @@ asm
 
   mov ecx,CalisanGorevSayisi
   cmp ecx,1
-  jne @@yenigorev
+  jg  @@yenigorev
 
   popfd
   popad

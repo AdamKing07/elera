@@ -6,12 +6,12 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-04-03T12:26:49Z">
+  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-04-04T13:39:53Z">
     <Description>ELERA &#x130;&#x15F;letim Sistemi (32 Bit)</Description>
     <MediaRegistry>
       <HardDisks>
         <HardDisk uuid="{1e27e64c-a296-4134-8007-e857d0218c69}" location="disk32MB.vhd" format="VHD" type="Normal"/>
-        <HardDisk uuid="{52d14bec-1e52-417e-a356-bd4401a3b7ec}" location="C:/Users/fatih/Documents/bitbucket/elerais-araclar/resimler.vhd" format="VHD" type="Normal"/>
+        <HardDisk uuid="{52d14bec-1e52-417e-a356-bd4401a3b7ec}" location="C:/Users/elera/Documents/bitbucket/elerais-araclar/elerais-araclar/resimler.vhd" format="VHD" type="Normal"/>
       </HardDisks>
       <DVDImages>
         <Image uuid="{b7a1b9a4-a948-4126-92b1-f7614c41f90c}" location="C:/Users/fatih/Downloads/cd.iso"/>
@@ -117,7 +117,7 @@
       <AudioAdapter controller="SB16" driver="DirectSound" enabled="false"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1585914563478937500" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1586007486892235000" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>

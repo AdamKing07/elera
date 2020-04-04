@@ -1,1 +1,1 @@
-fpc -Tlinux -Pi386 -FUoutlib -Fu..\..\..\rtl_uygulama\linux\units\i386-linux -Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tmuyntcs.ld -o..\..\_g\muyntcs.c muyntcs.lpr
+fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\..\rtl_uygulama\linux\units\i386-linux -Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tmuyntcs.ld -o..\..\_g\muyntcs.c muyntcs.lpr
