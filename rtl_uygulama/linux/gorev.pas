@@ -6,7 +6,7 @@
   Dosya Adı: gorev.pas
   Dosya İşlevi: görev (program) nesnesini yönetir
 
-  Güncelleme Tarihi: 22/10/2019
+  Güncelleme Tarihi: 05/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -19,7 +19,7 @@ type
   TGorev = object
   public
     function Calistir(ADosyaTamYol: string): TKimlik;
-    function Sonlandir: TISayi4;
+    function Sonlandir(AGorevNo: TISayi4): TISayi4;
     procedure GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4);
     function GorevBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
     function GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
@@ -41,10 +41,10 @@ begin
   Result := _GorevCalistir(ADosyaTamYol);
 end;
 
-function TGorev.Sonlandir: TISayi4;
+function TGorev.Sonlandir(AGorevNo: TISayi4): TISayi4;
 begin
 
-  Result := _GorevSonlandir;
+  Result := _GorevSonlandir(AGorevNo);
 end;
 
 procedure TGorev.GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4);

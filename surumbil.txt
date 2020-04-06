@@ -1,4 +1,4 @@
-
+  + görev yöneticisine, istenilen programýn kapatýlmasý iþlevi eklendi
 
   + kaydýrma çubuðu (TKaydirmaCubugu) nesnesi ve tasarým / test programý (kaydirma.c) oluþturuldu
   + assembler ve yazý çekirdeði projeden çýkarýldý (03042020)

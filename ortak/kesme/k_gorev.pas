@@ -6,7 +6,7 @@
   Dosya Adı: k_gorev.pas
   Dosya İşlevi: görev (program) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 25/09/2019
+  Güncelleme Tarihi: 05/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -57,9 +57,21 @@ begin
   else if(_IslevNo = 2) then
   begin
 
-    // $FF = çalışan uygulamayı sonlandır
-    p := GorevListesi[CalisanGorev];
-    p^.Sonlandir(CalisanGorev);
+    _GorevNo := PISayi4(Degiskenler + 00)^;
+
+    // -1 = çalışan uygulamayı sonlandır
+    if(_GorevNo = -1) then
+    begin
+
+      p := GorevListesi[CalisanGorev];
+      p^.Sonlandir(CalisanGorev);
+    end
+    else if(_GorevNo > 0) and (_GorevNo <= USTSINIR_GOREVSAYISI) then
+    begin
+
+      p := GorevListesi[_GorevNo];
+      p^.Sonlandir(_GorevNo);
+    end;
   end
 
   // görev sayaç değerlerini al

@@ -482,7 +482,7 @@ begin
   Inc(GostergeDegeri, GostergeyeEklenecekDeger);
   if(GostergeDegeri >= (128 * 5)) then
     GostergeyeEklenecekDeger := -1
-  else if(GostergeDegeri <= (10)) then
+  else if(GostergeDegeri < (10)) then
     GostergeyeEklenecekDeger := 1;
 
   i := GostergeDegeri div 5;

@@ -7,65 +7,106 @@ program grvyntcs;
   Program Adý: grvyntcs.lpr
   Program Ýþlevi: görev yöneticisi
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 05/04/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, zamanlayici, gn_durumcubugu;
+uses gorev, gn_pencere, zamanlayici, gn_panel, gn_durumcubugu, gn_listegorunum,
+  gn_dugme;
 
 const
   ProgramAdi: string = 'Görev Yöneticisi';
 
-  // GRV = çalýþan görev kimlik
-  GorevBaslik0: string  = 'GRV  Program Adý   Belk.Baþl  Belk.Uz.   Durum  Olay Syç  Görev Syç';
-  GorevBaslik1: string  = '---  ------------  ---------  ---------  -----  --------  ---------';
-
 var
   Gorev0: TGorev;
   Pencere0: TPencere;
+  Panel0: TPanel;
+  dugSonlandir: TDugme;
   DurumCubugu0: TDurumCubugu;
+  lgGorevListesi: TListeGorunum;
   Zamanlayici0: TZamanlayici;
   OlayKayit: TOlayKayit;
   GorevKayit: TGorevKayit;
   UstSinirGorevSayisi, CalisanGorevSayisi: TSayi4;
+  SeciliGorevNo, Sonuc: TISayi4;
   i: TKimlik;
-  s: string;
+  SeciliYazi, s: string;
 
 begin
 
-  Pencere0.Olustur(-1, 10, 10, 580, 300, ptBoyutlandirilabilir, ProgramAdi, $E3DBC8);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  SeciliGorevNo := 0;
+
+  Pencere0.Olustur(-1, 100, 150, 600, 300, ptBoyutlandirilabilir, ProgramAdi, $E3DBC8);
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+
+  Panel0.Olustur(Pencere0.Kimlik, 0, 0, 100, 27, 0, 0, 0, 0, '');
+  Panel0.Hizala(hzUst);
+  Panel0.Goster;
+
+  dugSonlandir.Olustur(Panel0.Kimlik, 3, 3, 17 * 8, 22, 'Görevi Sonlandýr');
+  dugSonlandir.Goster;
 
   s := 'Çalýþabilir Program: 0 - Çalýþan Program: 0';
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 180, 400, 18, s);
   DurumCubugu0.Goster;
 
+  // liste görünüm nesnesi oluþtur
+  lgGorevListesi.Olustur(Pencere0.Kimlik, 2, 47, 496, 300 - 73);
+  lgGorevListesi.Hizala(hzTum);
+
+  // liste görünüm baþlýklarýný ekle
+  lgGorevListesi.BaslikEkle('GRV', 32);
+  lgGorevListesi.BaslikEkle('Program Adý', 150);
+  lgGorevListesi.BaslikEkle('Belk.Baþl', 90);
+  lgGorevListesi.BaslikEkle('Belk.Uz.', 90);
+  lgGorevListesi.BaslikEkle('Durum', 50);
+  lgGorevListesi.BaslikEkle('Olay Syç', 80);
+  lgGorevListesi.BaslikEkle('Görev Syç', 80);
+
   Pencere0.Goster;
 
-  Zamanlayici0.Olustur(100);
+  Zamanlayici0.Olustur(300);
   Zamanlayici0.Baslat;
 
   repeat
 
     Gorev0.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+
+    if(OlayKayit.Olay = FO_TIKLAMA) then
+    begin
+
+      if(OlayKayit.Kimlik = dugSonlandir.Kimlik) then
+      begin
+
+        if(SeciliGorevNo > 0) then Gorev0.Sonlandir(SeciliGorevNo);
+
+        // seçilen görev deðerini sýfýrla
+        SeciliGorevNo := 0;
+      end
+      else if(OlayKayit.Kimlik = lgGorevListesi.Kimlik) then
+      begin
+
+        SeciliYazi := lgGorevListesi.SeciliYaziAl;
+
+        // dosya bilgisinden dosya ad ve uzantý bilgisini al
+        i := Pos('|', SeciliYazi);
+        if(i > 0) then
+        begin
+
+          s := Copy(SeciliYazi, 1, i - 1);
+
+          Val(s, SeciliGorevNo, Sonuc);
+          if(Sonuc <> 0) then SeciliGoreVNo := 0;
+        end;
+      end
+    end
+    else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
       // her tetiklemede iþlem sayýsýný denetle ve
       // pencereye yeniden çizilme mesajý gönder
+      lgGorevListesi.Temizle;
       Gorev0.GorevSayilariniAl(UstSinirGorevSayisi, CalisanGorevSayisi);
-      Pencere0.Ciz;
-    end
-
-    else if(OlayKayit.Olay = CO_CIZIM) then
-    begin
-
-      s := 'Çalýþabilir Program: ' + IntToStr1(UstSinirGorevSayisi) +
-        ' - Çalýþan Program: ' + IntToStr1(CalisanGorevSayisi);
-      DurumCubugu0.DurumYazisiDegistir(s);
-
-      Pencere0.Tuval.YaziYaz(0, 0 * 16, GorevBaslik0);
-      Pencere0.Tuval.YaziYaz(0, 1 * 16, GorevBaslik1);
 
       for i := 1 to CalisanGorevSayisi do
       begin
@@ -73,19 +114,21 @@ begin
         if(Gorev0.GorevBilgisiAl(i, @GorevKayit) = 0) then
         begin
 
-          if(Ord(GorevKayit.GorevDurum) = 3) then
-            Pencere0.Tuval.KalemRengi := RENK_KIRMIZI
-          else Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-
-          Pencere0.Tuval.SayiYaz16(0, (1 + i) * 16, False, 3, GorevKayit.GorevKimlik);
-          Pencere0.Tuval.YaziYaz(5 * 8, (1 + i) * 16, GorevKayit.ProgramAdi);
-          Pencere0.Tuval.SayiYaz16(19 * 8, (1 + i) * 16, False, 8, GorevKayit.BellekBaslangicAdresi);
-          Pencere0.Tuval.SayiYaz16(30 * 8, (1 + i) * 16, False, 8, GorevKayit.BellekUzunlugu);
-          Pencere0.Tuval.SayiYaz16(44 * 8, (1 + i) * 16, False, 2, Ord(GorevKayit.GorevDurum));
-          Pencere0.Tuval.SayiYaz16(52 * 8, (1 + i) * 16, False, 4, GorevKayit.OlaySayisi);
-          Pencere0.Tuval.SayiYaz16(59 * 8, (1 + i) * 16, False, 8, GorevKayit.GorevSayaci);
+          lgGorevListesi.ElemanEkle(IntToStr1(GorevKayit.GorevKimlik) + '|' +
+            GorevKayit.ProgramAdi + '|' +
+            IntToStr1(GorevKayit.BellekBaslangicAdresi) + '|' +
+            IntToStr1(GorevKayit.BellekUzunlugu) + '|' +
+            IntToStr1(Ord(GorevKayit.GorevDurum)) + '|' +
+            IntToStr1(GorevKayit.OlaySayisi) + '|' +
+            IntToStr1(GorevKayit.GorevSayaci));
         end;
       end;
+
+      s := 'Çalýþabilir Program: ' + IntToStr1(UstSinirGorevSayisi) +
+        ' - Çalýþan Program: ' + IntToStr1(CalisanGorevSayisi);
+      DurumCubugu0.DurumYazisiDegistir(s);
+
+      Pencere0.Ciz;
     end;
 
   until (1 = 2);

@@ -2,7 +2,7 @@
 del bilden\bilden.bin /Q
 
 @echo çekirdek dizinleri temizleniyor...
-cd cekirdekg
+cd cekirdek
 call temizle.bat
 cd..
 

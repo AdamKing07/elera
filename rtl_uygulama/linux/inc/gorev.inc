@@ -16,10 +16,12 @@ asm
   add	  esp,4
 end;
 
-function _GorevSonlandir: TISayi4 assembler;
+function _GorevSonlandir(AGorevNo: TISayi4): TISayi4 assembler;
 asm
+  push  AGorevNo
   mov	  eax,GOREV_SONLANDIR
   int	  $34
+  add   esp,4
 end;
 
 procedure _GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4); assembler;
