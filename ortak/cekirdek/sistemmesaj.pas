@@ -6,7 +6,7 @@
   Dosya Adı: sistemmesaj.pas
   Dosya İşlevi: hata ayıklama (debug) amaçlı mesaj yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 29/09/2019
+  Güncelleme Tarihi: 06/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -37,6 +37,9 @@ type
     property ServisCalisiyor: Boolean read FServisCalisiyor write FServisCalisiyor;
     property ToplamMesaj: Integer read FToplamMesaj;
   end;
+
+{ TODO : // aşağıdaki tüm çağrılar iptal edilerek bu çağrının içerisine alınacak }
+procedure SISTEM_MESAJ(AMesaj: string; ASayisalDegerler: array of TSayi4);
 
 procedure SISTEM_MESAJ_YAZI(AMesaj: string);
 procedure SISTEM_MESAJ_YAZI(AMesaj: PWideChar);
@@ -133,6 +136,54 @@ begin
     AMesaj^.Saat := MesajListesi[ASiraNo]^.Saat;
     AMesaj^.Mesaj := MesajListesi[ASiraNo]^.Mesaj;
   end;
+end;
+
+{==============================================================================
+  sistem kayıtlarına mesaj ekle
+ ==============================================================================}
+procedure SISTEM_MESAJ(AMesaj: string; ASayisalDegerler: array of TSayi4);
+var
+  i, j, DegerSiraNo: Integer;
+  s: string;
+  s2: string[10];
+begin
+
+  DegerSiraNo := 0;
+  s := '';
+
+  i := Length(AMesaj);
+  if(i > 0) then
+  begin
+
+    j := 1;
+    while (j <= i) do begin
+
+      if(AMesaj[j] = '%') and (AMesaj[j + 1] = 'd') then
+      begin
+
+        // sayısal değeri karaktere çevir
+        s2 := IntToStr(ASayisalDegerler[DegerSiraNo]);
+        Inc(DegerSiraNo);
+        s += s2;
+
+        Inc(j);
+      end
+      else if(AMesaj[j] = '%') and (AMesaj[j + 1] = 'x') then
+      begin
+
+        // sayısal değeri karaktere çevir
+        s2 := '0x' + hexStr(ASayisalDegerler[DegerSiraNo], 8);
+        Inc(DegerSiraNo);
+        s += s2;
+
+        Inc(j);
+      end else s += AMesaj[j];
+
+      Inc(j);
+    end;
+  end;
+
+  SISTEM_MESAJ_YAZI(s);
 end;
 
 {==============================================================================

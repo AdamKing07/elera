@@ -85,7 +85,7 @@ end;
 begin
 
   Pencere0.Olustur(-1, 50, 50, 350, 135, ptBoyutlandirilabilir, ProgramAdi, $EEF0D1);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   DiskSayisi := MantiksalDepolamaAygitSayisiAl;
   if(DiskSayisi > 0) then

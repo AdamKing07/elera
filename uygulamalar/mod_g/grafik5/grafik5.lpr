@@ -54,7 +54,7 @@ end;
 begin
 
   Pencere0.Olustur(-1, 150, 150, 450 + 8, 300 + 35, ptIletisim, ProgramAdi, $F7EEF3);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Zamanlayici0.Olustur(50);
 

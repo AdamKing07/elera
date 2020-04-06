@@ -39,6 +39,8 @@
         <Filename Value="noktalar.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="35"/>
+        <CursorPos X="53" Y="49"/>
         <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -238,7 +240,7 @@
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit37>
     </Units>
-    <JumpHistory Count="25" HistoryIndex="24">
+    <JumpHistory Count="26" HistoryIndex="25">
       <Position1>
         <Filename Value="noktalar.lpr"/>
         <Caret Line="40" Column="13" TopLine="17"/>
@@ -338,6 +340,9 @@
         <Filename Value="noktalar.lpr"/>
         <Caret Line="24" Column="59"/>
       </Position25>
+      <Position26>
+        <Filename Value="noktalar.lpr"/>
+      </Position26>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

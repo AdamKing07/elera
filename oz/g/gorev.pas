@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 23/10/2019
+  Güncelleme Tarihi: 06/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -422,25 +422,34 @@ begin
   // görev seçicisi (TSS)
   // Eriþim  : 1 = mevcut, 11 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
   // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
-  GDTRGirdisiEkle(_SeciciTSSSiraNo, TSayi4(@GorevTSSListesi[i]), SizeOf(TTSS) - 1,
+  GDTRGirdisiEkle(_SeciciTSSSiraNo, TSayi4(GorevTSSListesi[i]), TSS_UZUNLUK - 1,
     %11101001, %00010000);
 
   // TSS'nin içeriðini sýfýrla
-  FillByte(GorevTSSListesi[i], SizeOf(TTSS), 0);
+  FillByte(GorevTSSListesi[i]^, 104, $00);
+
+  // giriþ / çýkýþ haritasýný doldur
+  if(TSS_UZUNLUK > 104) then
+  begin
+
+    // her bit 1 porta karþýlýk gelir. deðerin 1 olmasý DPL3 görevi için port kullanýmýný yasaklar
+    FillByte(Isaretci(@GorevTSSListesi[i]^.IOHarita)^, TSS_UZUNLUK - 104, $FF);
+    GorevTSSListesi[i]^.IOHaritaGAdres := TSS_UZUNLUK;
+  end;
 
   // TSS içeriðini doldur
   //GorevTSSListesi[i].CR3 := GERCEKBELLEK_DIZINADRESI;
-  GorevTSSListesi[i].EIP := FKodBaslangicAdres;
-  GorevTSSListesi[i].EFLAGS := $202;
-  GorevTSSListesi[i].ESP := FYiginBaslangicAdres;
-  GorevTSSListesi[i].CS := (_SeciciCSSiraNo * 8) + 3;
-  GorevTSSListesi[i].DS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i].ES := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i].SS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i].FS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i].GS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i].SS0 := SECICI_SISTEM_VERI * 8;
-  GorevTSSListesi[i].ESP0 := (i * GOREV3_ESP_U) + GOREV3_ESP;
+  GorevTSSListesi[i]^.EIP := FKodBaslangicAdres;
+  GorevTSSListesi[i]^.EFLAGS := $202;
+  GorevTSSListesi[i]^.ESP := FYiginBaslangicAdres;
+  GorevTSSListesi[i]^.CS := (_SeciciCSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.DS := (_SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.ES := (_SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.SS := (_SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.FS := (_SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.GS := (_SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.SS0 := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[i]^.ESP0 := (i * GOREV3_ESP_U) + GOREV3_ESP;
 end;
 
 {==============================================================================

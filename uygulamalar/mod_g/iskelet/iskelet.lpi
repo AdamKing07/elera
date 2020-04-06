@@ -85,8 +85,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="42"/>
-        <CursorPos X="60" Y="50"/>
+        <TopLine Value="26"/>
+        <CursorPos X="53" Y="41"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit10>
@@ -359,7 +359,7 @@
       </Position14>
       <Position15>
         <Filename Value="anabirim.pas"/>
-        <Caret Line="50" Column="60" TopLine="42"/>
+        <Caret Line="50" Column="60" TopLine="41"/>
       </Position15>
     </JumpHistory>
   </ProjectOptions>

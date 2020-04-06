@@ -40,6 +40,8 @@
         <Filename Value="udptest.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="22"/>
+        <CursorPos X="53" Y="36"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -298,7 +300,7 @@
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit43>
     </Units>
-    <JumpHistory Count="6" HistoryIndex="5">
+    <JumpHistory Count="7" HistoryIndex="6">
       <Position1>
         <Filename Value="udptest.lpr"/>
         <Caret Line="96" Column="26" TopLine="82"/>
@@ -323,6 +325,9 @@
         <Filename Value="udptest.lpr"/>
         <Caret Line="24" Column="32"/>
       </Position6>
+      <Position7>
+        <Filename Value="udptest.lpr"/>
+      </Position7>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

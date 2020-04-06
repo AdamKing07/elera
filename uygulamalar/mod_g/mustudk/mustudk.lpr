@@ -69,7 +69,7 @@ end;
 begin
 
   Pencere0.Olustur(-1, 100, 100, 208, 410, ptIletisim, ProgramAdi, $FFFFCC);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   // liste kutusu oluþtur
   lkDosyaListesi.Olustur(Pencere0.Kimlik, 0, 286, 195, 80 + 4);

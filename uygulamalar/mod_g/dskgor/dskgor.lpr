@@ -137,7 +137,7 @@ begin
 
   // ana form oluþtur
   Pencere0.Olustur(-1, 10, 10, 615, 626, ptBoyutlandirilabilir, ProgramAdi, $D1F0ED);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   // toplam fiziksel sürücü sayýsýný al
   FizikselDepolamaAygitSayisi := FizikselDepolamaAygitSayisiAl;

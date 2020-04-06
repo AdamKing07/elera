@@ -38,6 +38,8 @@
         <Filename Value="yzmcgor.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="19"/>
+        <CursorPos X="53" Y="33"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -115,7 +117,7 @@
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit11>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="yzmcgor.lpr"/>
         <Caret Line="63" Column="19" TopLine="40"/>
@@ -232,6 +234,9 @@
         <Filename Value="yzmcgor.lpr"/>
         <Caret Line="19" Column="44"/>
       </Position29>
+      <Position30>
+        <Filename Value="yzmcgor.lpr"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

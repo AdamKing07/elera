@@ -38,6 +38,8 @@
         <Filename Value="smsjgor.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="24"/>
+        <CursorPos X="53" Y="38"/>
         <UsageCount Value="68"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -216,7 +218,7 @@
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit30>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="smsjgor.lpr"/>
         <Caret Line="57" Column="15" TopLine="34"/>
@@ -333,6 +335,9 @@
         <Filename Value="smsjgor.lpr"/>
         <Caret Line="14" Column="35"/>
       </Position29>
+      <Position30>
+        <Filename Value="smsjgor.lpr"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

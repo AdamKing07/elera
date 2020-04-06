@@ -27,7 +27,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 200, 200, 250, 130, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   bagKomutIN.Olustur(Pencere0.Kimlik, 18, 10, $000000, $FF0000, 'in al,$1F0');
   bagKomutIN.Goster;

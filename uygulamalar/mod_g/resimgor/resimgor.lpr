@@ -65,7 +65,7 @@ end;
 begin
 
   Pencere0.Olustur(-1, 50, 50, 400, 300, ptBoyutlandirilabilir, ProgramAdi, $C0C4C3);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 10, 22, 'Dosya: -');
   DurumCubugu0.Goster;

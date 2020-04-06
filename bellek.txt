@@ -11,7 +11,8 @@ $0100000..$0500000 - kernel(x).bin - (çekirdek için 4MB çalışma alanı)
 $.........$0500000 - Kernel ESP
 $0500000..$0510000 - PROCESSRING0_ESP
 $0510000..$0520000 - BELLEK_HARITA_ADRESI (65536 ($10000) girdi * 4096 = $10000000 = 256MB belleği adresleyebilir)
-$0520000..$0600000 - rezerv
+$0520000..$0560D00 - TSS port giriş / çıkış izin haritası. 32 * 8296 = 265472 byte ($40D00)
+$0560D00..$0600000 - ayrıldı
 $0600000..$0610000 - sayfa dizini (page directory), 4GB adreslemek için
 $0610000..$0A00000 - sayfa tablosu (page table), 4GB adreslemek için
 $0A00000..$4000000 - genel sistem / program kullanımı

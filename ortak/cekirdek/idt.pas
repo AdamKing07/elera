@@ -1,12 +1,12 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Dosya AdÄ±: idt.pas
-  Dosya Ä°ÅŸlevi: kesme servis rutinlerini (isr) iÃ§erir
+  Dosya Adý: idt.pas
+  Dosya Ýþlevi: kesme servis rutinlerini (isr) içerir
 
-  GÃ¼ncelleme Tarihi: 04/04/2020
+  Güncelleme Tarihi: 06/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -89,26 +89,25 @@ procedure KesmeIslevi30;
 procedure KesmeIslevi31;
 procedure KesmeIslevi32;
 procedure KesmeIslevi33;
-procedure KesmeIslevi35;
-procedure YazmacDurumunuGoruntule1(AYazmaclar0: PYazmaclar0);
-procedure YazmacDurumunuGoruntule2(AYazmaclar1: PYazmaclar1);
+procedure YazmacGoruntuleHY(AYazmaclar0: PYazmaclar0);
+procedure YazmacGoruntuleHV(AYazmaclar1: PYazmaclar1);
 
 implementation
 
-uses genel, kesme34, gorev, yonetim;
+uses genel, kesme34, gorev, yonetim, sistemmesaj;
 
 {==============================================================================
-  kesme giriÅŸlerini belirler ve IDTYazmac'Ä± yÃ¼kler
+  kesme giriþlerini belirler ve IDTYazmac'ý yükler
  ==============================================================================}
 procedure Yukle;
 begin
 
-  // IDTYazmac yazmacÄ±nÄ±n limit ve ilk giriÅŸ noktasÄ±nÄ± belirle
-  IDTYazmac.Uzunluk := (SizeOf(TIDTGirdisi) * USTSINIR_IDT) - 1;    // limit = limit - 1
-  IDTYazmac.Baslangic := TSayi4(@IDTGirdiListesi);                  // base address (32 bit)
+  // IDTYazmac yazmacýnýn limit ve ilk giriþ noktasýný belirle
+  IDTYazmac.Uzunluk := (SizeOf(TIDTGirdisi) * USTSINIR_IDT) - 1;    // uzunluk = uzunluk - 1
+  IDTYazmac.Baslangic := TSayi4(@IDTGirdiListesi);                  // baþlangýç adresi (32 bit)
 
   // istisnalar - exceptions
-  // %10001110 = 1 = mevcut, 00 = DPL0, 0, 1 = 32 bit kod, 110 - kesme kapÄ±sÄ±
+  // %10001110 = 1 = mevcut, 00 = DPL0, 0, 1 = 32 bit kod, 110 - kesme kapýsý
   KesmeGirisiBelirle($00, @KesmeIslevi00, SECICI_SISTEM_KOD * 8, %10001110);
   KesmeGirisiBelirle($01, @KesmeIslevi01, SECICI_SISTEM_KOD * 8, %10001110);
   KesmeGirisiBelirle($02, @KesmeIslevi02, SECICI_SISTEM_KOD * 8, %10001110);
@@ -142,24 +141,24 @@ begin
   KesmeGirisiBelirle($1E, @KesmeIslevi1E, SECICI_SISTEM_KOD * 8, %10001110);
   KesmeGirisiBelirle($1F, @KesmeIslevi1F, SECICI_SISTEM_KOD * 8, %10001110);
 
-  // yazÄ±lÄ±m kesmeleri
+  // yazýlým kesmeleri
   KesmeGirisiBelirle($30, @KesmeIslevi30, SECICI_SISTEM_KOD * 8, %10001110);
   KesmeGirisiBelirle($31, @KesmeIslevi31, SECICI_SISTEM_KOD * 8, %10001110);
   KesmeGirisiBelirle($32, @KesmeIslevi32, SECICI_SISTEM_KOD * 8, %10001110);
   KesmeGirisiBelirle($33, @KesmeIslevi33, SECICI_SISTEM_KOD * 8, %10001110);
 
   // sistem ana kesmesi
-  // %11101110 = 1 = mevcut, 11 = DPL3, 0, 1 = 32 bit kod, 110 - kesme kapÄ±sÄ±
+  // %11101110 = 1 = mevcut, 11 = DPL3, 0, 1 = 32 bit kod, 110 - kesme kapýsý
   KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_SISTEM_KOD * 8, %11101110);
 
-  // IDTYazmac'Ä± yÃ¼kle
+  // IDTYazmac'ý yükle
   asm
     lidt  [IDTYazmac]
   end;
 end;
 
 {==============================================================================
-  IDT giriÅŸ noktalarÄ±nÄ± belirler
+  IDT giriþ noktalarýný belirler
  ==============================================================================}
 procedure KesmeGirisiBelirle(AGirdiNo: TSayi4; ABaslangicAdresi: Isaretci;
   ASecici: TSayi2; ABayrak: TSayi1);
@@ -168,17 +167,17 @@ var
 begin
 {
       +-----------------------------------------------------+
-      |31                    16|15                        00|  bit deÄŸerleri 00-31
+      |31                    16|15                        00|  bit deðerleri 00-31
       +------------------------+----------------------------+
-      |   SeÃ§ici (selector)    | BaslangicAdresi 15..00     |
+      |   Seçici (selector)    | BaslangicAdresi 15..00     |
       +------------------------+----------------------------+
 
       +------------------------------+---------+------+-----+
       |63                          48|47     43|    37|   32|
       +------------------------------+-+-+-+-+-+------+-----+
-      |       BaÅŸlangÄ±Ã§: 31-16       |P|DPL|0|D|110000|     |  bit deÄŸerleri 32-63
+      |       Baþlangýç: 31-16       |P|DPL|0|D|110000|     |  bit deðerleri 32-63
       +------------------------------+-+-+-+-+|+------+--|--+
-                        D = 1 = 32 bit kod  <-+          +-> kullanÄ±lmÄ±yor
+                        D = 1 = 32 bit kod  <-+          +-> kullanýlmýyor
 }
 
   _BaslangicAdresi := TSayi4(ABaslangicAdresi);
@@ -189,10 +188,10 @@ begin
   // temel bellek adresi (ABaslangicAdresi) - IDT: 63..48
   IDTGirdiListesi[AGirdiNo].BaslangicAdresi16_31 := (_BaslangicAdresi shr 16) and $FFFF;
 
-  // seÃ§ici - IDT: 31..16
+  // seçici - IDT: 31..16
   IDTGirdiListesi[AGirdiNo].Secici := ASecici;
 
-  // 000 kullanÄ±lmÄ±yor - IDT: 39..32
+  // 000 kullanýlmýyor - IDT: 39..32
   IDTGirdiListesi[AGirdiNo].Sifir := 0;
 
   // P, DPL, S, TYPE - IDT: 47..40
@@ -200,27 +199,27 @@ begin
 end;
 
 {==============================================================================
-  iÃ§sel kesmeler (exceptions) - int00..int1F
+  içsel kesmeler (exceptions) - int00..int1F
  ==============================================================================}
 
 {==============================================================================
-  KesmeIslevi00
+  KesmeIslevi00 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi00; nostackframe; assembler;
 
-  // not : sistemin stabilizasyonu iÃ§in ileride yeniden yazÄ±lacak
+  // not : sistemin stabilizasyonu için ileride yeniden yazýlacak
 asm
 
-  // tÃ¼m kesmeleri durdur
+  // tüm kesmeleri durdur
   cli
 
-  // hata kodunu yÄ±ÄŸÄ±na at
+  // hata kodunu yýðýna at
   push  dword $00
 
-  // tÃ¼m genel yazmaÃ§larÄ± yÄ±ÄŸÄ±na at
+  // tüm genel yazmaçlarý yýðýna at
   pushad
 
-  // segment yazmaÃ§larÄ±nÄ± yÄ±ÄŸÄ±na at
+  // segment yazmaçlarýný yýðýna at
   xor   eax,eax
   mov   ax,gs
   push  eax
@@ -233,40 +232,40 @@ asm
   mov   ax,ds
   push  eax
 
-  // ds ve es yazmaÃ§larÄ±nÄ± sistem yazmaÃ§larÄ±na ayarla
+  // ds ve es yazmaçlarýný sistem yazmaçlarýna ayarla
   mov   ax,SECICI_SISTEM_VERI * 8
   mov   ds,ax
   mov   es,ax
 
-  // tÃ¼m bilgileri ekrana dÃ¶k
+  // tüm bilgileri ekrana dök
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
-  // EOI - kesme sonu, bir sonraki kesmeden devam et mesajÄ±
+  // EOI - kesme sonu, bir sonraki kesmeden devam et mesajý
   mov   al,$20
   out   PIC1_KOMUT,al
 
-  // saklanan ds yazmacÄ±nÄ± yÄ±ÄŸÄ±ndan al ve eski konumuna geri getir
+  // saklanan ds yazmacýný yýðýndan al ve eski konumuna geri getir
   pop   eax
   mov   ds,ax
   mov   es,ax
 
-  // es, ss, fs, gs yazmacÄ± yÄ±ÄŸÄ±ndan alÄ±nÄ±yor
+  // es, ss, fs, gs yazmacý yýðýndan alýnýyor
   add   esp,4 * 4
 
-  // genel yazmaÃ§lar yÄ±ÄŸÄ±ndan alÄ±nÄ±yor
+  // genel yazmaçlar yýðýndan alýnýyor
   popad
 
-  // hata kodu yÄ±ÄŸÄ±ndan alÄ±nÄ±yor
+  // hata kodu yýðýndan alýnýyor
   add   esp,4
 
-  // kesmeleri aktifleÅŸtir ve Ã§Ä±k
+  // kesmeleri aktifleþtir ve çýk
   sti
   iretd
 end;
 
 {==============================================================================
-  KesmeIslevi01
+  KesmeIslevi01 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi01; nostackframe; assembler;
 asm
@@ -289,7 +288,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -304,7 +303,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi02
+  KesmeIslevi02 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi02; nostackframe; assembler;
 asm
@@ -327,7 +326,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -342,7 +341,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi03
+  KesmeIslevi03 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi03; nostackframe; assembler;
 asm
@@ -365,7 +364,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -380,7 +379,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi04
+  KesmeIslevi04 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi04; nostackframe; assembler;
 asm
@@ -403,7 +402,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -418,7 +417,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi05
+  KesmeIslevi05 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi05; nostackframe; assembler;
 asm
@@ -441,7 +440,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -456,7 +455,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi06
+  KesmeIslevi06 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi06; nostackframe; assembler;
 asm
@@ -478,7 +477,10 @@ asm
   mov   ds,ax
   mov   es,ax
 
-// programÄ± sonlandÄ±r
+  //mov eax,esp
+  //call  YazmacGoruntuleHY
+
+// programý sonlandýr
   mov eax,CalisanGorev
   dec eax
   shl eax,2
@@ -503,7 +505,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi07
+  KesmeIslevi07 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi07; nostackframe; assembler;
 asm
@@ -517,7 +519,10 @@ asm
   mov   ds,ax
   mov   es,ax
 
-  { TODO : yapÄ±landÄ±rÄ±lacak }
+  //mov eax,esp
+  //call  YazmacGoruntuleHY
+
+  { TODO : yapýlandýrýlacak }
   clts
 
   mov   al,$20
@@ -532,7 +537,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi08
+  KesmeIslevi08 - hata kodu döndürür (0)
  ==============================================================================}
 procedure KesmeIslevi08; nostackframe; assembler;
 asm
@@ -555,7 +560,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule2
+  call  YazmacGoruntuleHV
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -570,7 +575,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi09
+  KesmeIslevi09 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi09; nostackframe; assembler;
 asm
@@ -593,7 +598,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -608,7 +613,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi0A - Invalid TSS
+  KesmeIslevi0A - Invalid TSS - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi0A; nostackframe; assembler;
 asm
@@ -630,7 +635,7 @@ asm
   mov   ds,ax
   mov   es,ax
 
-// programÄ± sonlandÄ±r
+// programý sonlandýr
   mov eax,CalisanGorev
   dec eax
   shl eax,2
@@ -645,7 +650,7 @@ asm
   jmp eax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule2
+  call  YazmacGoruntuleHV
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -660,7 +665,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi0B
+  KesmeIslevi0B - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi0B; nostackframe; assembler;
 asm
@@ -683,7 +688,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule2
+  call  YazmacGoruntuleHV
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -698,7 +703,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi0C - Stack Exception
+  KesmeIslevi0C - Stack Exception - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi0C; nostackframe; assembler;
 asm
@@ -720,7 +725,10 @@ asm
   mov   ds,ax
   mov   es,ax
 
-// programÄ± sonlandÄ±r
+  //mov eax,esp
+  //call  YazmacGoruntuleHV
+
+// programý sonlandýr
   mov eax,CalisanGorev
   dec eax
   shl eax,2
@@ -747,7 +755,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi0D - General Protection Exception
+  KesmeIslevi0D - genel koruma hatasý (General Protection Exception) - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi0D; nostackframe; assembler;
 asm
@@ -770,7 +778,10 @@ asm
   mov   ds,ax
   mov   es,ax
 
-// programÄ± sonlandÄ±r
+  mov eax,esp
+  call  YazmacGoruntuleHV
+
+// programý sonlandýr
   mov eax,CalisanGorev
   dec eax
   shl eax,2
@@ -780,6 +791,9 @@ asm
   //mov edx,CalisanGorev
   mov eax,TGorev.Sonlandir
   call eax
+
+//  int $20
+//@@1: jmp @@1
 
   mov eax,SistemAnaKontrol
   jmp eax
@@ -798,7 +812,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi0E
+  KesmeIslevi0E - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi0E; nostackframe; assembler;
 asm
@@ -821,7 +835,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule2
+  call  YazmacGoruntuleHV
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -836,7 +850,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi0F
+  KesmeIslevi0F - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi0F; nostackframe; assembler;
 asm
@@ -859,7 +873,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -874,7 +888,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi10
+  KesmeIslevi10 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi10; nostackframe; assembler;
 asm
@@ -897,7 +911,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -912,7 +926,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi11
+  KesmeIslevi11 - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi11; nostackframe; assembler;
 asm
@@ -935,7 +949,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule2
+  call  YazmacGoruntuleHV
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -950,7 +964,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi12
+  KesmeIslevi12 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi12; nostackframe; assembler;
 asm
@@ -973,7 +987,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -988,7 +1002,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi13
+  KesmeIslevi13 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi13; nostackframe; assembler;
 asm
@@ -1011,7 +1025,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1026,7 +1040,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi14
+  KesmeIslevi14 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi14; nostackframe; assembler;
 asm
@@ -1049,7 +1063,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1064,7 +1078,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi15
+  KesmeIslevi15 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi15; nostackframe; assembler;
 asm
@@ -1087,7 +1101,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1102,7 +1116,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi16
+  KesmeIslevi16 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi16; nostackframe; assembler;
 asm
@@ -1125,7 +1139,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1140,7 +1154,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi17
+  KesmeIslevi17 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi17; nostackframe; assembler;
 asm
@@ -1163,7 +1177,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1178,7 +1192,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi18
+  KesmeIslevi18 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi18; nostackframe; assembler;
 asm
@@ -1201,7 +1215,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1216,7 +1230,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi19
+  KesmeIslevi19 - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi19; nostackframe; assembler;
 asm
@@ -1239,7 +1253,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1254,7 +1268,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi1A
+  KesmeIslevi1A - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi1A; nostackframe; assembler;
 asm
@@ -1277,7 +1291,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1292,7 +1306,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi1B
+  KesmeIslevi1B - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi1B; nostackframe; assembler;
 asm
@@ -1315,7 +1329,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1330,7 +1344,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi1C
+  KesmeIslevi1C - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi1C; nostackframe; assembler;
 asm
@@ -1353,7 +1367,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1368,7 +1382,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi1D
+  KesmeIslevi1D - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi1D; nostackframe; assembler;
 asm
@@ -1391,7 +1405,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1406,7 +1420,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi1E
+  KesmeIslevi1E - hata kodu döndürür
  ==============================================================================}
 procedure KesmeIslevi1E; nostackframe; assembler;
 asm
@@ -1429,7 +1443,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHV
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1444,7 +1458,7 @@ asm
 end;
 
 {==============================================================================
-  KesmeIslevi1F
+  KesmeIslevi1F - hata kodu döndürmez
  ==============================================================================}
 procedure KesmeIslevi1F; nostackframe; assembler;
 asm
@@ -1467,7 +1481,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   mov   al,$20
   out   PIC1_KOMUT,al
@@ -1482,7 +1496,7 @@ asm
 end;
 
 {==============================================================================
-  yazÄ±lÄ±m kesmeleri - int30..int34
+  yazýlým kesmeleri - int30..int34
  ==============================================================================}
 
 {==============================================================================
@@ -1509,7 +1523,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   pop   eax
   mov   ds,ax
@@ -1545,7 +1559,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   pop   eax
   mov   ds,ax
@@ -1581,7 +1595,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   pop   eax
   mov   ds,ax
@@ -1617,7 +1631,7 @@ asm
   mov   es,ax
 
   mov eax,esp
-  call  YazmacDurumunuGoruntule1
+  call  YazmacGoruntuleHY
 
   pop   eax
   mov   ds,ax
@@ -1629,247 +1643,41 @@ asm
   iretd
 end;
 
-var
-  YaziModGorevYigini: Isaretci;
+{==============================================================================
+  yazmaç içeriklerini görüntüle
+ ==============================================================================}
+procedure YazmacGoruntuleHY(AYazmaclar0: PYazmaclar0);
+begin
 
-procedure KesmeIslevi35; nostackframe; assembler;
-asm
-
-  // tÃ¼m yazmaÃ§larÄ± yÄ±ÄŸÄ±na (stack) at
-  pushad
-
-  // istekte bulunan proses'in data segmentini sakla
-  mov   bx,ds
-  push  ebx
-
-  // selektÃ¶rler'i sistem selektÃ¶rlerine ayarla
-  mov   bx,SECICI_SISTEM_VERI * 8
-  mov   ds,bx
-  mov   es,bx
-
-  // uygulamanÄ±n yÄ±ÄŸÄ±na sÃ¼rdÃ¼ÄŸÃ¼ parametre adresine konumlan
-{  mov   ebp,[esp+12+4]          // orijinal esp (ring0)
-  mov   ebp,[ebp+12]            // ring3 esp
-  add   ebp,AktifGorevBellekAdresi  // + ring3 base adres
-  mov   YaziModGorevYigini,ebp}
-
-  // eax = iÅŸlev Ã§aÄŸrÄ± numarasÄ±
-{  mov ecx,eax
-  and ecx,$FF
-  cmp ecx,0
-  jne @@0
-  call  HataliCagriIslevi
-  jmp @@done
-@@0:
-
-  cmp ecx,USTSINIR_KESMESAYISI
-  jbe @@1
-  call  HataliCagriIslevi
-  jmp @@done
-@@1:
-
-  shr eax,8
-  and eax,$FFFFFFFF
-  mov edx,YaziModGorevYigini
-
-  // uygulamanÄ±n istediÄŸi iÅŸlevi Ã§aÄŸÄ±r
-  call  dword ptr @@Funcs[ecx*4]
-  jmp @@done
-
-@@Funcs:
-  dd  {00} 0, ScreenFuncs, ObjectFuncs, EventFuncs, FileFuncs
-  dd  {05} WriteFuncs, CounterFuncs, SystemFuncs, DrawFuncs, TimerFuncs
-  dd  {10} SysMsgFuncs, MemoryFuncs, ProcessFuncs, PciFuncs, NetworkFuncs
-  dd  {15} StorageFuncs, MouseFuncs, TModeFuncs, SocketFuncs, OtherFuncs}
-
-@@done:
-
-  // geri dÃ¶nÃ¼ÅŸ deÄŸerini yÄ±ÄŸÄ±ndaki eax'e yerleÅŸtir
-  //mov   [esp+28+4],eax
-
-  cmp eax,1
-  jne @@22
-  mov edi,VIDEO_BELLEK_ADRESI
-  mov al,dl
-  mov [edi],al
-  jmp @@55
-
-@@22:
-  cmp eax,2
-  jne @@33
-  mov edi,VIDEO_BELLEK_ADRESI+8
-  mov al,dl
-  mov [edi],al
-  jmp @@55
-
-@@33:
-
-@@55:
-  // istekte bulunan proses'in data segmentini eski konumuna dÃ¶ndÃ¼r
-  pop   ebx
-  mov   ds,bx
-  mov   es,bx
-
-  // yazmaÃ§larÄ± yÄ±ÄŸÄ±ndan (stack) geri al
-  popad
-
-  // istekte bulunan uygulamaya geri dÃ¶n
-  iretd
+  SISTEM_MESAJ_YAZI('Program Hata Bilgileri:');
+  SISTEM_MESAJ('  Görev: %d, Kesme: %d', [CalisanGorev, AYazmaclar0^.ISRNo]);
+  SISTEM_MESAJ('  EIP: %x, ESP: %x', [AYazmaclar0^.EIP, AYazmaclar0^.ESP]);
+  SISTEM_MESAJ('   CS: %x,  DS: %x', [AYazmaclar0^.CS, AYazmaclar0^.DS]);
+  SISTEM_MESAJ('   ES: %x,  SS: %x', [AYazmaclar0^.ES, AYazmaclar0^.SS]);
+  SISTEM_MESAJ('   FS: %x,  GS: %x', [AYazmaclar0^.FS, AYazmaclar0^.GS]);
+  SISTEM_MESAJ('  EAX: %x, EBX: %x', [AYazmaclar0^.EAX, AYazmaclar0^.EBX]);
+  SISTEM_MESAJ('  ECX: %x, EDX: %x', [AYazmaclar0^.ECX, AYazmaclar0^.EDX]);
+  SISTEM_MESAJ('  ESI: %x, EDI: %x', [AYazmaclar0^.ESI, AYazmaclar0^.EDI]);
+  SISTEM_MESAJ('  EBP: %x, FLG: %x', [AYazmaclar0^.EBP, AYazmaclar0^.EFLAGS]);
 end;
 
 {==============================================================================
-  hata kodu dÃ¶ndÃ¼rmeyen iÃ§sel kesme yazÄ±lÄ±m kesmeleri iÃ§in genel rutin
+  hata kodu da dahil yazmaç içeriklerini görüntüle
  ==============================================================================}
-procedure YazmacDurumunuGoruntule1(AYazmaclar0: PYazmaclar0);
+procedure YazmacGoruntuleHV(AYazmaclar1: PYazmaclar1);
 begin
 
-  // istisna ile ilgili bilgileri yazacaÄŸÄ±mÄ±z alanÄ± temizle.
-  GAktifMasaustu^.DikdortgenDoldur(nil, 0, 0, 16 * 8, 18 * 16,
-    RENK_KIRMIZI, RENK_KIRMIZI);
-
-  // istisnayÄ± oluÅŸturan gÃ¶rev
-  GAktifMasaustu^.YaziYaz(nil, 0, 0 * 16, 'GRV :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 0, True, 8, CalisanGorev, RENK_BEYAZ);
-
-  // istisna numarasÄ± (int)
-  GAktifMasaustu^.YaziYaz(nil, 0, 1 * 16, 'KESME :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 8 * 8, 1 * 16, True, 8, AYazmaclar0^.ISRNo, RENK_BEYAZ);
-
-  // eip
-  GAktifMasaustu^.YaziYaz(nil, 0, 2 * 16, 'EIP :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 2 * 16, True, 8, AYazmaclar0^.EIP, RENK_BEYAZ);
-
-  // cs
-  GAktifMasaustu^.YaziYaz(nil, 0, 3 * 16, 'CS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 3 * 16, True, 8, AYazmaclar0^.CS, RENK_BEYAZ);
-
-  // ds
-  GAktifMasaustu^.YaziYaz(nil, 0, 4 * 16, 'DS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 4 * 16, True, 8, AYazmaclar0^.DS, RENK_BEYAZ);
-
-  // es
-  GAktifMasaustu^.YaziYaz(nil, 0, 5 * 16, 'ES  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 5 * 16, True, 8, AYazmaclar0^.ES, RENK_BEYAZ);
-
-  // ss
-  GAktifMasaustu^.YaziYaz(nil, 0, 6 * 16, 'SS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 6 * 16, True, 8, AYazmaclar0^.SS, RENK_BEYAZ);
-
-  // fs
-  GAktifMasaustu^.YaziYaz(nil, 0, 7 * 16, 'FS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 7 * 16, True, 8, AYazmaclar0^.FS, RENK_BEYAZ);
-
-  // gs
-  GAktifMasaustu^.YaziYaz(nil, 0, 8 * 16, 'GS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 8 * 16, True, 8, AYazmaclar0^.GS, RENK_BEYAZ);
-
-  // eax
-  GAktifMasaustu^.YaziYaz(nil, 0, 9 * 16, 'EAX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 9 * 16, True, 8, AYazmaclar0^.EAX, RENK_BEYAZ);
-
-  // ebx
-  GAktifMasaustu^.YaziYaz(nil, 0, 10 * 16, 'EBX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 10 * 16, True, 8, AYazmaclar0^.EBX, RENK_BEYAZ);
-
-  // ecx
-  GAktifMasaustu^.YaziYaz(nil, 0, 11 * 16, 'ECX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 11 * 16, True, 8, AYazmaclar0^.ECX, RENK_BEYAZ);
-
-  // edx
-  GAktifMasaustu^.YaziYaz(nil, 0, 12 * 16, 'EDX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 12 * 16, True, 8, AYazmaclar0^.EDX, RENK_BEYAZ);
-
-  // esi
-  GAktifMasaustu^.YaziYaz(nil, 0, 13 * 16, 'ESI :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 13 * 16, True, 8, AYazmaclar0^.ESI, RENK_BEYAZ);
-
-  // edi
-  GAktifMasaustu^.YaziYaz(nil, 0, 14 * 16, 'EDI :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 14 * 16, True, 8, AYazmaclar0^.EDI, RENK_BEYAZ);
-
-  // ebp
-  GAktifMasaustu^.YaziYaz(nil, 0, 15 * 16, 'EBP :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 15 * 16, True, 8, AYazmaclar0^.EBP, RENK_BEYAZ);
-
-  // esp
-  GAktifMasaustu^.YaziYaz(nil, 0, 16 * 16, 'ESP :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 16 * 16, True, 8, AYazmaclar0^.ESP, RENK_BEYAZ);
-
-  // eflags
-  GAktifMasaustu^.YaziYaz(nil, 0, 17 * 16, 'EFLG:', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 17 * 16, True, 8, AYazmaclar0^.EFLAGS, RENK_BEYAZ);
-
-  // sonsuz dÃ¶ngÃ¼ye gir. ta ki yeniden programlanana kadar
-  repeat until 1 = 2;
-end;
-
-{==============================================================================
-  hata kodu dÃ¶ndÃ¼ren iÃ§sel kesme yazÄ±lÄ±m kesmeleri iÃ§in genel rutin
- ==============================================================================}
-procedure YazmacDurumunuGoruntule2(AYazmaclar1: PYazmaclar1);
-begin
-
-  GAktifMasaustu^.DikdortgenDoldur(nil, 0, 0, 16 * 8, 19 * 16,
-    RENK_KIRMIZI, RENK_KIRMIZI);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 0 * 16, 'GRV :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 0, True, 8, CalisanGorev, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 1 * 16, 'KESME :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 8 * 8, 1 * 16, True, 8, AYazmaclar1^.ISRNo, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 2 * 16, 'ERR :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 2 * 16, True, 8, AYazmaclar1^.HataKodu, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 3 * 16, 'EIP :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 3 * 16, True, 8, AYazmaclar1^.EIP, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 4 * 16, 'CS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 4 * 16, True, 8, AYazmaclar1^.CS, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 5 * 16, 'DS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 5 * 16, True, 8, AYazmaclar1^.DS, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 6 * 16, 'ES  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 6 * 16, True, 8, AYazmaclar1^.ES, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 7 * 16, 'SS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 7 * 16, True, 8, AYazmaclar1^.SS, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 8 * 16, 'FS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 8 * 16, True, 8, AYazmaclar1^.FS, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 9 * 16, 'GS  :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 9 * 16, True, 8, AYazmaclar1^.GS, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 10 * 16, 'EAX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 10 * 16, True, 8, AYazmaclar1^.EAX, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 11 * 16, 'EBX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 11 * 16, True, 8, AYazmaclar1^.EBX, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 12 * 16, 'ECX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 12 * 16, True, 8, AYazmaclar1^.ECX, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 13 * 16, 'EDX :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 13 * 16, True, 8, AYazmaclar1^.EDX, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 14 * 16, 'ESI :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 14 * 16, True, 8, AYazmaclar1^.ESI, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 15 * 16, 'EDI :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 15 * 16, True, 8, AYazmaclar1^.EDI, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 16 * 16, 'EBP :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 16 * 16, True, 8, AYazmaclar1^.EBP, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 17 * 16, 'ESP :', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 17 * 16, True, 8, AYazmaclar1^.ESP, RENK_BEYAZ);
-
-  GAktifMasaustu^.YaziYaz(nil, 0, 18 * 16, 'EFLG:', RENK_BEYAZ);
-  GAktifMasaustu^.SayiYaz16(nil, 6 * 8, 18 * 16, True, 8, AYazmaclar1^.EFLAGS, RENK_BEYAZ);
-
-  repeat until 1 = 2;
+  SISTEM_MESAJ_YAZI('Program Hata Bilgileri:');
+  SISTEM_MESAJ('  Görev: %d, Kesme: %d, Hata Kodu: %d', [CalisanGorev,
+    AYazmaclar1^.ISRNo, AYazmaclar1^.HataKodu]);
+  SISTEM_MESAJ('  EIP: %x, ESP: %x', [AYazmaclar1^.EIP, AYazmaclar1^.ESP]);
+  SISTEM_MESAJ('   CS: %x,  DS: %x', [AYazmaclar1^.CS, AYazmaclar1^.DS]);
+  SISTEM_MESAJ('   ES: %x,  SS: %x', [AYazmaclar1^.ES, AYazmaclar1^.SS]);
+  SISTEM_MESAJ('   FS: %x,  GS: %x', [AYazmaclar1^.FS, AYazmaclar1^.GS]);
+  SISTEM_MESAJ('  EAX: %x, EBX: %x', [AYazmaclar1^.EAX, AYazmaclar1^.EBX]);
+  SISTEM_MESAJ('  ECX: %x, EDX: %x', [AYazmaclar1^.ECX, AYazmaclar1^.EDX]);
+  SISTEM_MESAJ('  ESI: %x, EDI: %x', [AYazmaclar1^.ESI, AYazmaclar1^.EDI]);
+  SISTEM_MESAJ('  EBP: %x, FLG: %x', [AYazmaclar1^.EBP, AYazmaclar1^.EFLAGS]);
 end;
 
 end.

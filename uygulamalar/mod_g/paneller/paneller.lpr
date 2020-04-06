@@ -33,7 +33,7 @@ begin
 
   Pencere0.Olustur(-1, 10, 10, 700, 450, ptBoyutlandirilabilir, PencereBaslik,
     $EBEBE0);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   PanelListesi[0].Olustur(Pencere0.Kimlik, 10, 10, 50, 50, 2, RENK_KIRMIZI,
     RENK_BEYAZ, RENK_SIYAH, 'Panel1');

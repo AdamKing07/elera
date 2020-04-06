@@ -35,7 +35,7 @@ begin
 
   Pencere0.Olustur(-1, 100, 20, 600, PENCERE_YUKSEKLIK, ptBoyutlandirilabilir, ProgramAdi,
     $E2E2E2);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Goster;
 

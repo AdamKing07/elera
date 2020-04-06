@@ -6,7 +6,7 @@
   Dosya Adý: yukleyici.pas
   Dosya Ýþlevi: sistem ilk açýlýþ yükleme iþlevleri gerçekleþtirir
 
-  Güncelleme Tarihi: 27/03/2020
+  Güncelleme Tarihi: 06/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -153,10 +153,22 @@ end;
   çekirdek yükleme öncesi iþlevleri çalýþtýrýr.
  ==============================================================================}
 procedure YukleIslevindenOnceCalistir;
+var
+  TSSBellekAdresi: Isaretci;
+  i: TSayi4;
 begin
 
   SistemSayaci := 0;
   ZamanlayiciSayaci := 0;
+
+  // TSS giriþlerini bellek adresleriyle eþleþtir
+  TSSBellekAdresi := Isaretci($520000);
+  for i := 1 to USTSINIR_GOREVSAYISI do
+  begin
+
+    GorevTSSListesi[i] := TSSBellekAdresi;
+    TSSBellekAdresi += TSS_UZUNLUK;
+  end;
 end;
 
 {==============================================================================

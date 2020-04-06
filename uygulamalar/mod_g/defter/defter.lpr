@@ -88,7 +88,7 @@ begin
 
   Pencere0.Olustur(-1, 10, 10, 400 + 10, 300 + 85, ptBoyutlandirilabilir, ProgramAdi,
     RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Panel0.Olustur(Pencere0.Kimlik, 0, 0, 100, 30, 0, 0, 0, 0, '');
   Panel0.Hizala(hzUst);

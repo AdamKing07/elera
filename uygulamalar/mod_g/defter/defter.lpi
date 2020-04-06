@@ -38,6 +38,8 @@
         <Filename Value="defter.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="77"/>
+        <CursorPos X="52" Y="91"/>
         <UsageCount Value="328"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -324,7 +326,6 @@
       </Position26>
       <Position27>
         <Filename Value="defter.lpr"/>
-        <Caret Line="89" Column="45" TopLine="104"/>
       </Position27>
     </JumpHistory>
   </ProjectOptions>

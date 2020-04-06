@@ -28,7 +28,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 5, 5, 290, 160, ptIletisim, ProgramAdi, $CDF0DB);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Hata := True;
 

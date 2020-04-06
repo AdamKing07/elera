@@ -79,20 +79,20 @@ begin
   GecerliFareGostegeTipi := fitBekle;
 
   // çekirdeðin kullanacaðý TSS'nin içeriðini sýfýrla
-  FillByte(GorevTSSListesi[1], SizeOf(TTSS), 0);
+  FillByte(GorevTSSListesi[1]^, 104, $00);
 
   // TSS içeriðini doldur
   //GorevTSSListesi[1].CR3 := GERCEKBELLEK_DIZINADRESI;
-  GorevTSSListesi[1].EIP := TSayi4(@SistemAnaKontrol);
-  GorevTSSListesi[1].EFLAGS := $202;
-  GorevTSSListesi[1].ESP := GOREV0_ESP;
-  GorevTSSListesi[1].CS := SECICI_SISTEM_KOD * 8;
-  GorevTSSListesi[1].DS := SECICI_SISTEM_VERI * 8;
-  GorevTSSListesi[1].ES := SECICI_SISTEM_VERI * 8;
-  GorevTSSListesi[1].SS := SECICI_SISTEM_VERI * 8;
-  GorevTSSListesi[1].FS := SECICI_SISTEM_VERI * 8;
-  GorevTSSListesi[1].GS := SECICI_SISTEM_VERI * 8;
-  GorevTSSListesi[1].SS0 := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1]^.EIP := TSayi4(@SistemAnaKontrol);
+  GorevTSSListesi[1]^.EFLAGS := $202;
+  GorevTSSListesi[1]^.ESP := GOREV0_ESP;
+  GorevTSSListesi[1]^.CS := SECICI_SISTEM_KOD * 8;
+  GorevTSSListesi[1]^.DS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1]^.ES := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1]^.SS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1]^.FS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1]^.GS := SECICI_SISTEM_VERI * 8;
+  GorevTSSListesi[1]^.SS0 := SECICI_SISTEM_VERI * 8;
 
   // not: sistem için CS ve DS seçicileri bilden programý tarafýndan
   // oluþturuldu. tekrar oluþturmaya gerek yok
@@ -100,7 +100,7 @@ begin
   // sistem için görev seçicisi (TSS)
   // Eriþim  : 1 = mevcut, 00 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
   // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
-  GDTRGirdisiEkle(SECICI_SISTEM_TSS, TSayi4(@GorevTSSListesi[1]), SizeOf(TTSS) - 1,
+  GDTRGirdisiEkle(SECICI_SISTEM_TSS, TSayi4(GorevTSSListesi[1]), 104,
     %10001001, %00010000);
 
   // sistem görev deðerlerini belirle
@@ -209,8 +209,7 @@ begin
         else if(_Tus = '4') then
         begin
 
-          _Gorev^.Calistir('disk1:\kmodtest.c');
-          //ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
+          ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
         end
         // test amaçlý
         else if(_Tus = '5') then
@@ -285,35 +284,23 @@ begin
   // görev seçicisi (TSS)
   // Eriþim  : 1 = mevcut, 00 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
   // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
-  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(@GorevTSSListesi[2]), SizeOf(TTSS) - 1,
+  GDTRGirdisiEkle(SECICI_DENETIM_TSS, TSayi4(GorevTSSListesi[2]), 104,
     %10001001, %00010000);
 
-  // çekirdeðin kullanacaðý TSS'nin içeriðini sýfýrla
-  FillByte(GorevTSSListesi[2], SizeOf(TTSS), 0);
+  // denetçinin kullanacaðý TSS'nin içeriðini sýfýrla
+  FillByte(GorevTSSListesi[2]^, 104, $00);
 
-  GorevTSSListesi[2].EIP := TSayi4(@SistemCalismasiniDenetle);    // DPL 0
-  GorevTSSListesi[2].EFLAGS := $202;
-  GorevTSSListesi[2].ESP := $4000000 - $100;
-  GorevTSSListesi[2].CS := SECICI_DENETIM_KOD * 8;
-  GorevTSSListesi[2].DS := SECICI_DENETIM_VERI * 8;
-  GorevTSSListesi[2].ES := SECICI_DENETIM_VERI * 8;
-  GorevTSSListesi[2].SS := SECICI_DENETIM_VERI * 8;
-  GorevTSSListesi[2].FS := SECICI_DENETIM_VERI * 8;
-  GorevTSSListesi[2].GS := SECICI_DENETIM_VERI * 8;
-  GorevTSSListesi[2].SS0 := SECICI_DENETIM_VERI * 8;
-  GorevTSSListesi[2].ESP0 := $4000000 - $100;
-
-  {GorevTSSListesi[2].EIP := TSayi4(@SistemCalismasiniDenetle);  // DPL 3
-  GorevTSSListesi[2].EFLAGS := $202;
-  GorevTSSListesi[2].ESP := $4000000 - $400;
-  GorevTSSListesi[2].CS := (SECICI_DENETIM_KOD * 8) + 3;
-  GorevTSSListesi[2].DS := (SECICI_DENETIM_VERI * 8) + 3;
-  GorevTSSListesi[2].ES := (SECICI_DENETIM_VERI * 8) + 3;
-  GorevTSSListesi[2].SS := (SECICI_DENETIM_VERI * 8) + 3;
-  GorevTSSListesi[2].FS := (SECICI_DENETIM_VERI * 8) + 3;
-  GorevTSSListesi[2].GS := (SECICI_DENETIM_VERI * 8) + 3;
-  GorevTSSListesi[2].SS0 := (SECICI_DENETIM_VERI * 8) + 3;
-  GorevTSSListesi[2].ESP0 := $4000000;}
+  GorevTSSListesi[2]^.EIP := TSayi4(@SistemCalismasiniDenetle);    // DPL 0
+  GorevTSSListesi[2]^.EFLAGS := $202;
+  GorevTSSListesi[2]^.ESP := $4000000 - $100;
+  GorevTSSListesi[2]^.CS := SECICI_DENETIM_KOD * 8;
+  GorevTSSListesi[2]^.DS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2]^.ES := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2]^.SS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2]^.FS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2]^.GS := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2]^.SS0 := SECICI_DENETIM_VERI * 8;
+  GorevTSSListesi[2]^.ESP0 := $4000000 - $100;
 
   // sistem görev deðerlerini belirle
   GorevListesi[2]^.GorevSayaci := 0;

@@ -36,6 +36,8 @@
         <Filename Value="agbilgi.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="16"/>
+        <CursorPos X="52" Y="30"/>
         <UsageCount Value="29"/>
         <Loaded Value="True"/>
       </Unit0>

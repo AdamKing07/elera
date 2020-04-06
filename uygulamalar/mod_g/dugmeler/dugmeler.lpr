@@ -39,7 +39,7 @@ var
 begin
   Pencere0.Olustur(-1, 200, 200, 142, 164, ptBoyutlandirilabilir, ProgramAdi,
     RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   _A1 := 8;
   _B1 := 8;

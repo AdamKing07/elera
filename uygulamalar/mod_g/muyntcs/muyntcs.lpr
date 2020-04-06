@@ -68,7 +68,7 @@ begin
   Ekran0.CozunurlukAl;
 
   // oluþturulan masaüstü sayýsýný al
-  if(Masaustu0.MevcutMasaustuSayisi >= 4) then Gorev0.Sonlandir;
+  if(Masaustu0.MevcutMasaustuSayisi >= 4) then Gorev0.Sonlandir(-1);
 
   // yeni masaüstü oluþtur
   Masaustu0.Olustur(ProgramAdi);

@@ -33,7 +33,7 @@ begin
   SonGelenMesaj := '';
 
   Pencere0.Olustur(-1, 100, 100, 310, 170, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Tuval.KalemRengi := $000000;
   Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 193.1.1.11, Port: 365');

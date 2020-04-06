@@ -31,7 +31,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 50, 50, 340, 280, ptIletisim, ProgramAdi, $D8DFB4);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Goster;
 

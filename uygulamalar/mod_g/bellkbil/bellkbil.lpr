@@ -42,7 +42,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 50, 50, 290, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   IslemGostergesi0.Olustur(Pencere0.Kimlik, 0, 86, 280, 22);
   IslemGostergesi0.DegerleriBelirle(1, 8095);

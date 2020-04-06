@@ -39,6 +39,8 @@
         <Filename Value="resimgor.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="54"/>
+        <CursorPos X="53" Y="68"/>
         <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -328,7 +330,7 @@
         <UsageCount Value="10"/>
       </Unit55>
     </Units>
-    <JumpHistory Count="8" HistoryIndex="7">
+    <JumpHistory Count="9" HistoryIndex="8">
       <Position1>
         <Filename Value="resimgor.lpr"/>
         <Caret Line="105" Column="34" TopLine="84"/>
@@ -360,6 +362,9 @@
         <Filename Value="resimgor.lpr"/>
         <Caret Line="10" Column="25"/>
       </Position8>
+      <Position9>
+        <Filename Value="resimgor.lpr"/>
+      </Position9>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

@@ -26,7 +26,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 100, 100, 400, 400, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   dugSol.Olustur(Pencere0.Kimlik, 100, 150, 45, 45, 'Sol');
   dugSol.Goster;

@@ -38,6 +38,8 @@
         <Filename Value="grfktest.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="47"/>
+        <CursorPos X="53" Y="61"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -133,7 +135,7 @@
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit16>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="grfktest.lpr"/>
         <Caret Line="61" Column="14" TopLine="38"/>
@@ -248,6 +250,9 @@
         <Filename Value="grfktest.lpr"/>
         <Caret Line="8" Column="15"/>
       </Position29>
+      <Position30>
+        <Filename Value="grfktest.lpr"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

@@ -473,7 +473,7 @@ begin
 
   _Masaustu^.DikdortgenDoldur(nil, 10, 10, 130, 44, $82E3DA, $82E3DA);
   _Masaustu^.YaziYaz(nil, 12, 16, 'EIP:', $6C3483);
-  _Masaustu^.YaziYaz(nil, 46, 16, '0x' + hexStr(GorevTSSListesi[1].EIP, 8), $6C3483);
+  _Masaustu^.YaziYaz(nil, 46, 16, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), $6C3483);
   //_Masaustu^.YaziYaz(nil, 12, 30, 'ESP:', $641E16);
   //_Masaustu^.YaziYaz(nil, 46, 30, '0x' + hexStr(GorevTSSListesi[1].ESP, 8), $641E16);
   _Masaustu^.YaziYaz(nil, 12, 30, 'DNT:', $641E16);

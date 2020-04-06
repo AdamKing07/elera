@@ -46,7 +46,7 @@ end;
 begin
 
   Pencere0.Olustur(-1, 100, 100, 300 + 8, 300 + 50, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   OnayKutusu0.Olustur(Pencere0.Kimlik, 2, 2, 'Devam Et');
   OnayKutusu0.Goster;

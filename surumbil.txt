@@ -1,5 +1,8 @@
-  + görev yöneticisine, istenilen programýn kapatýlmasý iþlevi eklendi
+  + hata veren programlarýn yazmaç içeriklerinin görüntülenmesi yeniden yapýlandýrýldý
+  + sistem mesajlarýna çoklu deðiþken desteði eklendi
+  + 3. seviye (DPL3) görevlerin (program) giriþ / çýkýþ port izin haritasý TSS'de tanýmlandý
 
+  + görev yöneticisine, istenilen programýn kapatýlmasý iþlevi eklendi
   + kaydýrma çubuðu (TKaydirmaCubugu) nesnesi ve tasarým / test programý (kaydirma.c) oluþturuldu
   + assembler ve yazý çekirdeði projeden çýkarýldý (03042020)
   + acpi taným iþlevleri eklendi

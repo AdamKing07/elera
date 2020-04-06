@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: tüm birimler için ortak paylaşılan işlevleri içerir
 
-  Güncelleme Tarihi: 03/04/2020
+  Güncelleme Tarihi: 06/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -740,45 +740,30 @@ const
 type
   PTSS = ^TTSS;
   TTSS = packed record
-    OncekiTSS: TSayi2;
-    AYRLD00: TSayi2;
+    OncekiTSS, A00: TSayi2;     // A(00)yrıldı
     ESP0: TSayi4;
-    SS0: TSayi2;
-    AYRLD01: TSayi2;
+    SS0, A01: TSayi2;
     ESP1: TSayi4;
-    SS1: TSayi2;
-    AYRLD02: TSayi2;
+    SS1, A02: TSayi2;
     ESP2: TSayi4;
-    SS2: TSayi2;
-    AYRLD03: TSayi2;
-    CR3: TSayi4;
-    EIP: TSayi4;
-    EFLAGS: TSayi4;
-    EAX: TSayi4;
-    ECX: TSayi4;
-    EDX: TSayi4;
-    EBX: TSayi4;
-    ESP: TSayi4;
-    EBP: TSayi4;
-    ESI: TSayi4;
-    EDI: TSayi4;
-    ES: TSayi2;
-    AYRLD04: TSayi2;
-    CS: TSayi2;
-    AYRLD05: TSayi2;
-    SS: TSayi2;
-    AYRLD06: TSayi2;
-    DS: TSayi2;
-    AYRLD07: TSayi2;
-    FS: TSayi2;
-    AYRLD08: TSayi2;
-    GS: TSayi2;
-    AYRLD09: TSayi2;
-    LDT: TSayi2;
-    AYRLD10: TSayi2;
-    TrapBit: TSayi2;
-    IOMap: TSayi2;
-  end;    // 104 byte
+    SS2, A03: TSayi2;
+    CR3, EIP, EFLAGS: TSayi4;
+    EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI: TSayi4;
+    ES, A04: TSayi2;
+    CS, A05: TSayi2;
+    SS, A06: TSayi2;
+    DS, A07: TSayi2;
+    FS, A08: TSayi2;
+    GS, A09: TSayi2;
+    LDT, A10: TSayi2;
+    TBit: TSayi2;               // yakalayıcı (trap) bit. hata ayıklama amaçlı
+    IOHaritaGAdres: TSayi2;     // IOHarita yapı başından uzaklık bellek adresi
+    // buraya kadar 104 byte.
+
+    IOHarita: Isaretci;
+    // IO port izin haritası kulanılacaksa her bir görev için
+    // 65536 / 8 = 8192 byte alan gerekmektedir
+  end;
 
 var
   AgYuklendi: Boolean = False;
@@ -797,8 +782,11 @@ var
 
   ToplamGNSayisi, ToplamMasaustu: TSayi4;
 
+const
+  TSS_UZUNLUK = 104 + 8192;   // 104 byte TSS, 8192 byte giriş / çıkış port izin haritası
+
 var
-  GorevTSSListesi: array[1..USTSINIR_GOREVSAYISI] of TTSS;
+  GorevTSSListesi: array[1..USTSINIR_GOREVSAYISI] of PTSS;
 
 type
   PIDTYazmac = ^TIDTYazmac;
@@ -895,7 +883,7 @@ asm
   mov ecx,AUzunluk
   mov al,ADeger
   cld
-  rep movsb
+  rep stosb
   popad
 end;
 

@@ -25,7 +25,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 100, 100, 300, 170, ptIletisim, ProgramAdi, $EADEA5);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   dugKapat.Olustur(Pencere0.Kimlik, 110, 100, 80, 22, '  Kapat');
   dugKapat.Goster;
@@ -38,7 +38,7 @@ begin
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugKapat.Kimlik) then Gorev0.Sonlandir;
+      if(OlayKayit.Kimlik = dugKapat.Kimlik) then Gorev0.Sonlandir(-1);
     end
 
     else if(OlayKayit.Olay = CO_CIZIM) then

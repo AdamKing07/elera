@@ -38,8 +38,8 @@
         <Filename Value="arpbilgi.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="13"/>
-        <CursorPos X="23" Y="29"/>
+        <TopLine Value="20"/>
+        <CursorPos X="52" Y="34"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -253,7 +253,7 @@
       </Position9>
       <Position10>
         <Filename Value="arpbilgi.lpr"/>
-        <Caret Line="29" Column="6" TopLine="13"/>
+        <Caret Line="29" Column="23" TopLine="13"/>
       </Position10>
     </JumpHistory>
   </ProjectOptions>

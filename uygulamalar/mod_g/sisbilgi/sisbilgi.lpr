@@ -66,7 +66,7 @@ end;
 begin
 
   Pencere0.Olustur(-1, 100, 100, 375, 240, ptIletisim, ProgramAdi, $F0CDE5);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   dugSistem.Olustur(Pencere0.Kimlik, 25, 5, 150, 22, 'Sistem Bilgisi');
   dugSistem.Goster;
@@ -108,7 +108,7 @@ begin
       else if(OlayKayit.Kimlik = dugKapat.Kimlik) then
       begin
 
-        Gorev0.Sonlandir;
+        Gorev0.Sonlandir(-1);
       end;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then

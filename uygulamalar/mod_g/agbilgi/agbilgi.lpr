@@ -27,7 +27,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 300, 200, 330, 230, ptIletisim, ProgramAdi, $FAE6FF);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   dugYenile.Olustur(Pencere0.Kimlik, 240, 170, 70, 20, 'Yenile');
   dugYenile.Goster;

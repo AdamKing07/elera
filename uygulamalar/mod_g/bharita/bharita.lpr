@@ -56,7 +56,7 @@ var
 begin
 
   Pencere0.Olustur(-1, 5, 5, 395, 250, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;
+  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Boþ Blok Sayýsý: 0');
   DurumCubugu0.Goster;
