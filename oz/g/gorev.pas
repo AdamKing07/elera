@@ -141,6 +141,9 @@ end;
 {==============================================================================
   görev (program) dosyalarýný çalýþtýrýr
  ==============================================================================}
+var
+  CalistirGorevNo: TSayi4 = 0;
+
 function TGorev.Calistir(ATamDosyaYolu: string): PGorev;
 var
   _Gorev: PGorev;
@@ -158,9 +161,9 @@ var
   _AygitSurucusu: PAygitSurucusu;
 begin
 
-  GorevDegisimBayragi := 0;
+  if(CalistirGorevNo <> 0) then while CalistirGorevNo <> 0 do;
 
-  asm cli end;
+  CalistirGorevNo := CalisanGorev;
 
   // boþ iþlem giriþi bul
   _Gorev := _Gorev^.Olustur;
@@ -169,8 +172,7 @@ begin
 
     SISTEM_MESAJ_YAZI('GOREV.PAS: ' + ATamDosyaYolu + ' için görev oluþturulamýyor!');
     Result := nil;
-    GorevDegisimBayragi := 1;
-    asm sti end;
+    CalistirGorevNo := 0;
     Exit;
   end;
 
@@ -223,8 +225,7 @@ begin
 
       SISTEM_MESAJ_YAZI('GOREV.PAS: ' + ATamDosyaYolu + ' için yeterli bellek yok!');
       Result := nil;
-      GorevDegisimBayragi := 1;
-      asm sti end;
+      CalistirGorevNo := 0;
       Exit;
     end;
 
@@ -236,8 +237,7 @@ begin
       CloseFile(_DosyaKimlik);
       SISTEM_MESAJ_YAZI('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý okunamýyor!');
       Result := nil;
-      GorevDegisimBayragi := 1;
-      asm sti end;
+      CalistirGorevNo := 0;
       Exit;
     end;
 
@@ -259,8 +259,7 @@ begin
       SISTEM_MESAJ_S16('Deðer-1: ', _AygitSurucusu^.Deger1, 8);
       SISTEM_MESAJ_S16('Deðer-2: ', _AygitSurucusu^.Deger2, 8);
       SISTEM_MESAJ_S16('Deðer-3: ', _AygitSurucusu^.Deger3, 8);
-      GorevDegisimBayragi := 1;
-      asm sti end;
+      CalistirGorevNo := 0;
       Exit;
     end;
 
@@ -271,8 +270,7 @@ begin
 
       SISTEM_MESAJ_YAZI('GOREV.PAS: olay bilgisi için bellek ayrýlamýyor!');
       Result := nil;
-      GorevDegisimBayragi := 1;
-      asm sti end;
+      CalistirGorevNo := 0;
       Exit;
     end;
 
@@ -331,19 +329,17 @@ begin
     // görev bellek adresini geri döndür
     Result := @Self;
 
-    GorevDegisimBayragi := 1;
-
-    asm sti end;
+    CalistirGorevNo := 0;
   end
   else
   begin
 
     CloseFile(_DosyaKimlik);
     _Gorev^.DurumDegistir(_Gorev^.GorevKimlik, gdBos);
-    GorevDegisimBayragi := 1;
     SISTEM_MESAJ_YAZI('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý bulunamadý!');
-    asm sti end;
   end;
+
+  CalistirGorevNo := 0;
 end;
 
 {==============================================================================
@@ -595,15 +591,18 @@ end;
 {==============================================================================
   çalýþan görevi sonlandýrýr
  ==============================================================================}
+var
+  SonlandirGorevNo: TSayi4 = 0;
+
 function TGorev.Sonlandir(AGorevKimlik: TGorevKimlik;
   const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
 var
   _Gorev: PGorev;
 begin
 
-  GorevDegisimBayragi := 0;
+  if(SonlandirGorevNo <> 0) then while SonlandirGorevNo <> 0 do;
 
-  //cli;
+  SonlandirGorevNo := CalisanGorev;
 
   // çalýþan görevi durdur
   _Gorev^.DurumDegistir(AGorevKimlik, gdDurduruldu);
@@ -648,11 +647,7 @@ begin
 
   GAktifMasaustu^.Guncelle;
 
-  //sti;
-
-  //asm jmp SistemAnaKontrol; end;
-
-  GorevDegisimBayragi := 1;
+  SonlandirGorevNo := 0;
 end;
 
 {==============================================================================

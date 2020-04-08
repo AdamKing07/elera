@@ -6,7 +6,7 @@
   Dosya Adý: yonetim.pas
   Dosya Ýþlevi: sistem ana yönetim / kontrol kýsmý
 
-  Güncelleme Tarihi: 01/04/2020
+  Güncelleme Tarihi: 07/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -28,8 +28,6 @@ type
     VideoBellekAdresi: TSayi4;
     VideoPixelBasinaBitSayisi: TSayi1;
     VideoSatirdakiByteSayisi: TSayi2;
-    // CekirdekCalismaModu: 1 = pascal grafik, 2 = pascal text, 3 = assembly
-    CekirdekCalismaModu: TSayi2;
     CekirdekBaslangicAdresi: TSayi4;
     CekirdekKodUzunluk: TSayi4;
   end;
@@ -110,12 +108,7 @@ begin
   GorevListesi[1]^.OlaySayisi := 0;
   GorevListesi[1]^.EvBuffer := nil;
 
-  // sistem görev adý (dosya adý)
-  case _GMBilgi^.CekirdekCalismaModu of
-    1: GorevListesi[1]^.FProgramAdi := 'cekirdkg.bin';
-    2: GorevListesi[1]^.FProgramAdi := 'cekirdky.bin';
-    3: GorevListesi[1]^.FProgramAdi := 'cekirdka.bin';
-  end;
+  GorevListesi[1]^.FProgramAdi := 'cekirdek.bin';
 
   // sistem görevini çalýþýyor olarak iþaretle
   _Gorev := GorevListesi[1];
@@ -209,6 +202,8 @@ begin
         else if(_Tus = '4') then
         begin
 
+          //_Gorev^.Calistir('disk1:\udptest.c');
+          _Gorev^.Calistir('disk1:\defter.c');
           ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
         end
         // test amaçlý

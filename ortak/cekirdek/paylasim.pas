@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: tüm birimler için ortak paylaşılan işlevleri içerir
 
-  Güncelleme Tarihi: 06/04/2020
+  Güncelleme Tarihi: 08/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,11 +17,7 @@ interface
 
 const
   ProjeBaslangicTarihi: string = '30.07.2005';
-  {$IFDEF TMODE}
-  SistemAdi: PWideChar = 'ELERA Isletim Sistemi - 0.3.4 - R30';
-  {$ELSE}
-  SistemAdi: PWideChar = 'ELERA İşletim Sistemi - 0.3.4 - R30';
-  {$ENDIF}
+  SistemAdi: PWideChar = 'ELERA İşletim Sistemi - 0.3.5 - R31';
   DerlemeTarihi: string = {$i %DATE%};
   FPCMimari: string = {$i %FPCTARGET%};
   FPCSurum: string = {$i %FPCVERSION%};

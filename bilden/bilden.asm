@@ -50,7 +50,6 @@ align 8
         video_lfb_addr          dd      0
         video_bpp               db      0
         video_bpsl              dw      0
-        kernel_work_mode        dw      0       ; 1 = pascal grafik, 2 = pascal text, 3 = assembly
         kernel_start_addr       dd      KERNEL_LOAD_ADDR
         kernel_size             dd      0
 
@@ -108,10 +107,6 @@ start:
         call    print_crlf
         mov     si,comp_review
         call    print_text
-
-        ;çalýþma modu = pascal grafiksel mod
-        ;----------------------------------------------------------------
-        mov     word[kernel_work_mode],1
 
 kernel_g:
 

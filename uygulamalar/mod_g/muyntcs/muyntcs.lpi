@@ -37,7 +37,6 @@
       <Unit0>
         <Filename Value="muyntcs.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="57"/>
         <CursorPos X="69" Y="71"/>
         <UsageCount Value="79"/>
@@ -408,6 +407,7 @@
       </Unit71>
       <Unit72>
         <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>

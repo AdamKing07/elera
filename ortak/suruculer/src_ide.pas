@@ -6,7 +6,7 @@
   Dosya Adý: src_ide.pas
   Dosya Ýþlevi: ide aygýt sürücüsü
 
-  Güncelleme Tarihi: 24/10/2019
+  Güncelleme Tarihi: 07/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -325,6 +325,9 @@ end;
 {==============================================================================
   LBA modunda 28 bitlik sektör okuma iþlemi yapar
  ==============================================================================}
+var
+  ReadSector28GorevNo: TSayi4 = 0;
+
 function ReadSector28(AFizikselSurucu: Isaretci; AIlkSektor, ASektorSayisi: TSayi4;
   AHedefBellek: Isaretci): Boolean;
 var
@@ -333,6 +336,14 @@ var
   _Deger: TSayi1;
 begin
 
+  if(ReadSector28GorevNo <> 0) then
+  begin
+
+    while ReadSector28GorevNo <> 0 do;
+  end;
+
+  ReadSector28GorevNo := CalisanGorev;
+
   // öndeðer çýkýþ deðeri
   Result := True;
 
@@ -340,7 +351,12 @@ begin
   _FizikselSurucu := AFizikselSurucu;
 
   // aygýt meþgulse çýk
-  if(IDEAygitiMesgulMu(@_FizikselSurucu^.PortBilgisi)) then Exit;
+  if(IDEAygitiMesgulMu(@_FizikselSurucu^.PortBilgisi)) then
+  begin
+
+    ReadSector28GorevNo := 0;
+    Exit;
+  end;
 
   asm cli end;
 
@@ -393,6 +409,8 @@ begin
     end else Result := False;
 
   until (ASektorSayisi = 0) or (Result = False);
+
+  ReadSector28GorevNo := 0;
 end;
 
 end.

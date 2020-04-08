@@ -125,8 +125,8 @@ begin
       begin
 
         p4 := Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-        _TSS := @GorevTSSListesi[_GorevKimlik];
-        Tasi2(_TSS, p4, SizeOf(TTSS));
+        _TSS := GorevTSSListesi[_GorevKimlik];
+        Tasi2(_TSS, p4, 104);
 
         Result := ISLEM_BASARILI;
       end else Result := HATA_GOREVNO;
