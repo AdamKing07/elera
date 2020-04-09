@@ -66,7 +66,7 @@ function IntToStr1(Val: LongInt): string;
 
 { program çaðrý baþlýk bilgileri }
 
-  {$i inc/consts.inc}
+  {$i inc/paylasim.inc}
 
   {$i inc/ekranb.inc}
   {$i inc/gorselnesneb.inc}
@@ -89,6 +89,7 @@ function IntToStr1(Val: LongInt): string;
   {$i inc/gn_secimdugmeb.inc}
   {$i inc/gn_baglantib.inc}
   {$i inc/gn_kaydirmacubugub.inc}
+  {$i inc/gn_karmalisteb.inc}
   {$i inc/olayb.inc}
   {$i inc/dosyab.inc}
   {$i inc/yazimb.inc}
@@ -306,6 +307,7 @@ end;
          {$i inc/gn_secimdugme.inc}
          {$i inc/gn_baglanti.inc}
          {$i inc/gn_kaydirmacubugu.inc}
+         {$i inc/gn_karmaliste.inc}
 				 {$i inc/olay.inc}
 				 {$i inc/dosya.inc}
 				 {$i inc/yazim.inc}

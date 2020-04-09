@@ -111,7 +111,7 @@ begin
                   _MantiksalSurucu^.FizikselSurucu := @FizikselDepolamaAygitListesi[i];
                   _MantiksalSurucu^.AygitAdi := 'disket' + IntToStr(_SurucuNo);
                   {$IFDEF BOLUMLEME_BILGI}
-                  SISTEM_MESAJ_YAZI('  + Mantýksal aygýt: ' + _MantiksalSurucu^.AygitAdi);
+                  SISTEM_MESAJ('  + Mantýksal aygýt: ' + _MantiksalSurucu^.AygitAdi, []);
                   {$ENDIF}
                   _MantiksalSurucu^.BolumIlkSektor := _AcilisKayit1x^.BolumOncesiSektorSayisi;
                   _MantiksalSurucu^.BolumToplamSektor := _AcilisKayit1x^.ToplamSektorSayisi1x;
@@ -186,7 +186,7 @@ begin
                     _MantiksalSurucu^.FizikselSurucu := @FizikselDepolamaAygitListesi[i];
                     _MantiksalSurucu^.AygitAdi := 'disk' + IntToStr(_SurucuNo);
                     {$IFDEF BOLUMLEME_BILGI}
-                    SISTEM_MESAJ_YAZI('  + Mantýksal aygit: ' + _MantiksalSurucu^.AygitAdi);
+                    SISTEM_MESAJ('  + Mantýksal aygit: ' + _MantiksalSurucu^.AygitAdi, []);
                     {$ENDIF}
                     _MantiksalSurucu^.BolumIlkSektor := _BolumIlkSektor;
                     _MantiksalSurucu^.BolumToplamSektor := _BolumToplamSektor;

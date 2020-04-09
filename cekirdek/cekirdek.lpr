@@ -74,7 +74,7 @@ begin
 //  _Gorev^.Calistir(AcilisSurucuAygiti + ':\dsyyntcs.c');
 //  _Gorev^.DurumDegistir(2, gdDurduruldu);
 
-  SISTEM_MESAJ_YAZI('+ Masaüstü yönetim programý yükleniyor...');
+  SISTEM_MESAJ('+ Masaüstü yönetim programý yükleniyor...', []);
   _Gorev^.Calistir(AcilisSurucuAygiti + ':\' + OnDegerMasaustuProgram);
 
   // sistem ana kontrol kýsmýna geçiþ yap

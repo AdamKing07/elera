@@ -317,7 +317,7 @@ begin
         AHedefBellek^.IPAdres := ARPKayitListesi[i]^.IPAdres;
         AHedefBellek^.MACAdres := ARPKayitListesi[i]^.MACAdres;
         AHedefBellek^.YasamSuresi := ARPKayitListesi[i]^.YasamSuresi;
-        Result := ISLEM_BASARILI;
+        Result := HATA_YOK;
         Exit;
       end;
     end;

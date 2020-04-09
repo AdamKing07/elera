@@ -1,4 +1,4 @@
-ELERA İşletim Sistemi (eleraos) - 0.3.5 [R31]
+ELERA İşletim Sistemi (elerais) - 0.3.5 [R31]
 
 ---
 Kullanılan Yazılım Araçları:

@@ -41,7 +41,7 @@ var
   i: TSayi1;
 begin
 
-  SISTEM_MESAJ_YAZI('+ Ses aygýtlarý yükleniyor...');
+  SISTEM_MESAJ('+ Ses aygýtlarý yükleniyor...', []);
 
   for i := 1 to 8 do
   begin
@@ -64,7 +64,7 @@ begin
         _AygitAdi := 'Sound Blaster 16/ASP/AWE 32/AWE 64'
       else _AygitAdi := 'Bilinmeyen ses kartý';
 
-      SISTEM_MESAJ_YAZI('  +-> Bulunan ses kartý: ' + _AygitAdi);
+      SISTEM_MESAJ('  +-> Bulunan ses kartý: ' + _AygitAdi, []);
 
       Exit;
     end;
@@ -131,7 +131,7 @@ begin
 
   if not(DSPSifirla($220)) then
 
-    SISTEM_MESAJ_YAZI('Ses kartý sýfýrlama hatasý!')
+    SISTEM_MESAJ('Ses kartý sýfýrlama hatasý!', [])
   else
   begin
 

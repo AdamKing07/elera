@@ -155,7 +155,7 @@ begin
       FBellekUzunlugu := 0;
       FBellek := GGercekBellek.Ayir(4095);
 
-      {SISTEM_MESAJ_YAZI('BAGLANTI.PP: Protokol -> UDP');
+      {SISTEM_MESAJ('BAGLANTI.PP: Protokol -> UDP', []);
       SISTEM_MESAJ_S16('UDP Bellek Adresi: ', TSayi4(FBellek), 8);
       SISTEM_MESAJ_IP('Hedef IP: ', AUzakIPAdres);
       SISTEM_MESAJ_S16('Kaynak Port: ', AYerelPort, 4);
@@ -169,7 +169,7 @@ begin
     if(_Baglanti <> nil) then
     begin
 
-      SISTEM_MESAJ_YAZI('BAGLANTI.PP: Protokol -> ?');
+      SISTEM_MESAJ('BAGLANTI.PP: Protokol -> ?', []);
       SISTEM_MESAJ_IP('  -> Hedef IP: ', AUzakIPAdres);
       SISTEM_MESAJ_S16('  -> Hedef Port: ', AUzakPort, 4);
     end;
@@ -304,7 +304,7 @@ begin
 
         // bağlantıyı kapatmanın diğer aşamaları sunucu + istemci olarak tcp.pas dosyasındadır
 
-        //SISTEM_MESAJ_YAZI('TCP Durum: bdKapaniyor1');
+        //SISTEM_MESAJ('TCP Durum: bdKapaniyor1', []);
 
         Result := 0;
       end;

@@ -94,7 +94,7 @@ begin
     _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.IlkSektor,
     _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.ToplamSektor, _DATBellekAdresi);
 
-  if not(_OkumaSonuc) then SISTEM_MESAJ_YAZI('Depolama aygýtý okuma hatasý!');
+  if not(_OkumaSonuc) then SISTEM_MESAJ('Depolama aygýtý okuma hatasý!', []);
 
   _OkunacakVeri := _DosyaKayit^.Uzunluk;
 

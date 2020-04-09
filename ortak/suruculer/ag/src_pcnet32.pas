@@ -221,7 +221,7 @@ begin
   Result := -1;
 
   {$IFDEF PCNET32_BILGI}
-  SISTEM_MESAJ_YAZI('PCNET32: að kartý sürücüsü yükleniyor...');
+  SISTEM_MESAJ('PCNET32: að kartý sürücüsü yükleniyor...', []);
   {$ENDIF}
 
   // sistemde birden fazla pcnet aygýtý varsa, aygýtýn çoklu
@@ -230,7 +230,7 @@ begin
   begin
 
     {$IFDEF PCNET32_BILGI}
-    SISTEM_MESAJ_YAZI('PCNET32: aygýt yalnýzca bir kez yüklenebilir!');
+    SISTEM_MESAJ('PCNET32: aygýt yalnýzca bir kez yüklenebilir!', []);
     {$ENDIF}
     Exit;
   end;
@@ -246,7 +246,7 @@ begin
   begin
 
     {$IFDEF PCNET32_BILGI}
-    SISTEM_MESAJ_YAZI('PCNET32: giriþ / çýkýþ adresi alýnamýyor!');
+    SISTEM_MESAJ('PCNET32: giriþ / çýkýþ adresi alýnamýyor!', []);
     {$ENDIF}
     Exit;
   end;
@@ -275,7 +275,7 @@ begin
   begin
 
     {$IFDEF PCNET32_BILGI}
-    SISTEM_MESAJ_YAZI('PCNET32 Mod: WIO 16 bit');
+    SISTEM_MESAJ('PCNET32 Mod: WIO 16 bit', []);
     {$ENDIF}
     CSROku  := @WIOCSROku;
     CSRYaz  := @WIOCSRYaz;
@@ -297,7 +297,7 @@ begin
     begin
 
       {$IFDEF PCNET32_BILGI}
-      SISTEM_MESAJ_YAZI('PCNET32 Mod: DWIO 32 bit');
+      SISTEM_MESAJ('PCNET32 Mod: DWIO 32 bit', []);
       {$ENDIF}
       CSROku  := @DWIOCSROku;
       CSRYaz  := @DWIOCSRYaz;
@@ -311,7 +311,7 @@ begin
     begin
 
       {$IFDEF PCNET32_BILGI}
-      SISTEM_MESAJ_YAZI('PCNET32: aygýt mevcut deðil(1)!');
+      SISTEM_MESAJ('PCNET32: aygýt mevcut deðil(1)!', []);
       {$ENDIF}
       Exit;
     end;
@@ -325,7 +325,7 @@ begin
   begin
 
     {$IFDEF PCNET32_BILGI}
-    SISTEM_MESAJ_YAZI('PCNET32: aygýt mevcut deðil(2)!');
+    SISTEM_MESAJ('PCNET32: aygýt mevcut deðil(2)!', []);
     {$ENDIF}
     Exit;
   end;
@@ -346,7 +346,7 @@ begin
   end;
 
   {$IFDEF PCNET32_BILGI}
-  SISTEM_MESAJ_YAZI('PCNET32 çip adý: ' + AygitPCNET32.CipAdi);
+  SISTEM_MESAJ('PCNET32 çip adý: ' + AygitPCNET32.CipAdi, []);
   {$ENDIF}
 
   for _i := 0 to 5 do
@@ -491,7 +491,7 @@ begin
     begin
 
       {$IFDEF PCNET32_BILGI}
-      SISTEM_MESAJ_YAZI('PCNET32: veri alým tetiklendi.');
+      SISTEM_MESAJ('PCNET32: veri alým tetiklendi.', []);
       {$ENDIF}
       //VeriAl;
     end
@@ -499,7 +499,7 @@ begin
     begin
 
     {$IFDEF PCNET32_BILGI}
-    SISTEM_MESAJ_YAZI('PCNET32: veri gönderim.');
+    SISTEM_MESAJ('PCNET32: veri gönderimi.', []);
     {$ENDIF}
     end;
   until 1 = 2;

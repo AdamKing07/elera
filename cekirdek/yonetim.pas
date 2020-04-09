@@ -194,7 +194,7 @@ begin
           while i = 0 do
           begin
 
-            SISTEM_MESAJ_YAZI('Dosya: ' + AramaKaydi.DosyaAdi);
+            SISTEM_MESAJ('Dosya: ' + AramaKaydi.DosyaAdi, []);
             i := FindNext(AramaKaydi);
           end;
           FindClose(AramaKaydi);}
@@ -203,8 +203,8 @@ begin
         begin
 
           //_Gorev^.Calistir('disk1:\udptest.c');
-          _Gorev^.Calistir('disk1:\defter.c');
-          ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
+          _Gorev^.Calistir('disk1:\udptest.c');
+          //ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
         end
         // test amaçlý
         else if(_Tus = '5') then

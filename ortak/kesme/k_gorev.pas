@@ -107,7 +107,7 @@ begin
         _GorevB1^.OlaySayisi := p^.OlaySayisi;
         _GorevB1^.ProgramAdi := p^.FProgramAdi;
 
-        Result := ISLEM_BASARILI;
+        Result := HATA_YOK;
       end else Result := HATA_GOREVNO;
     end else Result := HATA_GOREVNO;
   end
@@ -128,7 +128,7 @@ begin
         _TSS := GorevTSSListesi[_GorevKimlik];
         Tasi2(_TSS, p4, 104);
 
-        Result := ISLEM_BASARILI;
+        Result := HATA_YOK;
       end else Result := HATA_GOREVNO;
     end else Result := HATA_GOREVNO;
   end;

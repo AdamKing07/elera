@@ -100,11 +100,11 @@ begin
 
   if(RSDPTanimlayici.RSDTAdres = 0) then
 
-    SISTEM_MESAJ_YAZI('Hata: sistemde ACPI mevcut deðil!')
+    SISTEM_MESAJ('Hata: sistemde ACPI mevcut deðil!', [])
   else
   begin
 
-    SISTEM_MESAJ_YAZI('ACPI Donaným Bilgileri:');
+    SISTEM_MESAJ('ACPI Donaným Bilgileri:', []);
     SISTEM_MESAJ_S16('Adres: ', TSayi4(_RSDP), 8);
     SISTEM_MESAJ_YAZI(PChar('Ýmza: '), 5, PChar(RSDPTanimlayici.Imza), 8);
     SISTEM_MESAJ_S16('Kontrol: ', RSDPTanimlayici.Kontrol, 2);

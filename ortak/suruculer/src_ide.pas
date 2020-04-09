@@ -134,7 +134,7 @@ var
 begin
 
   {$IFDEF IDE_BILGI}
-  SISTEM_MESAJ_YAZI('+ IDE disk aygýtlarý aranýyor...');
+  SISTEM_MESAJ('+ IDE disk aygýtlarý aranýyor...', []);
   {$ENDIF}
 
   // birinci ve ikinci disk sürücüsü IRQ istek kanalýný etkinleþtir
@@ -153,13 +153,13 @@ begin
       IDEAygitBilgisiniAl(@IDEDiskListesi[i], @_Bellek);
 
       {$IFDEF IDE_BILGI}
-      SISTEM_MESAJ_YAZI('  + IDE Aygýt: ' + IntToStr(i + 1));
-      SISTEM_MESAJ_YAZI('    + IDE Port No: ' + hexStr(IDEDiskListesi[i].PortNo, 3));
-      SISTEM_MESAJ_YAZI('    + IDE Kafa Sayýsý: ' + IntToStr(_Bellek.KafaSayisi));
-      SISTEM_MESAJ_YAZI('    + IDE Silindir Sayýsý: ' + IntToStr(_Bellek.SilindirSayisi));
-      SISTEM_MESAJ_YAZI('    + IDE Ýz Baþýna Sektör: ' + IntToStr(_Bellek.IzBasinaSektor));
-      SISTEM_MESAJ_YAZI('    + IDE Toplam Sektor: ' + IntToStr(_Bellek.ToplamSektor));
-      SISTEM_MESAJ_YAZI('    + IDE Sektor Olarak Kapasite: ' + IntToStr(_Bellek.SektorOlarakKapasite));
+      SISTEM_MESAJ('  + IDE Aygýt: ' + IntToStr(i + 1), []);
+      SISTEM_MESAJ('    + IDE Port No: ' + hexStr(IDEDiskListesi[i].PortNo, 3), []);
+      SISTEM_MESAJ('    + IDE Kafa Sayýsý: ' + IntToStr(_Bellek.KafaSayisi), []);
+      SISTEM_MESAJ('    + IDE Silindir Sayýsý: ' + IntToStr(_Bellek.SilindirSayisi), []);
+      SISTEM_MESAJ('    + IDE Ýz Baþýna Sektör: ' + IntToStr(_Bellek.IzBasinaSektor), []);
+      SISTEM_MESAJ('    + IDE Toplam Sektor: ' + IntToStr(_Bellek.ToplamSektor), []);
+      SISTEM_MESAJ('    + IDE Sektor Olarak Kapasite: ' + IntToStr(_Bellek.SektorOlarakKapasite), []);
       {$ENDIF}
 
       // mevcut ise fiziksel sürücü yapýsýný oluþtur
@@ -188,7 +188,7 @@ end;
 procedure IRQ14KesmeIslevi;
 begin
 
-  SISTEM_MESAJ_YAZI('IRQ14 tetiklendi');
+  SISTEM_MESAJ('IRQ14 tetiklendi', []);
 end;
 
 {==============================================================================
@@ -197,7 +197,7 @@ end;
 procedure IRQ15KesmeIslevi;
 begin
 
-  SISTEM_MESAJ_YAZI('IRQ15 tetiklendi');
+  SISTEM_MESAJ('IRQ15 tetiklendi', []);
 end;
 
 {==============================================================================

@@ -55,7 +55,7 @@ begin
   {$IFDEF ICMP_HATAAYIKLA}
   SISTEM_MESAJ_IP('ICMP kaynak IP: ', AHedefIPAdres);
   SISTEM_MESAJ_S16('ICMP veri uzunluðu: ', _VeriUzunlugu, 4);
-  SISTEM_MESAJ_YAZI('ICMP veri: ' + _Veri);
+  SISTEM_MESAJ('ICMP veri: ' + _Veri, []);
   {$ENDIF}
 
   // istek (request) mesajýna yanýt

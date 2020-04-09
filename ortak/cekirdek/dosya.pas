@@ -102,7 +102,7 @@ begin
   if not(AAramaSuzgec[_KalinanSira] = '\') then
   begin
 
-    SISTEM_MESAJ_YAZI('DOSYA.PAS: AranacakDeger hatalý!');
+    SISTEM_MESAJ('DOSYA.PAS: AranacakDeger hatalý!', []);
     Result := 1;
     Exit;
   end;
@@ -172,9 +172,9 @@ begin
     if not(_AranacakDeger = '*.*') and (AramaSonuc = 0) then
     begin
 
-      {SISTEM_MESAJ_YAZI('Aranacak Deðer: ', _AranacakDeger);
+      {SISTEM_MESAJ('Aranacak Deðer: ', _AranacakDeger, []);
       SISTEM_MESAJ_S16('BaslangicKumeNo: ', ADosyaArama.BaslangicKumeNo, 8);
-      SISTEM_MESAJ_YAZI('Dosya Adý: ', ADosyaArama.DosyaAdi);
+      SISTEM_MESAJ('Dosya Adý: ', ADosyaArama.DosyaAdi, []);
       SISTEM_MESAJ_S16('DosyaUzunlugu: ', ADosyaArama.DosyaUzunlugu, 8);
       SISTEM_MESAJ_S16('IlkSektor: ', AramaKayitListesi[AramaKimlik].DizinGirisi.IlkSektor, 8);}
 

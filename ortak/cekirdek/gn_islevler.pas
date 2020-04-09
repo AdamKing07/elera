@@ -6,7 +6,7 @@
   Dosya Adı: gn_islevler.pas
   Dosya İşlevi: görsel nesne (visual object) işlevlerini içerir
 
-  Güncelleme Tarihi: 09/11/2019
+  Güncelleme Tarihi: 09/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit gn_islevler;
 interface
 
 uses gorselnesne, genel, paylasim, gn_masaustu, gn_pencere, gn_listekutusu, gn_menu,
-  gn_defter, gn_listegorunum;
+  gn_defter, gn_listegorunum, gn_karmaliste;
 
 var
   AktifPencere: PPencere;
@@ -169,6 +169,9 @@ begin
               else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntDefter) then
                 PDefter(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
                   PDefter(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
+              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntKarmaListe) then
+                PKarmaListe(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
+                  PKarmaListe(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
               else
 
               // <- ek kaynak kullanan görsel nesneler - SON

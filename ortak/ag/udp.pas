@@ -47,12 +47,12 @@ var
 begin
 
   {$IFDEF UDP_BILGI}
-  SISTEM_MESAJ_YAZI('-------------------------');
+  SISTEM_MESAJ('-------------------------', []);
   SISTEM_MESAJ_S16('UDP Kaynak Port: ', Takas2(TSayi2(AUDPBaslik^.KaynakPort)), 4);
   SISTEM_MESAJ_S16('UDP Hedef Port: ', Takas2(TSayi2(AUDPBaslik^.HedefPort)), 4);
   SISTEM_MESAJ_S16('UDP Veri Uzunluðu: ', AUDPBaslik^.Uzunluk, 4);
   SISTEM_MESAJ_S16('UDP Saðlama Toplamý: ', AUDPBaslik^.SaglamaToplam, 8);
-  //SISTEM_MESAJ_YAZI('UDP Veri: ' + s);
+  //SISTEM_MESAJ('UDP Veri: ' + s, []);
   {$ENDIF}
 
   _KaynakPort := Takas2(TSayi2(AUDPBaslik^.KaynakPort));
@@ -101,7 +101,7 @@ begin
     end;
     Inc(_B1);
 
-    SISTEM_MESAJ_YAZI('DNS Bilgileri: ');
+    SISTEM_MESAJ('DNS Bilgileri: ', []);
     SISTEM_MESAJ_YAZI('DNS Ad: ', _DNSAdres);
 
     _B2 := PSayi2(_B1);
@@ -144,7 +144,7 @@ begin
 
     _DNSPacket := @AUDPBaslik^.Veri;
 
-    {SISTEM_MESAJ_YAZI('UDP: NetBios');
+    {SISTEM_MESAJ('UDP: NetBios', []);
     SISTEM_MESAJ_S16('-> IslemKimlik: ', Takas2(_DNSPacket^.IslemKimlik), 4);
     SISTEM_MESAJ_S16('-> Bayrak: ', Takas2(_DNSPacket^.Bayrak), 4);
     SISTEM_MESAJ_S16('-> SorguSayisi: ', Takas2(_DNSPacket^.SorguSayisi), 4);
@@ -189,7 +189,7 @@ begin
     // ek bilgiler - additional record
     Inc(_B2);
 
-    SISTEM_MESAJ_YAZI('NetBios Bilgileri: ');
+    SISTEM_MESAJ('NetBios Bilgileri: ', []);
     SISTEM_MESAJ_YAZI('-> Ad: ', _NetBIOSAdi);
 
     SISTEM_MESAJ_S16('-> Tip: ', Takas2(_B2^), 4);
@@ -224,7 +224,7 @@ begin
   else
   begin
 
-    SISTEM_MESAJ_YAZI('UDP: Bilinmeyen istek');
+    SISTEM_MESAJ('UDP: Bilinmeyen istek', []);
     SISTEM_MESAJ_S16('-> Kaynak Port:', _KaynakPort, 8);
     SISTEM_MESAJ_S16('-> Hedef Port:', _HedefPort, 8);
   end;
@@ -233,7 +233,7 @@ begin
   if(Sock = nil) then
   begin
 
-    SISTEM_MESAJ_YAZI('Eþleþen port bulunamadý!');
+    SISTEM_MESAJ('Eþleþen port bulunamadý!', []);
     Exit;
   end
   else

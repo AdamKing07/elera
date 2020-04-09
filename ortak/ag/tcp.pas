@@ -39,7 +39,7 @@ begin
   _SistemYerelPort := Takas2(ATCPPaket^.UzakPort);      // sistemin yerel portu
 
   {$IFDEF TCP_BILGI}
-  SISTEM_MESAJ_YAZI('-------------------------');
+  SISTEM_MESAJ('-------------------------', []);
   SISTEM_MESAJ_S10('TCP: Yerel Port: ', Takas2(_SistemYerelPort));
   SISTEM_MESAJ_S10('TCP: Hedef Port: ', Takas2(_SunucuYerelPort));
   SISTEM_MESAJ_S10('TCP: Bayrak: ', ATCPBaslik^.Bayrak);
@@ -90,7 +90,7 @@ begin
         i := Takas4(ATCPPaket^.SiraNo);
         _Baglanti^.FOnayNo := i;
 
-        //SISTEM_MESAJ_YAZI('TCP Durum: TCP_BAYRAK_KABUL');
+        //SISTEM_MESAJ('TCP Durum: TCP_BAYRAK_KABUL', []);
       end
       // alýnan veri
       else if(ATCPPaket^.Bayrak = TCP_BAYRAK_GONDER or TCP_BAYRAK_KABUL) then
@@ -128,7 +128,7 @@ begin
 
         _Baglanti^.FBaglantiDurum := bdKapaniyor2;
 
-        //SISTEM_MESAJ_YAZI('TCP Durum: bdKapaniyor2');
+        //SISTEM_MESAJ('TCP Durum: bdKapaniyor2', []);
       end;
     end
     else if(_Baglanti^.FBaglantiDurum = bdKapaniyor2) then
@@ -154,7 +154,7 @@ begin
         _Baglanti^.FBagli := False;
         _Baglanti^.FBaglantiDurum := bdYok;
 
-        //SISTEM_MESAJ_YAZI('TCP Durum: baþlamadý');
+        //SISTEM_MESAJ('TCP Durum: baþlamadý', []);
       end;
     end;
   end;

@@ -6,7 +6,7 @@
   Dosya Adý: gorselnesne.pas
   Dosya Ýþlevi: tüm görsel nesnelerin ana nesnesi.
 
-  Güncelleme Tarihi: 09/11/2019
+  Güncelleme Tarihi: 09/04/2020
 
  ==============================================================================}
 {$mode objfpc}

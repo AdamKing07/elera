@@ -94,7 +94,7 @@ procedure Yukle(APCI: PPCI);
 begin
 
   UHCIAygit := APCI;
-  SISTEM_MESAJ_YAZI('  -> USB:UHCI kontrol aygýtý bulundu...');
+  SISTEM_MESAJ('  -> USB:UHCI kontrol aygýtý bulundu...', []);
 end;
 
 procedure UHCIAygitBilgileriniGoster;
@@ -106,7 +106,7 @@ begin
   if not(UHCIAygit = nil) then
   begin
 
-    SISTEM_MESAJ_YAZI('USB-UHCI Genel Bilgiler:');
+    SISTEM_MESAJ('USB-UHCI Genel Bilgiler:', []);
 
     PortNo := PCIOku4(UHCIAygit^.Yol, UHCIAygit^.Aygit, UHCIAygit^.Islev, $20) and $FFFC;
     SISTEM_MESAJ_S16('Giriþ/Çýkýþ Port No: ', PortNo, 4);
@@ -211,7 +211,7 @@ begin
   if((_Durum and UHCI_PORT_BAGLAN) = 0) then
   begin
 
-    SISTEM_MESAJ_YAZI('Baðlantý yok');
+    SISTEM_MESAJ('Baðlantý yok', []);
   end
   else
   begin
@@ -220,13 +220,13 @@ begin
     begin
 
       TamHiz := True;
-      SISTEM_MESAJ_YAZI('Tam hýz');
+      SISTEM_MESAJ('Tam hýz', []);
     end
     else
     begin
 
       TamHiz := False;
-      SISTEM_MESAJ_YAZI('Düþük hýz');
+      SISTEM_MESAJ('Düþük hýz', []);
     end;
   end;
 end;

@@ -9,9 +9,12 @@ program udptest;
 
   Güncelleme Tarihi: 26/10/2019
 
+  // udptest program adý baglanti olarak deðiþtirilecek
+
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, zamanlayici, baglanti;
+uses gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, gn_karmaliste,
+  zamanlayici, baglanti;
 
 const
   ProgramAdi: string = 'UDP Test';
@@ -22,7 +25,8 @@ var
   DurumCubugu0: TDurumCubugu;
   Zamanlayici0: TZamanlayici;
   gkMesaj: TGirisKutusu;
-  dugGonder: TDugme;
+  klBaglanti: TKarmaListe;
+  dugBaglan, dugGonder: TDugme;
   OlayKayit: TOlayKayit;
   Baglanti0: TBaglanti;
   IPAdres: TIPAdres;
@@ -32,22 +36,32 @@ begin
 
   SonGelenMesaj := '';
 
-  Pencere0.Olustur(-1, 100, 100, 310, 170, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 100, 100, 450, 150, ptIletisim, ProgramAdi, $DAF7A6);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Tuval.KalemRengi := $000000;
-  Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 193.1.1.11, Port: 365');
-  Pencere0.Tuval.YaziYaz(0, 39, 'Mesaj:');
+  Pencere0.Tuval.YaziYaz(342, 10, 'Baðlantý');
 
-  gkMesaj.Olustur(Pencere0.Kimlik, 7 * 8, 35, 170, 22, 'UDP Mesaj');
+  klBaglanti.Olustur(Pencere0.Kimlik, 338, 30, 84, 22);
+  klBaglanti.ElemanEkle('TCP');
+  klBaglanti.ElemanEkle('UDP');
+
+  Pencere0.Tuval.YaziYaz(10, 10, 'IP Adres: 193.1.1.11, Port: 365');
+
+  dugBaglan.Olustur(Pencere0.Kimlik, 268, 6, 55, 22, 'Baðlan');
+  dugBaglan.Goster;
+
+  Pencere0.Tuval.YaziYaz(10, 34, 'Mesaj:');
+
+  gkMesaj.Olustur(Pencere0.Kimlik, 66, 30, 180, 22, 'UDP Mesaj');
   gkMesaj.Goster;
 
-  dugGonder.Olustur(Pencere0.Kimlik, 232, 35, 55, 22, 'Gönder');
+  dugGonder.Olustur(Pencere0.Kimlik, 268, 30, 55, 22, 'Gönder');
   dugGonder.Goster;
 
-  Pencere0.Tuval.YaziYaz(0, 70, 'Son Gelen Mesaj:');
+  Pencere0.Tuval.YaziYaz(10, 60, 'Son Gelen Mesaj:');
   Pencere0.Tuval.KalemRengi := $FF0000;
-  Pencere0.Tuval.YaziYaz(0, 96, SonGelenMesaj);
+  Pencere0.Tuval.YaziYaz(10, 80, SonGelenMesaj);
 
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Baðlantý yok.');
   DurumCubugu0.Goster;
@@ -90,7 +104,14 @@ begin
     else if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugGonder.Kimlik) then
+      if(OlayKayit.Kimlik = dugBaglan.Kimlik) then
+      begin
+
+        s := klBaglanti.SeciliYaziAl;
+        SonGelenMesaj := s;
+        Pencere0.Ciz;
+      end
+      else if(OlayKayit.Kimlik = dugGonder.Kimlik) then
       begin
 
         s := gkMesaj.IcerikAl;
@@ -98,7 +119,6 @@ begin
         gkMesaj.IcerikYaz('');
       end;
     end
-
     else if(OlayKayit.Olay = CO_TUSBASILDI) then
     begin
 
@@ -115,12 +135,13 @@ begin
     begin
 
       Pencere0.Tuval.KalemRengi := $000000;
-      Pencere0.Tuval.YaziYaz(0, 10, 'IP Adres: 193.1.1.11, Port: 365');
-      Pencere0.Tuval.YaziYaz(0, 39, 'Mesaj:');
+      Pencere0.Tuval.YaziYaz(342, 10, 'Baðlantý');
+      Pencere0.Tuval.YaziYaz(10, 10, 'IP Adres: 193.1.1.11, Port: 365');
+      Pencere0.Tuval.YaziYaz(10, 34, 'Mesaj:');
 
-      Pencere0.Tuval.YaziYaz(0, 70, 'Son Gelen Mesaj:');
+      Pencere0.Tuval.YaziYaz(10, 60, 'Son Gelen Mesaj:');
       Pencere0.Tuval.KalemRengi := $FF0000;
-      Pencere0.Tuval.YaziYaz(0, 96, SonGelenMesaj);
+      Pencere0.Tuval.YaziYaz(10, 80, SonGelenMesaj);
     end;
 
   until (1 = 2);

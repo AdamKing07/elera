@@ -9,7 +9,7 @@ Görsel Nesne Oluþturmanýn Çekirdek Yapýsýndaki Aþamalarý:
 7. gn_pencere dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn Guncelle iþlevinin "pencere nesnesinin altýnda çizilecek nesneler" kýsmýna ise görsel nesnenin çizim iþlevini ekle
 
 Görsel Nesne Oluþturmanýn program RTL Yapýsýndaki Aþamalarý:
-1. rtl_uygulama\linux\inc\consts.inc dosya içeriðindeki "yeni nesne çaðrý baþlýklarý:" açýklamasýna çaðrý baþlýklarý ekle
+1. rtl_uygulama\linux\inc\paylasim.inc dosya içeriðindeki "yeni nesne çaðrý baþlýklarý:" açýklamasýna çaðrý baþlýklarý ekle
 2. rtl_uygulama\linux\system.pp dosya içeriðindeki "program çaðrý baþlýk bilgileri" bölümüne gn_nesneadib.inc, "program çaðrý kod bilgileri" bölümüne gn_nesneadi.inc dosya adýný ekle
 3. rtl_uygulama\linux\linux.pp uses bölümüne gn_nesneadi.pas dosya adý ekle
 4. rtl_uygulama\linux dizini altýnda gn_nesneadi.pas adýnda, object sýnýf yapýsýnda nesne çaðrýlarýný oluþtur

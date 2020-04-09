@@ -25,7 +25,7 @@ uses sistemmesaj;
 procedure Yukle(APCI: PPCI);
 begin
 
-  SISTEM_MESAJ_YAZI('  -> USB:OHCI kontrol aygýtý bulundu...');
+  SISTEM_MESAJ('  -> USB:OHCI kontrol aygýtý bulundu...', []);
 end;
 
 end.

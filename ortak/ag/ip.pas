@@ -59,7 +59,7 @@ begin
   else
   begin
 
-    SISTEM_MESAJ_YAZI('IP.PAS: bilinmeyen IP paketi:');
+    SISTEM_MESAJ('IP.PAS: bilinmeyen IP paketi:', []);
     SISTEM_MESAJ_IP('  -> Hedef IP adresi: ', AIPPaket^.HedefIP);
     SISTEM_MESAJ_S10('  -> Hedef protokol: ', AIPPaket^.Protokol);
   end;

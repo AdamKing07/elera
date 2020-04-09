@@ -170,7 +170,7 @@ begin
   if(_Gorev = nil) then
   begin
 
-    SISTEM_MESAJ_YAZI('GOREV.PAS: ' + ATamDosyaYolu + ' için görev oluþturulamýyor!');
+    SISTEM_MESAJ('GOREV.PAS: ' + ATamDosyaYolu + ' için görev oluþturulamýyor!', []);
     Result := nil;
     CalistirGorevNo := 0;
     Exit;
@@ -223,7 +223,7 @@ begin
     if(_DosyaBellek = nil) then
     begin
 
-      SISTEM_MESAJ_YAZI('GOREV.PAS: ' + ATamDosyaYolu + ' için yeterli bellek yok!');
+      SISTEM_MESAJ('GOREV.PAS: ' + ATamDosyaYolu + ' için yeterli bellek yok!', []);
       Result := nil;
       CalistirGorevNo := 0;
       Exit;
@@ -235,7 +235,7 @@ begin
 
       // dosyayý kapat
       CloseFile(_DosyaKimlik);
-      SISTEM_MESAJ_YAZI('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý okunamýyor!');
+      SISTEM_MESAJ('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý okunamýyor!', []);
       Result := nil;
       CalistirGorevNo := 0;
       Exit;
@@ -253,9 +253,9 @@ begin
     begin
 
       _AygitSurucusu := PAygitSurucusu(_DosyaBellek + PSayi4(_DosyaBellek + $100 + 8)^);
-      SISTEM_MESAJ_YAZI('Aygýt sürücüsü / açýklama');
-      SISTEM_MESAJ_YAZI(_AygitSurucusu^.AygitAdi);
-      SISTEM_MESAJ_YAZI(_AygitSurucusu^.Aciklama);
+      SISTEM_MESAJ('Aygýt sürücüsü / açýklama', []);
+      SISTEM_MESAJ(_AygitSurucusu^.AygitAdi, []);
+      SISTEM_MESAJ(_AygitSurucusu^.Aciklama, []);
       SISTEM_MESAJ_S16('Deðer-1: ', _AygitSurucusu^.Deger1, 8);
       SISTEM_MESAJ_S16('Deðer-2: ', _AygitSurucusu^.Deger2, 8);
       SISTEM_MESAJ_S16('Deðer-3: ', _AygitSurucusu^.Deger3, 8);
@@ -268,7 +268,7 @@ begin
     if(_OlayKayit = nil) then
     begin
 
-      SISTEM_MESAJ_YAZI('GOREV.PAS: olay bilgisi için bellek ayrýlamýyor!');
+      SISTEM_MESAJ('GOREV.PAS: olay bilgisi için bellek ayrýlamýyor!', []);
       Result := nil;
       CalistirGorevNo := 0;
       Exit;
@@ -336,7 +336,7 @@ begin
 
     CloseFile(_DosyaKimlik);
     _Gorev^.DurumDegistir(_Gorev^.GorevKimlik, gdBos);
-    SISTEM_MESAJ_YAZI('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý bulunamadý!');
+    SISTEM_MESAJ('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý bulunamadý!', []);
   end;
 
   CalistirGorevNo := 0;
@@ -611,16 +611,16 @@ begin
   if(ASonlanmaSebebi = -1) then
   begin
 
-    SISTEM_MESAJ_YAZI('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FProgramAdi +
-      ' normal bir þekilde sonlandýrýldý.');
+    SISTEM_MESAJ('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FProgramAdi +
+      ' normal bir þekilde sonlandýrýldý.', []);
   end
   else
   begin
 
-    SISTEM_MESAJ_YAZI('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FProgramAdi +
-      ' programý sonlandýrýldý');
-    SISTEM_MESAJ_YAZI('GOREV.PAS: Hata Kodu: ' + IntToStr(ASonlanmaSebebi) + ' - ' +
-      IstisnaAciklamaListesi[ASonlanmaSebebi]);
+    SISTEM_MESAJ('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FProgramAdi +
+      ' programý sonlandýrýldý', []);
+    SISTEM_MESAJ('GOREV.PAS: Hata Kodu: ' + IntToStr(ASonlanmaSebebi) + ' - ' +
+      IstisnaAciklamaListesi[ASonlanmaSebebi], []);
   end;
 
   // göreve ait zamanlayýcýlarý yok et

@@ -29,7 +29,7 @@ uses
   gn_dugme, gn_gucdugme, gn_listekutusu, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu,
   gn_degerdugmesi, gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim,
   gn_menu, zamanlayici, sistemmesaj, gorev, baglanti, gn_listegorunum, elera,
-  gn_resimdugme, gn_kaydirmacubugu;
+  gn_resimdugme, gn_kaydirmacubugu, gn_karmaliste;
 
 type
   TSysInfo = record

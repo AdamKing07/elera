@@ -30,7 +30,7 @@ procedure Yukle(APCI: PPCI);
 begin
 
   EHCIAygit := APCI;
-  SISTEM_MESAJ_YAZI('  -> USB:EHCI kontrol aygýtý bulundu...');
+  SISTEM_MESAJ('  -> USB:EHCI kontrol aygýtý bulundu...', []);
 end;
 
 procedure EHCIAygitBilgileriniGoster;
@@ -43,7 +43,7 @@ begin
   if not(EHCIAygit = nil) then
   begin
 
-    SISTEM_MESAJ_YAZI('USB-EHCI Genel Bilgiler:');
+    SISTEM_MESAJ('USB-EHCI Genel Bilgiler:', []);
 
     _TemelAdres := (PCIOku4(EHCIAygit^.Yol, EHCIAygit^.Aygit, EHCIAygit^.Islev, $10)
       and $FFFFFF00);

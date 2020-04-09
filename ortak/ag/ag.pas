@@ -55,17 +55,17 @@ begin
   AgBilgisi.DNSSunucusu := IPAdres0;
   AgBilgisi.IPKiraSuresi := 0;
 
-  SISTEM_MESAJ_YAZI('+ Ethernet aygýtlarý yükleniyor...');
+  SISTEM_MESAJ('+ Ethernet aygýtlarý yükleniyor...', []);
   AgAygitlariniYukle;
 
   // en az 1 að aygýtý yüklendi ise
   if(AgYuklendi) then
   begin
 
-    SISTEM_MESAJ_YAZI('+ Baðlantý yapýlarý ilk deðerlerle yükleniyor...');
+    SISTEM_MESAJ('+ Baðlantý yapýlarý ilk deðerlerle yükleniyor...', []);
     baglanti.Yukle;
 
-    SISTEM_MESAJ_YAZI('+ ARP protokolü yükleniyor...');
+    SISTEM_MESAJ('+ ARP protokolü yükleniyor...', []);
     arp.Yukle;
   end;
 
@@ -208,7 +208,7 @@ begin
 
     _IPPaket := _EthernetPaket^.Veri;
 
-    {SISTEM_MESAJ_YAZI('ETH');
+    {SISTEM_MESAJ('ETH', []);
     SISTEM_MESAJ_MAC('ETH: Kaynak MAC: ', _EthernetPaket^.KaynakMACAdres);
     SISTEM_MESAJ_MAC('ETH: Hedef MAC: ', _EthernetPaket^.HedefMACAdres);
     SISTEM_MESAJ_S16('ETH: PaketTip: ', _EthernetPaket^.PaketTip, 4);}

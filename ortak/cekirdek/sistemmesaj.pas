@@ -41,7 +41,6 @@ type
 { TODO : // aşağıdaki tüm çağrılar iptal edilerek bu çağrının içerisine alınacak }
 procedure SISTEM_MESAJ(AMesaj: string; ASayisalDegerler: array of TSayi4);
 
-procedure SISTEM_MESAJ_YAZI(AMesaj: string);
 procedure SISTEM_MESAJ_YAZI(AMesaj: PWideChar);
 procedure SISTEM_MESAJ_YAZI(AMesaj1, AMesaj2: string);
 procedure SISTEM_MESAJ_YAZI(AMesaj: PChar; AMesajUz: TISayi4);
@@ -183,17 +182,8 @@ begin
     end;
   end;
 
-  SISTEM_MESAJ_YAZI(s);
-end;
-
-{==============================================================================
-  sistem kayıtlarına mesaj ekle - sadece mesaj
- ==============================================================================}
-procedure SISTEM_MESAJ_YAZI(AMesaj: string);
-begin
-
   // sistem mesaj servisi çalışıyorsa, mesajı kayıt listesine ekle
-  if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(AMesaj);
+  if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);
 end;
 
 {==============================================================================
@@ -207,7 +197,7 @@ begin
   // 16 bitlik UTF karakterini tek bytlık ascii değere çevir
   s := UTF16Ascii(AMesaj);
 
-  SISTEM_MESAJ_YAZI(s);
+  SISTEM_MESAJ(s, []);
 end;
 
 {==============================================================================
@@ -237,7 +227,7 @@ begin
     for i := 1 to j do s := s + AMesaj2[i];
   end;
 
-  SISTEM_MESAJ_YAZI(s);
+  SISTEM_MESAJ(s, []);
 end;
 
 {==============================================================================

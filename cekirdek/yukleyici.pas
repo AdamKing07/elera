@@ -70,7 +70,7 @@ begin
 
   // NOT: SISTEM_MESAJ_'ler buradan itibaren sistem içerisine yönlendiriliyor
 
-  //SISTEM_MESAJ_YAZI('+ Sistem mesaj servisi baþlatýlýyor...');
+  //SISTEM_MESAJ('+ Sistem mesaj servisi baþlatýlýyor...', []);
   GSistemMesaj.Yukle;
 
   // uygulama deðiþkenlerini ilk deðerlerle yükle
@@ -84,45 +84,45 @@ begin
 
   // Bilgi: SISTEM_MESAJ_'ler buradan itibaren kullanýlabilir
 
-  SISTEM_MESAJ_YAZI('+ Ýþlemci bilgileri alýnýyor...');
+  SISTEM_MESAJ('+ Ýþlemci bilgileri alýnýyor...', []);
   GIslemciBilgisi.Satici := IslemciSaticisiniAl;
   IslemciOzellikleriniAl1(GIslemciBilgisi.Ozellik1_EAX, GIslemciBilgisi.Ozellik1_EDX,
     GIslemciBilgisi.Ozellik1_ECX);
 
-  SISTEM_MESAJ_YAZI('+ Zamanlayýcý yükleniyor...');
+  SISTEM_MESAJ('+ Zamanlayýcý yükleniyor...', []);
   GZamanlayici.Yukle;
 
   // Bilgi: Delay iþlevleri buradan itibaren kullanýlabilir
 
-  SISTEM_MESAJ_YAZI('+ PCI aygýtlarý aranýyor...');
+  SISTEM_MESAJ('+ PCI aygýtlarý aranýyor...', []);
   pci.Yukle;
 
-  SISTEM_MESAJ_YAZI('+ ACPI donanýmý yükleniyor...');
+  SISTEM_MESAJ('+ ACPI donanýmý yükleniyor...', []);
   acpi.Yukle;
 
-  SISTEM_MESAJ_YAZI('+ Klavye aygýtý yükleniyor...');
+  SISTEM_MESAJ('+ Klavye aygýtý yükleniyor...', []);
   src_klavye.Yukle;
 
-  SISTEM_MESAJ_YAZI('+ PS2 fare sürücüsü yükleniyor...');
+  SISTEM_MESAJ('+ PS2 fare sürücüsü yükleniyor...', []);
   GFareSurucusu.Yukle;
 
-  SISTEM_MESAJ_YAZI('+ USB aygýtlarý yükleniyor...');
+  SISTEM_MESAJ('+ USB aygýtlarý yükleniyor...', []);
   usb.Yukle;
 
-  SISTEM_MESAJ_YAZI('+ Depolama aygýtlarý yükleniyor...');
+  SISTEM_MESAJ('+ Depolama aygýtlarý yükleniyor...', []);
   DepolamaAygitlariniYukle;
 
-  SISTEM_MESAJ_YAZI('+ Mantýksal sürücü atamalarý gerçekleþtiriliyor...');
+  SISTEM_MESAJ('+ Mantýksal sürücü atamalarý gerçekleþtiriliyor...', []);
   bolumleme.Yukle;
 
   {$IFDEF SRC_COM}
-  SISTEM_MESAJ_YAZI('+ Ýletiþim (COM) portu yükleniyor...');
+  SISTEM_MESAJ('+ Ýletiþim (COM) portu yükleniyor...', []);
   src_com.Yukle;
   {$ENDIF}
 
   // sound blaster ses aygýtýný yükle
   {$IFDEF SRC_SB}
-  SISTEM_MESAJ_YAZI('+ Ses kartý yükleniyor...');
+  SISTEM_MESAJ('+ Ses kartý yükleniyor...', []);
   src_sb.Yukle;
   {$ENDIF}
 
@@ -134,10 +134,10 @@ begin
   // olay nesnesini ilk deðerlerini yükle
   GOlay.Yukle;
 
-  SISTEM_MESAJ_YAZI('+ Sistem içerisinde kullanýlacak görsel olmayan nesneler yükleniyor.');
+  SISTEM_MESAJ('+ Sistem içerisinde kullanýlacak görsel olmayan nesneler yükleniyor.', []);
   ListeleriIlkDegerlerleYukle;
 
-  SISTEM_MESAJ_YAZI('+ Görsel nesne için bellek iþlemleri yapýlýyor.');
+  SISTEM_MESAJ('+ Görsel nesne için bellek iþlemleri yapýlýyor.', []);
   gn_islevler.Yukle;
 
   // çekirdek yükleme sonrasý iþlevleri gerçekleþtir

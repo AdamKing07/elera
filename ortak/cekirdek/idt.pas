@@ -1649,7 +1649,7 @@ end;
 procedure YazmacGoruntuleHY(AYazmaclar0: PYazmaclar0);
 begin
 
-  SISTEM_MESAJ_YAZI('Program Hata Bilgileri:');
+  SISTEM_MESAJ('Program Hata Bilgileri:', []);
   SISTEM_MESAJ('  Görev: %d, Kesme: %d', [CalisanGorev, AYazmaclar0^.ISRNo]);
   SISTEM_MESAJ('  EIP: %x, ESP: %x', [AYazmaclar0^.EIP, AYazmaclar0^.ESP]);
   SISTEM_MESAJ('   CS: %x,  DS: %x', [AYazmaclar0^.CS, AYazmaclar0^.DS]);
@@ -1667,7 +1667,7 @@ end;
 procedure YazmacGoruntuleHV(AYazmaclar1: PYazmaclar1);
 begin
 
-  SISTEM_MESAJ_YAZI('Program Hata Bilgileri:');
+  SISTEM_MESAJ('Program Hata Bilgileri:', []);
   SISTEM_MESAJ('  Görev: %d, Kesme: %d, Hata Kodu: %d', [CalisanGorev,
     AYazmaclar1^.ISRNo, AYazmaclar1^.HataKodu]);
   SISTEM_MESAJ('  EIP: %x, ESP: %x', [AYazmaclar1^.EIP, AYazmaclar1^.ESP]);

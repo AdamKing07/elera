@@ -152,7 +152,7 @@ const
   PROTOKOL_ICMP = TSayi1($1);
 
 const
-  ISLEM_BASARILI              = TISayi4(0);
+  HATA_YOK                    = TISayi4(0);
   HATA_KIMLIK                 = TISayi4(-1);
   HATA_NESNE                  = TISayi4(-2);
   HATA_ATANESNE               = TISayi4(-3);
@@ -667,7 +667,7 @@ type
   TGorselNesneTipi = (gntMasaustu, gntPencere, gntDugme, gntGucDugme, gntListeKutusu,
     gntMenu, gntDefter, gntIslemGostergesi, gntIsaretKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
-    gntPanel, gntResimDugme, gntKaydirmaCubugu);
+    gntPanel, gntResimDugme, gntKaydirmaCubugu, gntKarmaListe);
 
 const
   ISLEV_OLUSTUR   = $01;
