@@ -6,7 +6,7 @@
   Dosya Adı: gn_islevler.pas
   Dosya İşlevi: görsel nesne (visual object) işlevlerini içerir
 
-  Güncelleme Tarihi: 09/04/2020
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit gn_islevler;
 interface
 
 uses gorselnesne, genel, paylasim, gn_masaustu, gn_pencere, gn_listekutusu, gn_menu,
-  gn_defter, gn_listegorunum, gn_karmaliste;
+  gn_defter, gn_listegorunum, gn_karmaliste, gn_acilirmenu;
 
 var
   AktifPencere: PPencere;
@@ -172,6 +172,9 @@ begin
               else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntKarmaListe) then
                 PKarmaListe(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
                   PKarmaListe(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
+              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntAcilirMenu) then
+                PAcilirMenu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
+                  PAcilirMenu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
               else
 
               // <- ek kaynak kullanan görsel nesneler - SON
@@ -238,10 +241,10 @@ begin
 
   // masaüstüne bağlı menü mevcut mu? test et
   // NOT: menü işlevi geçici olarak masaüstü nesnesine eklendi. geliştirilecek
-  if(GAktifMasaustu^.FBaslatmaMenusu <> nil) then
+  if(GAktifMasaustu^.FMenu <> nil) then
   begin
 
-    _SonBulunanGorselNesne := GAktifMasaustu^.FBaslatmaMenusu;
+    _SonBulunanGorselNesne := GAktifMasaustu^.FMenu;
     if(_SonBulunanGorselNesne^.Gorunum) then
     begin
 

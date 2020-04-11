@@ -6,7 +6,7 @@
   Dosya Adı: gn_masaustu.pas
   Dosya İşlevi: masaüstü yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 10/11/2019
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -23,7 +23,7 @@ type
     FMasaustuArkaPlan: TISayi4;       // 1 = renk değeri, 2 = resim
     FMasaustuRenk: TRenk;
     FGoruntuYapi: TGoruntuYapi;
-    FBaslatmaMenusu: PGorselNesne;    // başlatma düğmesine bağlanacak menü
+    FMenu: PGorselNesne;              // PMenu veya PAcilirMenu
     function Olustur(AMasaustuAdi: string): PMasaustu;
     function Olustur2: PMasaustu;
     procedure MasaustuRenginiDegistir;
@@ -198,7 +198,7 @@ begin
   _Masaustu^.Gorunum := False;
   _Masaustu^.FMasaustuArkaPlan := 1;        // masaüstü arkaplan renk değeri kullanılacak
   _Masaustu^.FMasaustuRenk := RENK_SIYAH;
-  _Masaustu^.FBaslatmaMenusu := nil;
+  _Masaustu^.FMenu := nil;
 
   // nesnenin ad ve başlık değeri
   _Masaustu^.NesneAdi := NesneAdiAl(gntMasaustu);
@@ -361,8 +361,8 @@ begin
   _Masaustu := PMasaustu(_Masaustu^.NesneTipiniKontrolEt(AKimlik, gntMasaustu));
   if(_Masaustu = nil) then Exit;
 
-  // sol fare tuş basımı
-  if(AOlay.Olay = FO_SOLTUS_BASILDI) then
+  // sağ / sol fare tuş basımı
+  if(AOlay.Olay = FO_SAGTUS_BASILDI) or (AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // olayları bu nesneye yönlendir
@@ -370,21 +370,23 @@ begin
 
     // uygulamaya mesaj gönder
     GorevListesi[_Masaustu^.GorevKimlik]^.OlayEkle1(_Masaustu^.GorevKimlik,
-      _Masaustu, FO_SOLTUS_BASILDI, AOlay.Deger1, AOlay.Deger2);
+      _Masaustu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
   end
 
-  // sol fare tuş bırakımı
-  else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
+  // sağ / sol fare tuş bırakımı
+  else if(AOlay.Olay = FO_SAGTUS_BIRAKILDI) or (AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
     // olayları bu nesneye yönlendirmeyi iptal et
     OlayYakalamayiBirak(_Masaustu);
 
     // uygulamaya mesaj gönder
+    if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
+      GorevListesi[_Masaustu^.GorevKimlik]^.OlayEkle1(_Masaustu^.GorevKimlik,
+        _Masaustu, FO_TIKLAMA, AOlay.Deger1, AOlay.Deger2);
+
     GorevListesi[_Masaustu^.GorevKimlik]^.OlayEkle1(_Masaustu^.GorevKimlik,
-      _Masaustu, FO_TIKLAMA, AOlay.Deger1, AOlay.Deger2);
-    GorevListesi[_Masaustu^.GorevKimlik]^.OlayEkle1(_Masaustu^.GorevKimlik,
-      _Masaustu, FO_SOLTUS_BIRAKILDI, AOlay.Deger1, AOlay.Deger2);
+      _Masaustu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
   end;
 
   // geçerli fare göstergesini güncelle

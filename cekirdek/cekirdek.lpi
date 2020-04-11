@@ -36,7 +36,7 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="241">
+    <Units Count="242">
       <Unit0>
         <Filename Value="cekirdek.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -538,11 +538,8 @@
       <Unit79>
         <Filename Value="yukleyici.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="127"/>
-        <CursorPos X="28" Y="137"/>
+        <EditorIndex Value="-1"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
       </Unit79>
       <Unit80>
         <Filename Value="macmsg.pp"/>
@@ -635,8 +632,7 @@
         <Filename Value="..\surumbil.txt"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="5"/>
-        <CursorPos X="58"/>
+        <EditorIndex Value="3"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -651,7 +647,7 @@
       <Unit95>
         <Filename Value="..\bellek.txt"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="27" Y="18"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -910,6 +906,8 @@
         <Filename Value="..\ortak\cekirdek\sistemmesaj.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="139"/>
+        <CursorPos X="8" Y="153"/>
         <UsageCount Value="224"/>
       </Unit134>
       <Unit135>
@@ -927,11 +925,10 @@
       <Unit137>
         <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="671"/>
-        <CursorPos X="18" Y="687"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="654"/>
+        <CursorPos X="7" Y="668"/>
         <UsageCount Value="224"/>
-        <Loaded Value="True"/>
       </Unit137>
       <Unit138>
         <Filename Value="..\ortak\cekirdek\pci.pas"/>
@@ -1035,6 +1032,8 @@
         <Filename Value="..\ortak\suruculer\fare\src_ps2.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="16" Y="28"/>
         <UsageCount Value="224"/>
       </Unit153>
       <Unit154>
@@ -1394,6 +1393,7 @@
         <Filename Value="..\gorselnesne\gn_gucdugme.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <CursorPos Y="290"/>
         <UsageCount Value="224"/>
       </Unit212>
       <Unit213>
@@ -1430,7 +1430,6 @@
         <Filename Value="..\gorselnesne\gn_menu.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="57" Y="17"/>
         <UsageCount Value="224"/>
       </Unit218>
       <Unit219>
@@ -1499,13 +1498,13 @@
         <Filename Value="..\gorselnesne\gn_resimdugme.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="185"/>
+        <UsageCount Value="193"/>
       </Unit229>
       <Unit230>
         <Filename Value="..\ortak\donanim\acpi.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="124"/>
+        <UsageCount Value="132"/>
       </Unit230>
       <Unit231>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\i386\i386.inc"/>
@@ -1525,7 +1524,7 @@
         <Filename Value="..\gorselnesne\gn_kaydirmacubugu.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="80"/>
+        <UsageCount Value="88"/>
       </Unit233>
       <Unit234>
         <Filename Value="..\rtl_uygulama\linux\inc\gn_kaydirmacubugu.inc"/>
@@ -1561,21 +1560,22 @@
         <Filename Value="..\ortak\diger\hamresim2.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="84"/>
       </Unit239>
       <Unit240>
         <Filename Value="..\gorselnesne\gn_karmaliste.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="40"/>
       </Unit240>
+      <Unit241>
+        <Filename Value="..\gorselnesne\gn_acilirmenu.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="28"/>
+      </Unit241>
     </Units>
-    <JumpHistory Count="1">
-      <Position1>
-        <Filename Value="..\surumbil.txt"/>
-        <Caret Column="59"/>
-      </Position1>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>

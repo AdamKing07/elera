@@ -6,7 +6,7 @@
   Dosya Adý: olay.pas
   Dosya Ýþlevi: olay yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 09/04/2020
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,7 +17,7 @@ interface
 uses gorselnesne, paylasim, gn_masaustu, gn_pencere, gn_dugme, gn_gucdugme, gn_listekutusu,
   gn_menu, gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_panel, gn_resimdugme, gn_kaydirmacubugu, gn_karmaliste;
+  gn_panel, gn_resimdugme, gn_kaydirmacubugu, gn_karmaliste, gn_acilirmenu;
 
 type
   TOlay = object
@@ -321,6 +321,19 @@ begin
     gntResimDugme     : PResimDugme(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
     gntKaydirmaCubugu : PKaydirmaCubugu(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
     gntKarmaListe     : PKarmaListe(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
+    gntAcilirMenu     : PAcilirMenu(AGorselNesne)^.OlaylariIsle(_Kimlik, AOlayKayit);
+  end;
+
+  // tuþ basýmý esnasýnda açýk bir menü var ise kapatýlacak
+  if(AOlayKayit.Olay = FO_SOLTUS_BASILDI) or (AOlayKayit.Olay = FO_SAGTUS_BASILDI) then
+  begin
+
+    if not(GAktifMasaustu^.FMenu = nil) then
+    begin
+
+      if(GAktifMasaustu^.FMenu^.FGorselNesneTipi = gntMenu) then PMenu(GAktifMasaustu^.FMenu)^.Gizle
+      else if(GAktifMasaustu^.FMenu^.FGorselNesneTipi = gntAcilirMenu) then PAcilirMenu(GAktifMasaustu^.FMenu)^.Gizle
+    end;
   end;
 end;
 

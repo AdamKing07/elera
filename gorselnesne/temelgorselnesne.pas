@@ -6,7 +6,7 @@
   Dosya Adý: temelgorselnesne.pas
   Dosya Ýþlevi: temel görsel nesne yapýsýný içerir
 
-  Güncelleme Tarihi: 09/04/2020
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -67,6 +67,7 @@ var
   ResimDugmeSayac: TISayi4 = 0;
   KaydirmaCubugu: TISayi4 = 0;
   KarmaListe: TISayi4 = 0;
+  AcilirMenu: TISayi4 = 0;
 
 {
   (1) FKalinlik deðeri, alt nesne içeren nesneler için alt nesnelerin baþlangýç koordinat
@@ -193,6 +194,11 @@ begin
     begin
       Inc(KarmaListe);
       Result := 'karmaliste' + '.' + IntToStr(KarmaListe);
+    end;
+    gntAcilirMenu:
+    begin
+      Inc(AcilirMenu);
+      Result := 'açýlýrmenu' + '.' + IntToStr(AcilirMenu);
     end;
   end;
 end;

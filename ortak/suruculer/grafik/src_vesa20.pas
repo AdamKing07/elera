@@ -6,7 +6,7 @@
   Dosya Adı: src_vesa20.pas
   Dosya İşlevi: genel vesa 2.0 grafik kartı sürücüsü
 
-  Güncelleme Tarihi: 13/10/2019
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -45,7 +45,7 @@ procedure TaniBilgileriniMasaustuneYaz;
 
 implementation
 
-uses genel, donusum, gn_menu, fareimlec, gdt;
+uses genel, donusum, gn_menu, gn_acilirmenu, fareimlec, gdt;
 
 var
   ArkaBellek, EkranBellegi: Isaretci;
@@ -284,15 +284,17 @@ procedure TEkranKartSurucusu.GorselNesneleriArkaBellegeCiz;
 var
   _Masaustu: PMasaustu;
   _Pencere: PPencere;
-  _BaslatmaMenusu: PMenu;
+  _BaslatMenu: PMenu;
+  _MasaustuMenu: PAcilirMenu;
   _PencereBellekAdresi: PPGorselNesne;
   _KaynakA1, _KaynakA2,       // nesnelerin taşınması için
   _KaynakB1, _KaynakB2,       // nesnelerin taşınması için
   _HedefA1, _HedefB1,         // nesnelerin taşınması için
   _B1, _B2, _A2, _KaynakSatirdakiByteSayisi,
   _HedefSatirdakiByteSayisi: TISayi4;
-  _KaynakBellek, _HedefBellek: Isaretci;
+  _KaynakBellek, _HedefBellek, CizimBellekAdresi: Isaretci;
   _NoktaBasinaByteSayisi, i, j: TSayi4;
+  MenuCiz: Boolean;
 begin
 
   // geçerli masaüstü yok ise çık
@@ -422,17 +424,49 @@ begin
     end;
   end;
 
-  // 3. ana menünün alt nesnelerin arka belleğe çizilmesi
-  _BaslatmaMenusu := PMenu(_Masaustu^.FBaslatmaMenusu);
-  if(_BaslatmaMenusu^.Gorunum) then
+  // 3. başlat menü veya açılır menünün arka belleğe çizilmesi
+  MenuCiz := False;
+  if(_Masaustu^.FMenu^.FGorselNesneTipi = gntMenu) then
   begin
 
-    _BaslatmaMenusu^.Ciz;
+    _BaslatMenu := PMenu(_Masaustu^.FMenu);
 
-    _KaynakA1 := _BaslatmaMenusu^.FBoyutlar.Sol2;
-    _KaynakB1 := _BaslatmaMenusu^.FBoyutlar.Ust2;
-    _A2 := _BaslatmaMenusu^.FBoyutlar.Genislik2;     // sütundaki toplam pixel sayısı
-    _B2 := _BaslatmaMenusu^.FBoyutlar.Yukseklik2;    // satırdaki toplam pixel sayısı
+    _KaynakA1 := _BaslatMenu^.FBoyutlar.Sol2;
+    _KaynakB1 := _BaslatMenu^.FBoyutlar.Ust2;
+    _A2 := _BaslatMenu^.FBoyutlar.Genislik2;     // sütundaki toplam pixel sayısı
+    _B2 := _BaslatMenu^.FBoyutlar.Yukseklik2;    // satırdaki toplam pixel sayısı
+
+    CizimBellekAdresi := _BaslatMenu^.FCizimBellekAdresi;
+
+    if(_BaslatMenu^.Gorunum) then
+    begin
+
+      MenuCiz := True;
+      _BaslatMenu^.Ciz;
+    end;
+  end
+  else
+  begin
+
+    _MasaustuMenu := PAcilirMenu(_Masaustu^.FMenu);
+
+    _KaynakA1 := _MasaustuMenu^.FBoyutlar.Sol2;
+    _KaynakB1 := _MasaustuMenu^.FBoyutlar.Ust2;
+    _A2 := _MasaustuMenu^.FBoyutlar.Genislik2;     // sütundaki toplam pixel sayısı
+    _B2 := _MasaustuMenu^.FBoyutlar.Yukseklik2;    // satırdaki toplam pixel sayısı
+
+    CizimBellekAdresi := _MasaustuMenu^.FCizimBellekAdresi;
+
+    if(_MasaustuMenu^.Gorunum) then
+    begin
+
+      MenuCiz := True;
+      _MasaustuMenu^.Ciz;
+    end;
+  end;
+
+  if(MenuCiz) then
+  begin
 
     _NoktaBasinaByteSayisi := KartBilgisi.NoktaBasinaByteSayisi;
     _HedefSatirdakiByteSayisi := KartBilgisi.SatirdakiByteSayisi;
@@ -441,7 +475,7 @@ begin
     for _B1 := 0 to _B2 - 1 do
     begin
 
-      _KaynakBellek := (_B1 * _KaynakSatirdakiByteSayisi) + _BaslatmaMenusu^.FCizimBellekAdresi;
+      _KaynakBellek := (_B1 * _KaynakSatirdakiByteSayisi) + CizimBellekAdresi;
       _HedefBellek := (((_B1 + _KaynakB1) * _HedefSatirdakiByteSayisi) + (_KaynakA1 * _NoktaBasinaByteSayisi)) + ArkaBellek;
 
       asm

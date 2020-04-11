@@ -4,7 +4,7 @@ Görsel Nesne Oluþturmanýn Çekirdek Yapýsýndaki Aþamalarý:
 2. görsel nesneyi object nesnesi olarak kodlayarak kök dizindeki gorselnesne klasörüne gn_gorselnesneadi.pas adýyla kaydet
 3. k_gorselnesne.pas dosyasýnýn uses bölümüne nesnenin dosya adýný, kesme çaðrý iþlevi olan xxxCagriIslevleri iþlevini GorselNesneListesi dizisine ekle ve MEVCUT_GN_SAYISI deðerini bir artýr
 4. temelgorselnesne.pas NesneAdiAl iþlevine görsel nesnenin ad tanýmýný ekle
-5. görsel nesne ek kaynak kullanýyorsa (TPencere, TListeGorunum gibi), ek kaynaklarýn yok edilmesi için gn_islevler GorevGorselNesneleriniYokEt iþlevinin "ek kaynak kullanan görsel nesneler" açýklama kýsmýnýn bulunduðu alana nesnenin yok edici (YokEt) iþlevini ekle
+5. görsel nesne ek kaynak kullanýyorsa (TPencere, TListeGorunum gibi), ek kaynaklarýn yok edilmesi için gn_islevler dosyasýnýn uses bölümüne nesne adýný, GorevGorselNesneleriniYokEt iþlevinin "ek kaynak kullanan görsel nesneler" açýklama kýsmýnýn bulunduðu alana nesnenin yok edici (YokEt) iþlevini ekle
 6. olay.pas dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn OlaylariYonlendir iþlevinin "görsel nesnenin olaylarýnýn ekleneceði kýsým" bölümüne ise görsel nesnenin OlaylariIsle iþlevini ekle
 7. gn_pencere dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn Guncelle iþlevinin "pencere nesnesinin altýnda çizilecek nesneler" kýsmýna ise görsel nesnenin çizim iþlevini ekle
 

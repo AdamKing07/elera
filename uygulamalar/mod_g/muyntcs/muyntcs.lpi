@@ -33,13 +33,12 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="76">
+    <Units Count="82">
       <Unit0>
         <Filename Value="muyntcs.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="57"/>
-        <CursorPos X="69" Y="71"/>
-        <UsageCount Value="79"/>
+        <IsVisibleTab Value="True"/>
+        <UsageCount Value="80"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -385,7 +384,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit69>
       <Unit70>
@@ -395,164 +394,96 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit70>
       <Unit71>
         <Filename Value="derle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit71>
       <Unit72>
         <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="13"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit72>
       <Unit73>
         <Filename Value="../../../rtl_uygulama/linux/inc/gn_menub.inc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="77" Y="4"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit73>
       <Unit74>
         <Filename Value="../../../rtl_uygulama/linux/inc/gn_menu.inc"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit74>
       <Unit75>
         <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="15"/>
+        <TopLine Value="19"/>
         <CursorPos X="5" Y="33"/>
         <UsageCount Value="10"/>
       </Unit75>
+      <Unit76>
+        <Filename Value="../../../rtl_uygulama/linux/inc/paylasim.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit76>
+      <Unit77>
+        <Filename Value="../../../rtl_uygulama/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit77>
+      <Unit78>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gn_acilirmenub.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="25" Y="2"/>
+        <UsageCount Value="10"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gn_acilirmenu.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="25" Y="12"/>
+        <UsageCount Value="10"/>
+      </Unit79>
+      <Unit80>
+        <Filename Value="../../../rtl_uygulama/linux/gn_acilirmenu.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="39"/>
+        <UsageCount Value="10"/>
+      </Unit80>
+      <Unit81>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gn_pencere.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit81>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="5" HistoryIndex="4">
       <Position1>
         <Filename Value="muyntcs.lpr"/>
-        <Caret Line="14" Column="22"/>
+        <Caret Line="204" Column="28" TopLine="182"/>
       </Position1>
       <Position2>
         <Filename Value="muyntcs.lpr"/>
-        <Caret Line="106" Column="5" TopLine="91"/>
+        <Caret Line="53" Column="24" TopLine="34"/>
       </Position2>
       <Position3>
         <Filename Value="muyntcs.lpr"/>
-        <Caret Line="55" Column="29" TopLine="40"/>
+        <Caret Line="268" Column="36" TopLine="256"/>
       </Position3>
       <Position4>
         <Filename Value="muyntcs.lpr"/>
-        <Caret Line="15" Column="36" TopLine="11"/>
+        <Caret Line="181" Column="58" TopLine="168"/>
       </Position4>
       <Position5>
         <Filename Value="muyntcs.lpr"/>
-        <Caret Line="107" Column="66" TopLine="93"/>
+        <Caret Line="10" Column="33"/>
       </Position5>
-      <Position6>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="54" Column="3" TopLine="40"/>
-      </Position6>
-      <Position7>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="106" TopLine="101"/>
-      </Position7>
-      <Position8>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="55" Column="33" TopLine="40"/>
-      </Position8>
-      <Position9>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="23" Column="89" TopLine="10"/>
-      </Position9>
-      <Position10>
-        <Filename Value="../../../rtl_uygulama/linux/inc/gn_menub.inc"/>
-        <Caret Column="70"/>
-      </Position10>
-      <Position11>
-        <Filename Value="../../../rtl_uygulama/linux/inc/gn_menu.inc"/>
-        <Caret Line="20" Column="15"/>
-      </Position11>
-      <Position12>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="38" Column="12" TopLine="25"/>
-      </Position12>
-      <Position13>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="40" Column="12" TopLine="21"/>
-      </Position13>
-      <Position14>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="38" Column="77" TopLine="21"/>
-      </Position14>
-      <Position15>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="26" Column="44" TopLine="5"/>
-      </Position15>
-      <Position16>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="55" Column="46" TopLine="29"/>
-      </Position16>
-      <Position17>
-        <Filename Value="../../../rtl_uygulama/linux/inc/gn_menu.inc"/>
-        <Caret Line="26" Column="62"/>
-      </Position17>
-      <Position18>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-        <Caret Line="51" Column="59" TopLine="29"/>
-      </Position18>
-      <Position19>
-        <Filename Value="../../../rtl_uygulama/linux/gn_menu.pas"/>
-      </Position19>
-      <Position20>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="161" Column="18" TopLine="142"/>
-      </Position20>
-      <Position21>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="162" Column="18" TopLine="142"/>
-      </Position21>
-      <Position22>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="163" Column="18" TopLine="142"/>
-      </Position22>
-      <Position23>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="164" Column="18" TopLine="142"/>
-      </Position23>
-      <Position24>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="165" Column="18" TopLine="142"/>
-      </Position24>
-      <Position25>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="166" Column="18" TopLine="142"/>
-      </Position25>
-      <Position26>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="167" Column="18" TopLine="142"/>
-      </Position26>
-      <Position27>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="168" Column="18" TopLine="142"/>
-      </Position27>
-      <Position28>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="167" Column="49" TopLine="142"/>
-      </Position28>
-      <Position29>
-        <Filename Value="muyntcs.lpr"/>
-        <Caret Line="169" Column="57" TopLine="142"/>
-      </Position29>
-      <Position30>
-        <Filename Value="../../../rtl_uygulama/linux/inc/gn_menub.inc"/>
-        <Caret Line="4" Column="77"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

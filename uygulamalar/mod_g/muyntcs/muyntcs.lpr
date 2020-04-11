@@ -7,12 +7,12 @@ program muyntcs;
   Program Adý: muyntcs.lpr
   Program Ýþlevi: çoklu masaüstü yönetim programý
 
-  Güncelleme Tarihi: 11/11/2019
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
 uses gorev, ekran, gn_masaustu, gn_pencere, zamanlayici, gn_dugme, gn_gucdugme,
-  gn_menu, gn_etiket, gn_resimdugme;
+  gn_menu, gn_etiket, gn_resimdugme, gn_acilirmenu;
 
 const
   PROGRAM_SAYISI = 10;
@@ -44,12 +44,19 @@ const
     ('Program Yazmaç Bilgileri'),
     ('Sistem Mesaj Görüntüleyicisi'));
 
+  MasaustuMenuProgramAdi: array[0..3] of string = (
+      ('mustudk.c'),
+      ('haklar.txt'),
+      ('nesnegor.c'),
+      ('grafik3.c'));
+
 var
   Gorev0: TGorev;
   Ekran0: TEkran;
   Masaustu0: TMasaustu;
   Pencere0: TPencere;
   menBaslat: TMenu;
+  amenMasaustu: TAcilirMenu;
   gdELERA: TGucDugme;
   dugDosyaYoneticisi, dugMesajGoruntuleyici,
   dugGorevYoneticisi: TDugme; //TResimDugme;
@@ -171,6 +178,12 @@ begin
     end;
   end;
 
+  amenMasaustu.Olustur($2C3E50, RENK_BEYAZ, $7FB3D5, RENK_SIYAH, RENK_BEYAZ);
+  amenMasaustu.ElemanEkle('Duvar Kaðýdýný Deðiþtir', 12);
+  amenMasaustu.ElemanEkle('Telif Hakký Dosyasýný Görüntüle', 12);
+  amenMasaustu.ElemanEkle('Nesne Görüntüleyiciyi Çalýþtýr', 12);
+  amenMasaustu.ElemanEkle('Ekran Koruyucuyu Çalýþtýr', 12);
+
   // ve ana döngü
   repeat
 
@@ -179,13 +192,20 @@ begin
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
-      // ana menüye týklandýðýnda
+      // baþlat menüsüne týklandýðýnda
       if(OlayKayit.Kimlik = menBaslat.Kimlik) then
       begin
 
         gdELERA.DurumYaz(0);
         i := menBaslat.SeciliSiraNoAl;
         Gorev0.Calistir(Programlar[i]);
+      end
+      // masaüstü menüsüne týklandýðýnda
+      else if(OlayKayit.Kimlik = amenMasaustu.Kimlik) then
+      begin
+
+        i := amenMasaustu.SeciliSiraNoAl;
+        Gorev0.Calistir(MasaustuMenuProgramAdi[i]);
       end
 
       else if(OlayKayit.Kimlik = dugDosyaYoneticisi.Kimlik) then
@@ -242,6 +262,13 @@ begin
         Masaustu0.Aktiflestir(4);
       end
     end
+    // masaüstüne sað tuþ basýlýp býrakýldýðýnda
+    else if(OlayKayit.Olay = FO_SAGTUS_BIRAKILDI) then
+    begin
+
+      if(OlayKayit.Kimlik = Masaustu0.Kimlik) then amenMasaustu.Goster;
+    end
+
     // baþlat menüsü
     else if(OlayKayit.Olay = CO_DURUMDEGISTI) then
     begin

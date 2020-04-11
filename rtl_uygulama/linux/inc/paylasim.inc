@@ -1,3 +1,15 @@
+{==============================================================================
+
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasına bakınız
+
+  Dosya Adı: paylasim.pas
+  Dosya İşlevi: program arabiriminde kullanılacak sabit değerleri içerir
+
+  Güncelleme Tarihi: 11/04/2020
+
+ ==============================================================================}
+{$mode objfpc}
 const
   ISLEM_BASARILI              = TISayi4(0);
   HATA_KIMLIK                 = TISayi4(-1);
@@ -167,6 +179,12 @@ const
   KARMALISTE_TEMIZLE 	        = $03001500 + SAC_GNESNE;
   KARMALISTE_SECILIYAZIAL     = $04001500 + SAC_GNESNE;
   KARMALISTE_HIZALA           = $01041500 + SAC_GNESNE;
+
+  ACILIRMENU_OLUSTUR	        = $00011600 + SAC_GNESNE;
+  ACILIRMENU_GOSTER	          = $00081600 + SAC_GNESNE;
+  ACILIRMENU_GIZLE	          = $00201600 + SAC_GNESNE;
+  ACILIRMENU_ELEMANEKLE	      = $01001600 + SAC_GNESNE;
+  ACILIRMENU_SECILISIRANOAL   = $02001600 + SAC_GNESNE;
 
   // yeni nesne çağrı başlıkları:
   // yeni nesne çağrı başlıkları üst satıra eklenecektir

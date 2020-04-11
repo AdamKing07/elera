@@ -254,7 +254,7 @@ begin
   _GorselNesne := GorselNesneListesi[AKimlik];
 
   if((Self.GorselNesneTipi = gntMasaustu) or (Self.GorselNesneTipi = gntPencere) or
-    (Self.GorselNesneTipi = gntMenu)) then
+    (Self.GorselNesneTipi = gntMenu) or (Self.GorselNesneTipi = gntAcilirMenu)) then
   begin
 
     // geniþlik ve yükseklik deðerleri alýnýyor
@@ -388,7 +388,7 @@ begin
     Self.FIcGercekBoyutlar.B2 := Self.FDisGercekBoyutlar.B2 - (Self.FKalinlik.Alt + Self.FKenarBosluklari.Alt);
     Exit;
   end
-  else if(Self.GorselNesneTipi = gntMenu) then
+  else if(Self.GorselNesneTipi = gntMenu) or (Self.GorselNesneTipi = gntAcilirMenu) then
   begin
 
     // nesne gerçek dýþ koordinatlar

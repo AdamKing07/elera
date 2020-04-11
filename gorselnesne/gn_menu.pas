@@ -6,7 +6,7 @@
   Dosya Adı: gn_menu.pas
   Dosya İşlevi: menü yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 11/11/2019
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -19,13 +19,15 @@ uses gorselnesne, paylasim, n_yazilistesi, n_sayilistesi;
 type
   PMenu = ^TMenu;
   TMenu = object(TGorselNesne)
-  private
+  public
     FElemanYukseklik,                     // her bir elemanın yüksekliği
     FSeciliSiraNo: TISayi4;               // seçili sıra no
     FIlkSiraNo: TISayi4;                  // ilk görünen elemanın sıra numarası
     FMenuElemanBaslik: PYaziListesi;      // menü eleman başlıkları
     FMenuElemanResim: PSayiListesi;       // menü eleman resim sıra numaraları
-  public
+
+    FKenarRenk, FGovdeRenk, FSecimRenk,
+    FNormalYaziRenk, FSeciliYaziRenk: TRenk;
     function Olustur(A1, B1, AGenislik, AYukseklik, AElemanYukseklik: TISayi4): PMenu;
     procedure YokEt(AKimlik: TKimlik);
     procedure Goster;
@@ -39,7 +41,7 @@ function NesneOlustur(A1, B1, AGenislik, AYukseklik, AElemanYukseklik: TISayi4):
 
 implementation
 
-uses genel, temelgorselnesne;
+uses genel, temelgorselnesne, gn_islevler;
 
 {==============================================================================
   menü kesme çağrılarını yönetir
@@ -131,9 +133,6 @@ var
   _SL: PSayiListesi;
 begin
 
-  // masaüstüne bağlı menü var ise çık
-  if not(GAktifMasaustu^.FBaslatmaMenusu = nil) then Exit(nil);
-
   // menü nesnesi için yer ayır
   _Menu := PMenu(Olustur0(gntMenu));
   if(_Menu = nil) then
@@ -210,7 +209,7 @@ begin
     CO_OLUSTUR, 0, 0);
 
   // menüyü aktif masaüstüne bağla
-  GAktifMasaustu^.FBaslatmaMenusu := _Menu;
+  //GAktifMasaustu^.FMenu := _Menu;
 
   // nesne adresini geri döndür
   Result := _Menu;
@@ -245,6 +244,8 @@ begin
   // nesnenin kimlik, tip değerlerini denetle.
   _Menu := PMenu(_Menu^.NesneTipiniKontrolEt(Kimlik, gntMenu));
   if(_Menu = nil) then Exit;
+
+  GAktifMasaustu^.FMenu := _Menu;
 
   // nesnenin görünürlüğünü aktifleştir
   _Menu^.Gorunum := True;
@@ -369,6 +370,9 @@ begin
     if(_Menu^.FareNesneOlayAlanindaMi(AKimlik)) then
     begin
 
+      // fare olaylarını yakala
+      OlayYakalamayaBasla(_Menu);
+
       // mouse basım işleminin gerçekleştiği index numarası
       _Menu^.FSeciliSiraNo := (AOlay.Deger2 - 4) div _Menu^.FElemanYukseklik;
 
@@ -383,6 +387,8 @@ begin
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
+    // fare olaylarını almayı bırak
+    OlayYakalamayiBirak(_Menu);
   end
   else if(AOlay.Olay = FO_HAREKET) then
   begin

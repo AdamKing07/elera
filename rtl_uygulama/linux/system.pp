@@ -90,6 +90,7 @@ function IntToStr1(Val: LongInt): string;
   {$i inc/gn_baglantib.inc}
   {$i inc/gn_kaydirmacubugub.inc}
   {$i inc/gn_karmalisteb.inc}
+  {$i inc/gn_acilirmenub.inc}
   {$i inc/olayb.inc}
   {$i inc/dosyab.inc}
   {$i inc/yazimb.inc}
@@ -308,6 +309,7 @@ end;
          {$i inc/gn_baglanti.inc}
          {$i inc/gn_kaydirmacubugu.inc}
          {$i inc/gn_karmaliste.inc}
+         {$i inc/gn_acilirmenu.inc}
 				 {$i inc/olay.inc}
 				 {$i inc/dosya.inc}
 				 {$i inc/yazim.inc}
