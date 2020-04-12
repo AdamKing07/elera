@@ -48,7 +48,7 @@ const
   SAC_AG	                    = $0E;
   SAC_FARE	                  = $10;
   IPTAL_FUNCTION_TMODE        = $11;
-  SAC_BAGLANTI                = $12;
+  SAC_ILETISIM                = $12;
 
   OBJECT_TYPE_DESKTOP         = $01;
   OBJECT_TYPE_WINDOW	        = $02;
@@ -110,8 +110,9 @@ const
   DEFTER_OLUSTUR              = $00010700 + SAC_GNESNE;
   DEFTER_HIZALA               = $01040700 + SAC_GNESNE;
   DEFTER_GOSTER		            = $00080700 + SAC_GNESNE;
-  DEFTER_YAZIEKLE 	          = $01000700 + SAC_GNESNE;
-  DEFTER_TEMIZLE              = $02000700 + SAC_GNESNE;
+  DEFTER_YAZIEKLEP 	          = $01000700 + SAC_GNESNE;
+  DEFTER_YAZIEKLES	          = $02000700 + SAC_GNESNE;
+  DEFTER_TEMIZLE              = $03000700 + SAC_GNESNE;
 
   ISLEMGOSTERGESI_OLUSTUR     = $00010800 + SAC_GNESNE;
   ISLEMGOSTERGESI_ALTUSTDEGER = $01040800 + SAC_GNESNE;
@@ -262,15 +263,12 @@ const
  
   FARE_KONUMAL                = $00000100 + SAC_FARE;
 
-  // bağlantı0 değeri, görsel nesne olan bağlantı ile
-  // karışmaması içindir
-  BAGLANTI0_OLUSTUR           = $00000100 + SAC_BAGLANTI;
-  BAGLANTI0_BAGLAN            = $00000200 + SAC_BAGLANTI;
-  BAGLANTI0_BAGLIMI           = $00000300 + SAC_BAGLANTI;
-  BAGLANTI0_VERIUZUNLUGU      = $00000400 + SAC_BAGLANTI;
-  BAGLANTI0_VERIOKU           = $00000500 + SAC_BAGLANTI;
-  BAGLANTI0_VERIYAZ           = $00000600 + SAC_BAGLANTI;
-  BAGLANTI0_BAGKES            = $00000700 + SAC_BAGLANTI;
+  ILETISIM_BAGLAN             = $00000100 + SAC_ILETISIM;
+  ILETISIM_BAGLIMI            = $00000200 + SAC_ILETISIM;
+  ILETISIM_VERIUZUNLUGU       = $00000300 + SAC_ILETISIM;
+  ILETISIM_VERIOKU            = $00000400 + SAC_ILETISIM;
+  ILETISIM_VERIYAZ            = $00000500 + SAC_ILETISIM;
+  ILETISIM_BAGKES             = $00000600 + SAC_ILETISIM;
 
 const
   // çekirdeğin ürettiği genel olaylar - çekirdek olay (CO)

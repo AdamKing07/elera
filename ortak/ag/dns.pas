@@ -6,7 +6,7 @@
   Dosya Adı: dns.pas
   Dosya İşlevi: dns protokol istemci işlevlerini yönetir
 
-  Güncelleme Tarihi: 15/10/2019
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -24,7 +24,7 @@ procedure DNSIstegiGonder;
 
 implementation
 
-uses genel, baglanti, donusum;
+uses genel, iletisim, donusum;
 
 const
   // sorgulanacak DNS adresi
@@ -95,6 +95,8 @@ begin
 
   _Baglanti := GBaglanti^.Olustur(ptUDP, AgBilgisi.DNSSunucusu, DNS_KAYNAK_PORT,
     DNS_HEDEF_PORT);
+
+  _Baglanti^.Baglan(btYayin);
 
   _Baglanti^.Yaz(@_DNSPacket[0], 12 + _ToplamUzunluk + 4);
 

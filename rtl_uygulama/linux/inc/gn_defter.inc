@@ -40,11 +40,20 @@ asm
   add   esp,4
 end;
 
-procedure _DefterYaziEkle(AKimlik: TKimlik; ABellekAdresi: PChar);
+procedure _DefterYaziEklePChar(AKimlik: TKimlik; ABellekAdresi: PChar);
 asm
   push  ABellekAdresi
   push  AKimlik
-  mov   eax,DEFTER_YAZIEKLE
+  mov   eax,DEFTER_YAZIEKLEP
+  int   $34
+  add   esp,8
+end;
+
+procedure _DefterYaziEkleStr(AKimlik: TKimlik; ADeger: string);
+asm
+  push  ADeger
+  push  AKimlik
+  mov   eax,DEFTER_YAZIEKLES
   int   $34
   add   esp,8
 end;

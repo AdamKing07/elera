@@ -76,6 +76,10 @@ cd grvyntcs
 call derle.bat
 cd..
 
+cd iletisim
+call derle.bat
+cd..
+
 cd iskelet
 call derle.bat
 cd..
@@ -133,10 +137,6 @@ call derle.bat
 cd..
 
 cd testsrc
-call derle.bat
-cd..
-
-cd udptest
 call derle.bat
 cd..
 

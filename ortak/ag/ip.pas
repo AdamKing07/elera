@@ -26,7 +26,7 @@ procedure IPPaketGonder(AHedefMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TI
 
 implementation
 
-uses donusum, icmp, udp, tcp, baglanti;
+uses donusum, icmp, udp, tcp, iletisim;
 
 var
   GIPTanimlayici: TSayi2 = $BABA;

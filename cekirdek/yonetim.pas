@@ -6,7 +6,7 @@
   Dosya Adý: yonetim.pas
   Dosya Ýþlevi: sistem ana yönetim / kontrol kýsmý
 
-  Güncelleme Tarihi: 07/04/2020
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -39,7 +39,7 @@ procedure SistemCalismasiniDenetle;
 
 implementation
 
-uses gdt, gorev, src_klavye, genel, ag, dhcp, baglanti, zamanlayici, dns, arp,
+uses gdt, gorev, src_klavye, genel, ag, dhcp, iletisim, zamanlayici, dns, arp,
   sistemmesaj, src_vesa20, acpi;
 
 {==============================================================================
@@ -189,7 +189,7 @@ begin
 
           //DNSIstegiGonder;
           //_Gorev^.Calistir('disk1:\resimgor.c');
-          _Gorev^.Calistir('disk1:\arpbilgi.c');
+          //_Gorev^.Calistir('disk1:\iletisim.c');
           {i := FindFirst('disk1:\kaynak\*.*', 0, AramaKaydi);
           while i = 0 do
           begin
@@ -202,17 +202,7 @@ begin
         else if(_Tus = '4') then
         begin
 
-          //_Gorev^.Calistir('disk1:\udptest.c');
-          _Gorev^.Calistir('disk1:\udptest.c');
-          //ARPIstegiGonder(arpIstek, @MACAdres0, @_HedefAdres);
-        end
-        // test amaçlý
-        else if(_Tus = '5') then
-        begin
-
-          _YerelPort := YerelPortAl;
-          _Baglanti := _Baglanti^.Olustur(ptTCP, _HedefAdres, _YerelPort, 80);
-          _Baglanti^.Baglan;
+          _Gorev^.Calistir('disk1:\iletisim.c');
         end
         // test amaçlý
         else if(_Tus = '6') then
@@ -223,11 +213,6 @@ begin
           //s += 'Connection: Close' + #13#10#13#10;
 
           _Baglanti^.Yaz(@s[1], Length(s));
-        end
-        else if(_Tus = '7') then
-        begin
-
-          _Baglanti^.BaglantiyiKes;
         end
         else if(_Tus = 'd') then
         begin

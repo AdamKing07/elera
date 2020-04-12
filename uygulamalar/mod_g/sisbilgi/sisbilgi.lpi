@@ -34,13 +34,12 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="36">
+    <Units Count="46">
       <Unit0>
         <Filename Value="sisbilgi.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="93"/>
-        <CursorPos X="30" Y="111"/>
+        <TopLine Value="44"/>
+        <CursorPos X="23" Y="19"/>
         <UsageCount Value="78"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -237,126 +236,187 @@
         <UsageCount Value="20"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit35>
+      <Unit36>
+        <Filename Value="../../../rtl_uygulama/linux/gorev.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="87"/>
+        <CursorPos X="19" Y="83"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gorev.inc"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gorevb.inc"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="../../../rtl_uygulama/linux/inc/sistem.inc"/>
+        <EditorIndex Value="6"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="../../../rtl_uygulama/linux/inc/sistemb.inc"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="../../../rtl_uygulama/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="../../../rtl_uygulama/linux/sistemmesaj.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="../../../rtl_uygulama/linux/sysos.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="../../../rtl_uygulama/linux/elerah.inc"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="220"/>
+        <CursorPos X="32" Y="231"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit45>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="60" Column="72" TopLine="38"/>
+        <Caret Line="55" Column="51" TopLine="50"/>
       </Position1>
       <Position2>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="62" Column="73" TopLine="40"/>
+        <Caret Line="62" Column="73" TopLine="58"/>
       </Position2>
       <Position3>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="55" Column="51" TopLine="50"/>
+        <Caret Line="55" Column="66" TopLine="42"/>
       </Position3>
       <Position4>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="62" Column="73" TopLine="58"/>
+        <Caret Line="58" Column="72" TopLine="42"/>
       </Position4>
       <Position5>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="55" Column="66" TopLine="42"/>
+        <Caret Line="60" Column="72" TopLine="42"/>
       </Position5>
       <Position6>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="58" Column="72" TopLine="42"/>
+        <Caret Line="61" Column="58" TopLine="49"/>
       </Position6>
       <Position7>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="60" Column="72" TopLine="42"/>
+        <Caret Line="62" Column="73" TopLine="49"/>
       </Position7>
       <Position8>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="61" Column="58" TopLine="49"/>
+        <Caret Line="84" Column="46" TopLine="61"/>
       </Position8>
       <Position9>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="62" Column="73" TopLine="49"/>
+        <Caret Line="14" Column="11"/>
       </Position9>
       <Position10>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="84" Column="46" TopLine="61"/>
+        <Caret Line="20" Column="3" TopLine="6"/>
       </Position10>
       <Position11>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="14" Column="11"/>
+        <Caret Line="69" Column="38" TopLine="46"/>
       </Position11>
       <Position12>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="20" Column="3" TopLine="6"/>
+        <Caret Line="82" Column="9" TopLine="59"/>
       </Position12>
       <Position13>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="69" Column="38" TopLine="46"/>
+        <Caret Line="84" Column="9" TopLine="61"/>
       </Position13>
       <Position14>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="82" Column="9" TopLine="59"/>
+        <Caret Line="92" Column="11" TopLine="69"/>
       </Position14>
       <Position15>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="84" Column="9" TopLine="61"/>
+        <Caret Line="112" Column="15" TopLine="89"/>
       </Position15>
       <Position16>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="92" Column="11" TopLine="69"/>
+        <Caret Line="69" Column="48" TopLine="55"/>
       </Position16>
       <Position17>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="112" Column="15" TopLine="89"/>
+        <Caret Line="83" Column="3" TopLine="61"/>
       </Position17>
       <Position18>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="69" Column="48" TopLine="55"/>
+        <Caret Line="82" Column="9" TopLine="69"/>
       </Position18>
       <Position19>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="83" Column="3" TopLine="61"/>
+        <Caret Line="86" Column="39" TopLine="69"/>
       </Position19>
       <Position20>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="82" Column="9" TopLine="69"/>
+        <Caret Line="22" Column="24" TopLine="8"/>
       </Position20>
       <Position21>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="86" Column="39" TopLine="69"/>
+        <Caret Line="26" Column="14" TopLine="11"/>
       </Position21>
       <Position22>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="22" Column="24" TopLine="8"/>
+        <Caret Line="28" Column="11" TopLine="14"/>
       </Position22>
       <Position23>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="26" Column="14" TopLine="11"/>
+        <Caret Line="93" Column="16" TopLine="70"/>
       </Position23>
       <Position24>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="28" Column="11" TopLine="14"/>
+        <Caret Line="119" Column="59" TopLine="99"/>
       </Position24>
       <Position25>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="93" Column="16" TopLine="70"/>
+        <Caret Line="126" Column="5" TopLine="99"/>
       </Position25>
       <Position26>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="119" Column="59" TopLine="99"/>
+        <Caret Line="95" Column="54" TopLine="76"/>
       </Position26>
       <Position27>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="126" Column="5" TopLine="99"/>
       </Position27>
       <Position28>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="95" Column="54" TopLine="76"/>
+        <Caret Line="69" Column="53" TopLine="55"/>
       </Position28>
       <Position29>
         <Filename Value="sisbilgi.lpr"/>
+        <Caret Line="82" Column="13" TopLine="67"/>
       </Position29>
       <Position30>
-        <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="69" Column="53" TopLine="55"/>
+        <Filename Value="../../../rtl_uygulama/linux/elerah.inc"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

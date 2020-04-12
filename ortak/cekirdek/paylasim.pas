@@ -1,12 +1,12 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasına bakınız
 
-  Dosya AdÄ±: paylasim.pas
-  Dosya Ä°ÅŸlevi: tÃ¼m birimler iÃ§in ortak paylaÅŸÄ±lan iÅŸlevleri iÃ§erir
+  Dosya Adı: paylasim.pas
+  Dosya İşlevi: tüm birimler için ortak paylaşılan işlevleri içerir
 
-  GÃ¼ncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 11/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,13 +17,13 @@ interface
 
 const
   ProjeBaslangicTarihi: string = '30.07.2005';
-  SistemAdi: PWideChar = 'ELERA Ä°ÅŸletim Sistemi - 0.3.5 - R31';
+  SistemAdi: string = 'ELERA İşletim Sistemi - 0.3.5 - R31';
   DerlemeTarihi: string = {$i %DATE%};
   FPCMimari: string = {$i %FPCTARGET%};
   FPCSurum: string = {$i %FPCVERSION%};
 
 var
-  { TODO : Ã¶ndeÄŸer aÃ§Ä±lÄ±ÅŸ aygÄ±tÄ±. OtomatikleÅŸtirilecek }
+  { TODO : öndeğer açılış aygıtı. Otomatikleştirilecek }
   AcilisSurucuAygiti: string = 'disk1';      // disk1:\dizin1
   OnDegerMasaustuProgram: string = 'muyntcs.c';
 
@@ -31,11 +31,15 @@ type
   PProtokolTip = ^TProtokolTip;
   TProtokolTip = (ptBilinmiyor, ptIP, ptARP, ptTCP, ptUDP, ptICMP);
 
+  // bağlantıyı IP'ın tanımlayıcısı olan MAC veya yayin (broadcast) olarak gerçekleştir
+  PBaglantiTipi = ^TBaglantiTipi;
+  TBaglantiTipi = (btIP, btYayin);
+
 const
-  // sistemde Ã§alÄ±ÅŸacak gÃ¶rev (program) sabitleri
+  // sistemde çalışacak görev (program) sabitleri
   USTSINIR_GOREVSAYISI = 32;
 
-  // bu deÄŸer genel video belleÄŸi olacak
+  // bu değer genel video belleği olacak
   VIDEO_BELLEK_ADRESI = $A0000000;
 
   // sayfalama sabitleri
@@ -45,15 +49,15 @@ const
   GERCEKBELLEK_DIZINADRESI = $600000;
   GERCEKBELLEK_TABLOADRESI = $610000;
 
-  // seÃ§ici (selector) sabitleri
-  SECICI_SISTEM_KOD     = 1;      // seÃ§ici = selector
+  // seçici (selector) sabitleri
+  SECICI_SISTEM_KOD     = 1;      // seçici = selector
   SECICI_SISTEM_VERI    = 2;
   SECICI_SISTEM_TSS     = 3;
   SECICI_DENETIM_KOD    = 4;
   SECICI_DENETIM_VERI   = 5;
   SECICI_DENETIM_TSS    = 6;
   SECICI_SISTEM_GRAFIK  = 7;
-  AYRILMIS_SECICISAYISI = 8;      // ayrÄ±lmÄ±ÅŸ seÃ§ici sayÄ±sÄ±
+  AYRILMIS_SECICISAYISI = 8;      // ayrılmış seçici sayısı
 
   // PIC sabitleri
   PIC1_KOMUT  = $20;
@@ -82,18 +86,18 @@ type
   ISayi4 = LongInt;
   Sayi4 = LongWord;
   Isaretci = Pointer;
-  TISayi1 = ISayi1;             // 1 byte'lÄ±k iÅŸaretli sayÄ±
-  PISayi1 = ^ISayi1;            // 1 byte'lÄ±k iÅŸaretli sayÄ±ya iÅŸaretÃ§i
-  TSayi1 = Sayi1;               // 1 byte'lÄ±k iÅŸaretsiz sayÄ±
-  PSayi1 = ^Sayi1;              // 1 byte'lÄ±k iÅŸaretsiz sayÄ±ya iÅŸaretÃ§i
-  TISayi2 = ISayi2;             // 2 byte'lÄ±k iÅŸaretli sayÄ±
-  PISayi2 = ^ISayi2;            // 2 byte'lÄ±k iÅŸaretli sayÄ±ya iÅŸaretÃ§i
-  TSayi2 = Sayi2;               // 2 byte'lÄ±k iÅŸaretsiz sayÄ±
-  PSayi2 = ^Sayi2;              // 2 byte'lÄ±k iÅŸaretsiz sayÄ±ya iÅŸaretÃ§i
-  TISayi4 = ISayi4;             // 4 byte'lÄ±k iÅŸaretli sayÄ±
-  PISayi4 = ^ISayi4;            // 4 byte'lÄ±k iÅŸaretli sayÄ±ya iÅŸaretÃ§i
-  TSayi4 = Sayi4;               // 4 byte'lÄ±k iÅŸaretsiz sayÄ±
-  PSayi4 = ^Sayi4;              // 4 byte'lÄ±k iÅŸaretsiz sayÄ±ya iÅŸaretÃ§i
+  TISayi1 = ISayi1;             // 1 byte'lık işaretli sayı
+  PISayi1 = ^ISayi1;            // 1 byte'lık işaretli sayıya işaretçi
+  TSayi1 = Sayi1;               // 1 byte'lık işaretsiz sayı
+  PSayi1 = ^Sayi1;              // 1 byte'lık işaretsiz sayıya işaretçi
+  TISayi2 = ISayi2;             // 2 byte'lık işaretli sayı
+  PISayi2 = ^ISayi2;            // 2 byte'lık işaretli sayıya işaretçi
+  TSayi2 = Sayi2;               // 2 byte'lık işaretsiz sayı
+  PSayi2 = ^Sayi2;              // 2 byte'lık işaretsiz sayıya işaretçi
+  TISayi4 = ISayi4;             // 4 byte'lık işaretli sayı
+  PISayi4 = ^ISayi4;            // 4 byte'lık işaretli sayıya işaretçi
+  TSayi4 = Sayi4;               // 4 byte'lık işaretsiz sayı
+  PSayi4 = ^Sayi4;              // 4 byte'lık işaretsiz sayıya işaretçi
   TKarakterKatari = shortstring;
   PKarakterKatari = ^shortstring;
   TRenk = Sayi4;
@@ -119,11 +123,11 @@ type
   THizalar = set of THiza;
 
 const
-  SISTEME_AYRILMIS_RAM  = $0A00000;         // Ã§ekirdek iÃ§in ayrÄ±lmÄ±ÅŸ RAM = 10MB
+  SISTEME_AYRILMIS_RAM  = $0A00000;         // çekirdek için ayrılmış RAM = 10MB
 
   BELLEK_HARITA_ADRESI: PByte = PByte($510000);
 
-  // alttaki satÄ±rlar yeni tasarÄ±m Ã§erÃ§evesinde onaylanacak veya deÄŸiÅŸtirilecek
+  // alttaki satırlar yeni tasarım çerçevesinde onaylanacak veya değiştirilecek
   GOREV0_ESP        = $500000 - $600;
   GOREV0_ESP2       = $500000 - $100;
   GOREV3_ESP        = $500000;
@@ -144,7 +148,7 @@ var
   DEGISIMTusDurumu: TTusDurum = tdYok;
 
 const
-  // aÄŸ protokolleri
+  // ağ protokolleri
   PROTOKOL_ARP  = TSayi2($0608);
   PROTOKOL_IP   = TSayi2($0008);
   PROTOKOL_TCP  = TSayi1($6);
@@ -173,13 +177,13 @@ const
   HATA_NESNEOLUSTURMA         = TISayi4(-18);
 
 var
-  // GN_UZUNLUK deÄŸiÅŸkeni, gÃ¶rsel nesne yapÄ±larÄ± iÃ§erisinde en uzun yapÄ±lÄ± nesne olan
-  // TPencere nesnesinin uzunluÄŸu alÄ±narak;
-  // gn_islevler.Yukle iÅŸlevi tarafÄ±ndan 16'nÄ±n katlarÄ± olarak belirlenmiÅŸtir
+  // GN_UZUNLUK değişkeni, görsel nesne yapıları içerisinde en uzun yapılı nesne olan
+  // TPencere nesnesinin uzunluğu alınarak;
+  // gn_islevler.Yukle işlevi tarafından 16'nın katları olarak belirlenmiştir
   GN_UZUNLUK: TISayi4;
 
 const
-  // GN_UZUNLUK uzunluÄŸunda tanÄ±mlanacak toplam gÃ¶rsel nesne sayÄ±sÄ±
+  // GN_UZUNLUK uzunluğunda tanımlanacak toplam görsel nesne sayısı
   USTSINIR_GORSELNESNE  = 255;
   USTSINIR_MASAUSTU     = 4;
 
@@ -201,7 +205,7 @@ type
 type
   PIslemciBilgisi = ^TIslemciBilgisi;
   TIslemciBilgisi = record
-    Satici: string[13];               // cpu id = 0
+    Satici: string;                   // cpu id = 0
     Ozellik1_EAX, Ozellik1_EDX,
     Ozellik1_ECX: TSayi4;             // cpu id = 1
   end;
@@ -263,16 +267,16 @@ type
   end;
 
 {Not1: [0..3] bit = versiyon Ipv4 = 4
-       [4..7] baÅŸlÄ±k uzunluÄŸu = baÅŸlÄ±k uzunluÄŸu * 4 (kaÃ§ tane 4 byte olduÄŸu)
+       [4..7] başlık uzunluğu = başlık uzunluğu * 4 (kaç tane 4 byte olduğu)
 
- Not2: Toplam Uzunluk: Ip uzunluÄŸu + kendisine eklenen diÄŸer data uzunluÄŸu }
+ Not2: Toplam Uzunluk: Ip uzunluğu + kendisine eklenen diğer data uzunluğu }
 type
   PIPPaket = ^TIPPaket;
   TIPPaket = packed record
     SurumVeBaslikUzunlugu,            // Not1
     ServisTipi: TSayi1;
     ToplamUzunluk,                    // Not2
-    Tanimlayici,                      // tanÄ±mlayÄ±cÄ±
+    Tanimlayici,                      // tanımlayıcı
     BayrakVeParcaSiraNo: TSayi2;
     YasamSuresi,
     Protokol: TSayi1;
@@ -312,7 +316,7 @@ type
   TUDPPaket = packed record
     KaynakPort,
     HedefPort,
-    Uzunluk,                  // UDP baÅŸlÄ±k + veri uzunluÄŸu
+    Uzunluk,                  // UDP başlık + veri uzunluğu
     SaglamaToplam: TSayi2;
     Veri: Isaretci;
   end;
@@ -355,14 +359,14 @@ type
     HedefIPAdres: TIPAdres;
     Sifir,
     Protokol: TSayi1;
-    Uzunluk: TSayi2;                // udp veya tcp 'nin data ile beraber uzunluÄŸu
+    Uzunluk: TSayi2;                // udp veya tcp 'nin data ile beraber uzunluğu
   end;
 
 const
   SURUCUTIP_DISKET  = Byte(1);
   SURUCUTIP_DISK    = Byte(2);
 
-const   // DATTIP = dosya ayÄ±rma tablosu (FAT)
+const   // DATTIP = dosya ayırma tablosu (FAT)
   DATTIP_BELIRSIZ   = Byte($0);
   DATTIP_FAT12      = Byte($1);
   DATTIP_FAT16      = Byte($4);
@@ -370,7 +374,7 @@ const   // DATTIP = dosya ayÄ±rma tablosu (FAT)
   DATTIP_FAT32LBA   = Byte($C);
 
 type
-  // 12 & 16 bitlik boot kayÄ±t yapÄ±sÄ±
+  // 12 & 16 bitlik boot kayıt yapısı
   PAcilisKayit1x = ^TAcilisKayit1x;
   TAcilisKayit1x = packed record
     AYRLDI1: array[0..2] of Byte;             // 00..02
@@ -382,7 +386,7 @@ type
     AzamiDizinGirisi: Word;                   // 17..18
     ToplamSektorSayisi1x: Word;               // 19..20
     MedyaTip: Byte;                           // 21..21
-    DATBasinaSektor: Word;                    // 22..23   - SADECE FAT12 / FAT16 iÃ§in
+    DATBasinaSektor: Word;                    // 22..23   - SADECE FAT12 / FAT16 için
     IzBasinaSektor: Word;                     // 24..25
     KafaSayisi: Word;                         // 26..27
     BolumOncesiSektorSayisi: TSayi4;          // 28..31
@@ -394,11 +398,11 @@ type
     SeriNo: TSayi4;                           // 39..42
     Etiket: array[0..10] of Char;             // 43..53
     DosyaSistemEtiket: array[0..7] of Char;   // 54..61
-    // aÃ§Ä±lÄ±ÅŸ kodu ve $AA55
+    // açılış kodu ve $AA55
   end;
 
 type
-  // 32 bitlik boot kayÄ±t yapÄ±sÄ±
+  // 32 bitlik boot kayıt yapısı
   PAcilisKayit32 = ^TAcilisKayit32;
   TAcilisKayit32 = packed record
     AYRLDI1: array[0..2] of Byte;             // 00..02
@@ -410,7 +414,7 @@ type
     AzamiDizinGirisi: Word;                   // 17..18
     ToplamSektorSayisi1x: Word;               // 19..20
     MedyaTip: Byte;                           // 21..21
-    DAT1xBasinaSektor: Word;                  // 22..23   - SADECE FAT12 / FAT16 iÃ§in
+    DAT1xBasinaSektor: Word;                  // 22..23   - SADECE FAT12 / FAT16 için
     IzBasinaSektor: Word;                     // 24..25
     KafaSayisi: Word;                         // 26..27
     BolumOncesiSektorSayisi: TSayi4;          // 28..31
@@ -429,7 +433,7 @@ type
     EtiketKimlik: array[0..3] of Char;        // 67..70
     Etiket: array[0..10] of Char;             // 71..81
     DosyaSistemEtiket: array[0..7] of Char;   // 82..89
-    // aÃ§Ä±lÄ±ÅŸ kodu ve $AA55
+    // açılış kodu ve $AA55
   end;
 
 type
@@ -461,7 +465,7 @@ type
   TSektorOku = function(AFizikselSurucu: Isaretci; AIlkSektor, ASektorSayisi: TSayi4;
     AHedefBellek: Isaretci): Boolean;
 
-// fiziksel sÃ¼rÃ¼cÃ¼ yapÄ±sÄ±
+// fiziksel sürücü yapısı
 type
   PFizikselSurucu = ^TFizikselSurucu;
   TFizikselSurucu = record
@@ -474,8 +478,8 @@ type
     ToplamSektorSayisi: TSayi4;
     SurucuTipi: TSayi1;
     Ozellikler: TSayi1;
-    SonIzKonumu: TISayi1;           // floppy sÃ¼rÃ¼cÃ¼sÃ¼nÃ¼n kafasÄ±nÄ±n bulunduÄŸu son iz (track) no
-    MotorDurumu: TSayi1;            // ÅŸu an sadece floppy sÃ¼rÃ¼cÃ¼sÃ¼ iÃ§in
+    SonIzKonumu: TISayi1;           // floppy sürücüsünün kafasının bulunduğu son iz (track) no
+    MotorDurumu: TSayi1;            // şu an sadece floppy sürücüsü için
     PortBilgisi: TIDEDisk;
     SektorOku: TSektorOku;
   end;
@@ -487,8 +491,8 @@ type
     ToplamSektor: TSayi4;
     GirdiSayisi: TSayi2;
 
-    // her bir dizin tablosu okunduÄŸunda, o sektÃ¶rde okunan kaydÄ±n sÄ±ra numarasÄ±
-    // 0 = ilk kayÄ±t numarasÄ±, 1 = ikinci kayÄ±t, 15 = sektÃ¶rdeki sonuncu kayÄ±t
+    // her bir dizin tablosu okunduğunda, o sektörde okunan kaydın sıra numarası
+    // 0 = ilk kayıt numarası, 1 = ikinci kayıt, 15 = sektördeki sonuncu kayıt
     DizinTablosuKayitNo: TISayi4;
   end;
 
@@ -511,7 +515,7 @@ type
 
 type
   PDosyaAyirmaTablosu = ^TDosyaAyirmaTablosu;
-  TDosyaAyirmaTablosu = record         // dosya ayÄ±rma tablosu (file allocation table)
+  TDosyaAyirmaTablosu = record         // dosya ayırma tablosu (file allocation table)
     IlkSektor: TSayi2;
     ToplamSektor: TSayi2;
     KumeBasinaSektor: TSayi1;
@@ -525,7 +529,7 @@ type
     DosyaAyirmaTablosu: TDosyaAyirmaTablosu;
   end;
 
-// mantÄ±ksal sÃ¼rÃ¼cÃ¼ yapÄ±sÄ± - sistem iÃ§in
+// mantıksal sürücü yapısı - sistem için
 type
   PMantiksalSurucu = ^TMantiksalSurucu;
   TMantiksalSurucu = packed record
@@ -538,7 +542,7 @@ type
     Acilis: TAcilis;
   end;
 
-// mantÄ±ksal sÃ¼rÃ¼cÃ¼ yapÄ±sÄ± - program iÃ§in
+// mantıksal sürücü yapısı - program için
 type
   PMantiksalSurucu3 = ^TMantiksalSurucu3;
   TMantiksalSurucu3 = packed record
@@ -549,7 +553,7 @@ type
     BolumToplamSektor: TSayi4
   end;
 
-// fiziksel sÃ¼rÃ¼cÃ¼ yapÄ±sÄ± - program iÃ§in
+// fiziksel sürücü yapısı - program için
 type
   PFizikselSurucu3 = ^TFizikselSurucu3;
   TFizikselSurucu3 = packed record
@@ -561,14 +565,14 @@ type
     ToplamSektorSayisi: TSayi4;
   end;
 
-// sistem dosya arama yapÄ±sÄ±
+// sistem dosya arama yapısı
 type
   PDosyaArama = ^TDosyaArama;
   TDosyaArama = record
-    DosyaAdi: string;                 // 8.3 dosya adÄ± veya uzun dosya adÄ±
+    DosyaAdi: string;                 // 8.3 dosya adı veya uzun dosya adı
     DosyaUzunlugu: TSayi4;
-    Kimlik: TKimlik;                  // arama kimliÄŸi
-    BaslangicKumeNo: TSayi2;          // geÃ§ici
+    Kimlik: TKimlik;                  // arama kimliği
+    BaslangicKumeNo: TSayi2;          // geçici
     Ozellikler: TSayi1;
     OlusturmaSaati: TSayi2;
     OlusturmaTarihi: TSayi2;
@@ -578,11 +582,11 @@ type
   end;
 
 var
-  // fiziksel sÃ¼rÃ¼cÃ¼ listesi. en fazla 2 floppy sÃ¼rÃ¼cÃ¼sÃ¼ + 4 disk sÃ¼rÃ¼cÃ¼sÃ¼
+  // fiziksel sürücü listesi. en fazla 2 floppy sürücüsü + 4 disk sürücüsü
   FizikselDepolamaAygitSayisi: TSayi4;
   FizikselDepolamaAygitListesi: array[1..6] of TFizikselSurucu;
 
-  // mantÄ±ksal sÃ¼rÃ¼cÃ¼ listesi. en fazla 6 depolama sÃ¼rÃ¼cÃ¼sÃ¼
+  // mantıksal sürücü listesi. en fazla 6 depolama sürücüsü
   MantiksalDepolamaAygitSayisi: TISayi4;
   MantiksalDepolamaAygitListesi: array[1..6] of TMantiksalSurucu;
 
@@ -593,7 +597,7 @@ const
   USTSINIR_ARAMAKAYIT = 5;
   USTSINIR_DOSYAKAYIT = 5;
 
-// dosya arama iÅŸlevleri iÃ§in gereken yapÄ±
+// dosya arama işlevleri için gereken yapı
 type
   PAramaKayit = ^TAramaKayit;
   TAramaKayit = record
@@ -603,14 +607,14 @@ type
     Aranan: string;
   end;
 
-// tÃ¼m dosya iÅŸlevleri iÃ§in gereken yapÄ±
+// tüm dosya işlevleri için gereken yapı
 type
   PDosyaKayit = ^TDosyaKayit;
   TDosyaKayit = record
     Kullanilabilir: Boolean;
     MantiksalSurucu: PMantiksalSurucu;
     DosyaAdi: string;
-    DATBellekAdresi: Isaretci;    // Dosya AyÄ±rma Tablosu bellek adresi
+    DATBellekAdresi: Isaretci;    // Dosya Ayırma Tablosu bellek adresi
     IlkZincirSektor: Word;
     Uzunluk: TISayi4;
     Konum: TSayi4;
@@ -619,24 +623,24 @@ type
 
 var
   FileResult: TISayi4;
-  // arama iÅŸlem veri yapÄ±larÄ±
+  // arama işlem veri yapıları
   AramaKayitListesi: array[1..USTSINIR_ARAMAKAYIT] of TAramaKayit;
-  // dosya iÅŸlem veri yapÄ±larÄ±
+  // dosya işlem veri yapıları
   DosyaKayitListesi: array[1..USTSINIR_DOSYAKAYIT] of TDosyaKayit;
 
 var
-  CalisanGorevSayisi,                     // oluÅŸturulan / Ã§alÄ±ÅŸan program sayÄ±sÄ±
-  CalisanGorev: TISayi4;                    // o an Ã§alÄ±ÅŸan program
-  AktifGorevBellekAdresi: TSayi4;         // o an Ã§alÄ±ÅŸan programÄ±n yÃ¼klendiÄŸi bellek adresi
+  CalisanGorevSayisi,                     // oluşturulan / çalışan program sayısı
+  CalisanGorev: TISayi4;                    // o an çalışan program
+  AktifGorevBellekAdresi: TSayi4;         // o an çalışan programın yüklendiği bellek adresi
 
 type
   PAlan = ^TAlan;
   TAlan = record
   case TISayi4 of
-    0: (A1, B1, A2, B2: TISayi4);                       // <- bu yapÄ± ve
-    1: (Sol, Ust, Sag, Alt: TISayi4);                   // <- bu yapÄ±nÄ±n mantÄ±ksal yaklaÅŸÄ±mlarÄ± aynÄ±dÄ±r
+    0: (A1, B1, A2, B2: TISayi4);                       // <- bu yapı ve
+    1: (Sol, Ust, Sag, Alt: TISayi4);                   // <- bu yapının mantıksal yaklaşımları aynıdır
     2: (Sol2, Ust2, Genislik2, Yukseklik2: TISayi4);
-    3: (Sol3, Ust3, Genislik3, Yukseklik3: TISayi4);    // saÄŸa dayalÄ± deÄŸerler (pencere iÃ§in kullanÄ±lan kapatma, bÃ¼yÃ¼tme ve kÃ¼Ã§Ã¼ltme dÃ¼ÄŸmeleri iÃ§in kullanÄ±lmÄ±ÅŸtÄ±r)
+    3: (Sol3, Ust3, Genislik3, Yukseklik3: TISayi4);    // sağa dayalı değerler (pencere için kullanılan kapatma, büyütme ve küçültme düğmeleri için kullanılmıştır)
   end;
 
 type
@@ -686,7 +690,7 @@ type
     fitIslem, fitBekle, fitYasak, fitBoyutBD, fitBoyutKDGB, fitBoyutTum);
 
 const
-  // Ã§ekirdeÄŸin Ã¼rettiÄŸi genel olaylar - Ã§ekirdek olay (CO)
+  // çekirdeğin ürettiği genel olaylar - çekirdek olay (CO)
   CO_ILKDEGER             = $100;
   CO_CIZIM                = CO_ILKDEGER + 0;
   CO_ZAMANLAYICI          = CO_ILKDEGER + 1;
@@ -695,10 +699,10 @@ const
   CO_ODAKKAZANILDI        = CO_ILKDEGER + 4;
   CO_ODAKKAYBEDILDI       = CO_ILKDEGER + 5;
   CO_TUSBASILDI           = CO_ILKDEGER + 6;
-  // aÃ§Ä±k / kapalÄ± durumda olabilen gÃ¶rsel nesnelere (Ã¶rn: TGucDugme) kapalÄ± ol mesajÄ±
+  // açık / kapalı durumda olabilen görsel nesnelere (örn: TGucDugme) kapalı ol mesajı
   CO_NORMALDURUMAGEC      = CO_ILKDEGER + 7;
 
-  // fare aygÄ±tÄ±nÄ±n Ã¼rettiÄŸi olaylar - fare olaylarÄ± (FO)
+  // fare aygıtının ürettiği olaylar - fare olayları (FO)
   FO_ILKDEGER             = $200;
   FO_BILINMIYOR           = FO_ILKDEGER;
   FO_SOLTUS_BASILDI       = FO_ILKDEGER + 2;
@@ -736,7 +740,7 @@ const
 type
   PTSS = ^TTSS;
   TTSS = packed record
-    OncekiTSS, A00: TSayi2;     // A(00)yrÄ±ldÄ±
+    OncekiTSS, A00: TSayi2;     // A(00)yrıldı
     ESP0: TSayi4;
     SS0, A01: TSayi2;
     ESP1: TSayi4;
@@ -752,12 +756,12 @@ type
     FS, A08: TSayi2;
     GS, A09: TSayi2;
     LDT, A10: TSayi2;
-    TBit: TSayi2;               // yakalayÄ±cÄ± (trap) bit. hata ayÄ±klama amaÃ§lÄ±
-    IOHaritaGAdres: TSayi2;     // IOHarita yapÄ± baÅŸÄ±ndan uzaklÄ±k bellek adresi
+    TBit: TSayi2;               // yakalayıcı (trap) bit. hata ayıklama amaçlı
+    IOHaritaGAdres: TSayi2;     // IOHarita yapı başından uzaklık bellek adresi
     // buraya kadar 104 byte.
 
     IOHarita: Isaretci;
-    // IO port izin haritasÄ± kulanÄ±lacaksa her bir gÃ¶rev iÃ§in
+    // IO port izin haritası kulanılacaksa her bir görev için
     // 65536 / 8 = 8192 byte alan gerekmektedir
   end;
 
@@ -767,11 +771,11 @@ var
   SistemSayaci: TSayi4;
   SistemKontrolSayaci: TSayi4 = 0;
   ZamanlayiciSayaci: TSayi4 = 0;
-  // gÃ¶rev deÄŸiÅŸiminin yapÄ±lÄ±p yapÄ±lmamasÄ± deÄŸiÅŸkeni.
-  // 0 = gÃ¶rev deÄŸiÅŸtirme, 1 = gÃ¶rev deÄŸiÅŸtir
+  // görev değişiminin yapılıp yapılmaması değişkeni.
+  // 0 = görev değiştirme, 1 = görev değiştir
   GorevDegisimBayragi: TSayi4 = 0;
-  // Ã§oklu gÃ¶rev iÅŸleminin baÅŸlayÄ±p baÅŸlamadÄ±ÄŸÄ±nÄ± gÃ¶steren deÄŸiÅŸken
-  // 0 = baÅŸlamadÄ±, 1 = baÅŸladÄ±
+  // çoklu görev işleminin başlayıp başlamadığını gösteren değişken
+  // 0 = başlamadı, 1 = başladı
   CokluGorevBasladi: TSayi4 = 0;
 
   GecerliFareGostegeTipi: TFareImlecTipi;
@@ -779,7 +783,7 @@ var
   ToplamGNSayisi, ToplamMasaustu: TSayi4;
 
 const
-  TSS_UZUNLUK = 104 + 8192;   // 104 byte TSS, 8192 byte giriÅŸ / Ã§Ä±kÄ±ÅŸ port izin haritasÄ±
+  TSS_UZUNLUK = 104 + 8192;   // 104 byte TSS, 8192 byte giriş / çıkış port izin haritası
 
 var
   GorevTSSListesi: array[1..USTSINIR_GOREVSAYISI] of PTSS;
@@ -794,18 +798,18 @@ type
 type
   TGorevDurum = (gdBos, gdOlusturuldu, gdCalisiyor, gdDurduruldu);
 
-// program iÃ§in sÃ¼reÃ§ yapÄ±sÄ±
+// program için süreç yapısı
 type
-  // gÃ¶rev kayÄ±t bilgisi
+  // görev kayıt bilgisi
   PGorevKayit = ^TGorevKayit;
   TGorevKayit = record
-    GorevDurum: TGorevDurum;            // gÃ¶rev durumu
-    GorevKimlik: TGorevKimlik;          // gÃ¶rev kimlik - sÄ±ra numarasÄ±
-    GorevSayaci: TSayi4;                // gÃ¶revin kaÃ§ kez Ã§alÄ±ÅŸtÄ±ÄŸÄ±
-    BellekBaslangicAdresi: TSayi4;      // gÃ¶revin yerleÅŸtirildiÄŸi bellek adresi
-    BellekUzunlugu: TSayi4;             // gÃ¶rev bellek uzunluÄŸu
-    OlaySayisi: TSayi4;                 // gÃ¶rev iÃ§in iÅŸlenmeyi bekleyen olay sayÄ±sÄ±
-    ProgramAdi: string;                 // program ad uzunluÄŸu
+    GorevDurum: TGorevDurum;            // görev durumu
+    GorevKimlik: TGorevKimlik;          // görev kimlik - sıra numarası
+    GorevSayaci: TSayi4;                // görevin kaç kez çalıştığı
+    BellekBaslangicAdresi: TSayi4;      // görevin yerleştirildiği bellek adresi
+    BellekUzunlugu: TSayi4;             // görev bellek uzunluğu
+    OlaySayisi: TSayi4;                 // görev için işlenmeyi bekleyen olay sayısı
+    ProgramAdi: string;                 // program ad uzunluğu
   end;
 
 type
@@ -819,11 +823,11 @@ type
 type
   PKarakter = ^TKarakter;
   TKarakter = record
-    Genislik,                   // karakter geniÅŸliÄŸi
-    Yukseklik,                  // karakter yÃ¼ksekliÄŸi
-    YT,                         // yatay +/- tolerans deÄŸeri
-    DT: Byte;                   // dikey +/- tolerans deÄŸeri
-    Adres: Isaretci;            // karakter resim baÅŸlangÄ±Ã§ adresi
+    Genislik,                   // karakter genişliği
+    Yukseklik,                  // karakter yüksekliği
+    YT,                         // yatay +/- tolerans değeri
+    DT: Byte;                   // dikey +/- tolerans değeri
+    Adres: Isaretci;            // karakter resim başlangıç adresi
   end;
 
 type
@@ -841,7 +845,7 @@ type
     B: TSayi1;
     G: TSayi1;
     R: TSayi1;
-    AYRLD: TSayi1;    // ayrÄ±ldÄ±
+    AYRLD: TSayi1;    // ayrıldı
   end;
 
 type
@@ -894,7 +898,7 @@ asm
   popad
 end;
 
-// 0 = eÅŸit, 1 = eÅŸit deÄŸil
+// 0 = eşit, 1 = eşit değil
 function Karsilastir(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4): TSayi4;
 var
   Sonuc: TSayi4;
@@ -935,8 +939,8 @@ begin
   Result := True;
 end;
 
-// ip adresinin aÄŸa baÄŸlÄ± bilgisayar olup olmadÄ±ÄŸÄ±nÄ± test eder
-// Ã¶rn: 192.168.1.1 -> 192.168.1.255
+// ip adresinin ağa bağlı bilgisayar olup olmadığını test eder
+// örn: 192.168.1.1 -> 192.168.1.255
 function IPKarsilastir2(AGonderenIP, ABenimIP: TIPAdres): Boolean;
 var
   i: TISayi4;

@@ -6,7 +6,7 @@
   Dosya Adý: tcp.pas
   Dosya Ýþlevi: tcp katmaný veri iletiþimini gerçekleþtirir
 
-  Güncelleme Tarihi: 01/04/2020
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit tcp;
 
 interface
 
-uses paylasim, baglanti;
+uses paylasim, iletisim;
 
 procedure TCPPaketleriniIsle(AIPPaket: PIPPaket);
 procedure TCPPaketGonder(AKaynakIPAdres: TIPAdres; ABaglanti: PBaglanti;
@@ -45,7 +45,7 @@ begin
   SISTEM_MESAJ_S10('TCP: Bayrak: ', ATCPBaslik^.Bayrak);
   {$ENDIF}
 
-  _Baglanti := _Baglanti^.BaglantiAl(_SistemYerelPort, _SunucuYerelPort);
+  _Baglanti := _Baglanti^.TCPBaglantiAl(_SistemYerelPort, _SunucuYerelPort);
   if(_Baglanti = nil) then
   begin
 

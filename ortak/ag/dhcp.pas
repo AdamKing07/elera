@@ -6,7 +6,7 @@
   Dosya Adý: dhcp.pas
   Dosya Ýþlevi: DHCP protokol istemci iþlevlerini yönetir
 
-  Güncelleme Tarihi: 27/10/2019
+  Güncelleme Tarihi: 12/04/2020
 
   Bilgi: sadece kullanýlan sabit, deðiþken ve iþlevler türkçeye çevrilmiþtir
 
@@ -219,7 +219,7 @@ procedure DHCPPaketleriniIsle(ADHCPKayit: PDHCPKayit);
 
 implementation
 
-uses genel, baglanti, donusum;
+uses genel, iletisim, donusum;
 
 // aðda DHCP sunucusunun mevcut olup olmadýðýna dair mesaj yayýnlar
 procedure DHCPSunucuKesfet;
@@ -299,6 +299,8 @@ begin
 
   _Baglanti := GBaglanti^.Olustur(ptUDP, IPAdres255, DHCP_ISTEMCI_PORT,
     DHCP_SUNUCU_PORT);
+
+  _Baglanti^.Baglan(btYayin);
 
   _Baglanti^.Yaz(@_DHCPKayit[0], 240 + 20);
 
@@ -411,6 +413,8 @@ begin
   _p1^ := DHCP_SECENEK_SON;
 
   _Baglanti := GBaglanti^.Olustur(ptUDP, IPAdres0, DHCP_ISTEMCI_PORT, DHCP_SUNUCU_PORT);
+
+  _Baglanti^.Baglan(btYayin);
 
   _Baglanti^.Yaz(@_DHCPKayit[0], 240 + 31 + _MakineAdiUz);
 

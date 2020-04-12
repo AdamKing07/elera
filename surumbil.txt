@@ -1,6 +1,8 @@
+  + UDP protokünden sonra, TCP altyapý sistem / program API iþlevleri tamamlanarak TCP/IP protokolü tamamlanmýþ oldu
+  + udptest programýnýn adý iletisim olarak deðiþtirildi, tcp iletiþim altyapýsý eklendi
+
   + TAcilirMenu (popupmenu) görsel nesnesi projeye eklendi
   + masaüstü yöneticisi (muyntcs.c) programýna açýlýr menü ile 4 programa kýsa yoldan eriþim saðlanmasý seçeneði eklendi
-
   + TKarmaListe (combobox) görsel nesnesi projeye eklendi
   + udptest, baglanti olarak yapýlandýrýlacak
 *******************************************************************************

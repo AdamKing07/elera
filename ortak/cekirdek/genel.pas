@@ -15,7 +15,7 @@ unit genel;
 interface
 
 uses gercekbellek, src_vesa20, src_ps2, gorev, zamanlayici, paylasim, olay, gorselnesne,
-  sistemmesaj, gn_masaustu, baglanti, n_yazilistesi, n_sayilistesi;
+  sistemmesaj, gn_masaustu, iletisim, n_yazilistesi, n_sayilistesi;
 
 const
   USTSINIR_YAZILISTESI = 128;    // 4096 byte / 32 byte = 128 adet liste

@@ -6,7 +6,7 @@
   Dosya Adý: udp.pas
   Dosya Ýþlevi: udp protokol yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 15/10/2019
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -22,12 +22,12 @@ const
   UDP_SOZDE_UZUNLUGU  = 12;
 
 procedure UDPPaketleriniIsle(AUDPBaslik: PUDPPaket);
-procedure UDPPaketGonder(AKaynakAdres, AHedefAdres: TIPAdres; AKaynakPort, AHedefPort: TSayi2;
-  AVeri: Isaretci; AVeriUzunlugu: TISayi4);
+procedure UDPPaketGonder(AMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdres;
+  AKaynakPort, AHedefPort: TSayi2; AVeri: Isaretci; AVeriUzunlugu: TISayi4);
 
 implementation
 
-uses genel, saglama, ip, donusum, sistemmesaj, dhcp;
+uses genel, saglama, ip, donusum, sistemmesaj, dhcp, iletisim;
 
 {==============================================================================
   udp protokolüne gelen verileri ilgili kaynaklara yönlendirir
@@ -36,6 +36,7 @@ procedure UDPPaketleriniIsle(AUDPBaslik: PUDPPaket);
 var
   _DNSPacket: PDNSPaket;
   _IPAdres: TIPAdres;
+  _Baglanti: PBaglanti;
   _KaynakPort, _HedefPort,
   _SorguSayisi, _YanitSayisi, _DigerSayisi: TSayi2;
   _DNSAdres, _NetBIOSAdi: string;
@@ -224,43 +225,42 @@ begin
   else
   begin
 
-    SISTEM_MESAJ('UDP: Bilinmeyen istek', []);
-    SISTEM_MESAJ_S16('-> Kaynak Port:', _KaynakPort, 8);
-    SISTEM_MESAJ_S16('-> Hedef Port:', _HedefPort, 8);
+    {SISTEM_MESAJ('UDP: Bilinmeyen istek', []);
+    SISTEM_MESAJ('  -> Kaynak Port: %d', [_KaynakPort]);
+    SISTEM_MESAJ('  -> Hedef Port: %d', [_HedefPort]);}
+
+
+    _Baglanti := _Baglanti^.UDPBaglantiAl(_HedefPort);
+    if(_Baglanti = nil) then
+    begin
+
+      SISTEM_MESAJ('Eþleþen UDP port bulunamadý: %d', [_HedefPort]);
+      Exit;
+    end
+    else
+    begin
+
+      B2 := Takas2(AUDPBaslik^.Uzunluk);
+
+      //SISTEM_MESAJ('UDP Veri Uzunluðu: %d', [B2]);
+
+      // 8 byte, udp paket baþlýk uzunluðu
+      if(B2 > 8) then _Baglanti^.BellegeEkle(@AUDPBaslik^.Veri, B2 - 8);
+    end;
   end;
-
-  {Sock := Sock^.GetSocket(Takas2(Word(UdpPacket^.DestPort)));
-  if(Sock = nil) then
-  begin
-
-    SISTEM_MESAJ('Eþleþen port bulunamadý!', []);
-    Exit;
-  end
-  else
-  begin
-
-    DataLen := Takas2(Word(UdpPacket^.Length));
-
-    SISTEM_MESAJ_S16('UDP Data Len ', DataLen, 4);
-
-    // 8 byte, udp paket baþlýk uzunluðu
-    if(DataLen > 8) then Sock^.BellegeEkle(@UdpPacket^.Data, DataLen - 8);
-  end;}
 end;
 
 {==============================================================================
   udp protokolü üzerinden veri gönderir
  ==============================================================================}
-procedure UDPPaketGonder(AKaynakAdres, AHedefAdres: TIPAdres; AKaynakPort, AHedefPort: TSayi2;
-  AVeri: Isaretci; AVeriUzunlugu: TISayi4);
+procedure UDPPaketGonder(AMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdres;
+  AKaynakPort, AHedefPort: TSayi2; AVeri: Isaretci; AVeriUzunlugu: TISayi4);
 var
   _UDPBaslik: PUDPPaket;
   _SozdeBaslik: TSozdeBaslik;
   _SaglamaDeger: TSayi2;
   _B1: PSayi1;
 begin
-
-  { TODO mesaj göndermeden önce hedef makinenin mac adresi arp yoluyla alýnacak }
 
   _UDPBaslik := GGercekBellek.Ayir(AVeriUzunlugu + UDP_BASLIK_UZUNLUGU);
 
@@ -272,7 +272,6 @@ begin
   _SozdeBaslik.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + UDP_BASLIK_UZUNLUGU));
 
   // udp paketi hazýrlanýyor
-  { TODO : kaynak port numarasý almak için iþlev yazýlacak }
   _UDPBaslik^.KaynakPort := Takas2(TSayi2(AKaynakPort));
   _UDPBaslik^.HedefPort := Takas2(TSayi2(AHedefPort));
   _UDPBaslik^.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + UDP_BASLIK_UZUNLUGU));
@@ -283,7 +282,7 @@ begin
     @_SozdeBaslik, UDP_SOZDE_UZUNLUGU);
   _UDPBaslik^.SaglamaToplam := Takas2(TSayi2(_SaglamaDeger));
 
-  IPPaketGonder(MACAdres255, AKaynakAdres, AHedefAdres, ptUDP, 0, _UDPBaslik,
+  IPPaketGonder(AMACAdres, AKaynakAdres, AHedefAdres, ptUDP, 0, _UDPBaslik,
     AVeriUzunlugu + UDP_BASLIK_UZUNLUGU);
 
   GGercekBellek.YokEt(_UDPBaslik, AVeriUzunlugu + UDP_BASLIK_UZUNLUGU);

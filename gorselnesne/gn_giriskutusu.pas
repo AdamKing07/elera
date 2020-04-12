@@ -6,7 +6,7 @@
   Dosya Adı: gn_giriskutusu.pas
   Dosya İşlevi: düzenleme kutusu (edit) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 07/11/2019
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -335,7 +335,7 @@ begin
         if(FSadeceRakam) then
         begin
 
-          if(C in ['0'..'9']) then
+          if(C in ['0'..'9', 'A'..'F', 'a'..'f']) then
           begin
 
             _GirisKutusu^.Baslik := _GirisKutusu^.Baslik + C;

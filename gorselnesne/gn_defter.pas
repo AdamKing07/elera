@@ -6,7 +6,7 @@
   Dosya Adı: gn_defter.pas
   Dosya İşlevi: defter nesnesi (memo) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 07/11/2019
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -29,6 +29,7 @@ type
     procedure Ciz;
     procedure Temizle;
     procedure YaziEkle(AYaziBellekAdresi: Isaretci);
+    procedure YaziEkle(ADeger: string);
     procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
   end;
 
@@ -38,7 +39,7 @@ function DefterCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
 
 implementation
 
-uses gn_islevler, gn_pencere, genel, temelgorselnesne;
+uses gn_islevler, gn_pencere, genel, temelgorselnesne, sistemmesaj;
 
 {==============================================================================
   defter kesme çağrılarını yönetir
@@ -64,7 +65,7 @@ begin
       _Defter^.Goster;
     end;
 
-    // defter nesnesine veri ekle
+    // defter nesnesine veri ekle - pchar
     $0100:
     begin
 
@@ -78,8 +79,22 @@ begin
       end;
     end;
 
-    // defter nesnesinin içerisindeki verileri sil
+    // defter nesnesine veri ekle - string
     $0200:
+    begin
+
+      // nesnenin handle, tip değerlerini denetle.
+      _Defter := PDefter(_Defter^.NesneTipiniKontrolEt(PKimlik(Degiskenler + 00)^, gntDefter));
+      if(_Defter <> nil) then
+      begin
+
+        _Defter^.YaziEkle(PKarakterKatari(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi)^);
+        Result := 1;
+      end;
+    end;
+
+    // defter nesnesinin içerisindeki verileri sil
+    $0300:
     begin
 
       // nesnenin kimlik, tip değerlerini denetle.
@@ -351,7 +366,7 @@ begin
 end;
 
 {==============================================================================
-  defter nesnesine karakter katarı ekler
+  defter nesnesine karakter katarı ekler - pchar
  ==============================================================================}
 procedure TDefter.YaziEkle(AYaziBellekAdresi: Isaretci);
 var
@@ -367,12 +382,40 @@ begin
   if(_Uzunluk = 0) or (_Uzunluk > 4096) then Exit;
 
   // karakter katarını hedef bölgeye kopyala
-  p := PByte(Self.FAltNesneBellekAdresi);
+  p := PByte(Self.FAltNesneBellekAdresi + FYaziUzunlugu);
   Tasi2(AYaziBellekAdresi, p, _Uzunluk);
 
   // sıfır sonlandırma işaretini ekle
   FYaziUzunlugu += _Uzunluk;
   p := PByte(Self.FAltNesneBellekAdresi + FYaziUzunlugu);
+  p^ := 0;
+
+  Ciz;
+end;
+
+{==============================================================================
+  defter nesnesine karakter katarı ekler - string
+ ==============================================================================}
+procedure TDefter.YaziEkle(ADeger: string);
+var
+  p: PSayi1;
+  _Uzunluk: TSayi4;
+begin
+
+  // karakter katarı için bellek ayrılmış mı ?
+  if(FAltNesneBellekAdresi = nil) then Exit;
+
+  // verinin uzunluğunu al
+  _Uzunluk := Length(ADeger);
+  if(_Uzunluk = 0) or (_Uzunluk > 4096) then Exit;
+
+  // karakter katarını hedef bölgeye kopyala
+  p := PByte(TSayi4(FAltNesneBellekAdresi) + FYaziUzunlugu);
+  Tasi2(@ADeger[1], p, _Uzunluk);
+
+  // sıfır sonlandırma işaretini ekle
+  FYaziUzunlugu += _Uzunluk;
+  p := PByte(TSayi4(FAltNesneBellekAdresi) + FYaziUzunlugu);
   p^ := 0;
 
   Ciz;

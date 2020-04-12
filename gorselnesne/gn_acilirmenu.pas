@@ -157,7 +157,7 @@ begin
   _AcilirMenu^.FBoyutlar.Sol2 := 0;
   _AcilirMenu^.FBoyutlar.Ust2 := 0;
   _AcilirMenu^.FBoyutlar.Genislik2 := 300;
-  _AcilirMenu^.FBoyutlar.Yukseklik2 := (24 * 4) + 2;
+  _AcilirMenu^.FBoyutlar.Yukseklik2 := (24 * 5) + 2;
 
   _AcilirMenu^.FElemanYukseklik := 24;
 

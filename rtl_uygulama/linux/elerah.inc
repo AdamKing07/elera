@@ -228,7 +228,7 @@ type
   PSistemBilgisi = ^TSistemBilgisi;
   TSistemBilgisi = record
     SistemAdi, DerlemeBilgisi,
-    FPCMimari, FPCSurum: string[200];
+    FPCMimari, FPCSurum: string;
     YatayCozunurluk, DikeyCozunurluk: TSayi4;
   end;
 

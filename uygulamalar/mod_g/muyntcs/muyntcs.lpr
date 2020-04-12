@@ -44,11 +44,12 @@ const
     ('Program Yazmaç Bilgileri'),
     ('Sistem Mesaj Görüntüleyicisi'));
 
-  MasaustuMenuProgramAdi: array[0..3] of string = (
+  MasaustuMenuProgramAdi: array[0..4] of string = (
       ('mustudk.c'),
       ('haklar.txt'),
       ('nesnegor.c'),
-      ('grafik3.c'));
+      ('grafik3.c'),
+      ('sisbilgi.c'));
 
 var
   Gorev0: TGorev;
@@ -181,8 +182,9 @@ begin
   amenMasaustu.Olustur($2C3E50, RENK_BEYAZ, $7FB3D5, RENK_SIYAH, RENK_BEYAZ);
   amenMasaustu.ElemanEkle('Duvar Kaðýdýný Deðiþtir', 12);
   amenMasaustu.ElemanEkle('Telif Hakký Dosyasýný Görüntüle', 12);
-  amenMasaustu.ElemanEkle('Nesne Görüntüleyiciyi Çalýþtýr', 12);
-  amenMasaustu.ElemanEkle('Ekran Koruyucuyu Çalýþtýr', 12);
+  amenMasaustu.ElemanEkle('Nesne Görüntüleyicisi', 12);
+  amenMasaustu.ElemanEkle('Ekran Koruyucuyu', 12);
+  amenMasaustu.ElemanEkle('Sistem Bilgisi', 12);
 
   // ve ana döngü
   repeat

@@ -20,7 +20,7 @@ interface
     Big Endian:   78 56 34 12
     Litle Endian: 12 34 56 78
  ==============================================================================}
-uses paylasim, aygityonetimi, baglanti, genel;
+uses paylasim, aygityonetimi, iletisim, genel;
 
 const
   ETHERNET_BASLIKU = TSayi1(14);
@@ -63,7 +63,7 @@ begin
   begin
 
     SISTEM_MESAJ('+ Baðlantý yapýlarý ilk deðerlerle yükleniyor...', []);
-    baglanti.Yukle;
+    iletisim.Yukle;
 
     SISTEM_MESAJ('+ ARP protokolü yükleniyor...', []);
     arp.Yukle;

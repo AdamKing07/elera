@@ -74,6 +74,10 @@ cd grvyntcs
 call temizle.bat
 cd..
 
+cd iletisim
+call temizle.bat
+cd..
+
 cd iskelet
 call temizle.bat
 cd..
@@ -131,10 +135,6 @@ call temizle.bat
 cd..
 
 cd testsrc
-call temizle.bat
-cd..
-
-cd udptest
 call temizle.bat
 cd..
 

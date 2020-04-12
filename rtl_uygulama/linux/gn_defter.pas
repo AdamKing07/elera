@@ -25,6 +25,7 @@ type
     procedure Hizala(AHiza: THiza);
     procedure Goster;
     procedure YaziEkle(ABellekAdresi: PChar);
+    procedure YaziEkle(ADeger: string);
     procedure Temizle;
   published
     property Kimlik: TKimlik read FKimlik;
@@ -56,7 +57,13 @@ end;
 procedure TDefter.YaziEkle(ABellekAdresi: PChar);
 begin
 
-  _DefterYaziEkle(FKimlik, ABellekAdresi);
+  _DefterYaziEklePChar(FKimlik, ABellekAdresi);
+end;
+
+procedure TDefter.YaziEkle(ADeger: string);
+begin
+
+  _DefterYaziEkleStr(FKimlik, ADeger);
 end;
 
 procedure TDefter.Temizle;

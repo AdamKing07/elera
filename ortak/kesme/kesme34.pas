@@ -27,7 +27,7 @@ implementation
 
 uses k_ekran, k_gorselnesne, k_olay, k_dosya, k_yazim, k_sayac, k_cizim, k_sistem,
   k_zamanlayici, k_sistemmesaj, k_bellek, k_gorev, k_pci, k_ag, k_depolama, k_fare,
-  k_baglanti, k_diger;
+  k_iletisim, k_diger;
 
 var
   UygulamaYiginAdresi: Isaretci;

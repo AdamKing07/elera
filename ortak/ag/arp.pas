@@ -6,7 +6,7 @@
   Dosya Adı: arp.pas
   Dosya İşlevi: ARP protokol yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 30/03/2020
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -273,6 +273,26 @@ var
   i: TSayi4;
 begin
 
+  // arp tabolsunda ip karşılığı olan mac adresleri var ise kontrol et
+  if(ARPKayitSayisi > 0) then
+  begin
+
+    for i := 1 to USTLIMIT_KAYITSAYISI do
+    begin
+
+      // ARP girdisi mevcut ise ( > -1)
+      if(ARPKayitListesi[i]^.YasamSuresi > -1) then
+        if(IPAdresleriniKarsilastir(ARPKayitListesi[i]^.IPAdres, AIPAdres)) then
+          Exit(ARPKayitListesi[i]^.MACAdres);
+    end;
+  end;
+
+  // ip adresinin mac adresi tabloda bulunamadığı için istek gönder
+  ARPIstegiGonder(arpIstek, @MACAdres0, @AIPAdres);
+
+  Bekle(200);
+
+  // yeniden tabloyu kontrol et
   if(ARPKayitSayisi > 0) then
   begin
 
