@@ -20,7 +20,7 @@ function AgIletisimCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISay
 
 implementation
 
-uses iletisim, genel;
+uses iletisim, genel, donusum, sistemmesaj;
 
 {==============================================================================
   ağ iletişim (soket) yönetim işlevlerini içerir
@@ -29,7 +29,8 @@ function AgIletisimCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISay
 var
   _Baglanti: PBaglanti;
   _ProtokolTip: TProtokolTip;
-  _IPAdres: TIPAdres;
+  _IPAdres2: TIPAdres;
+  _IPAdres: string;
   _Islev, _YerelPort,
   _HedefPort, i, j: TSayi4;
   _BaglantiKimlik: TKimlik;
@@ -43,15 +44,17 @@ begin
   begin
 
     _ProtokolTip := PProtokolTip(Degiskenler + 00)^;
-    _IPAdres := PIPAdres(Degiskenler + 04)^;
+    _IPAdres := PKarakterKatari(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi)^;
     _HedefPort := PSayi4(Degiskenler + 08)^;
+
+    _IPAdres2 := StrToIP(_IPAdres);
 
     // udp iletişiminde yerelport = hedefport
     if(_ProtokolTip = ptTCP) then
       _YerelPort := YerelPortAl
     else _YerelPort := _HedefPort;
 
-    _Baglanti := _Baglanti^.Olustur(_ProtokolTip, _IPAdres, Lo(_YerelPort), Lo(_HedefPort));
+    _Baglanti := _Baglanti^.Olustur(_ProtokolTip, _IPAdres2, Lo(_YerelPort), Lo(_HedefPort));
     if not(_Baglanti = nil) then
 
       Result := _Baglanti^.Baglan(btIP)

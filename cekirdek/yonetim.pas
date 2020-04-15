@@ -141,7 +141,6 @@ var
   _Baglanti: PBaglanti;
   _HedefAdres: TIPAdres;
   _TusDurum: TTusDurum;
-  s: string;
 begin
 
   _HedefAdres[0] := 193;
@@ -202,17 +201,7 @@ begin
         else if(_Tus = '4') then
         begin
 
-          _Gorev^.Calistir('disk1:\iletisim.c');
-        end
-        // test amaçlý
-        else if(_Tus = '6') then
-        begin
-
-          s := 'GET / HTTP/1.1' + #13#10;
-          s += 'Host: 193.1.1.11' + #13#10#13#10;
-          //s += 'Connection: Close' + #13#10#13#10;
-
-          _Baglanti^.Yaz(@s[1], Length(s));
+          _Gorev^.Calistir('disk1:\tarayici.c');
         end
         else if(_Tus = 'd') then
         begin

@@ -61,7 +61,7 @@ begin
 
     SISTEM_MESAJ('IP.PAS: bilinmeyen IP paketi:', []);
     SISTEM_MESAJ_IP('  -> Hedef IP adresi: ', AIPPaket^.HedefIP);
-    SISTEM_MESAJ_S10('  -> Hedef protokol: ', AIPPaket^.Protokol);
+    SISTEM_MESAJ('  -> Hedef protokol: %d', [AIPPaket^.Protokol]);
   end;
 end;
 

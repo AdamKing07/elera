@@ -130,6 +130,10 @@ cd smsjgor
 call temizle.bat
 cd..
 
+cd tarayici
+call temizle.bat
+cd..
+
 cd tasarim
 call temizle.bat
 cd..

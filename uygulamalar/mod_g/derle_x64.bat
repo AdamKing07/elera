@@ -132,6 +132,10 @@ cd smsjgor
 call derle.bat
 cd..
 
+cd tarayici
+call derle.bat
+cd..
+
 cd tasarim
 call derle.bat
 cd..

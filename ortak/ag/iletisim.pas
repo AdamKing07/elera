@@ -110,7 +110,6 @@ function TBaglanti.Olustur(AProtokolTip: TProtokolTip; AUzakIPAdres: TIPAdres;
   AYerelPort, AUzakPort: TSayi2): PBaglanti;
 var
   _Baglanti: PBaglanti;
-  _MACAdres: TMACAdres;
 begin
 
   _Baglanti := nil;
@@ -118,16 +117,13 @@ begin
   if(AProtokolTip = ptTCP) then
   begin
 
-    // arp tablosundan ip adresinin karşılığı olan mac adresini al
-    _MACAdres := MACAdresiAl(AUzakIPAdres);
-
     _Baglanti := YeniBaglantiOlustur;
     if(_Baglanti <> nil) then
     begin
 
       _Baglanti^.FBagli := False;
       _Baglanti^.FProtokol := AProtokolTip;
-      //_Baglanti^.FHedefMACAdres := _MACAdres;
+      _Baglanti^.FHedefMACAdres := MACAdres0;
       _Baglanti^.FHedefIPAdres := AUzakIPAdres;
       _Baglanti^.FYerelPort := AYerelPort;
       _Baglanti^.FUzakPort := AUzakPort;
@@ -378,7 +374,6 @@ end;
 
 {==============================================================================
   bağlantı kurulan bilgisayardan gelen verileri programın kullanması için belleğe kaydeder
-  bilgi: şu aşamada kullanılmamaktadır
  ==============================================================================}
 procedure TBaglanti.BellegeEkle(AKaynakBellek: Isaretci; ABellekUzunlugu: TSayi4);
 var

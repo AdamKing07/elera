@@ -49,7 +49,7 @@ begin
   if(_Baglanti = nil) then
   begin
 
-    SISTEM_MESAJ_S10('TCP: eþleþen uzak port bulunamadý: ', _SunucuYerelPort);
+    SISTEM_MESAJ('TCP: eþleþen uzak port bulunamadý: %d', [_SunucuYerelPort]);
     Exit;
   end
   else
@@ -106,6 +106,7 @@ begin
         _Baglanti^.BellegeEkle(@ATCPPaket^.Secenekler, j);
 
         //SISTEM_MESAJ_YAZI(PChar(@ATCPPaket^.Secenekler), j);
+        //SISTEM_MESAJ('Uzunluk: %d', [j]);
         //SISTEM_MESAJ_YAZI(PChar(_Baglanti^.FBellek), _Baglanti^.FBellekUzunlugu);
 
         TCPPaketGonder(AgBilgisi.IP4Adres, _Baglanti, TCP_BAYRAK_KABUL, nil, 0);

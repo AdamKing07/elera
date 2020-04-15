@@ -6,7 +6,7 @@
   Dosya Adı: donusum.pas
   Dosya İşlevi: değer dönüşüm (convert) işlevlerini içerir
 
-  Güncelleme Tarihi: 24/10/2019
+  Güncelleme Tarihi: 15/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -25,7 +25,8 @@ function DateToStr(ATarih: TTarih): string;
 function StrToHex(ADeger: string): TSayi4;
 function IntToStr(ADeger: TISayi4): string;
 function MacToStr(AMACAdres: TMACAdres): string;
-function IpToStr(AIPAdres: TIPAdres): string;
+function IPToStr(AIPAdres: TIPAdres): string;
+function StrToIP(AIPAdres: string): TIPAdres;
 function LowerCase(AKarakter: Char): Char;
 function UpperCase(AKarakter: Char): Char;
 function UpperCase(ADeger: string): string;
@@ -240,7 +241,7 @@ end;
 {==============================================================================
   IP adres değerini string değere dönüştürür
  ==============================================================================}
-function IpToStr(AIPAdres: TIPAdres): string;
+function IPToStr(AIPAdres: TIPAdres): string;
 var
    _Toplam, _i: TSayi1;
   _Deger: string[3];
@@ -265,6 +266,56 @@ begin
   end;
 
   SetLength(Result, _Toplam + 3);  // + 3 = sayı aralardaki her nokta
+end;
+
+{==============================================================================
+  karakter katar değerini IP adres değerine dönüştürür
+ ==============================================================================}
+function StrToIP(AIPAdres: string): TIPAdres;
+var
+  s: string;
+  i, s2, Sonuc, SiraNo: TSayi4;
+  Deger: Char;
+label
+  Cik;
+begin
+
+  { TODO : nokta kontrolü ve diğer kontroller eklenecek }
+
+  s := '';
+  SiraNo := 0;
+
+  // ip adresini çevir
+  for i := 1 to Length(AIPAdres) do
+  begin
+
+    Deger := AIPAdres[i];
+    if(Deger = '.') then
+    begin
+
+      if(i = 1) then Goto Cik;
+
+      Val(s, s2, Sonuc);
+      Result[SiraNo] := s2;
+
+      s := '';
+      Inc(SiraNo);
+    end
+    else
+    begin
+
+      if(Deger in ['0'..'9']) then
+        s += AIPAdres[i]
+      else Goto Cik;
+    end;
+  end;
+
+  Val(s, s2, Sonuc);
+  Result[SiraNo] := s2;
+  Exit;
+
+Cik:
+  Result := IPAdres0;
 end;
 
 {==============================================================================

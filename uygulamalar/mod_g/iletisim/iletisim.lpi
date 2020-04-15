@@ -40,8 +40,8 @@
         <Filename Value="iletisim.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="124"/>
-        <CursorPos X="51" Y="140"/>
+        <TopLine Value="62"/>
+        <CursorPos Y="77"/>
         <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -418,7 +418,7 @@
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit61>
     </Units>
-    <JumpHistory Count="23" HistoryIndex="22">
+    <JumpHistory Count="26" HistoryIndex="25">
       <Position1>
         <Filename Value="../../../rtl_uygulama/linux/gn_defter.pas"/>
         <Caret Line="27" Column="23" TopLine="16"/>
@@ -509,6 +509,18 @@
         <Filename Value="iletisim.lpr"/>
         <Caret Line="146" Column="37" TopLine="121"/>
       </Position23>
+      <Position24>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="83" Column="46" TopLine="71"/>
+      </Position24>
+      <Position25>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="114" Column="42" TopLine="100"/>
+      </Position25>
+      <Position26>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="31" Column="10" TopLine="17"/>
+      </Position26>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

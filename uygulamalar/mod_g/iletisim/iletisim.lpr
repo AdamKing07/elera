@@ -7,9 +7,7 @@ program iletisim;
   Program Adý: udptest.lpr
   Program Ýþlevi: udp test programý
 
-  Güncelleme Tarihi: 26/10/2019
-
-  // udptest program adý baglanti olarak deðiþtirilecek
+  Güncelleme Tarihi: 13/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -30,7 +28,7 @@ var
   dugBaglan, dugGonder, dugBKes: TDugme;
   OlayKayit: TOlayKayit;
   Iletisim0: TIletisim;
-  IPAdres: TIPAdres;
+  IPAdres: string;
   s: string;
   VeriUzunlugu: Integer;
 begin
@@ -75,10 +73,7 @@ begin
   Zamanlayici0.Olustur(100);
   Zamanlayici0.Baslat;
 
-  IPAdres[0] := 193;
-  IPAdres[1] := 1;
-  IPAdres[2] := 1;
-  IPAdres[3] := 11;
+  IPAdres := '193.1.1.11';
 
   repeat
 

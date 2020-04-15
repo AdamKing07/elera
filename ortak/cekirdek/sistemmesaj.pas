@@ -47,7 +47,6 @@ procedure SISTEM_MESAJ_YAZI(AMesaj: PChar; AMesajUz: TISayi4);
 procedure SISTEM_MESAJ_YAZI(AMesaj1: PChar; AMesajUz1: TISayi4;
   AMesaj2: PChar; AMesajUz2: TISayi4);
 procedure SISTEM_MESAJ_YAZI(ABellekAdres: Isaretci; ABellekUz: TSayi4);
-procedure SISTEM_MESAJ_S10(AMesaj: string; ASayi10: TISayi4);
 procedure SISTEM_MESAJ_S16(AMesaj: string; ASayi16, AHaneSayisi: TSayi4);
 procedure SISTEM_MESAJ_MAC(AMesaj: string; AMACAdres: TMACAdres);
 procedure SISTEM_MESAJ_IP(AMesaj: string; AIPAdres: TIPAdres);
@@ -157,7 +156,23 @@ begin
     j := 1;
     while (j <= i) do begin
 
-      if(AMesaj[j] = '%') and (AMesaj[j + 1] = 'd') then
+      {if(AMesaj[j] = '%') and (AMesaj[j + 1] = 's') then
+      begin
+
+        // sayısal değeri karaktere çevir
+        s2 := string(ASayisalDegerler[DegerSiraNo]);
+        Inc(DegerSiraNo);
+
+        j := Length(AMesaj1);
+        if(j > 0) then
+        begin
+
+          for i := 1 to j do s := s + AMesaj1[i];
+        end;
+
+        Inc(j);
+      end
+      else} if(AMesaj[j] = '%') and (AMesaj[j + 1] = 'd') then
       begin
 
         // sayısal değeri karaktere çevir
@@ -286,23 +301,6 @@ begin
   for i := 0 to ABellekUz - 1 do s := s + p[i];
 
   // sistem mesaj servisi çalışıyorsa, mesajı kayıt listesine ekle
-  if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);
-end;
-
-{==============================================================================
-  sistem kayıtlarına mesaj ekle - mesaj + 10lu sayı sisteminde sayı birleşimi
- ==============================================================================}
-procedure SISTEM_MESAJ_S10(AMesaj: string; ASayi10: TISayi4);
-var
-  Deger10: string[10];
-  s: string;
-begin
-
-  // sayısal değeri karaktere çevir
-  Deger10 := IntToStr(ASayi10);
-
-  s := AMesaj + Deger10;
-
   if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);
 end;
 
