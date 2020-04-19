@@ -11,13 +11,15 @@ Kullanılan Yazılım Araçları:
 ---
 Ekran Görüntüleri
 
-![Dosya Sistemi](masaustu1.png =800x)
+![Görüntü1](masaustu1.png)
 
-![Grafik](masaustu2.png =800x)
+![Görüntü2](masaustu2.png)
 
-![TCP/IP](masaustu3.png =800x)
+![Görüntü3](masaustu3.png)
 
-![Genel](masaustu4.png =800x)
+![Görüntü4](masaustu4.png)
+
+![Görüntü5](masaustu5.png)
 
 ---
 Öğretici Videolar

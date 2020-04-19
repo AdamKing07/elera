@@ -7,7 +7,7 @@
   Program İşlevi: elera işletim sistemi - lazarus programlama dili
     uygulama oluşturma modülü
 
-  Güncelleme Tarihi: 01/04/2020
+  Güncelleme Tarihi: 19/04/2020
 
  ==============================================================================}
 unit eleram;
@@ -156,7 +156,7 @@ begin
     'begin' + LineEnding +
     '  Pencere0.Olustur(-1, 100, 100, 300, 200, ptBoyutlandirilabilir, ProgramAdi,' + LineEnding +
     '    RENK_BEYAZ);' + LineEnding +
-    '  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir;' + LineEnding +
+    '  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);' + LineEnding +
     LineEnding +
     '  Pencere0.Goster;' + LineEnding +
     LineEnding +
@@ -187,7 +187,7 @@ begin
 
   AProject.LazCompilerOptions.OtherUnitFiles := '..\..\rtl_uygulama\linux\units\i386-linux';
   AProject.LazCompilerOptions.IncludePath := '$(ProjOutDir)';
-  AProject.LazCompilerOptions.UnitOutputDirectory := 'outlib';
+  AProject.LazCompilerOptions.UnitOutputDirectory := 'dosyalar';
   AProject.LazCompilerOptions.TargetFilename := '..\..\_g\uygulama1.c';
   AProject.LazCompilerOptions.SrcPath := '..\..\rtl_uygulama\linux';
 
@@ -300,7 +300,7 @@ var
   _s: string;
 begin
 
-  _s := 'del outlib\*.* /Q';
+  _s := 'del dosyalar\*.* /Q';
   Result:= _s;
 end;
 
@@ -335,14 +335,8 @@ begin
 
   _SL.Add('@echo off');
   _SL.Add('');
-  _SL.Add('PATH=C:\lazarus\fpc\3.0.4\bin\i386-win32');
-  _SL.Add('fpc -Tlinux -Pi386 -FUoutlib -Fu..\..\rtl_uygulama\linux\units\i386-linux ' +
-    '-Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tbagla.ld -o..\..\_g\uygulama1.c uygulama1.lpr');
-
-  _SL.Add('');
-  _SL.Add('PATH=C:\lazarus\fpc\3.0.4\bin\x86_64-win64');
-  _SL.Add('fpc -Tlinux -Pi386 -FUoutlib -Fu..\..\rtl_uygulama\linux\units\i386-linux ' +
-    '-Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tbagla.ld -o..\..\_g\uygulama1.c uygulama1.lpr');
+  _SL.Add('fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\rtl_uygulama\linux\units\i386-linux -Sc' +
+    ' -Sg -Si -Sh -CX -Os -Xs -XX -k-Tbagla.ld -o..\..\_g\uygulama1.c uygulama1.lpr');
 
   Result:= _SL.Text;
 

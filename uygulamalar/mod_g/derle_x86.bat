@@ -24,6 +24,10 @@ cd defter
 call derle.bat
 cd..
 
+cd dnssorgu
+call derle.bat
+cd..
+
 cd donusum
 call derle.bat
 cd..

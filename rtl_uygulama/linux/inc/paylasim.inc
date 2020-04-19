@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: program arabiriminde kullanılacak sabit değerleri içerir
 
-  Güncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 19/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -263,12 +263,21 @@ const
  
   FARE_KONUMAL                = $00000100 + SAC_FARE;
 
-  ILETISIM_BAGLAN             = $00000100 + SAC_ILETISIM;
-  ILETISIM_BAGLIMI            = $00000200 + SAC_ILETISIM;
-  ILETISIM_VERIUZUNLUGU       = $00000300 + SAC_ILETISIM;
-  ILETISIM_VERIOKU            = $00000400 + SAC_ILETISIM;
-  ILETISIM_VERIYAZ            = $00000500 + SAC_ILETISIM;
-  ILETISIM_BAGKES             = $00000600 + SAC_ILETISIM;
+  // tcp / udp ham bağlantı işlevleri
+  ILETISIM_BAGLAN             = $00010100 + SAC_ILETISIM;
+  ILETISIM_BAGLIMI            = $00020100 + SAC_ILETISIM;
+  ILETISIM_VERIUZUNLUGU       = $00030100 + SAC_ILETISIM;
+  ILETISIM_VERIOKU            = $00040100 + SAC_ILETISIM;
+  ILETISIM_VERIYAZ            = $00050100 + SAC_ILETISIM;
+  ILETISIM_BAGKES             = $00060100 + SAC_ILETISIM;
+
+  // dns bağlantı işlevleri
+  ILETISIM_DNS_OLUSTUR        = $00010200 + SAC_ILETISIM;
+  ILETISIM_DNS_SORGULA        = $00020200 + SAC_ILETISIM;
+  ILETISIM_DNS_DURUMAL        = $00030200 + SAC_ILETISIM;
+  ILETISIM_DNS_ICERIKAL       = $00040200 + SAC_ILETISIM;
+  ILETISIM_DNS_KAPAT          = $00050200 + SAC_ILETISIM;
+  ILETISIM_DNS_YOKET          = $00060200 + SAC_ILETISIM;
 
 const
   // çekirdeğin ürettiği genel olaylar - çekirdek olay (CO)

@@ -6,7 +6,7 @@
   Dosya Adı: genel.pas
   Dosya İşlevi: sistem genelinde kullanılan sabit, değişken ve yapıları içerir
 
-  Güncelleme Tarihi: 16/10/2019
+  Güncelleme Tarihi: 18/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit genel;
 interface
 
 uses gercekbellek, src_vesa20, src_ps2, gorev, zamanlayici, paylasim, olay, gorselnesne,
-  sistemmesaj, gn_masaustu, iletisim, n_yazilistesi, n_sayilistesi;
+  sistemmesaj, gn_masaustu, iletisim, n_yazilistesi, n_sayilistesi, dns;
 
 const
   USTSINIR_YAZILISTESI = 128;    // 4096 byte / 32 byte = 128 adet liste
@@ -30,7 +30,7 @@ var
   GOlay: TOlay;
   GIslemciBilgisi: TIslemciBilgisi;
   GAktifMasaustu: PMasaustu;
-  GBaglanti: PBaglanti;
+  GBaglanti: PBaglanti;                 // dhcp.pas dosyası tarafından kullanılmaktadır. (iptal edilecek)
   // 24 x 24 sistemler. yukleyici.pas dosyasından yükleme işlemi yapılır
   GSistemResimler: TGoruntuYapi;
 
@@ -41,6 +41,7 @@ var
   GorevListesi: array[1..USTSINIR_GOREVSAYISI] of PGorev;
   GorselNesneListesi: array[1..USTSINIR_GORSELNESNE] of PGorselNesne;
   AgIletisimListesi: array[1..USTSINIR_AGILETISIM] of PBaglanti;
+  DNSListesi: array[1..USTSINIR_DNSBAGLANTI] of PDNS;
   MasaustuListesi: array[1..USTSINIR_MASAUSTU] of PMasaustu = (nil, nil, nil, nil);
 
   // sistem içerisinde kullanılacak görsel olmayan listeler

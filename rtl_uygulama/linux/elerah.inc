@@ -294,3 +294,18 @@ type
     DHCPSunucusu, DNSSunucusu: TIPAdres;
     IPKiraSuresi: TSayi4;
   end;
+
+type
+  TDNSDurum = (ddOlusturuldu, ddHazir, ddSorgulaniyor, ddSorgulandi);
+
+type
+  PDNSPaket = ^TDNSPaket;
+  TDNSPaket = packed record
+  	Tanimlayici,
+    Bayrak,
+    SorguSayisi,
+    YanitSayisi,
+    YetkiSayisi,
+    DigerSayisi: TSayi2;
+    Veriler: Isaretci;
+  end;

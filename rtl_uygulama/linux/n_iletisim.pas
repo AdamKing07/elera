@@ -5,7 +5,7 @@
 
   Dosya Adı: n_iletisim.pas
   Dosya İşlevi: ağ iletişim (soket) yönetim işlevlerini içerir
-  İşlev No: 0x12
+  İşlev No: 0x12 / 1
 
  ==============================================================================}
 {$mode objfpc}

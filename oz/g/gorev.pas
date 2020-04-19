@@ -40,8 +40,6 @@ type
     FBellekUzunlugu: TSayi4;              // iþlemin kullandýðý bellek uzunluðu
     FKodBaslangicAdres: TSayi4;           // iþlemin bellek baþlangýç adresi
     FYiginBaslangicAdres: TSayi4;         // iþlemin yýðýn adresi
-    FOlaySayisi: TSayi4;                  // olay sayacý
-    FOlayBellekAdresi: POlayKayit;        // olaylarýn yerleþtirileceði bellek bölgesi
     procedure GorevSayaciYaz(ASayacDegeri: TSayi4);
     procedure OlaySayisiYaz(AOlaySayisi: TSayi4);
   protected
@@ -49,6 +47,9 @@ type
     function BosGorevBul: PGorev;
     procedure SecicileriOlustur;
   public
+    FOlayBellekAdresi: POlayKayit;        // olaylarýn yerleþtirileceði bellek bölgesi
+    FOlaySayisi: TSayi4;                  // olay sayacý
+
     FGorevKimlik: TGorevKimlik;           // iþlem numarasý
     FGorevDurum: TGorevDurum;             // iþlem durumu
     FGorevSayaci: TSayi4;                 // görev deðiþim sayacý

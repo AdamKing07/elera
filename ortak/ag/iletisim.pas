@@ -152,10 +152,10 @@ begin
       FBellekUzunlugu := 0;
       FBellek := GGercekBellek.Ayir(4095);
 
-      SISTEM_MESAJ('BAGLANTI.PP: Protokol -> UDP', []);
+      {SISTEM_MESAJ('BAGLANTI.PP: Protokol -> UDP', []);
       SISTEM_MESAJ_IP('Hedef IP: ', AUzakIPAdres);
       SISTEM_MESAJ('Kaynak Port: %d', [AYerelPort]);
-      SISTEM_MESAJ('Hedef Port: %d', [AUzakPort]);
+      SISTEM_MESAJ('Hedef Port: %d', [AUzakPort]);}
     end;
   end
   else

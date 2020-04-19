@@ -81,9 +81,9 @@ begin
       GenelBellekBilgisiAl(@_ToplamRAMBlok, @_AyrilmisRAMBlok, @_KullanilanRAMBlok,
         @_BosRAMBlok, @_RAMUzunlugu);
 
-      s := 'Boþ Blok Sayýsý: ' + IntToStr1(_ToplamRAMBlok);
+      s := 'Boþ Blok Sayýsý: ' + IntToStr(_ToplamRAMBlok);
       s += ' / ';
-      s += IntToStr1(_BosRAMBlok);
+      s += IntToStr(_BosRAMBlok);
       DurumCubugu0.DurumYazisiDegistir(s);
 
       Pencere0.Tuval.Dikdortgen(0, 0, 128 * 3, 64 * 3, $000000, True);

@@ -114,18 +114,18 @@ begin
         if(Gorev0.GorevBilgisiAl(i, @GorevKayit) = 0) then
         begin
 
-          lgGorevListesi.ElemanEkle(IntToStr1(GorevKayit.GorevKimlik) + '|' +
+          lgGorevListesi.ElemanEkle(IntToStr(GorevKayit.GorevKimlik) + '|' +
             GorevKayit.ProgramAdi + '|' +
-            IntToStr1(GorevKayit.BellekBaslangicAdresi) + '|' +
-            IntToStr1(GorevKayit.BellekUzunlugu) + '|' +
-            IntToStr1(Ord(GorevKayit.GorevDurum)) + '|' +
-            IntToStr1(GorevKayit.OlaySayisi) + '|' +
-            IntToStr1(GorevKayit.GorevSayaci));
+            IntToStr(GorevKayit.BellekBaslangicAdresi) + '|' +
+            IntToStr(GorevKayit.BellekUzunlugu) + '|' +
+            IntToStr(Ord(GorevKayit.GorevDurum)) + '|' +
+            IntToStr(GorevKayit.OlaySayisi) + '|' +
+            IntToStr(GorevKayit.GorevSayaci));
         end;
       end;
 
-      s := 'Çalýþabilir Program: ' + IntToStr1(UstSinirGorevSayisi) +
-        ' - Çalýþan Program: ' + IntToStr1(CalisanGorevSayisi);
+      s := 'Çalýþabilir Program: ' + IntToStr(UstSinirGorevSayisi) +
+        ' - Çalýþan Program: ' + IntToStr(CalisanGorevSayisi);
       DurumCubugu0.DurumYazisiDegistir(s);
 
       Pencere0.Ciz;

@@ -6,7 +6,7 @@
   Dosya Adý: ag.pas
   Dosya Ýþlevi: að (network) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 30/03/2020
+  Güncelleme Tarihi: 18/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -38,7 +38,7 @@ procedure AgKartinaVeriGonder(AHedefMAC: TMACAdres; AProtokolTip: TProtokolTip;
 
 implementation
 
-uses src_pcnet32, arp, udp, icmp, ip, sistemmesaj;
+uses src_pcnet32, arp, udp, dns, icmp, ip, sistemmesaj;
 
 {==============================================================================
   að ilk deðer yüklemelerini gerçekleþtirir
@@ -67,6 +67,9 @@ begin
 
     SISTEM_MESAJ('+ ARP protokolü yükleniyor...', []);
     arp.Yukle;
+
+    SISTEM_MESAJ('+ DNS protokolü yükleniyor...', []);
+    dns.Yukle;
   end;
 
   AlinanByte := 0;

@@ -79,7 +79,7 @@ begin
 
     Defter0.YaziEkle(DosyaBellek);
 
-    s := 'Dosya: ' + DosyaAdi + ', ' + IntToStr1(DosyaUzunluk) + ' byte';
+    s := 'Dosya: ' + DosyaAdi + ', ' + IntToStr(DosyaUzunluk) + ' byte';
     DurumCubugu0.DurumYazisiDegistir(s);
   end;
 end;

@@ -22,6 +22,10 @@ cd defter
 call temizle.bat
 cd..
 
+cd dnssorgu
+call temizle.bat
+cd..
+
 cd donusum
 call temizle.bat
 cd..

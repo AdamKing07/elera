@@ -38,6 +38,8 @@
         <Filename Value="grvyntcs.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="108"/>
+        <CursorPos X="42" Y="128"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -170,7 +172,7 @@
         <UsageCount Value="10"/>
       </Unit21>
     </Units>
-    <JumpHistory Count="26" HistoryIndex="25">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="grvyntcs.lpr"/>
         <Caret Line="20" Column="73"/>
@@ -275,6 +277,17 @@
         <Filename Value="grvyntcs.lpr"/>
         <Caret Line="11" Column="25"/>
       </Position26>
+      <Position27>
+        <Filename Value="grvyntcs.lpr"/>
+      </Position27>
+      <Position28>
+        <Filename Value="grvyntcs.lpr"/>
+        <Caret Line="123" Column="21" TopLine="103"/>
+      </Position28>
+      <Position29>
+        <Filename Value="grvyntcs.lpr"/>
+        <Caret Line="127" Column="49" TopLine="108"/>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

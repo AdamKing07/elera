@@ -6,7 +6,7 @@
   Dosya Adı: kesme34.pas
   Dosya İşlevi: uygulamaların kesme ($34) isteklerini yönlendirir
 
-  Güncelleme Tarihi: 08/04/2020
+  Güncelleme Tarihi: 18/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -76,7 +76,7 @@ asm
 @@kesme_cagir:
 
   shr eax,8
-  and eax,$FFFFFFFF
+  and eax,$FFFFFF
   mov edx,UygulamaYiginAdresi
 
   // uygulamanın istediği işlevi çağır

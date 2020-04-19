@@ -6,7 +6,7 @@
   Dosya Adý: udp.pas
   Dosya Ýþlevi: udp protokol yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 12/04/2020
+  Güncelleme Tarihi: 18/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -27,7 +27,7 @@ procedure UDPPaketGonder(AMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdr
 
 implementation
 
-uses genel, saglama, ip, donusum, sistemmesaj, dhcp, iletisim;
+uses genel, saglama, ip, donusum, sistemmesaj, dhcp, iletisim, dns;
 
 {==============================================================================
   udp protokolüne gelen verileri ilgili kaynaklara yönlendirir
@@ -38,102 +38,31 @@ var
   _IPAdres: TIPAdres;
   _Baglanti: PBaglanti;
   _KaynakPort, _HedefPort,
-  _SorguSayisi, _YanitSayisi, _DigerSayisi: TSayi2;
-  _DNSAdres, _NetBIOSAdi: string;
-  _DNSBolum: TSayi4;
+  _SorguSayisi, _DigerSayisi: TSayi2;
+  _NetBIOSAdi: string;
   _B1: PByte;
-  _B1Uzunluk, B1, B2, B3, i: TSayi1;
+  B1, B2, B3: TSayi1;
   _B2: PSayi2;
   _B4: PSayi4;
 begin
 
   {$IFDEF UDP_BILGI}
   SISTEM_MESAJ('-------------------------', []);
-  SISTEM_MESAJ_S16('UDP Kaynak Port: ', Takas2(TSayi2(AUDPBaslik^.KaynakPort)), 4);
-  SISTEM_MESAJ_S16('UDP Hedef Port: ', Takas2(TSayi2(AUDPBaslik^.HedefPort)), 4);
-  SISTEM_MESAJ_S16('UDP Veri Uzunluðu: ', AUDPBaslik^.Uzunluk, 4);
-  SISTEM_MESAJ_S16('UDP Saðlama Toplamý: ', AUDPBaslik^.SaglamaToplam, 8);
+  SISTEM_MESAJ('UDP Kaynak Port: %d', [Takas2(AUDPBaslik^.KaynakPort)]);
+  SISTEM_MESAJ('UDP Hedef Port: %d', [Takas2(AUDPBaslik^.HedefPort)]);
+  SISTEM_MESAJ('UDP Veri Uzunluðu: %d', [Takas2(AUDPBaslik^.Uzunluk)]);
+  SISTEM_MESAJ('UDP Saðlama Toplamý: %x', [AUDPBaslik^.SaglamaToplam]);
   //SISTEM_MESAJ('UDP Veri: ' + s, []);
   {$ENDIF}
 
-  _KaynakPort := Takas2(TSayi2(AUDPBaslik^.KaynakPort));
-  _HedefPort := Takas2(TSayi2(AUDPBaslik^.HedefPort));
+  _KaynakPort := Takas2(AUDPBaslik^.KaynakPort);
+  _HedefPort := Takas2(AUDPBaslik^.HedefPort);
 
   // dns port = 53
-  { TODO : bu iþlev dns.pas dosyasýna alýnacak. }
   if(_KaynakPort = 53) then
   begin
 
-    _DNSPacket := @AUDPBaslik^.Veri;
-
-    // sorgu sayýsý ve yanýt sayýsý kontrolü
-    _SorguSayisi := Takas2(_DNSPacket^.SorguSayisi);
-    _YanitSayisi := Takas2(_DNSPacket^.YanitSayisi);
-    //SISTEM_MESAJ_S16('SorguSayisi: ', TSayi4(_SorguSayisi), 4);
-    //SISTEM_MESAJ_S16('YanitSayisi: ', TSayi4(_YanitSayisi), 4);
-
-    if(_SorguSayisi <> 1) then Exit;
-    if(_YanitSayisi = 0) then Exit;
-
-    // örnek dns adres verisi: [6]google[3]com[0]
-    // bilgi: [] arasýndaki veri sayýsal byte türünde veridir.
-
-    // dns sorgu adresinin alýnmasý
-    _DNSBolum := 0;        // dns adresindeki her bir bölüm
-    _DNSAdres := '';
-
-    _B1 := @_DNSPacket^.Veriler;
-    while _B1^ <> 0 do
-    begin
-
-      if(_DNSBolum > 0) then _DNSAdres := _DNSAdres + '.';
-
-      _B1Uzunluk := _B1^;     // kaydýn uzunluðu
-      Inc(_B1);
-      i := 0;
-      while i < _B1Uzunluk do
-      begin
-
-        _DNSAdres := _DNSAdres + Char(_B1^);
-        Inc(_B1);
-        Inc(i);
-        Inc(_DNSBolum);
-      end;
-    end;
-    Inc(_B1);
-
-    SISTEM_MESAJ('DNS Bilgileri: ', []);
-    SISTEM_MESAJ_YAZI('DNS Ad: ', _DNSAdres);
-
-    _B2 := PSayi2(_B1);
-    Inc(_B2);
-    Inc(_B2);
-    Inc(_B2);
-
-    SISTEM_MESAJ_S16('Tip: ', Takas2(_B2^), 4);
-    Inc(_B2);
-    SISTEM_MESAJ_S16('Sýnýf: ', Takas2(_B2^), 4);
-    Inc(_B2);
-
-    _B4 := PSayi4(_B2);
-    SISTEM_MESAJ_S16('Yaþam Ömrü: ', Takas4(_B4^), 8);
-    Inc(_B4);
-
-    _B2 := PSayi2(_B4);
-    SISTEM_MESAJ_S16('Veri Uzunluðu: ', Takas2(_B2^), 4);
-    Inc(_B2);
-
-    _B1 := PSayi1(_B2);
-
-    _IPAdres[0] := _B1^;
-    Inc(_B1);
-    _IPAdres[1] := _B1^;
-    Inc(_B1);
-    _IPAdres[2] := _B1^;
-    Inc(_B1);
-    _IPAdres[3] := _B1^;
-
-    SISTEM_MESAJ_IP('IP Adresi: ', _IPAdres);
+    DNSPaketleriniIsle(AUDPBaslik);
   end
   else if(_HedefPort = 68) then
   begin
@@ -146,7 +75,7 @@ begin
     _DNSPacket := @AUDPBaslik^.Veri;
 
     {SISTEM_MESAJ('UDP: NetBios', []);
-    SISTEM_MESAJ_S16('-> IslemKimlik: ', Takas2(_DNSPacket^.IslemKimlik), 4);
+    SISTEM_MESAJ_S16('-> IslemKimlik: ', Takas2(_DNSPacket^.Tanimlayici), 4);
     SISTEM_MESAJ_S16('-> Bayrak: ', Takas2(_DNSPacket^.Bayrak), 4);
     SISTEM_MESAJ_S16('-> SorguSayisi: ', Takas2(_DNSPacket^.SorguSayisi), 4);
     SISTEM_MESAJ_S16('-> YanitSayisi: ', Takas2(_DNSPacket^.YanitSayisi), 4);
@@ -228,7 +157,6 @@ begin
     {SISTEM_MESAJ('UDP: Bilinmeyen istek', []);
     SISTEM_MESAJ('  -> Kaynak Port: %d', [_KaynakPort]);
     SISTEM_MESAJ('  -> Hedef Port: %d', [_HedefPort]);}
-
 
     _Baglanti := _Baglanti^.UDPBaglantiAl(_HedefPort);
     if(_Baglanti = nil) then

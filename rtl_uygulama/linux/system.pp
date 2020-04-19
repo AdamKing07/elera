@@ -44,17 +44,21 @@ type
 function get_cmdline:Pchar; 
 property cmdline:Pchar read get_cmdline;
 
+function IntToStr(ADeger: TISayi4): string;
 function HexToStr(Val: LongInt; WritePrefix: LongBool; DivNum: LongInt): string;
 function TimeToStr(Buffer: array of Byte): string;
 function DateToStr(Buffer: array of Word; GunAdiEkle: Boolean): string;
 function StrToHex(Val: string): LongWord;
 function UpperCase(s: string): string;
+procedure Tasi2(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4);
+function Takas2(ADeger: TSayi2): TSayi2;
+function Takas4(ADeger: TSayi4): TSayi4;
+function IPToStr(AIPAdres: TIPAdres): string;
 procedure StrPasEx(Src, Dest: Pointer);
 function StrPasEx(ASrc: PChar): string;
 function ParamCount: LongInt;
 function ParamStr(Index: LongInt): string;
 function ParamStr1(Index: LongInt): string;
-function IntToStr1(Val: LongInt): string;
 
 {$if defined(CPUARM) or defined(CPUM68K) or (defined(CPUSPARC) and defined(VER2_6))}
 
@@ -125,6 +129,62 @@ end;
 {$asmmode att}
 
 {==============================================================================
+  10lu sayý sistem sayý deðerini karakter katarýna dönüþtürür
+ ==============================================================================}
+function IntToStr(ADeger: TISayi4): string;
+var
+  _Bellek: array[0..11] of Char;
+  _Negatif: Boolean;
+  _HaneSayisi: TISayi4;
+  _Deger: TISayi4;
+	_p: PChar;
+begin
+
+  // 32 bit maximum sayý = 4294967295 - on hane
+
+  // hane sayýsýný sýfýrla
+  _HaneSayisi := 0;
+
+  // deðerlerin yerleþtirileceði belleðin en son kýsmýna konumlan
+  _p := @_Bellek[11];
+
+  // sayýsal deðer negatif mi ? pozitif mi ?
+	if (ADeger < 0) then
+	begin
+
+		_Deger := -ADeger;
+		_Negatif := True;
+	end
+	else
+	begin
+
+		_Deger := ADeger;
+		_Negatif := False;
+	end;
+
+  // sayýsal deðeri çevir
+	repeat
+
+		_p^ := Char((_Deger mod 10) + Byte('0'));
+		_Deger := _Deger div 10;
+    Inc(_HaneSayisi);
+		Dec(_p);
+	until (_Deger = 0);
+
+  // sayýsal deðer negatif ise - iþaretini de ekle
+	if(_Negatif) then
+	begin
+
+		PChar(_p)^ := '-';
+    Inc(_HaneSayisi);
+	end;
+
+  // deðeri hedef bölgeye kopyala
+  Tasi2(@_Bellek[11 - _HaneSayisi + 1], @Result[1], _HaneSayisi);
+  SetLength(Result, _HaneSayisi);
+end;
+
+{==============================================================================
   saat deðerini string deðere dönüþtürür
  ==============================================================================}
 function TimeToStr(Buffer: array of Byte): string;
@@ -137,20 +197,20 @@ begin
 
   // saat deðerini string'e çevir
   if(Buffer[0] > 9) then
-    Result := IntToStr1(Buffer[0])
-  else Result := '0' + IntToStr1(Buffer[0]);
+    Result := IntToStr(Buffer[0])
+  else Result := '0' + IntToStr(Buffer[0]);
   Result += ':';
 
   // dakika deðerini string'e çevir
   if(Buffer[1] > 9) then
-    Result += IntToStr1(Buffer[1])
-  else Result += '0' + IntToStr1(Buffer[1]);
+    Result += IntToStr(Buffer[1])
+  else Result += '0' + IntToStr(Buffer[1]);
   Result += ':';
 
   // saniye deðerini string'e çevir
   if(Buffer[2] > 9) then
-    Result += IntToStr1(Buffer[2])
-  else Result += '0' + IntToStr1(Buffer[2]);
+    Result += IntToStr(Buffer[2])
+  else Result += '0' + IntToStr(Buffer[2]);
 end;
 
 {==============================================================================
@@ -171,27 +231,27 @@ begin
 
   // gün deðerini string'e çevir
   if(Buffer[0] > 9) then
-    Result := IntToStr1(Buffer[0])
-  else Result := '0' + IntToStr1(Buffer[0]);
+    Result := IntToStr(Buffer[0])
+  else Result := '0' + IntToStr(Buffer[0]);
   Result += '.';
 
   // ay deðerini string'e çevir
   if(Buffer[1] > 9) then
-    Result += IntToStr1(Buffer[1])
-  else Result += '0' + IntToStr1(Buffer[1]);
+    Result += IntToStr(Buffer[1])
+  else Result += '0' + IntToStr(Buffer[1]);
 
   if(GunAdiEkle) then
   begin
 
     Result += '.';
-    Result += IntToStr1(Buffer[2]) + ' ';
+    Result += IntToStr(Buffer[2]) + ' ';
     Result += Gunler[Buffer[3]];
   end
   else
   begin
 
     Result += '.';
-    Result += IntToStr1(Buffer[2]);
+    Result += IntToStr(Buffer[2]);
   end;
 end;
 
@@ -280,6 +340,65 @@ begin
       else Result := Result + C;
     end;
   end else Result := '';
+end;
+
+{$asmmode intel}
+procedure Tasi2(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4); assembler;
+asm
+  pushad
+  mov esi,AKaynak
+  mov edi,AHedef
+  mov ecx,AUzunluk
+  cld
+  rep movsb
+  popad
+end;
+
+// 2 bytelýk deðerin byte deðerlerini takas eder. örnek: $1234 - 3412
+// big endian -> little endian çevrimi
+function Takas2(ADeger: TSayi2): TSayi2;
+begin
+
+  Result := ((ADeger shl 8) and $FF00) or ((ADeger shr 8) and $00FF);
+end;
+
+// network sýralý dword deðeri host sýralý deðere dönüþtürür
+// örnek: $12345678 - 78563412
+function Takas4(ADeger: TSayi4): TSayi4;
+begin
+
+  Result := ((ADeger shl 24) and $FF000000) or ((ADeger shl 8) and $00FF0000) or
+    ((ADeger shr 8) and $0000FF00) or ((ADeger shr 24) and $000000FF);
+end;
+
+{==============================================================================
+  IP adres deðerini string deðere dönüþtürür
+ ==============================================================================}
+function IPToStr(AIPAdres: TIPAdres): string;
+var
+   _Toplam, _i: TSayi1;
+  _Deger: string[3];
+begin
+
+  _Toplam := 0;
+  Result := '';
+
+  // ip adresini çevir
+  for _i := 0 to 3 do
+  begin
+
+    _Deger := IntToStr(AIPAdres[_i]);
+    _Toplam := _Toplam + Length(_Deger);
+    Result := Result + _Deger;
+
+    if(_i < 3) then
+    begin
+
+      Result := Result + '.'
+    end;
+  end;
+
+  SetLength(Result, _Toplam + 3);  // + 3 = sayý aralardaki her nokta
 end;
 
 { program çaðrý kod bilgileri }
@@ -465,63 +584,6 @@ begin
 
   Result := StrPasEx(p);
 end;
-
-{==============================================================================
-  desimal sayý deðerini string deðere dönüþtürür
- ==============================================================================}
-function IntToStr1(Val: LongInt): string;
-var
-	p: PChar;
-  Buf: array[0..11] of Char;
-  Minus: Boolean;
-  Digit: LongInt;
-  Value: LongInt;
-begin
-
-  // 32 bit maximum sayý = 4294967295 - on hane
-
-  // hane sayýsýný sýfýrla
-  Digit := 0;
-
-  // deðerlerin yerleþtirileceði belleðin en son kýsmýna konumlan
-  p := @Buf[11];
-
-  // sayýsal deðer negatif mi ? pozitif mi ?
-	if (Val < 0) then
-	begin
-
-		Value := -Val;
-		Minus := True;
-	end
-	else
-	begin
-
-		Value := Val;
-		Minus := False;
-	end;
-
-  // sayýsal deðeri çevir
-	repeat
-
-		p^ := Char((Value mod 10) + Byte('0'));
-		Value := Value div 10;
-    Inc(Digit);
-		Dec(p);
-	until (Value = 0);
-
-  // sayýsal deðer negatif ise - iþaretini de ekle
-	if(Minus) then
-	begin
-
-		PChar(p)^ := '-';
-    Inc(Digit);
-	end;
-
-  // deðeri hedef bölgeye kopyala
-  MoveEx(@Buf[11-Digit+1], @Result[1], Digit);
-  SetLength(Result, Digit);
-end;
-
 
 procedure StrPasEx(Src, Dest: Pointer);
 var

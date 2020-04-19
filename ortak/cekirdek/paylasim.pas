@@ -141,11 +141,18 @@ const
   TUS_KONTROL = Chr($C0);
   TUS_ALT     = Chr($C1);
   TUS_DEGISIM = Chr($C2);
+  TUS_KBT     = Chr($3A);                           // karakter büyütme tuþu (capslock)
+  TUS_SYT     = Chr($45);                           // sayý yazma tuþu (numlock)
+  TUS_KT      = Chr($46);                           // kaydýrma tuþu (scrolllock)
 
 var
   KONTROLTusDurumu: TTusDurum = tdYok;
   ALTTusDurumu    : TTusDurum = tdYok;
   DEGISIMTusDurumu: TTusDurum = tdYok;
+
+  KBTDurum        : Boolean = False;                // karakter büyütme tuþu (capslock)
+  SYTDurum        : Boolean = False;                // sayý yazma tuþu (numlock)
+  KTDurum         : Boolean = False;                // kaydýrma tuþu (scrolllock)
 
 const
   // að protokolleri
@@ -319,18 +326,6 @@ type
     Uzunluk,                  // UDP baþlýk + veri uzunluðu
     SaglamaToplam: TSayi2;
     Veri: Isaretci;
-  end;
-
-type
-  PDNSPaket = ^TDNSPaket;
-  TDNSPaket = packed record
-  	IslemKimlik,
-    Bayrak,
-    SorguSayisi,
-    YanitSayisi,
-    YetkiSayisi,
-    DigerSayisi: TSayi2;
-    Veriler: Isaretci;
   end;
 
 type

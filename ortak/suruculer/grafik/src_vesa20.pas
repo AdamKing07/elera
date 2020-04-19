@@ -6,7 +6,7 @@
   Dosya Adı: src_vesa20.pas
   Dosya İşlevi: genel vesa 2.0 grafik kartı sürücüsü
 
-  Güncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 17/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -40,8 +40,6 @@ type
       ARenkDonustur: Boolean);
     procedure EkranBelleginiGuncelle;
   end;
-
-procedure TaniBilgileriniMasaustuneYaz;
 
 implementation
 
@@ -247,10 +245,7 @@ begin
   // 1. görsel nesneleri arka belleğe çizerek arka belleği güncelleştir
   GorselNesneleriArkaBellegeCiz;
 
-  // 2. tanı bilgilerini masaüstüne yaz
-  TaniBilgileriniMasaustuneYaz;
-
-  // 3. fare göstergesini çiz
+  // 2. fare göstergesini çiz
   FareGostergesiCiz;
 
   // arka belleği ekran belleğine (grafik bellek) taşı
@@ -489,38 +484,6 @@ begin
       end;
     end;
   end;
-end;
-
-// tanı bilgilerini aktif masaüstüne çizer / yazar
-// EIP / ESP ve 5 döngüde 1 sağa / sola hareket eden nokta
-var
-  GostergeDegeri: TSayi4 = 10;
-  GostergeyeEklenecekDeger: TISayi4 = 1;
-
-procedure TaniBilgileriniMasaustuneYaz;
-var
-  _Masaustu: PMasaustu;
-  i: TSayi4;
-begin
-
-  _Masaustu := GAktifMasaustu;
-
-  _Masaustu^.DikdortgenDoldur(nil, 10, 10, 130, 44, $82E3DA, $82E3DA);
-  _Masaustu^.YaziYaz(nil, 12, 16, 'EIP:', $6C3483);
-  _Masaustu^.YaziYaz(nil, 46, 16, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), $6C3483);
-  //_Masaustu^.YaziYaz(nil, 12, 30, 'ESP:', $641E16);
-  //_Masaustu^.YaziYaz(nil, 46, 30, '0x' + hexStr(GorevTSSListesi[1].ESP, 8), $641E16);
-  _Masaustu^.YaziYaz(nil, 12, 30, 'DNT:', $641E16);
-  _Masaustu^.YaziYaz(nil, 46, 30, '0x' + hexStr(SistemKontrolSayaci, 8), $641E16);
-
-  Inc(GostergeDegeri, GostergeyeEklenecekDeger);
-  if(GostergeDegeri >= (128 * 5)) then
-    GostergeyeEklenecekDeger := -1
-  else if(GostergeDegeri < (10)) then
-    GostergeyeEklenecekDeger := 1;
-
-  i := GostergeDegeri div 5;
-  _Masaustu^.Dikdortgen(nil, i, 13, i + 1, 14, RENK_SIYAH);
 end;
 
 {==============================================================================

@@ -84,7 +84,7 @@ begin
       else _GirdiTip := 'Dosya';
 
       lgDosyaListesi.ElemanEkle(_DosyaArama.DosyaAdi + '|' + _Tarih + ' ' + _Saat + '|' +
-        _GirdiTip + '|' + IntToStr1(_DosyaArama.DosyaUzunlugu));
+        _GirdiTip + '|' + IntToStr(_DosyaArama.DosyaUzunlugu));
 
       Inc(_DosyaSayisi);
 
@@ -92,7 +92,7 @@ begin
     end;
     _FindClose(_DosyaArama);
 
-    DurumCubugu0.DurumYazisiDegistir('Toplam Dosya: ' + IntToStr1(_DosyaSayisi));
+    DurumCubugu0.DurumYazisiDegistir('Toplam Dosya: ' + IntToStr(_DosyaSayisi));
 
     Pencere0.Ciz;
   end;

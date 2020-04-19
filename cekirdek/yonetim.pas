@@ -6,7 +6,7 @@
   Dosya Adý: yonetim.pas
   Dosya Ýþlevi: sistem ana yönetim / kontrol kýsmý
 
-  Güncelleme Tarihi: 12/04/2020
+  Güncelleme Tarihi: 19/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,8 @@ unit yonetim;
 
 interface
 
-uses paylasim;
+uses paylasim, gn_pencere, gn_dugme, gn_giriskutusu, gn_etiket, gn_defter,
+  zamanlayici, dns;
 
 type
   // gerçek moddan gelen veri yapýsý
@@ -32,15 +33,31 @@ type
     CekirdekKodUzunluk: TSayi4;
   end;
 
+var
+  _SDPencere: PPencere;
+  _SDZamanlayici: PZamanlayici;
+
+  _NTPencere: PPencere;
+  _NTEtiket: PEtiket;
+  _NTGirisKutusu: PGirisKutusu;
+  _NTDefter: PDefter;
+  _NTDugme: PDugme;
+  DNSAdresi: string;
+  _DNS: PDNS = nil;
+
 procedure Yukle;
 procedure SistemAnaKontrol;
 procedure SistemDenetcisiOlustur;
 procedure SistemCalismasiniDenetle;
+procedure SistemDegerleriBasla;
+procedure SistemDegerleriOlayIsle;
+procedure NesneTestBasla;
+procedure NesneTestOlayIsle(AOlayKayit: TOlayKayit);
 
 implementation
 
-uses gdt, gorev, src_klavye, genel, ag, dhcp, iletisim, zamanlayici, dns, arp,
-  sistemmesaj, src_vesa20, acpi;
+uses gdt, gorev, src_klavye, genel, ag, dhcp, iletisim, arp,
+  sistemmesaj, src_vesa20, acpi, donusum;
 
 {==============================================================================
   sistem ilk yükleme iþlevlerini gerçekleþtirir
@@ -49,6 +66,7 @@ procedure Yukle;
 var
   _Gorev: PGorev;
   _GMBilgi: PGMBilgi;
+  _OlayKayit: POlayKayit;
 begin
 
   _GMBilgi := PGMBilgi(BILDEN_VERIADRESI);
@@ -112,6 +130,15 @@ begin
 
   // sistem görevini çalýþýyor olarak iþaretle
   _Gorev := GorevListesi[1];
+  _Gorev^.OlaySayisi := 0;
+
+  _OlayKayit := POlayKayit(GGercekBellek.Ayir(4096));
+  if not(_OlayKayit = nil) then
+  begin
+
+    _Gorev^.FOlayBellekAdresi := _OlayKayit;
+  end else _Gorev^.FOlayBellekAdresi := nil;
+
   _Gorev^.DurumDegistir(1, gdCalisiyor);
 
   // çalýþan ve oluþturulan görev deðerlerini belirle
@@ -136,17 +163,9 @@ end;
 procedure SistemAnaKontrol;
 var
   _Gorev: PGorev;
-  _YerelPort: TSayi2;
   _Tus: Char;
-  _Baglanti: PBaglanti;
-  _HedefAdres: TIPAdres;
   _TusDurum: TTusDurum;
 begin
-
-  _HedefAdres[0] := 193;
-  _HedefAdres[1] := 1;
-  _HedefAdres[2] := 1;
-  _HedefAdres[3] := 11;
 
   if(CalisanGorevSayisi = 1) then
   repeat
@@ -158,6 +177,13 @@ begin
   KONTROLTusDurumu := tdYok;
   ALTTusDurumu := tdYok;
   DEGISIMTusDurumu := tdYok;
+
+  // masaüstü aktif olana kadar bekle
+  while GAktifMasaustu = nil do;
+
+  // sistem deðer görüntüleyicisini baþlat
+  SistemDegerleriBasla;
+  //NesneTestBasla;
 
   // sistem için DHCP sunucusundan IP adresi al
   if(AgYuklendi) then DHCPSunucuKesfet;
@@ -186,7 +212,7 @@ begin
         else if(_Tus = '3') then
         begin
 
-          //DNSIstegiGonder;
+          _Gorev^.Calistir('disk1:\dnssorgu.c');
           //_Gorev^.Calistir('disk1:\resimgor.c');
           //_Gorev^.Calistir('disk1:\iletisim.c');
           {i := FindFirst('disk1:\kaynak\*.*', 0, AramaKaydi);
@@ -233,6 +259,8 @@ begin
     GOlay.FareOlaylariniIsle;
 
     GEkranKartSurucusu.EkranBelleginiGuncelle;
+
+    SistemDegerleriOlayIsle;
 
   until (1 = 2);
 end;
@@ -299,6 +327,84 @@ begin
     inc eax
     mov SistemKontrolSayaci,eax
   jmp @@1
+  end;
+end;
+
+procedure SistemDegerleriBasla;
+var
+  _Sol: TISayi4;
+begin
+
+  _Sol := GAktifMasaustu^.FBoyutlar.Genislik2 - 150;
+  _SDPencere := _SDPencere^.Olustur(-1, _Sol, 10, 140, 50, ptBasliksiz,
+    'Sistem Durumu', RENK_BEYAZ);
+  _SDPencere^.Goster;
+
+  _SDZamanlayici := _SDZamanlayici^.Olustur(100);
+  _SDZamanlayici^.Durum := zdCalisiyor;
+end;
+
+procedure SistemDegerleriOlayIsle;
+var
+  _Gorev: PGorev;
+  _OlayKayit: TOlayKayit;
+begin
+
+  _Gorev := GorevListesi[1];
+
+  if(_Gorev^.OlayAl(_OlayKayit)) then
+  begin
+
+    if(_OlayKayit.Olay = CO_ZAMANLAYICI) then
+    begin
+
+      _SDPencere^.Ciz;
+    end
+    else if(_OlayKayit.Olay = CO_CIZIM) then
+    begin
+
+      _SDPencere^.YaziYaz(_SDPencere, 12, 10, 'EIP:', RENK_BEYAZ);
+      _SDPencere^.YaziYaz(_SDPencere, 46, 10, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), RENK_BEYAZ);
+      _SDPencere^.YaziYaz(_SDPencere, 12, 28, 'DNT:', RENK_BEYAZ);
+      _SDPencere^.YaziYaz(_SDPencere, 46, 28, '0x' + hexStr(SistemKontrolSayaci, 8), RENK_BEYAZ);
+    end //else NesneTestOlayIsle(_OlayKayit);
+  end;
+end;
+
+// dns test çalýþmasý
+procedure NesneTestBasla;
+begin
+
+  DNSAdresi := 'turkiye.gov.tr';
+
+  _NTPencere := _NTPencere^.Olustur(-1, 100, 100, 370, 300, ptIletisim,
+    'DNS Sorgu', RENK_BEYAZ);
+  _NTEtiket := _NTEtiket^.Olustur(_NTPencere^.Kimlik, 10, 10, RENK_SIYAH, 'DNS Adres:');
+  _NTEtiket^.Goster;
+  _NTGirisKutusu := _NTGirisKutusu^.Olustur(_NTPencere^.Kimlik, 96, 5, 186, 22, DNSAdresi);
+  _NTGirisKutusu^.Goster;
+  _NTDugme := _NTDugme^.Olustur(_NTPencere^.Kimlik, 286, 6, 62, 22, 'Sorgula');
+  _NTDugme^.Goster;
+  _NTDefter := _NTDefter^.Olustur(_NTPencere^.Kimlik, 10, 32, 340, 230, $369090,
+    RENK_BEYAZ);
+  _NTDefter^.Goster;
+  _NTPencere^.Goster;
+end;
+
+procedure NesneTestOlayIsle(AOlayKayit: TOlayKayit);
+begin
+
+  if(AOlayKayit.Olay = FO_TIKLAMA) then
+  begin
+
+    if(AOlayKayit.Kimlik = _NTDugme^.Kimlik) then
+    begin
+
+    end;
+  end
+  else if(AOlayKayit.Olay = CO_TUSBASILDI) then
+  begin
+
   end;
 end;
 
