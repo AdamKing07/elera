@@ -1,12 +1,12 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasına bakınız
 
-  Dosya AdÄ±: gn_giriskutusu.pas
-  Dosya Ä°ÅŸlevi: dÃ¼zenleme kutusu (edit) yÃ¶netim iÅŸlevlerini iÃ§erir
+  Dosya Adı: gn_giriskutusu.pas
+  Dosya İşlevi: düzenleme kutusu (edit) yönetim işlevlerini içerir
 
-  GÃ¼ncelleme Tarihi: 12/04/2020
+  Güncelleme Tarihi: 12/04/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,12 +14,13 @@ unit gn_giriskutusu;
 
 interface
 
-uses gorselnesne, paylasim;
+uses gorselnesne, paylasim, gn_dugme;
 
 type
   PGirisKutusu = ^TGirisKutusu;
   TGirisKutusu = object(TGorselNesne)
   private
+    FSilDugmesi: PDugme;
     FYazilamaz: Boolean;
     FSadeceRakam: Boolean;
   public
@@ -36,10 +37,10 @@ function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi
 
 implementation
 
-uses gn_islevler, gn_pencere, genel, temelgorselnesne;
+uses gn_islevler, gn_pencere, genel, temelgorselnesne, sistemmesaj;
 
 {==============================================================================
-  dÃ¼zenleme kutusu kesme Ã§aÄŸrÄ±larÄ±nÄ± yÃ¶netir
+  düzenleme kutusu kesme çağrılarını yönetir
  ==============================================================================}
 function GirisKutusuCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
 var
@@ -62,7 +63,7 @@ begin
       _GirisKutusu^.Goster;
     end;
 
-    // dÃ¼zenleme kutusundaki veriyi programa gÃ¶nder
+    // düzenleme kutusundaki veriyi programa gönder
     $0102:
     begin
 
@@ -71,7 +72,7 @@ begin
       p1^ := _GirisKutusu^.Baslik;
     end;
 
-    // dÃ¼zenleme kutusunun salt okunur Ã¶zelliÄŸini deÄŸiÅŸtir
+    // düzenleme kutusunun salt okunur özelliğini değiştir
     $0204:
     begin
 
@@ -81,7 +82,7 @@ begin
       _GirisKutusu^.Ciz;
     end;
 
-    // dÃ¼zenleme kutusunun sayÄ±sal (numeric) deÄŸer Ã¶zelliÄŸini deÄŸiÅŸtir
+    // düzenleme kutusunun sayısal (numeric) değer özelliğini değiştir
     $0304:
     begin
 
@@ -90,7 +91,7 @@ begin
       _GirisKutusu^.FSadeceRakam := p2^;
     end;
 
-    // dÃ¼zenleme kutusundaki veriyi deÄŸiÅŸtir
+    // düzenleme kutusundaki veriyi değiştir
     $0404:
     begin
 
@@ -105,7 +106,7 @@ begin
 end;
 
 {==============================================================================
-  dÃ¼zenleme kutusu nesnesini oluÅŸturur
+  düzenleme kutusu nesnesini oluşturur
  ==============================================================================}
 function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
   ABaslik: string): TKimlik;
@@ -122,7 +123,7 @@ begin
 end;
 
 {==============================================================================
-  dÃ¼zenleme kutusu nesnesini oluÅŸturur
+  düzenleme kutusu nesnesini oluşturur
  ==============================================================================}
 function TGirisKutusu.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
   ABaslik: string): PGirisKutusu;
@@ -131,11 +132,11 @@ var
   _GirisKutusu: PGirisKutusu;
 begin
 
-  // nesnenin baÄŸlanacaÄŸÄ± ata nesneyi al
+  // nesnenin bağlanacağı ata nesneyi al
   _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
   if(_AtaNesne = nil) then Exit;
 
-  // dÃ¼zenleme kutusu nesnesi iÃ§in Kimlik oluÅŸtur
+  // düzenleme kutusu nesnesi için Kimlik oluştur
   _GirisKutusu := PGirisKutusu(Olustur0(gntGirisKutusu));
   if(_GirisKutusu = nil) then
   begin
@@ -144,17 +145,17 @@ begin
     Exit;
   end;
 
-  // dÃ¼zenleme kutusu nesnesini AtaNesne nesnesine ekle
+  // düzenleme kutusu nesnesini AtaNesne nesnesine ekle
   if(_GirisKutusu^.AtaNesneyeEkle(_AtaNesne) = False) then
   begin
 
-    // hata olmasÄ± durumunda nesneyi yok et ve hata koduyla iÅŸlevden Ã§Ä±k
+    // hata olması durumunda nesneyi yok et ve hata koduyla işlevden çık
     _GirisKutusu^.YokEt0;
     Result := nil;
     Exit;
   end;
 
-  // nesne deÄŸerlerini ata
+  // nesne değerlerini ata
   _GirisKutusu^.GorevKimlik := CalisanGorev;
   _GirisKutusu^.AtaNesne := _AtaNesne;
   _GirisKutusu^.Hiza := hzYok;
@@ -163,13 +164,13 @@ begin
   _GirisKutusu^.FBoyutlar.Genislik2 := AGenislik;
   _GirisKutusu^.FBoyutlar.Yukseklik2 := AYukseklik;
 
-  // kenar kalÄ±nlÄ±klarÄ±
+  // kenar kalınlıkları
   _GirisKutusu^.FKalinlik.Sol := 0;
   _GirisKutusu^.FKalinlik.Ust := 0;
   _GirisKutusu^.FKalinlik.Sag := 0;
   _GirisKutusu^.FKalinlik.Alt := 0;
 
-  // kenar boÅŸluklarÄ±
+  // kenar boşlukları
   _GirisKutusu^.FKenarBosluklari.Sol := 0;
   _GirisKutusu^.FKenarBosluklari.Ust := 0;
   _GirisKutusu^.FKenarBosluklari.Sag := 0;
@@ -181,20 +182,27 @@ begin
   _GirisKutusu^.FYazilamaz := False;
   _GirisKutusu^.FSadeceRakam := False;
 
-  // nesnenin ad ve baÅŸlÄ±k deÄŸeri
+  // nesnenin ad ve başlık değeri
   _GirisKutusu^.NesneAdi := NesneAdiAl(gntGirisKutusu);
   _GirisKutusu^.Baslik := ABaslik;
+  _GirisKutusu^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
 
-  // uygulamaya mesaj gÃ¶nder
+  _GirisKutusu^.FSilDugmesi := _GirisKutusu^.FSilDugmesi^.Olustur(_GirisKutusu^.Kimlik,
+    10, 10, 20, 20, 'x');
+  _GirisKutusu^.FSilDugmesi^.RenkBelirle(RENK_BEYAZ, RENK_SIYAH);
+  _GirisKutusu^.FSilDugmesi^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
+  _GirisKutusu^.FSilDugmesi^.FEfendiNesne := _GirisKutusu;
+
+  // uygulamaya mesaj gönder
   GorevListesi[_GirisKutusu^.GorevKimlik]^.OlayEkle1(_GirisKutusu^.GorevKimlik,
     _GirisKutusu, CO_OLUSTUR, 0, 0);
 
-  // kimlik deÄŸerini geri dÃ¶ndÃ¼r
+  // kimlik değerini geri döndür
   Result := _GirisKutusu;
 end;
 
 {==============================================================================
-  dÃ¼zenleme kutusu nesnesini gÃ¶rÃ¼ntÃ¼ler
+  düzenleme kutusu nesnesini görüntüler
  ==============================================================================}
 procedure TGirisKutusu.Goster;
 var
@@ -202,22 +210,23 @@ var
   _GirisKutusu: PGirisKutusu;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip değerlerini denetle.
   _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneTipiniKontrolEt(Kimlik, gntGirisKutusu));
   if(_GirisKutusu = nil) then Exit;
 
-  // nesne gÃ¶rÃ¼nÃ¼r durumda mÄ± ?
+  // nesne görünür durumda mı ?
   if(_GirisKutusu^.Gorunum = False) then
   begin
 
-    // dÃ¼zenleme kutusu nesnesinin gÃ¶rÃ¼nÃ¼rlÃ¼ÄŸÃ¼nÃ¼ aktifleÅŸtir
+    // düzenleme kutusu nesnesinin görünürlüğünü aktifleştir
     _GirisKutusu^.Gorunum := True;
+    _GirisKutusu^.FSilDugmesi^.Gorunum := True;
 
-    // dÃ¼zenleme kutusu nesnesi ve Ã¼st nesneler gÃ¶rÃ¼nÃ¼r durumda mÄ± ?
+    // düzenleme kutusu nesnesi ve üst nesneler görünür durumda mı ?
     if(_GirisKutusu^.AtaNesneGorunurMu) then
     begin
 
-      // gÃ¶rÃ¼nÃ¼r ise dÃ¼zenleme kutusu nesnesinin ata nesnesi olan pencere nesnesini al
+      // görünür ise düzenleme kutusu nesnesinin ata nesnesi olan pencere nesnesini al
       _Pencere := PencereAtaNesnesiniAl(_GirisKutusu);
 
       // pencere nesnesini yenile
@@ -227,7 +236,7 @@ begin
 end;
 
 {==============================================================================
-  dÃ¼zenleme kutusu nesnesini Ã§izer
+  düzenleme kutusu nesnesini çizer
  ==============================================================================}
 procedure TGirisKutusu.Ciz;
 var
@@ -236,7 +245,7 @@ var
   _Alan: TAlan;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip değerlerini denetle.
   _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneTipiniKontrolEt(Kimlik, gntGirisKutusu));
   if(_GirisKutusu = nil) then Exit;
 
@@ -244,25 +253,35 @@ begin
   _Pencere := PencereAtaNesnesiniAl(_GirisKutusu);
   if(_Pencere = nil) then Exit;
 
-  // giriÅŸ kutusunun Ã¼st nesneye baÄŸlÄ± olarak koordinatlarÄ±nÄ± al
+  // giriş kutusunun üst nesneye bağlı olarak koordinatlarını al
   _Alan := _GirisKutusu^.CizimGorselNesneBoyutlariniAl(Kimlik);
 
-  // kenarlÄ±k Ã§iz
+  // kenarlık çiz
   KenarlikCiz(_Pencere, _Alan, 1);
 
-  // iÃ§ dolgu rengi
+  // iç dolgu rengi
   DikdortgenDoldur(_Pencere, _Alan.A1 + 1, _Alan.B1 + 1, _Alan.A2 - 1, _Alan.B2 - 1,
     RENK_BEYAZ, RENK_BEYAZ);
 
-  // nesnenin iÃ§erik deÄŸeri. #255 = klavye kursÃ¶rÃ¼
+  // nesnenin içerik değeri. #255 = klavye kursörü
   if(FYazilamaz) then
 
     YaziYaz(_Pencere, _Alan.A1+4, _Alan.B1+5, _GirisKutusu^.Baslik, RENK_SIYAH)
   else YaziYaz(_Pencere, _Alan.A1+4, _Alan.B1+5, _GirisKutusu^.Baslik + #255, RENK_SIYAH);
+
+  // nesne içine nesne eklendiğinde:
+  // 1 - eklenecek nesne için çizim alanı tahsis edilecek
+  // 2 - nesnenin ekleneceği üst nesnenin çizim alanı sınırlandırılacak
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.A1 := _GirisKutusu^.FDisGercekBoyutlar.A2 - 20;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.B1 := _GirisKutusu^.FDisGercekBoyutlar.B1 + 1;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.A2 := _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.A1 + 19;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.B2 := _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.B1 + 19;
+
+  _GirisKutusu^.FSilDugmesi^.Ciz;
 end;
 
 {==============================================================================
-  dÃ¼zenleme kutusu nesne olaylarÄ±nÄ± iÅŸler
+  düzenleme kutusu nesne olaylarını işler
  ==============================================================================}
 procedure TGirisKutusu.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
 var
@@ -271,29 +290,44 @@ var
   C: Char;
   s: string;
   _Tus: TISayi4;
+  _NesneTipi: TGorselNesneTipi;
+  _Dugme: PDugme;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneTipiniKontrolEt(AKimlik, gntGirisKutusu));
-  if(_GirisKutusu = nil) then Exit;
+  _NesneTipi := _GirisKutusu^.NesneTipiAl(AKimlik);
+  if(_NesneTipi = gntGirisKutusu) then
 
-  // fare sol tuÅŸ basÄ±mÄ±
+    _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneAl(AKimlik))
+  else if(_NesneTipi = gntDugme) then
+  begin
+
+    _Dugme := PDugme(_Dugme^.NesneAl(AKimlik));
+    _GirisKutusu := PGirisKutusu(_Dugme^.FEfendiNesne);
+  end else Exit;
+
+  // fare sol tuş basımı
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
-    // dÃ¼zenleme kutusunun sahibi olan pencere en Ã¼stte mi ? kontrol et
+    // düzenleme kutusunun sahibi olan pencere en üstte mi ? kontrol et
     _Pencere := PencereAtaNesnesiniAl(_GirisKutusu);
 
-    // en Ã¼stte olmamasÄ± durumunda en Ã¼ste getir
+    // en üstte olmaması durumunda en üste getir
     if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
 
-    // uygulamaya mesaj gÃ¶nder
+    // uygulamaya mesaj gönder
     GorevListesi[_GirisKutusu^.GorevKimlik]^.OlayEkle1(_GirisKutusu^.GorevKimlik,
       _GirisKutusu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
   end
+  // silme düğmesine tıklama gerçekleştirildiğinde
+  else if(AOlay.Olay = FO_TIKLAMA) and (AOlay.Kimlik = _Dugme^.Kimlik) then
+  begin
 
-  // klavye tuÅŸ basÄ±mÄ±
-  else if(AOlay.Olay = CO_TUSBASILDI) then
+    _GirisKutusu^.Baslik := '';
+    _GirisKutusu^.Ciz;
+  end
+  // klavye tuş basımı
+  else if(_NesneTipi = gntGirisKutusu) and (AOlay.Olay = CO_TUSBASILDI) then
   begin
 
     _Tus := (AOlay.Deger1 and $FF);
@@ -303,15 +337,15 @@ begin
 
       C := Char(_Tus);
 
-      // enter tuÅŸu
+      // enter tuşu
       if(C = #10) then
       begin
 
-        // enter tuÅŸuna basÄ±lma mesajÄ±nÄ± nesneye gÃ¶nder
+        // enter tuşuna basılma mesajını nesneye gönder
         GorevListesi[_GirisKutusu^.GorevKimlik]^.OlayEkle1(_GirisKutusu^.GorevKimlik,
           _GirisKutusu, AOlay.Olay, _Tus, AOlay.Deger2);
       end
-      // geri silme tuÅŸu
+      // geri silme tuşu
       else if(C = #8) then
       begin
 
@@ -356,7 +390,7 @@ begin
     end;
   end;
 
-  // geÃ§erli fare gÃ¶stergesini gÃ¼ncelle
+  // geçerli fare göstergesini güncelle
   GecerliFareGostegeTipi := FareGostergeTipi;
 end;
 

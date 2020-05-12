@@ -38,10 +38,7 @@ var
   _SDZamanlayici: PZamanlayici;
 
   _NTPencere: PPencere;
-  _NTEtiket: PEtiket;
-  _NTGirisKutusu: PGirisKutusu;
   _NTDefter: PDefter;
-  _NTDugme: PDugme;
   DNSAdresi: string;
   _DNS: PDNS = nil;
 
@@ -212,9 +209,7 @@ begin
         else if(_Tus = '3') then
         begin
 
-          _Gorev^.Calistir('disk1:\dnssorgu.c');
-          //_Gorev^.Calistir('disk1:\resimgor.c');
-          //_Gorev^.Calistir('disk1:\iletisim.c');
+          //_Gorev^.Calistir('disk1:\dnssorgu.c');
           {i := FindFirst('disk1:\kaynak\*.*', 0, AramaKaydi);
           while i = 0 do
           begin
@@ -223,11 +218,7 @@ begin
             i := FindNext(AramaKaydi);
           end;
           FindClose(AramaKaydi);}
-        end
-        else if(_Tus = '4') then
-        begin
-
-          _Gorev^.Calistir('disk1:\tarayici.c');
+          _Gorev^.Calistir('disk1:\cekirdek.lpr');
         end
         else if(_Tus = 'd') then
         begin
@@ -377,17 +368,12 @@ begin
 
   DNSAdresi := 'turkiye.gov.tr';
 
-  _NTPencere := _NTPencere^.Olustur(-1, 100, 100, 370, 300, ptIletisim,
+  _NTPencere := _NTPencere^.Olustur(-1, 100, 100, 370, 300, ptBoyutlandirilabilir,
     'DNS Sorgu', RENK_BEYAZ);
-  _NTEtiket := _NTEtiket^.Olustur(_NTPencere^.Kimlik, 10, 10, RENK_SIYAH, 'DNS Adres:');
-  _NTEtiket^.Goster;
-  _NTGirisKutusu := _NTGirisKutusu^.Olustur(_NTPencere^.Kimlik, 96, 5, 186, 22, DNSAdresi);
-  _NTGirisKutusu^.Goster;
-  _NTDugme := _NTDugme^.Olustur(_NTPencere^.Kimlik, 286, 6, 62, 22, 'Sorgula');
-  _NTDugme^.Goster;
-  _NTDefter := _NTDefter^.Olustur(_NTPencere^.Kimlik, 10, 32, 340, 230, $369090,
-    RENK_BEYAZ);
+  _NTDefter := _NTDefter^.Olustur(_NTPencere^.Kimlik, 10, 10, 200, 200, RENK_BEYAZ,
+    RENK_SIYAH);
   _NTDefter^.Goster;
+
   _NTPencere^.Goster;
 end;
 
@@ -397,7 +383,7 @@ begin
   if(AOlayKayit.Olay = FO_TIKLAMA) then
   begin
 
-    if(AOlayKayit.Kimlik = _NTDugme^.Kimlik) then
+    if(AOlayKayit.Kimlik = _NTDefter^.Kimlik) then
     begin
 
     end;

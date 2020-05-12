@@ -6,7 +6,7 @@
   Dosya Adı: gn_dugme.pas
   Dosya İşlevi: düğme yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 06/11/2019
+  Güncelleme Tarihi: 03/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,9 +21,12 @@ type
   TDugme = object(TGorselNesne)
   private
     FDurum: TDugmeDurumu;
+    FDolguluCizim: Boolean;             // -> dolgulu çizim OLMAMASI durumunda
+    FArkaPlanRenk, FYaziRenk: TRenk;    // düğmenin arka plan ve yazı rengi <-
   public
     function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
       ABaslik: string): PDugme;
+    procedure RenkBelirle(AArkaPlanRenk, AYaziRenk: TRenk);
     procedure Goster;
     procedure Ciz;
     procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
@@ -155,6 +158,7 @@ begin
   _Dugme^.Gorunum := False;
   _Dugme^.Baslik := ABaslik;
   _Dugme^.Durum := ddNormal;
+  _Dugme^.FDolguluCizim := True;      // öndeğer
 
   // nesnenin ad değeri
   _Dugme^.NesneAdi := NesneAdiAl(gntDugme);
@@ -165,6 +169,23 @@ begin
 
   // nesne adresini geri döndür
   Result := _Dugme;
+end;
+
+{==============================================================================
+  düğmenin çizimini normal yapar ve renk değerlerini belirler
+ ==============================================================================}
+procedure TDugme.RenkBelirle(AArkaPlanRenk, AYaziRenk: TRenk);
+var
+  _Dugme: PDugme;
+begin
+
+  // nesnenin kimlik, tip değerlerini denetle.
+  _Dugme := PDugme(_Dugme^.NesneTipiniKontrolEt(Kimlik, gntDugme));
+  if(_Dugme = nil) then Exit;
+
+  _Dugme^.FDolguluCizim := False;
+  _Dugme^.FArkaPlanRenk := AArkaPlanRenk;
+  _Dugme^.FYaziRenk := AYaziRenk;
 end;
 
 {==============================================================================
@@ -226,17 +247,35 @@ begin
   begin
 
     // artan renk ile (eğimli) doldur
-    EgimliDoldur(_Pencere, _Alan, DUGME_NORMAL_ILKRENK, DUGME_NORMAL_SONRENK);
+    if(FDolguluCizim) then
+    begin
 
-    YaziYaz(_Pencere, _Alan.A1 + 4, _Alan.B1 + 4, _Dugme^.Baslik, DUGME_NORMAL_YAZIRENK)
+      EgimliDoldur(_Pencere, _Alan, DUGME_NORMAL_ILKRENK, DUGME_NORMAL_SONRENK);
+      YaziYaz(_Pencere, _Alan.A1 + 4, _Alan.B1 + 4, _Dugme^.Baslik, DUGME_NORMAL_YAZIRENK);
+    end
+    else
+    begin
+
+      DikdortgenDoldur(_Pencere, _Alan, _Dugme^.FArkaPlanRenk, _Dugme^.FArkaPlanRenk);
+      YaziYaz(_Pencere, _Alan.A1 + 5, _Alan.B1 + 2, _Dugme^.Baslik, _Dugme^.FYaziRenk);
+    end;
   end
   else
   begin
 
     // artan renk ile (eğimli) doldur
-    EgimliDoldur(_Pencere, _Alan, DUGME_BASILI_ILKRENK, DUGME_BASILI_SONRENK);
+    if(FDolguluCizim) then
+    begin
 
-    YaziYaz(_Pencere, _Alan.A1 + 4, _Alan.B1 + 4, _Dugme^.Baslik, DUGME_BASILI_YAZIRENK);
+      EgimliDoldur(_Pencere, _Alan, DUGME_BASILI_ILKRENK, DUGME_BASILI_SONRENK);
+      YaziYaz(_Pencere, _Alan.A1 + 4, _Alan.B1 + 4, _Dugme^.Baslik, _Dugme^.FYaziRenk);
+    end
+    else
+    begin
+
+      DikdortgenDoldur(_Pencere, _Alan, _Dugme^.FArkaPlanRenk, _Dugme^.FArkaPlanRenk);
+      YaziYaz(_Pencere, _Alan.A1 + 5, _Alan.B1 + 2, _Dugme^.Baslik, _Dugme^.FYaziRenk);
+    end;
   end;
 
   // uygulamaya mesaj gönder
@@ -279,9 +318,14 @@ begin
       // düğme nesnesini yeniden çiz
       _Dugme^.Ciz;
 
-      // uygulamaya mesaj gönder
-      GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik, _Dugme,
-        AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(_Dugme^.FEfendiNesneOlayCagriAdresi = nil) then
+
+        _Dugme^.FEfendiNesneOlayCagriAdresi(_Dugme^.Kimlik, AOlay)
+
+      else GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik,
+
+        _Dugme, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
     end;
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
@@ -301,14 +345,26 @@ begin
     begin
 
       // yakalama & bırakma işlemi bu nesnede olduğu için
-      // nesneye FO_TIKLAMA mesajı gönder
-      GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik, _Dugme,
-        FO_TIKLAMA, AOlay.Deger1, AOlay.Deger2);
+      // uygulamaya veya efendi nesneye FO_TIKLAMA mesajı gönder
+      AOlay.Olay := FO_TIKLAMA;
+      if not(_Dugme^.FEfendiNesneOlayCagriAdresi = nil) then
+
+        _Dugme^.FEfendiNesneOlayCagriAdresi(_Dugme^.Kimlik, AOlay)
+
+      else GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik,
+
+        _Dugme, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
     end;
 
-    // uygulamaya mesaj gönder
-    GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik, _Dugme,
-      AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+    if not(_Dugme^.FEfendiNesneOlayCagriAdresi = nil) then
+
+      _Dugme^.FEfendiNesneOlayCagriAdresi(_Dugme^.Kimlik, AOlay)
+
+    else GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik,
+
+      _Dugme, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
   end
   else if(AOlay.Olay = FO_HAREKET) then
   begin
@@ -329,8 +385,14 @@ begin
     // düğme nesnesini yeniden çiz
     _Dugme^.Ciz;
 
-    GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik, _Dugme,
-      AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(_Dugme^.FEfendiNesneOlayCagriAdresi = nil) then
+
+      _Dugme^.FEfendiNesneOlayCagriAdresi(_Dugme^.Kimlik, AOlay)
+
+    else GorevListesi[_Dugme^.GorevKimlik]^.OlayEkle1(_Dugme^.GorevKimlik,
+
+      _Dugme, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
   end;
 
   // geçerli fare göstergesini güncelle

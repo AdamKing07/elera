@@ -4,22 +4,24 @@ ELERA İşletim Sistemi (elerais) - 0.3.5 [R31]
 Kullanılan Yazılım Araçları:
 
 * Windows 7 Professional - 64 / 32 bit
-* Lazarus 2.0.6 - FPC 3.0.4
+* Lazarus 2.0.8 - FPC 3.0.4
 * ImDisk
 * Virtualbox 6.1.4
 
 ---
 Ekran Görüntüleri
 
-![Görüntü1](masaustu1.png)
+![Görüntü1](elera1.png)
 
-![Görüntü2](masaustu2.png)
+![Görüntü2](elera2.png)
 
-![Görüntü3](masaustu3.png)
+![Görüntü3](elera3.png)
 
-![Görüntü4](masaustu4.png)
+![Görüntü4](elera4.png)
 
-![Görüntü5](masaustu5.png)
+![Görüntü5](elera5.png)
+
+![Görüntü5](elera6.png)
 
 ---
 Öğretici Videolar

@@ -1,0 +1,18 @@
+gn_giriskutusu nesnesinin gn_dugme ile iþbirliði olarak çalýþmasý baðlamýnda:
+
+  1 - en üst nesne olarak tanýmlanan ve alt nesne alabilen PMasaustu, PPencere ve PPanel
+    üst nesne odaklý tasarým yaklaþýmý geniþletilerek, birlikte çalýþabilen ve test olarak
+    gn_giriskutusu + gn_dugme çalýþmasý baþlatýlmýþtýr.
+
+  2 - her bir nesnenin sadece kendi olaylarýný yorumlamasý birden fazla nesne olaylarýný
+    yönetebilecek þekilde geniþletilecek
+  3 - geçici olarak PGorselNesne altýnda yönetilecek FBagliNesne deðiþkeni ileride
+    FAtaNesne ile birleþtirilecektir. þu aþamada ata nesnenin deðiþmesi olay yorumlayýcýnýn
+    görevini yapamamasýna sebebiyet vermekte
+  4 - birlikte çalýþacak görsel nesnelerin çizimi baðlý olunan nesne tarafýndan gerçekleþtirilecek
+  5 - gn_dugme nesnesinde baþlatýlan AAtanesneyeEkle iþlevi tüm nesnelere yerleþtirilecek
+  6 - olay dosyasýndaki FOlayCagriAdresi genelleþtirilecek
+
+  pencere üzerindeki kontrol düðmeleri içiçe nesneler tasarýmý gereðince gerçekleþtirilecek
+  ve nesne yapýsý için kullanýlan koordinat sistemi (xxx3) iptal edilecek
+

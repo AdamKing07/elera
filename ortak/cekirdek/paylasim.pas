@@ -663,7 +663,7 @@ type
   end;
 
 type
-  TGorselNesneTipi = (gntMasaustu, gntPencere, gntDugme, gntGucDugme, gntListeKutusu,
+  TGorselNesneTipi = (gntTanimsiz, gntMasaustu, gntPencere, gntDugme, gntGucDugme, gntListeKutusu,
     gntMenu, gntDefter, gntIslemGostergesi, gntIsaretKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
     gntPanel, gntResimDugme, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu);
@@ -860,7 +860,7 @@ var
   IPAdres255: TIPAdres = (255, 255, 255, 255);
   MACAdres0: TMACAdres = (0, 0, 0, 0, 0, 0);
   MACAdres255: TMACAdres = (255, 255, 255, 255, 255, 255);
-  GenelDNS_IPAdres: TIPAdres = (208, 67, 220, 220);
+  //GenelDNS_IPAdres1: TIPAdres = (208, 67, 220, 220);
 
 procedure BellekDoldur(ABellekAdresi: Isaretci; AUzunluk: TSayi4; ADeger: TSayi1);
 procedure Tasi2(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4);

@@ -105,13 +105,15 @@ const
     ('Hata No: 15 - Tanýmlanmamýþ'));
 
 const
-  ILISKILI_UYGULAMA_SAYISI = 5;
+  ILISKILI_UYGULAMA_SAYISI = 7;
   IliskiliUygulamaListesi: array[0..ILISKILI_UYGULAMA_SAYISI - 1] of TDosyaIliskisi = (
     (Uzanti: '';     Uygulama: 'dsybil.c';     DosyaTip: dtDiger),
     (Uzanti: 'c';    Uygulama: '';             DosyaTip: dtCalistirilabilir),
     (Uzanti: 's';    Uygulama: '';             DosyaTip: dtSurucu),
     (Uzanti: 'bmp';  Uygulama: 'resimgor.c';   DosyaTip: dtResim),
-    (Uzanti: 'txt';  Uygulama: 'defter.c';     DosyaTip: dtBelge));
+    (Uzanti: 'txt';  Uygulama: 'defter.c';     DosyaTip: dtBelge),
+    (Uzanti: 'lpr';  Uygulama: 'defter.c';     DosyaTip: dtBelge),
+    (Uzanti: 'pas';  Uygulama: 'defter.c';     DosyaTip: dtBelge));
 
 {==============================================================================
   çalýþtýrýlacak görevlerin ana yükleme iþlevlerini içerir

@@ -16,6 +16,7 @@ uses gorev, gn_pencere, gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_dugme,
 
 const
   ProgramAdi: string = 'Dijital Defter';
+  DOSYA_BELLEK_KAPASITESI = Integer(8 * 1024);
 
 var
   Gorev0: TGorev;
@@ -29,15 +30,15 @@ var
   OlayKayit: TOlayKayit;
   DosyaKimlik: TKimlik;
   DosyaUzunluk: TSayi4;
-  DosyaBellek: array[0..8191] of Char;
   DosyaAdi: string;
+  DosyaBellek: array[0..DOSYA_BELLEK_KAPASITESI] of Char;
 
 procedure BellekTemizle;
 var
   i: TSayi4;
 begin
 
-  for i := 0 to 8191 do DosyaBellek[i] := #0;
+  for i := 0 to DOSYA_BELLEK_KAPASITESI - 1 do DosyaBellek[i] := #0;
 end;
 
 procedure DosyaAc;
@@ -54,7 +55,7 @@ begin
 
   DosyaUzunluk := _FileSize(DosyaKimlik);
 
-  if(DosyaUzunluk <= 8192) then
+  if(DosyaUzunluk <= DOSYA_BELLEK_KAPASITESI) then
   begin
 
     //_IOResult;
@@ -66,12 +67,14 @@ begin
 
   _CloseFile(DosyaKimlik);
 
-  if(DosyaUzunluk > 8192) then
+  if(DosyaUzunluk > DOSYA_BELLEK_KAPASITESI) then
   begin
 
-    Defter0.YaziEkle('Hata: dosya boyutu en fazla 8K olmalýdýr.' + #0);
+    Defter0.YaziEkle('Hata: dosya boyutu en fazla ' + IntToStr(DOSYA_BELLEK_KAPASITESI) +
+      ' byte olmalýdýr.' + #0);
 
     s := 'Dosya: -';
+
     DurumCubugu0.DurumYazisiDegistir(s);
   end
   else if(DosyaAdi <> '') then
@@ -80,6 +83,7 @@ begin
     Defter0.YaziEkle(DosyaBellek);
 
     s := 'Dosya: ' + DosyaAdi + ', ' + IntToStr(DosyaUzunluk) + ' byte';
+
     DurumCubugu0.DurumYazisiDegistir(s);
   end;
 end;

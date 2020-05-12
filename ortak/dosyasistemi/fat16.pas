@@ -31,7 +31,7 @@ function DizinGirdisiOku(ADizinGirisi: PDizinGirisi; AAranacakDeger: string;
 
 implementation
 
-uses genel, donusum, gercekbellek;
+uses genel, donusum, gercekbellek, sistemmesaj;
 
 var
   DizinBellekAdresi: array[0..511] of TSayi1;

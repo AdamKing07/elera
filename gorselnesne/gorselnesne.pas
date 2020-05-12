@@ -6,7 +6,7 @@
   Dosya Adý: gorselnesne.pas
   Dosya Ýþlevi: tüm görsel nesnelerin ana nesnesi.
 
-  Güncelleme Tarihi: 09/04/2020
+  Güncelleme Tarihi: 03/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,6 +15,9 @@ unit gorselnesne;
 interface
 
 uses paylasim, temelgorselnesne;
+
+type
+  TOlaylariIsle = procedure(AKimlik: TKimlik; AOlay: TOlayKayit) of object;
 
 type
   PPGorselNesne = ^PGorselNesne;
@@ -26,9 +29,12 @@ type
     FAltNesneBellekAdresi: PPGorselNesne;       // ata nesnenin alt nesneleri yerleþtireceði bellek adresi
     FCizimBellekAdresi: Isaretci;
     FCizimBellekUzunlugu: TSayi4;
+    FEfendiNesne: PGorselNesne;                 // ortak çalýþan nesneler için nesnenin sahibi olan efendi nesne
+    FEfendiNesneOlayCagriAdresi: TOlaylariIsle;
     function Olustur0(AGorselNesneTipi: TGorselNesneTipi): PGorselNesne;
     function YokEt0: Boolean;
     function NesneTipiniKontrolEt(AKimlik: TKimlik; AGorselNesneTipi: TGorselNesneTipi): PGorselNesne;
+    function NesneTipiAl(AKimlik: TKimlik): TGorselNesneTipi;
     function AtaNesneyiAl(AKimlik: TKimlik): PGorselNesne;
     function AtaNesneyeEkle(AAtaNesne: PGorselNesne): Boolean;
     function CizimGorselNesneBoyutlariniAl(AKimlik: TKimlik): TAlan;
@@ -121,6 +127,8 @@ begin
       _TemelGorselNesne^.Kimlik := _i;
       _TemelGorselNesne^.GorselNesneTipi := AGorselNesneTipi;
 
+      PGorselNesne(_TemelGorselNesne)^.FEfendiNesneOlayCagriAdresi := nil;
+
       //SISTEM_MESAJ_S10('TTemelGorselNesne yapý uzunluðu: ', SizeOf(TTemelGorselNesne));
       //SISTEM_MESAJ_S10('TGorselNesne yapý uzunluðu: ', SizeOf(TGorselNesne));
 
@@ -178,6 +186,32 @@ begin
   end;
 
   Result := nil;
+end;
+
+{==============================================================================
+  nesnenin tipini al
+ ==============================================================================}
+function TGorselNesne.NesneTipiAl(AKimlik: TKimlik): TGorselNesneTipi;
+var
+  _GorselNesne: PGorselNesne;
+begin
+
+  // nesne istenen sayý aralýðýnda ise
+  if(AKimlik > 0) and (AKimlik <= USTSINIR_GORSELNESNE) then
+  begin
+
+    _GorselNesne := GorselNesneListesi[AKimlik];
+
+    // nesne oluþturulmuþ mu ?
+    if(_GorselNesne^.Kimlik <> 0) then
+    begin
+
+      // nesne tipini kontrol et
+      Exit(_GorselNesne^.GorselNesneTipi);
+    end;
+  end;
+
+  Result := gntTanimsiz;
 end;
 
 {==============================================================================
