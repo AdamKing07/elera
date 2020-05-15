@@ -11,7 +11,7 @@ TGucDugme		- açýk / kapalý güç düðmesi
 TIslemGostergesi- iþlem göstergesi (progressbar)
 TKarmaListe		- açýlýr / kapanýr liste kutusu (combobox)
 TKaydirmaCubugu	- kaydýrma çubuðu (scrollbar)
-TListeGorunum	- çok deðerleri liste (listview)
+TListeGorunum	- çok deðerli liste (listview)
 TListeKutusu	- liste kutusu (listbox)
 TMasaustu		- masaüstü nesnesi (desktop)
 TMenu			- menü nesnesi

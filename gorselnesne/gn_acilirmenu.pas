@@ -184,7 +184,7 @@ begin
 
   _AcilirMenu^.FAtaNesneMi := False;
   _AcilirMenu^.FareGostergeTipi := fitOK;
-  _AcilirMenu^.Gorunum := False;
+  _AcilirMenu^.FGorunum := False;
 
   // açýlýr menü çizimi için bellekte yer ayýr
   _AcilirMenu^.FCizimBellekAdresi := GGercekBellek.Ayir(_AcilirMenu^.FBoyutlar.Genislik2 *
@@ -215,7 +215,7 @@ begin
 
   // nesnenin ad ve baþlýk deðeri
   _AcilirMenu^.NesneAdi := NesneAdiAl(gntAcilirMenu);
-  _AcilirMenu^.Baslik := '';
+  _AcilirMenu^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_AcilirMenu^.GorevKimlik]^.OlayEkle1(_AcilirMenu^.GorevKimlik, _AcilirMenu,
@@ -265,7 +265,7 @@ begin
   _AcilirMenu^.IcVeDisBoyutlariYenidenHesapla;
 
   // nesnenin görünürlüðünü aktifleþtir
-  _AcilirMenu^.Gorunum := True;
+  _AcilirMenu^.FGorunum := True;
 
   // daha önceden seçilmiþ index deðerini kaldýr
   _AcilirMenu^.FSeciliSiraNo := -1;
@@ -284,7 +284,7 @@ begin
   if(_AcilirMenu = nil) then Exit;
 
   // nesnenin görünürlüðünü pasifleþtir
-  _AcilirMenu^.Gorunum := False;
+  _AcilirMenu^.FGorunum := False;
 end;
 
 {==============================================================================
@@ -308,7 +308,7 @@ begin
   _Alan := _AcilirMenu^.CizimGorselNesneBoyutlariniAl(Kimlik);
 
   // açýlýr menü içerisinin boyama iþlemi
-  DikdortgenDoldur(_AcilirMenu, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B2,
+  DikdortgenDoldur(_AcilirMenu, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt,
     _AcilirMenu^.FKenarRenk, _AcilirMenu^.FGovdeRenk);
 
   _YL := _AcilirMenu^.FMenuElemanBaslik;
@@ -319,8 +319,8 @@ begin
   begin
 
     // çizim / yazým için kullanýlacak _A1 & _B1 koordinatlarý
-    _A1 := _Alan.A1 + 1;
-    _B1 := _Alan.B1 + 1;
+    _A1 := _Alan.Sol + 1;
+    _B1 := _Alan.Ust + 1;
 
     // açýlýr menü kutusunda görüntülenecek eleman sayýsý
     if(_YL^.ElemanSayisi > _AcilirMenu^.FMenuElemanBaslik^.ElemanSayisi) then
@@ -339,7 +339,7 @@ begin
       if(_SiraNo = _AcilirMenu^.FSeciliSiraNo) then
       begin
 
-        DikdortgenDoldur(_AcilirMenu, _A1 + 24, _B1, _AcilirMenu^.FBoyutlar.A2 - 3,
+        DikdortgenDoldur(_AcilirMenu, _A1 + 24, _B1, _AcilirMenu^.FBoyutlar.Sag - 3,
           _B1 + 22, _AcilirMenu^.FSecimRenk, _AcilirMenu^.FSecimRenk);
 
         YaziYaz(_AcilirMenu, _A1 + 26, _B1 + 4, s, _AcilirMenu^.FSeciliYaziRenk);
@@ -380,7 +380,7 @@ begin
       _AcilirMenu^.FSeciliSiraNo := (AOlay.Deger2 - 4) div _AcilirMenu^.FElemanYukseklik;
 
       // popupmenu'yü gizle
-      _AcilirMenu^.Gorunum := False;
+      _AcilirMenu^.FGorunum := False;
 
       // uygulamaya mesaj gönder
       GorevListesi[_AcilirMenu^.GorevKimlik]^.OlayEkle1(_AcilirMenu^.GorevKimlik,

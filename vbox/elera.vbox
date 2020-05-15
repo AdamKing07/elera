@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-05-12T11:24:51Z">
+  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-05-15T14:12:02Z">
     <Description>ELERA &#x130;&#x15F;letim Sistemi (32 Bit)</Description>
     <MediaRegistry>
       <HardDisks>
@@ -26,7 +26,7 @@
       <ExtraDataItem name="GUI/InformationWindowGeometry" value="507,249,598,332"/>
       <ExtraDataItem name="GUI/LastCloseAction" value="PowerOff"/>
       <ExtraDataItem name="GUI/LastGuestSizeHint" value="800,600"/>
-      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="519,58,800,642"/>
+      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="501,53,800,642"/>
       <ExtraDataItem name="GUI/LastScaleWindowPosition" value="83,66,1096,595"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeDevicesMenuActions" value="HardDrives"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeMachineMenuActions" value="SaveState,PowerOff"/>
@@ -108,7 +108,7 @@
         <Adapter slot="35" type="Am79C973"/>
       </Network>
       <UART>
-        <Port slot="0" enabled="false" IOBase="0x3f8" IRQ="4" path="C:\Users\fatih\Documents\bitbucket\eleraos\comport1.txt" hostMode="RawFile"/>
+        <Port slot="0" enabled="false" IOBase="0x3f8" IRQ="4" path="C:\Users\elera\Documents\bitbucket\elerais\comport1.txt" hostMode="RawFile"/>
       </UART>
       <LPT>
         <Port slot="1" enabled="false" IOBase="0x378" IRQ="7"/>
@@ -116,7 +116,7 @@
       <AudioAdapter controller="SB16" driver="DirectSound" enabled="false"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1589261798283918000" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1589526707246868400" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>

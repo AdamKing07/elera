@@ -433,7 +433,7 @@ begin
 
     CizimBellekAdresi := _BaslatMenu^.FCizimBellekAdresi;
 
-    if(_BaslatMenu^.Gorunum) then
+    if(_BaslatMenu^.FGorunum) then
     begin
 
       MenuCiz := True;
@@ -452,7 +452,7 @@ begin
 
     CizimBellekAdresi := _MasaustuMenu^.FCizimBellekAdresi;
 
-    if(_MasaustuMenu^.Gorunum) then
+    if(_MasaustuMenu^.FGorunum) then
     begin
 
       MenuCiz := True;

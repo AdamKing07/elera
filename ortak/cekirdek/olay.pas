@@ -237,8 +237,8 @@ begin
       // nesneye yönlendirilecek parametreleri hazýrla
       _OlayKayit.Kimlik := _GorselNesne^.Kimlik;
       if(_OlayKayit.Olay <> FO_KAYDIRMA) then
-        _OlayKayit.Deger1 := GFareSurucusu.YatayKonum - _Alan.A1;
-      _OlayKayit.Deger2 := GFareSurucusu.DikeyKonum - _Alan.B1;
+        _OlayKayit.Deger1 := GFareSurucusu.YatayKonum - _Alan.Sol;
+      _OlayKayit.Deger2 := GFareSurucusu.DikeyKonum - _Alan.Ust;
 
       // olayý nesneye yönlendir
       OlaylariYonlendir(_GorselNesne, _OlayKayit);

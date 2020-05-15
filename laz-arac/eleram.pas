@@ -7,7 +7,7 @@
   Program İşlevi: elera işletim sistemi - lazarus programlama dili
     uygulama oluşturma modülü
 
-  Güncelleme Tarihi: 19/04/2020
+  Güncelleme Tarihi: 15/05/2020
 
  ==============================================================================}
 unit eleram;
@@ -185,11 +185,11 @@ begin
 
   AProject.Flags := [pfLRSFilesInOutputDirectory];
 
-  AProject.LazCompilerOptions.OtherUnitFiles := '..\..\rtl_uygulama\linux\units\i386-linux';
+  AProject.LazCompilerOptions.OtherUnitFiles := '..\..\..\rtl_uygulama\linux\units\i386-linux';
   AProject.LazCompilerOptions.IncludePath := '$(ProjOutDir)';
   AProject.LazCompilerOptions.UnitOutputDirectory := 'dosyalar';
   AProject.LazCompilerOptions.TargetFilename := '..\..\_g\uygulama1.c';
-  AProject.LazCompilerOptions.SrcPath := '..\..\rtl_uygulama\linux';
+  AProject.LazCompilerOptions.SrcPath := '..\..\..\rtl_uygulama\linux';
 
   AProject.LazCompilerOptions.SmartLinkUnit := True;
   AProject.LazCompilerOptions.OptimizationLevel := 0;
@@ -335,7 +335,7 @@ begin
 
   _SL.Add('@echo off');
   _SL.Add('');
-  _SL.Add('fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\rtl_uygulama\linux\units\i386-linux -Sc' +
+  _SL.Add('fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\..\rtl_uygulama\linux\units\i386-linux -Sc' +
     ' -Sg -Si -Sh -CX -Os -Xs -XX -k-Tbagla.ld -o..\..\_g\uygulama1.c uygulama1.lpr');
 
   Result:= _SL.Text;

@@ -122,6 +122,14 @@ type
   THiza = (hzYok, hzUst, hzSag, hzAlt, hzSol, hzTum);
   THizalar = set of THiza;
 
+type
+  TYatayHizalar = (yhSol, yhOrta, yhSag);
+  TDikeyHizalar = (dhUst, dhOrta, dhAlt);
+  TYaziHiza = record
+    Yatay: TYatayHizalar;
+    Dikey: TDikeyHizalar;
+  end;
+
 const
   SISTEME_AYRILMIS_RAM  = $0A00000;         // çekirdek için ayrýlmýþ RAM = 10MB
 
@@ -632,8 +640,7 @@ type
   PAlan = ^TAlan;
   TAlan = record
   case TISayi4 of
-    0: (A1, B1, A2, B2: TISayi4);                       // <- bu yapý ve
-    1: (Sol, Ust, Sag, Alt: TISayi4);                   // <- bu yapýnýn mantýksal yaklaþýmlarý aynýdýr
+    1: (Sol, Ust, Sag, Alt: TISayi4);
     2: (Sol2, Ust2, Genislik2, Yukseklik2: TISayi4);
     3: (Sol3, Ust3, Genislik3, Yukseklik3: TISayi4);    // saða dayalý deðerler (pencere için kullanýlan kapatma, büyütme ve küçültme düðmeleri için kullanýlmýþtýr)
   end;

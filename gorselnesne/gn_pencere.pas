@@ -23,7 +23,7 @@ unit gn_pencere;
 
 interface
 
-uses gorselnesne, paylasim;
+uses gorselnesne, paylasim, gn_dugme;
 
 type
   TKontrolDugmesi = (kdKucultme, kdBuyutme, kdKapatma);
@@ -35,6 +35,7 @@ type
   PPencere = ^TPencere;
   TPencere = object(TGorselNesne)
   protected
+    FSistemDugmesi: PDugme;
     FPencereTipi: TPencereTipi;
     FGovdeRenk: TRenk;
     FKontrolDugmeleri: TKontrolDugmeleri;
@@ -65,7 +66,7 @@ function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi
 
 implementation
 
-uses genel, gorev, gn_islevler, gn_masaustu, gn_dugme, gn_gucdugme, gn_listekutusu,
+uses genel, gorev, gn_islevler, gn_masaustu, gn_gucdugme, gn_listekutusu,
   gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim, gn_listegorunum,
   gn_panel, gn_resimdugme, gn_kaydirmacubugu, gn_karmaliste, temelgorselnesne, giysi;
@@ -267,6 +268,11 @@ begin
     _Pencere^.FKucultmeDugmeBoyut.Ust3 := 4;
     _Pencere^.FKucultmeDugmeBoyut.Genislik3 := 16 - 1;
     _Pencere^.FKucultmeDugmeBoyut.Yukseklik3 := 16 - 1;
+
+    _Pencere^.FSistemDugmesi := _Pencere^.FSistemDugmesi^.Olustur(_Pencere^.Kimlik,
+      5, 5, 20, 20, '#');
+    _Pencere^.FSistemDugmesi^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
+    _Pencere^.FSistemDugmesi^.FEfendiNesne := _Pencere;
   end
 
   // pencere tipi - boyutlandırılamaz & başlıksız
@@ -275,6 +281,8 @@ begin
 
     _Pencere^.PencereTipi := ptBasliksiz;
     _Pencere^.KontrolDugmeleri := [];
+
+    _Pencere^.FSistemDugmesi := nil;
   end
 
   // pencere tipi - iletişim kutusu (öndeğer)
@@ -289,6 +297,11 @@ begin
     _Pencere^.FKapatmaDugmeBoyut.Ust3 := 4;
     _Pencere^.FKapatmaDugmeBoyut.Genislik3 := 16 - 1;
     _Pencere^.FKapatmaDugmeBoyut.Yukseklik3 := 16 - 1;
+
+    _Pencere^.FSistemDugmesi := _Pencere^.FSistemDugmesi^.Olustur(_Pencere^.Kimlik,
+      5, 5, 20, 20, '#');
+    _Pencere^.FSistemDugmesi^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
+    _Pencere^.FSistemDugmesi^.FEfendiNesne := _Pencere;
   end;
 
   // nesne, alt nesne alabilecek yapıda bir ata nesne
@@ -304,10 +317,10 @@ begin
   _Pencere^.FareGostergeTipi := fitOK;
 
   // nesnenin görünüm durumu
-  _Pencere^.Gorunum := False;
+  _Pencere^.FGorunum := False;
 
   // nesnenin başlık değeri
-  _Pencere^.Baslik := ABaslik;
+  _Pencere^.FBaslik := ABaslik;
 
   // nesnenin gövde renk değeri
   _Pencere^.FGovdeRenk := AGovdeRenk;
@@ -336,11 +349,15 @@ begin
   if(_Pencere = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_Pencere^.Gorunum = False) then
+  if(_Pencere^.FGorunum = False) then
   begin
 
     // pencere nesnesinin görünürlüğünü aktifleştir
-    _Pencere^.Gorunum := True;
+    _Pencere^.FGorunum := True;
+
+    if not(_Pencere^.FSistemDugmesi = nil) then
+      if(_Pencere^.PencereTipi = ptIletisim) or (_Pencere^.PencereTipi = ptBoyutlandirilabilir) then
+        _Pencere^.FSistemDugmesi^.Gorunum := True;
 
     // pencere nesnesini en üste getir ve yeniden çiz
     _Pencere^.EnUsteGetir;
@@ -454,7 +471,7 @@ begin
   end;
 
   // pencere başlığını yaz
-  YaziYaz(_Pencere, 7, 5, _Pencere^.Baslik, _BaslikRengi);
+  YaziYaz(_Pencere, 7, 5, _Pencere^.FBaslik, _BaslikRengi);
 
   // pencere sol kenar çizgisi
   Cizgi(_Pencere, 0, GIYSI_BASLIK_YUKSEKLIK, 0, _Alan.Alt, DIS_KENAR_CIZGI_RENGI);
@@ -536,6 +553,16 @@ begin
 
   _Pencere^.Ciz;
 
+  {if not(_Pencere^.FSistemDugmesi = nil) then
+  begin
+  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.A1 := _Pencere^.FDisGercekBoyutlar.A1;
+  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.B1 := _Pencere^.FDisGercekBoyutlar.B1;
+  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.A2 := _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.A1 + 19;
+  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.B2 := _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.B1 + 19;
+
+  _Pencere^.FSistemDugmesi^.Ciz;
+  end;}
+
   // pencere nesnesinin alt nesnelerinin bellek bölgesine konumlan
   _AltNesneler := _Pencere^.FAltNesneBellekAdresi;
   if(_Pencere^.AltNesneSayisi > 0) then
@@ -547,7 +574,7 @@ begin
     begin
 
       _GorunurNesne := _AltNesneler[i];
-      if(_GorunurNesne^.Gorunum) then
+      if(_GorunurNesne^.FGorunum) then
       begin
 
         // pencere nesnesinin altında çizilecek nesneler
@@ -581,7 +608,7 @@ begin
               begin
 
                 _GorunurNesne := _PanelAltNesneler[j];
-                if(_GorunurNesne^.Gorunum) then
+                if(_GorunurNesne^.FGorunum) then
                 begin
 
                   // panelin altında olabilecek tüm nesneler
@@ -1363,10 +1390,10 @@ begin
   A1 := APencereCizimAlani.Sag + APencere^.FKapatmaDugmeBoyut.Sol3;
   B1 := APencereCizimAlani.Ust + APencere^.FKapatmaDugmeBoyut.Ust3;
 
-  for j := 0 to APencere^.FKapatmaDugmeBoyut.B2 do
+  for j := 0 to APencere^.FKapatmaDugmeBoyut.Alt do
   begin
 
-    for i := 0 to APencere^.FKapatmaDugmeBoyut.A2 do
+    for i := 0 to APencere^.FKapatmaDugmeBoyut.Sag do
     begin
 
       Renk := _KapatmaDugmesi^[j, i];
@@ -1381,10 +1408,10 @@ begin
   A1 := APencereCizimAlani.Sag + APencere^.FBuyutmeDugmeBoyut.Sol3;
   B1 := APencereCizimAlani.Ust + APencere^.FBuyutmeDugmeBoyut.Ust3;
 
-  for j := 0 to APencere^.FBuyutmeDugmeBoyut.B2 do
+  for j := 0 to APencere^.FBuyutmeDugmeBoyut.Alt do
   begin
 
-    for i := 0 to APencere^.FBuyutmeDugmeBoyut.A2 do
+    for i := 0 to APencere^.FBuyutmeDugmeBoyut.Sag do
     begin
 
       Renk := _BuyutmeDugmesi^[j, i];
@@ -1396,10 +1423,10 @@ begin
   A1 := APencereCizimAlani.Sag + APencere^.FKucultmeDugmeBoyut.Sol3;
   B1 := APencereCizimAlani.Ust + APencere^.FKucultmeDugmeBoyut.Ust3;
 
-  for j := 0 to APencere^.FKucultmeDugmeBoyut.B2 do
+  for j := 0 to APencere^.FKucultmeDugmeBoyut.Alt do
   begin
 
-    for i := 0 to APencere^.FKucultmeDugmeBoyut.A2 do
+    for i := 0 to APencere^.FKucultmeDugmeBoyut.Sag do
     begin
 
       Renk := _KucultmeDugmesi^[j, i];

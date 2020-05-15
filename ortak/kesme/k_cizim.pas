@@ -46,8 +46,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(_Pencere^.Kimlik);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
 
     // belirtilen koordinatı işaretle
     GEkranKartSurucusu.NoktaYaz(_Pencere, _A1, _B1, PRenk(Degiskenler + 12)^, True);
@@ -65,8 +65,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler + 00)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _A2 := PISayi4(Degiskenler + 12)^ + _A1;
     _B2 := PISayi4(Degiskenler + 16)^ + _B1;
 
@@ -96,10 +96,10 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler + 00)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
-    _A2 := PISayi4(Degiskenler + 12)^ + _Alan.A1;
-    _B2 := PISayi4(Degiskenler + 16)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
+    _A2 := PISayi4(Degiskenler + 12)^ + _Alan.Sol;
+    _B2 := PISayi4(Degiskenler + 16)^ + _Alan.Ust;
 
     _Pencere^.Cizgi(_Pencere, _A1, _B1, _A2, _B2, PRenk(Degiskenler + 20)^);
   end
@@ -113,8 +113,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler + 00)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _YariCap := PISayi4(Degiskenler + 12)^;
 
     if(PBoolean(Degiskenler + 20)^) then

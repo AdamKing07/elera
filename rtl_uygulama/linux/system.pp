@@ -78,7 +78,6 @@ function ParamStr1(Index: LongInt): string;
   {$i inc/gn_pencereb.inc}
   {$i inc/gn_panelb.inc}
   {$i inc/gn_resimdugmeb.inc}
-  {$i inc/gn_dugmeb.inc}
   {$i inc/gn_gucdugmeb.inc}
   {$i inc/gn_defterb.inc}
   {$i inc/gn_listekutusub.inc}
@@ -98,7 +97,7 @@ function ParamStr1(Index: LongInt): string;
   {$i inc/olayb.inc}
   {$i inc/dosyab.inc}
   {$i inc/yazimb.inc}
-  {$i inc/counterh.inc}
+  {$i inc/sayacb.inc}
   {$i inc/sistemb.inc}
   {$i inc/cizimb.inc}
   {$i inc/sistemmesajb.inc}
@@ -412,7 +411,6 @@ end;
 				 {$i inc/gn_pencere.inc}
          {$i inc/gn_panel.inc}
          {$i inc/gn_resimdugme.inc}
-				 {$i inc/gn_dugme.inc}
 				 {$i inc/gn_gucdugme.inc}
          {$i inc/gn_defter.inc}
 				 {$i inc/gn_listekutusu.inc}
@@ -432,7 +430,7 @@ end;
 				 {$i inc/olay.inc}
 				 {$i inc/dosya.inc}
 				 {$i inc/yazim.inc}
-				 {$i inc/counter.inc}
+				 {$i inc/sayac.inc}
          {$i inc/sistem.inc}
 				 {$i inc/cizim.inc}
 				 {$i inc/sistemmesaj.inc}
@@ -516,7 +514,7 @@ var
 function ParamCount: LongInt;
 begin
 
-  Result := PLongWord(0)^;
+  Result := PLongWord(32 + 0)^;
 end;
 
 function ParamStr(Index: LongInt): string;
@@ -566,12 +564,12 @@ begin
   if(Index = 0) then
   begin
 
-    Result := StrPasEx(PChar(4));
+    Result := StrPasEx(PChar(32 + 4));
     Exit;
   end;
 
   j := 0;
-  p := PChar(4);
+  p := PChar(32 + 4);
 
   while not(Index = j) do
   begin

@@ -16,7 +16,7 @@ unit yonetim;
 interface
 
 uses paylasim, gn_pencere, gn_dugme, gn_giriskutusu, gn_etiket, gn_defter,
-  zamanlayici, dns;
+  zamanlayici, dns, gn_panel, gorselnesne;
 
 type
   // gerçek moddan gelen veri yapısı
@@ -33,14 +33,31 @@ type
     CekirdekKodUzunluk: TSayi4;
   end;
 
+type
+
+  { TDeneme }
+
+  TDeneme = object
+    Degerler: array[1..8] of TSayi4;
+    BulunanCiftSayisi, TiklamaSayisi,
+    SecilenEtiket, ToplamTiklamaSayisi: TSayi4;
+    procedure NesneTestBasla;
+    procedure IlkDegerAtamalari;
+    function SayacDegeriAl: TSayi4;
+    procedure NesneTestOlayIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+  end;
+
 var
   _SDPencere: PPencere;
   _SDZamanlayici: PZamanlayici;
 
   _NTPencere: PPencere;
+  GNEtiket: PEtiket;
   _NTDefter: PDefter;
-  DNSAdresi: string;
   _DNS: PDNS = nil;
+  DugmeSayisi: TSayi4;
+  _Dugme: array[0..15] of PDugme;
+  Deneme: TDeneme;
 
 procedure Yukle;
 procedure SistemAnaKontrol;
@@ -48,8 +65,6 @@ procedure SistemDenetcisiOlustur;
 procedure SistemCalismasiniDenetle;
 procedure SistemDegerleriBasla;
 procedure SistemDegerleriOlayIsle;
-procedure NesneTestBasla;
-procedure NesneTestOlayIsle(AOlayKayit: TOlayKayit);
 
 implementation
 
@@ -180,7 +195,7 @@ begin
 
   // sistem değer görüntüleyicisini başlat
   SistemDegerleriBasla;
-  //NesneTestBasla;
+  Deneme.NesneTestBasla;
 
   // sistem için DHCP sunucusundan IP adresi al
   if(AgYuklendi) then DHCPSunucuKesfet;
@@ -218,7 +233,8 @@ begin
             i := FindNext(AramaKaydi);
           end;
           FindClose(AramaKaydi);}
-          _Gorev^.Calistir('disk1:\cekirdek.lpr');
+          //_Gorev^.Calistir('disket1:\aliimran.txt');
+          _Gorev^.Calistir('disk1:\hafiza.c');
         end
         else if(_Tus = 'd') then
         begin
@@ -363,34 +379,152 @@ begin
 end;
 
 // dns test çalışması
-procedure NesneTestBasla;
+procedure TDeneme.NesneTestBasla;
 begin
 
-  DNSAdresi := 'turkiye.gov.tr';
+  exit;
+  _NTPencere := _NTPencere^.Olustur(-1, 100, 100, 335, 385, ptBoyutlandirilabilir,
+    'Hafıza Güçlendirme', RENK_BEYAZ);
 
-  _NTPencere := _NTPencere^.Olustur(-1, 100, 100, 370, 300, ptBoyutlandirilabilir,
-    'DNS Sorgu', RENK_BEYAZ);
-  _NTDefter := _NTDefter^.Olustur(_NTPencere^.Kimlik, 10, 10, 200, 200, RENK_BEYAZ,
-    RENK_SIYAH);
-  _NTDefter^.Goster;
+  GNEtiket := GNEtiket^.Olustur(_NTPencere^.Kimlik, 92, 330, RENK_LACIVERT,
+    'Tıklama Sayısı: 0  ');
+  GNEtiket^.Goster;
+
+  IlkDegerAtamalari;
 
   _NTPencere^.Goster;
 end;
 
-procedure NesneTestOlayIsle(AOlayKayit: TOlayKayit);
+procedure TDeneme.IlkDegerAtamalari;
+var
+  Sol, Ust: TISayi4;
+  i, j: Integer;
 begin
 
-  if(AOlayKayit.Olay = FO_TIKLAMA) then
+  ToplamTiklamaSayisi := 0;
+
+  TiklamaSayisi := 0;
+
+  BulunanCiftSayisi := 0;
+
+  Sol := 12;
+  Ust := 12;
+
+  for i := 1 to 8 do Degerler[i] := 0;
+
+  DugmeSayisi := 0;
+  for i := 0 to 3 do
+  for j := 0 to 3 do
   begin
 
-    if(AOlayKayit.Kimlik = _NTDefter^.Kimlik) then
+    _Dugme[DugmeSayisi] := _Dugme[DugmeSayisi]^.Olustur(_NTPencere^.Kimlik,
+      Sol + i * 76, Ust + j * 76, 74, 74, '?');
+    _Dugme[DugmeSayisi]^.FEtiket := SayacDegeriAl;
+    _Dugme[DugmeSayisi]^.CizimModelDegistir(True, $F2D8AF, $FAECD6, RENK_SIYAH, RENK_KIRMIZI);
+    _Dugme[DugmeSayisi]^.FEfendiNesneOlayCagriAdresi := @NesneTestOlayIsle;
+    _Dugme[DugmeSayisi]^.Goster;
+
+    Inc(DugmeSayisi);
+  end;
+
+  GNEtiket^.Baslik := 'Tıklama Sayısı: 0';
+end;
+
+function TDeneme.SayacDegeriAl: TSayi4;
+
+  function Al: TSayi4;
+  begin
+    asm
+    rdtsc
+    end;
+  end;
+var
+  Deger: TSayi4;
+begin
+
+  while True do
+  begin
+
+    Deger := Al;
+    Deger := (Deger and 7) + 1;
+
+    if(Deger >= 1) and (Deger <= 8) then
     begin
 
+      if(Degerler[Deger] < 2) then
+      begin
+
+        Inc(Degerler[Deger]);
+        Exit(Deger);
+      end;
     end;
-  end
-  else if(AOlayKayit.Olay = CO_TUSBASILDI) then
+  end;
+end;
+
+procedure TDeneme.NesneTestOlayIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+begin
+
+  exit;
+  if(AOlay.Olay = FO_TIKLAMA) then
   begin
 
+    Inc(TiklamaSayisi);
+    Inc(ToplamTiklamaSayisi);
+
+    GNEtiket^.Baslik := 'Tıklama Sayısı: ' + IntToStr(ToplamTiklamaSayisi);
+
+    if(TiklamaSayisi = 1) then
+    begin
+
+      _Dugme[0] := PDugme(_Dugme[0]^.NesneAl(AKimlik));
+      _Dugme[0]^.Baslik := IntToStr(_Dugme[0]^.FEtiket);
+    end
+
+    else if(TiklamaSayisi = 2) then
+    begin
+
+      _Dugme[1] := PDugme(_Dugme[1]^.NesneAl(AKimlik));
+
+      if(_Dugme[0]^.Kimlik = AKimlik) then
+      begin
+
+        _Dugme[1]^.Baslik := '?';
+      end
+      else
+      begin
+
+        if(_Dugme[0]^.FEtiket = _Dugme[1]^.FEtiket) then
+        begin
+
+          _Dugme[1]^.Baslik := IntToStr(_Dugme[1]^.FEtiket);
+
+          _Dugme[0]^.Gorunum := False;
+          _Dugme[1]^.Gorunum := False;
+
+          Inc(BulunanCiftSayisi);
+          if(BulunanCiftSayisi = 8) then
+          begin
+
+            // oyunu başa döndür
+            IlkDegerAtamalari;
+          end;
+        end
+        else
+        begin
+
+          _Dugme[1]^.Baslik := IntToStr(_Dugme[1]^.FEtiket);
+
+          GEkranKartSurucusu.EkranBelleginiGuncelle;
+
+          Bekle(50);
+
+          _Dugme[0]^.Baslik := '?';
+          _Dugme[1]^.Baslik := '?';
+        end;
+      end;
+
+      TiklamaSayisi := 0;
+    end;
   end;
 end;
 

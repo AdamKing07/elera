@@ -174,12 +174,12 @@ begin
 
   _Resim^.FAtaNesneMi := False;
   _Resim^.FareGostergeTipi := fitOK;
-  _Resim^.Gorunum := False;
+  _Resim^.FGorunum := False;
   _Resim^.FGoruntuYapi.BellekAdresi := nil;
 
   // nesnenin ad ve başlık değeri
   _Resim^.NesneAdi := NesneAdiAl(gntResim);
-  _Resim^.Baslik := '';
+  _Resim^.FBaslik := '';
 
   // eğer dosya adı belirtilmişse, dosyayı yükle
   if(Length(ADosyaYolu) > 0) then ResimYaz(ADosyaYolu);
@@ -232,11 +232,11 @@ begin
   if(_Resim = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_Resim^.Gorunum = False) then
+  if(_Resim^.FGorunum = False) then
   begin
 
     // resim nesnesinin görünürlüğünü aktifleştir
-    _Resim^.Gorunum := True;
+    _Resim^.FGorunum := True;
 
     // resim nesnesi ve üst nesneler görünür durumda mı ?
     if(_Resim^.AtaNesneGorunurMu) then
@@ -266,12 +266,12 @@ begin
 
   _Pencere := PPencere(_Resim^.AtaNesne);
 
-  if(_Resim^.Gorunum) then
+  if(_Resim^.FGorunum) then
   begin
 
     // resim nesnesinin üst nesneye bağlı olarak koordinatlarını al
     _Alan := _Resim^.CizimGorselNesneBoyutlariniAl(Kimlik);
-    DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B2, RENK_BEYAZ,
+    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt, RENK_BEYAZ,
       RENK_BEYAZ);
 
     if not(_Resim^.FGoruntuYapi.BellekAdresi = nil) then

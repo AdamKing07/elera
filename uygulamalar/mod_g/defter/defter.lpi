@@ -38,8 +38,8 @@
         <Filename Value="defter.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="51"/>
-        <CursorPos X="29" Y="65"/>
+        <TopLine Value="55"/>
+        <CursorPos X="28" Y="70"/>
         <UsageCount Value="328"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -214,7 +214,7 @@
         <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
         <EditorIndex Value="1"/>
         <TopLine Value="19"/>
-        <CursorPos X="5" Y="33"/>
+        <CursorPos X="2" Y="33"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit28>
@@ -227,120 +227,120 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="defter.lpr"/>
-        <Caret Line="52" Column="3" TopLine="37"/>
       </Position1>
       <Position2>
         <Filename Value="defter.lpr"/>
-        <Caret Line="51" Column="25" TopLine="31"/>
+        <Caret Line="90" Column="32" TopLine="79"/>
       </Position2>
       <Position3>
         <Filename Value="defter.lpr"/>
+        <Caret Line="93" Column="48" TopLine="77"/>
       </Position3>
       <Position4>
         <Filename Value="defter.lpr"/>
-        <Caret Line="29" Column="14" TopLine="6"/>
       </Position4>
       <Position5>
         <Filename Value="defter.lpr"/>
-        <Caret Line="23" Column="18" TopLine="17"/>
+        <Caret Line="91" Column="52" TopLine="77"/>
       </Position5>
       <Position6>
         <Filename Value="defter.lpr"/>
-        <Caret Line="111" Column="27" TopLine="96"/>
+        <Caret Line="64" Column="35" TopLine="48"/>
       </Position6>
       <Position7>
         <Filename Value="defter.lpr"/>
-        <Caret Line="108" Column="45" TopLine="89"/>
+        <Caret Line="32" Column="14" TopLine="24"/>
       </Position7>
       <Position8>
         <Filename Value="defter.lpr"/>
-        <Caret Line="96" Column="64" TopLine="76"/>
+        <Caret Line="40" Column="36" TopLine="24"/>
       </Position8>
       <Position9>
         <Filename Value="defter.lpr"/>
+        <Caret Line="64" Column="40" TopLine="41"/>
       </Position9>
       <Position10>
         <Filename Value="defter.lpr"/>
-        <Caret Line="90" Column="32" TopLine="79"/>
+        <Caret Line="80" Column="30" TopLine="15"/>
       </Position10>
       <Position11>
         <Filename Value="defter.lpr"/>
-        <Caret Line="93" Column="48" TopLine="77"/>
+        <Caret Line="127" Column="53" TopLine="112"/>
       </Position11>
       <Position12>
         <Filename Value="defter.lpr"/>
+        <Caret Line="32" Column="24" TopLine="19"/>
       </Position12>
       <Position13>
         <Filename Value="defter.lpr"/>
-        <Caret Line="91" Column="52" TopLine="77"/>
+        <Caret Line="149" Column="60" TopLine="122"/>
       </Position13>
       <Position14>
         <Filename Value="defter.lpr"/>
-        <Caret Line="64" Column="35" TopLine="48"/>
+        <Caret Line="40" Column="48" TopLine="26"/>
       </Position14>
       <Position15>
         <Filename Value="defter.lpr"/>
-        <Caret Line="32" Column="14" TopLine="24"/>
+        <Caret Line="147" Column="5" TopLine="120"/>
       </Position15>
       <Position16>
         <Filename Value="defter.lpr"/>
-        <Caret Line="40" Column="36" TopLine="24"/>
+        <Caret Line="32" Column="42" TopLine="19"/>
       </Position16>
       <Position17>
         <Filename Value="defter.lpr"/>
-        <Caret Line="64" Column="40" TopLine="41"/>
+        <Caret Line="34" Column="24" TopLine="20"/>
       </Position17>
       <Position18>
         <Filename Value="defter.lpr"/>
-        <Caret Line="80" Column="30" TopLine="15"/>
+        <Caret Line="20" Column="16" TopLine="6"/>
       </Position18>
       <Position19>
         <Filename Value="defter.lpr"/>
-        <Caret Line="127" Column="53" TopLine="112"/>
+        <Caret Line="42" Column="13" TopLine="30"/>
       </Position19>
       <Position20>
         <Filename Value="defter.lpr"/>
-        <Caret Line="32" Column="24" TopLine="19"/>
+        <Caret Line="47" Column="12" TopLine="30"/>
       </Position20>
       <Position21>
         <Filename Value="defter.lpr"/>
-        <Caret Line="149" Column="60" TopLine="122"/>
+        <Caret Line="92" Column="5" TopLine="78"/>
       </Position21>
       <Position22>
         <Filename Value="defter.lpr"/>
-        <Caret Line="40" Column="48" TopLine="26"/>
+        <Caret Line="65" Column="28" TopLine="51"/>
       </Position22>
       <Position23>
         <Filename Value="defter.lpr"/>
-        <Caret Line="147" Column="5" TopLine="120"/>
+        <Caret Line="85" Column="5" TopLine="67"/>
       </Position23>
       <Position24>
         <Filename Value="defter.lpr"/>
-        <Caret Line="32" Column="42" TopLine="19"/>
+        <Caret Line="150" Column="5" TopLine="124"/>
       </Position24>
       <Position25>
         <Filename Value="defter.lpr"/>
-        <Caret Line="34" Column="24" TopLine="20"/>
+        <Caret Line="13" Column="66" TopLine="7"/>
       </Position25>
       <Position26>
         <Filename Value="defter.lpr"/>
-        <Caret Line="20" Column="16" TopLine="6"/>
+        <Caret Line="124" Column="14" TopLine="111"/>
       </Position26>
       <Position27>
         <Filename Value="defter.lpr"/>
-        <Caret Line="42" Column="13" TopLine="30"/>
       </Position27>
       <Position28>
         <Filename Value="defter.lpr"/>
-        <Caret Line="47" Column="12" TopLine="30"/>
+        <Caret Line="37" Column="14" TopLine="15"/>
       </Position28>
       <Position29>
         <Filename Value="defter.lpr"/>
-        <Caret Line="92" Column="5" TopLine="78"/>
+        <Caret Line="39" Column="43" TopLine="22"/>
       </Position29>
       <Position30>
         <Filename Value="defter.lpr"/>
-        <Caret Line="39" Column="45" TopLine="53"/>
+        <Caret Line="45" Column="19" TopLine="23"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

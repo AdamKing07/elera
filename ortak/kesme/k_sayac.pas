@@ -6,10 +6,11 @@
   Dosya Adı: k_sayac.pas
   Dosya İşlevi: sayaç kesme işlevlerini içerir
 
-  Güncelleme Tarihi: 15/09/2019
+  Güncelleme Tarihi: 15/05/2020
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit k_sayac;
 
 interface
@@ -26,6 +27,7 @@ function SayacCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
 var
   P1: PSayi1;
   P2: PSayi2;
+  Deger4: TSayi4;
   Saat, Dakika, Saniye: TSayi1;
   Gun, Ay, Yil, HaftaninGunu: TSayi2;
   _Islev: TSayi4;
@@ -61,6 +63,15 @@ begin
     P2^ := Yil;
     Inc(P2);
     P2^ := HaftaninGunu;
+  end
+  // belirtilen milisaniye kadar bekle
+  else if(_Islev = $10) then
+  begin
+
+    Deger4 := PSayi4(Degiskenler)^;
+
+    Deger4 := ZamanlayiciSayaci + Deger4;
+    while (Deger4 > ZamanlayiciSayaci) do begin asm int $20; end; end;
   end
 
   // işlev belirtilen aralıkta değilse hata kodunu geri döndür

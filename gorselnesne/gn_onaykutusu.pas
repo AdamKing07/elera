@@ -144,12 +144,12 @@ begin
 
   _OnayKutusu^.FAtaNesneMi := False;
   _OnayKutusu^.FareGostergeTipi := fitOK;
-  _OnayKutusu^.Gorunum := False;
+  _OnayKutusu^.FGorunum := False;
   _OnayKutusu^.FSecimDurumu := sdSecili;
 
   // nesnenin ad ve başlık değeri
   _OnayKutusu^.NesneAdi := NesneAdiAl(gntIsaretKutusu);
-  _OnayKutusu^.Baslik := ABaslik;
+  _OnayKutusu^.FBaslik := ABaslik;
 
   // uygulamaya mesaj gönder
   GorevListesi[_OnayKutusu^.GorevKimlik]^.OlayEkle1(_OnayKutusu^.GorevKimlik,
@@ -173,11 +173,11 @@ begin
   if(_OnayKutusu = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_OnayKutusu^.Gorunum = False) then
+  if(_OnayKutusu^.FGorunum = False) then
   begin
 
     // onay kutusu nesnesinin görünürlüğünü aktifleştir
-    _OnayKutusu^.Gorunum := True;
+    _OnayKutusu^.FGorunum := True;
 
     // onay kutusu nesnesi ve üst nesneler görünür durumda mı ?
     if(_OnayKutusu^.AtaNesneGorunurMu) then
@@ -214,8 +214,8 @@ begin
   // onay kutusu üst nesneye bağlı olarak koordinatlarını al
   _Alan := _OnayKutusu^.CizimGorselNesneBoyutlariniAl(Kimlik);
 
-  _Alan.A2 := _Alan.A1 + 15;
-  _Alan.B2 := _Alan.B1 + 15;
+  _Alan.Sag := _Alan.Sol + 15;
+  _Alan.Alt := _Alan.Ust + 15;
 
   // onay kutusu normal çizimi
   if(_OnayKutusu^.FSecimDurumu = sdNormal) then
@@ -225,7 +225,7 @@ begin
     KenarlikCiz(_Pencere, _Alan, 2);
 
     // pencere içeriğini boya
-    DikdortgenDoldur(_Pencere, _Alan.A1 + 2, _Alan.B1 + 2, _Alan.A2 - 2, _Alan.B2 -2,
+    DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt -2,
       RENK_BEYAZ, RENK_BEYAZ);
 
     p1 := PByte(@TamamResimDizi);
@@ -235,13 +235,13 @@ begin
       for X := 1 to 7 do
       begin
 
-        if(p1^ = 1) then PixelYaz(_Pencere, _Alan.A1 + 4 + X, _Alan.B1 + 4 + Y, RENK_SIYAH);
+        if(p1^ = 1) then PixelYaz(_Pencere, _Alan.Sol + 4 + X, _Alan.Ust + 4 + Y, RENK_SIYAH);
         Inc(p1);
       end;
     end;
 
     // onay kutusu başlığı
-    YaziYaz(_Pencere, _Alan.A2 + 6, _Alan.B1, _OnayKutusu^.Baslik, RENK_SIYAH);
+    YaziYaz(_Pencere, _Alan.Sag + 6, _Alan.Ust, _OnayKutusu^.FBaslik, RENK_SIYAH);
   end
   else if(_OnayKutusu^.FSecimDurumu = sdSecili) then
   begin
@@ -250,11 +250,11 @@ begin
     KenarlikCiz(_Pencere, _Alan, 2);
 
     // pencere içeriğini boya
-    DikdortgenDoldur(_Pencere, _Alan.A1 + 2, _Alan.B1 + 2, _Alan.A2 - 2, _Alan.B2 -2,
+    DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt -2,
       RENK_BEYAZ, RENK_BEYAZ);
 
     // onay kutusu başlığı
-    YaziYaz(_Pencere, _Alan.A2 + 6, _Alan.B1, _OnayKutusu^.Baslik, RENK_SIYAH);
+    YaziYaz(_Pencere, _Alan.Sag + 6, _Alan.Ust, _OnayKutusu^.FBaslik, RENK_SIYAH);
   end;
 
   // uygulamaya mesaj gönder

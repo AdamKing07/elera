@@ -230,7 +230,7 @@ begin
 
   _ListeGorunum^.FAtaNesneMi := False;
   _ListeGorunum^.FareGostergeTipi := fitOK;
-  _ListeGorunum^.Gorunum := False;
+  _ListeGorunum^.FGorunum := False;
 
   _ListeGorunum^.FKolonAdlari := nil;
   _KolonAdlari := _KolonAdlari^.Olustur;
@@ -257,7 +257,7 @@ begin
 
   // nesnenin ad ve baþlýk deðeri
   _ListeGorunum^.NesneAdi := NesneAdiAl(gntListeGorunum);
-  _ListeGorunum^.Baslik := '';
+  _ListeGorunum^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
@@ -321,11 +321,11 @@ begin
   if(_ListeGorunum = nil) then Exit;
 
   // eðer nesne görünür deðilse
-  if(_ListeGorunum^.Gorunum = False) then
+  if(_ListeGorunum^.FGorunum = False) then
   begin
 
     // nesnenin görünürlüðünü aktifleþtir
-    _ListeGorunum^.Gorunum := True;
+    _ListeGorunum^.FGorunum := True;
 
     // nesne ve üst nesneler görünür ise
     if(_ListeGorunum^.AtaNesneGorunurMu) then
@@ -367,7 +367,7 @@ begin
   if(_Pencere = nil) then Exit;
 
   // dýþ kenarlýk
-  DikdortgenDoldur(_Pencere, _Alan1.A1, _Alan1.B1, _Alan1.A2, _Alan1.B2, $828790, RENK_BEYAZ);
+  DikdortgenDoldur(_Pencere, _Alan1.Sol, _Alan1.Ust, _Alan1.Sag, _Alan1.Alt, $828790, RENK_BEYAZ);
 
   _KolonUzunluklari := _ListeGorunum^.FKolonUzunluklari;
   _KolonAdlari := _ListeGorunum^.FKolonAdlari;
@@ -376,20 +376,20 @@ begin
   if(_KolonAdlari^.ElemanSayisi = 0) then Exit;
 
   // kolon baþlýk ve deðerleri
-  XX := _Alan1.A1 + 1;
+  XX := _Alan1.Sol + 1;
   for i := 0 to _KolonUzunluklari^.ElemanSayisi - 1 do
   begin
 
     XX += _KolonUzunluklari^.Eleman[i];
 
     // dikey kýlavuz çizgisi
-    Cizgi(_Pencere, XX, _Alan1.B1 + 1, XX, _Alan1.B2 - 1, $F0F0F0);
+    Cizgi(_Pencere, XX, _Alan1.Ust + 1, XX, _Alan1.Alt - 1, $F0F0F0);
 
     // baþlýk dolgusu
-    _Alan2.A1 := XX - _KolonUzunluklari^.Eleman[i];
-    _Alan2.B1 := _Alan1.B1 + 1;
-    _Alan2.A2 := XX - 1;
-    _Alan2.B2 := _Alan1.B1 + 1 + 22;
+    _Alan2.Sol := XX - _KolonUzunluklari^.Eleman[i];
+    _Alan2.Ust := _Alan1.Ust + 1;
+    _Alan2.Sag := XX - 1;
+    _Alan2.Alt := _Alan1.Ust + 1 + 22;
     EgimliDoldur3(_Pencere, _Alan2, $EAECEE, $ABB2B9);
 
     // baþlýk
@@ -399,25 +399,25 @@ begin
   end;
 
   // yatay kýlavuz çizgileri
-  YY := _Alan1.B1 + 1 + 22;
+  YY := _Alan1.Ust + 1 + 22;
   YY += 20;
-  while YY < _Alan1.B2 do
+  while YY < _Alan1.Alt do
   begin
 
-    Cizgi(_Pencere, _Alan1.A1 + 1, YY, _Alan1.A2 - 1, YY, $F0F0F0);
+    Cizgi(_Pencere, _Alan1.Sol + 1, YY, _Alan1.Sag - 1, YY, $F0F0F0);
     YY += 1 + 20;
   end;
 
   // liste görünüm nesnesinde görüntülenecek eleman sayýsý
-  _ListeGorunum^.FGorunenElemanSayisi := ((_ListeGorunum^.FDisGercekBoyutlar.B2 -
-    _ListeGorunum^.FDisGercekBoyutlar.B1) - 24) div 21;
+  _ListeGorunum^.FGorunenElemanSayisi := ((_ListeGorunum^.FDisGercekBoyutlar.Alt -
+    _ListeGorunum^.FDisGercekBoyutlar.Ust) - 24) div 21;
 
   // liste görünüm kutusunda görüntülenecek eleman sayýsýnýn belirlenmesi
   if(FDegerler^.ElemanSayisi > _ListeGorunum^.FGorunenElemanSayisi) then
     _ElemanSayisi := _ListeGorunum^.FGorunenElemanSayisi + _ListeGorunum^.FGorunenIlkSiraNo
   else _ElemanSayisi := FDegerler^.ElemanSayisi + _ListeGorunum^.FGorunenIlkSiraNo;
 
-  YY := _Alan1.B1 + 1 + 22;
+  YY := _Alan1.Ust + 1 + 22;
   YY += 20;
   _SatirNo := 0;
   _KolonUzunluklari := _ListeGorunum^.FKolonUzunluklari;
@@ -429,7 +429,7 @@ begin
     // deðeri belirtilen karakter ile bölümle
     Bolumle(FDegerler^.Eleman[_SatirNo], '|', FDegerDizisi);
 
-    XX := _Alan1.A1 + 1;
+    XX := _Alan1.Sol + 1;
     if(FDegerDizisi^.ElemanSayisi > 0) then
     begin
 
@@ -437,22 +437,22 @@ begin
       begin
 
         s := FDegerDizisi^.Eleman[j];
-        _Alan2.A1 := XX + 1;
-        _Alan2.B1 := YY - 20 + 1;
-        _Alan2.A2 := XX + _KolonUzunluklari^.Eleman[j] - 1;
-        _Alan2.B2 := YY - 1;
+        _Alan2.Sol := XX + 1;
+        _Alan2.Ust := YY - 20 + 1;
+        _Alan2.Sag := XX + _KolonUzunluklari^.Eleman[j] - 1;
+        _Alan2.Alt := YY - 1;
 
         // satýr verisini boyama ve yazma iþlemi
         if(_SatirNo = _ListeGorunum^.FSeciliSiraNo) then
         begin
 
-          DikdortgenDoldur(_Pencere, _Alan2.A1 - 1, _Alan2.B1 - 1, _Alan2.A2, _Alan2.B2,
+          DikdortgenDoldur(_Pencere, _Alan2.Sol - 1, _Alan2.Ust - 1, _Alan2.Sag, _Alan2.Alt,
             $3EC5FF, $3EC5FF);
         end
         else
         begin
 
-          DikdortgenDoldur(_Pencere, _Alan2.A1 - 1, _Alan2.B1 - 1, _Alan2.A2, _Alan2.B2,
+          DikdortgenDoldur(_Pencere, _Alan2.Sol - 1, _Alan2.Ust - 1, _Alan2.Sag, _Alan2.Alt,
             RENK_BEYAZ, RENK_BEYAZ);
         end;
         AlanaYaziYaz(_Pencere, _Alan2, 2, 2, s, RENK_SIYAH);
@@ -595,7 +595,7 @@ begin
       end
 
       // fare liste görünüm nesnesinin aþaðýsýnda ise
-      else if(AOlay.Deger2 > _ListeGorunum^.FBoyutlar.B2) then
+      else if(AOlay.Deger2 > _ListeGorunum^.FBoyutlar.Alt) then
       begin
 
         // azami kaydýrma deðeri

@@ -6,7 +6,7 @@
   Dosya Adý: fat12.pas
   Dosya Ýþlevi: fat12 dosya sistem yönetim iþlevlerini yönetir
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 13/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -29,7 +29,7 @@ function FindClose(var ADosyaArama: TDosyaArama): TISayi4;
 
 implementation
 
-uses genel, gercekbellek, sistemmesaj, fat16;
+uses genel, gercekbellek, sistemmesaj, fat16, src_com;
 
 {==============================================================================
   dosyalar ile ilgili iþlem yapmadan önce taným iþlevlerini gerçekleþtirir
@@ -100,51 +100,37 @@ begin
 
   _Zincir := _DosyaKayit^.IlkZincirSektor;
 
+  _OkunacakSektorSayisi := _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.KumeBasinaSektor;
+
   _OkumaSonuc := False;
 
   repeat
 
-    _OkunacakSektorSayisi := (_OkunacakVeri div 512);
-    if(_OkunacakSektorSayisi = 0) then
-    begin
+    // okunacak sektör zincir numarasý
+    _i := (_Zincir - 2) * _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.KumeBasinaSektor;
 
-      //_OkunacakVeri := 0;
-      //Inc(_OkunacakSektorSayisi);
-      _OkumaSonuc := True;
-    end
-    else
-    begin
+    // sektörü belleðe oku
+    _MantiksalSurucu^.FizikselSurucu^.SektorOku(_MantiksalSurucu^.FizikselSurucu,
+      _i + _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.IlkVeriSektoru,
+      _OkunacakSektorSayisi, AHedefBellek);
 
-      if(_OkunacakSektorSayisi > _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.KumeBasinaSektor) then
-        _OkunacakSektorSayisi := _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.KumeBasinaSektor;
+    //src_com.Yaz(1, AHedefBellek, _OkunacakSektorSayisi * 512);
 
-      _OkunacakVeri -= (_OkunacakSektorSayisi * 512);
-    end;
+    // okunacak bilginin yerleþtirileceði bir sonraki adresi belirle
+    AHedefBellek += (_OkunacakSektorSayisi * 512);
 
-    if not(_OkumaSonuc) then
-    begin
+    // zincir deðerini 1.5 ile çarp ve bir sonraki zincir deðerini al
+    _YeniDATSiraNo := (_Zincir shr 1) + _Zincir + TSayi4(_DATBellekAdresi);
+    _DATSiraNo := PSayi2(_YeniDATSiraNo)^;
 
-      // okunacak sektör zincir numarasý
-      _i := (_Zincir - 2) * _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.KumeBasinaSektor;
+    if((_Zincir and 1) = 1) then
+      _DATSiraNo := _DATSiraNo shr 4
+    else _DATSiraNo := _DATSiraNo and $FFF;
 
-      // sektörü belleðe oku
-      _MantiksalSurucu^.FizikselSurucu^.SektorOku(_MantiksalSurucu^.FizikselSurucu,
-        _i + _MantiksalSurucu^.Acilis.DosyaAyirmaTablosu.IlkVeriSektoru,
-        _OkunacakSektorSayisi, AHedefBellek);
+    _Zincir := _DATSiraNo;
 
-      // okunacak bilginin yerleþtirileceði bir sonraki adresi belirle
-      AHedefBellek += (_OkunacakSektorSayisi * 512);
-
-      // zincir deðerini 1.5 ile çarp ve bir sonraki zincir deðerini al
-      _YeniDATSiraNo := (_Zincir shr 1) + _Zincir + TSayi4(_DATBellekAdresi);
-      _DATSiraNo := PSayi2(_YeniDATSiraNo)^;
-
-      if((_Zincir and 1) = 1) then
-        _DATSiraNo := _DATSiraNo shr 4
-      else _DATSiraNo := _DATSiraNo and $FFF;
-
-      _Zincir := _DATSiraNo;
-    end;
+    _OkunacakVeri -= (_OkunacakSektorSayisi * 512);
+    if(_OkunacakSektorSayisi <= 0) then _OkumaSonuc := True;
 
   // eðer 0xFF8..0xFFF aralýðýndaysa bu dosyanýn en son zinciridir
   until (_Zincir >= $FF8) or (_OkumaSonuc);

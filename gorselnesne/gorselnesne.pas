@@ -31,10 +31,12 @@ type
     FCizimBellekUzunlugu: TSayi4;
     FEfendiNesne: PGorselNesne;                 // ortak çalýþan nesneler için nesnenin sahibi olan efendi nesne
     FEfendiNesneOlayCagriAdresi: TOlaylariIsle;
+    FEtiket: TSayi4;                            // nesneyi kullanacak programýn kullanýmý için
     function Olustur0(AGorselNesneTipi: TGorselNesneTipi): PGorselNesne;
     function YokEt0: Boolean;
     function NesneTipiniKontrolEt(AKimlik: TKimlik; AGorselNesneTipi: TGorselNesneTipi): PGorselNesne;
-    function NesneTipiAl(AKimlik: TKimlik): TGorselNesneTipi;
+    function NesneTipiniAl(AKimlik: TKimlik): TGorselNesneTipi;
+    function NesneyiAl(AKimlik: TKimlik): PGorselNesne;
     function AtaNesneyiAl(AKimlik: TKimlik): PGorselNesne;
     function AtaNesneyeEkle(AAtaNesne: PGorselNesne): Boolean;
     function CizimGorselNesneBoyutlariniAl(AKimlik: TKimlik): TAlan;
@@ -50,6 +52,8 @@ type
     // kernel için çaðrýlar (for kernel)
     procedure PixelYaz(APencere: PGorselNesne; A1, B1: TISayi4; ARenk: TRenk);
     procedure YaziYaz(APencere: PGorselNesne; A1, B1: TISayi4; AYazi: string; ARenk: TRenk);
+    procedure YaziYaz(APencere: PGorselNesne; AYaziHiza: TYaziHiza;
+      AAlan: TAlan; AYazi: string; ARenk: TRenk);
     procedure AlanaYaziYaz(APencere: PGorselNesne; Nokta4: TAlan;
       A1, B1: TISayi4; AKarakterDizi: string; ARenk: TRenk);
     procedure SayiYaz16(APencere: PGorselNesne; A1, B1: TISayi4; AOnEkYaz: LongBool; AHaneSayisi,
@@ -191,7 +195,7 @@ end;
 {==============================================================================
   nesnenin tipini al
  ==============================================================================}
-function TGorselNesne.NesneTipiAl(AKimlik: TKimlik): TGorselNesneTipi;
+function TGorselNesne.NesneTipiniAl(AKimlik: TKimlik): TGorselNesneTipi;
 var
   _GorselNesne: PGorselNesne;
 begin
@@ -212,6 +216,20 @@ begin
   end;
 
   Result := gntTanimsiz;
+end;
+
+{==============================================================================
+  nesneyi kimliðinden nesneyi al
+ ==============================================================================}
+function TGorselNesne.NesneyiAl(AKimlik: TKimlik): PGorselNesne;
+begin
+
+  // nesne istenen sayý aralýðýnda ise
+  if(AKimlik > 0) and (AKimlik <= USTSINIR_GORSELNESNE) then
+
+    Result := PGorselNesne(GorselNesneListesi[AKimlik])
+
+  else Result := nil;
 end;
 
 {==============================================================================
@@ -292,20 +310,20 @@ begin
   begin
 
     // geniþlik ve yükseklik deðerleri alýnýyor
-    Result.A2 := _GorselNesne^.FDisGercekBoyutlar.A2 - _GorselNesne^.FDisGercekBoyutlar.A1;
-    Result.B2 := _GorselNesne^.FDisGercekBoyutlar.B2 - _GorselNesne^.FDisGercekBoyutlar.B1;
-    Result.A1 := 0;
-    Result.B1 := 0;
+    Result.Sag := _GorselNesne^.FDisGercekBoyutlar.Sag - _GorselNesne^.FDisGercekBoyutlar.Sol;
+    Result.Alt := _GorselNesne^.FDisGercekBoyutlar.Alt - _GorselNesne^.FDisGercekBoyutlar.Ust;
+    Result.Sol := 0;
+    Result.Ust := 0;
   end
   else
   begin
 
     _Pencere := PencereAtaNesnesiniAl(_GorselNesne);
 
-    Result.A1 := _GorselNesne^.FDisGercekBoyutlar.A1 - _Pencere^.FDisGercekBoyutlar.A1;
-    Result.B1 := _GorselNesne^.FDisGercekBoyutlar.B1 - _Pencere^.FDisGercekBoyutlar.B1;
-    Result.A2 := _GorselNesne^.FDisGercekBoyutlar.A2 - _Pencere^.FDisGercekBoyutlar.A1;
-    Result.B2 := _GorselNesne^.FDisGercekBoyutlar.B2 - _Pencere^.FDisGercekBoyutlar.B1;
+    Result.Sol := _GorselNesne^.FDisGercekBoyutlar.Sol - _Pencere^.FDisGercekBoyutlar.Sol;
+    Result.Ust := _GorselNesne^.FDisGercekBoyutlar.Ust - _Pencere^.FDisGercekBoyutlar.Ust;
+    Result.Sag := _GorselNesne^.FDisGercekBoyutlar.Sag - _Pencere^.FDisGercekBoyutlar.Sol;
+    Result.Alt := _GorselNesne^.FDisGercekBoyutlar.Alt - _Pencere^.FDisGercekBoyutlar.Ust;
   end;
 end;
 
@@ -325,16 +343,16 @@ var
     begin
 
       // nesne gerçek dýþ koordinatlar
-      AGorselNesne^.FDisGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.Sol2 + AGorselNesne^.FBoyutlar.Sol2;
-      AGorselNesne^.FDisGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.Ust2 + AGorselNesne^.FBoyutlar.Ust2;
-      AGorselNesne^.FDisGercekBoyutlar.A2 := AGorselNesne^.FDisGercekBoyutlar.A1 + (AGorselNesne^.FBoyutlar.Genislik2 - 1);
-      AGorselNesne^.FDisGercekBoyutlar.B2 := AGorselNesne^.FDisGercekBoyutlar.B1 + (AGorselNesne^.FBoyutlar.Yukseklik2 - 1);
+      AGorselNesne^.FDisGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sol2 + AGorselNesne^.FBoyutlar.Sol2;
+      AGorselNesne^.FDisGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Ust2 + AGorselNesne^.FBoyutlar.Ust2;
+      AGorselNesne^.FDisGercekBoyutlar.Sag := AGorselNesne^.FDisGercekBoyutlar.Sol + (AGorselNesne^.FBoyutlar.Genislik2 - 1);
+      AGorselNesne^.FDisGercekBoyutlar.Alt := AGorselNesne^.FDisGercekBoyutlar.Ust + (AGorselNesne^.FBoyutlar.Yukseklik2 - 1);
 
       // nesne gerçek iç koordinatlar
-      AGorselNesne^.FIcGercekBoyutlar.A1 := AGorselNesne^.FDisGercekBoyutlar.A1 + (AGorselNesne^.FKalinlik.Sol + AGorselNesne^.FKenarBosluklari.Sol);
-      AGorselNesne^.FIcGercekBoyutlar.B1 := AGorselNesne^.FDisGercekBoyutlar.B1 + (AGorselNesne^.FKalinlik.Ust + AGorselNesne^.FKenarBosluklari.Ust);
-      AGorselNesne^.FIcGercekBoyutlar.A2 := AGorselNesne^.FDisGercekBoyutlar.A2 - (AGorselNesne^.FKalinlik.Sag + AGorselNesne^.FKenarBosluklari.Sag);
-      AGorselNesne^.FIcGercekBoyutlar.B2 := AGorselNesne^.FDisGercekBoyutlar.B2 - (AGorselNesne^.FKalinlik.Alt + AGorselNesne^.FKenarBosluklari.Alt);
+      AGorselNesne^.FIcGercekBoyutlar.Sol := AGorselNesne^.FDisGercekBoyutlar.Sol + (AGorselNesne^.FKalinlik.Sol + AGorselNesne^.FKenarBosluklari.Sol);
+      AGorselNesne^.FIcGercekBoyutlar.Ust := AGorselNesne^.FDisGercekBoyutlar.Ust + (AGorselNesne^.FKalinlik.Ust + AGorselNesne^.FKenarBosluklari.Ust);
+      AGorselNesne^.FIcGercekBoyutlar.Sag := AGorselNesne^.FDisGercekBoyutlar.Sag - (AGorselNesne^.FKalinlik.Sag + AGorselNesne^.FKenarBosluklari.Sag);
+      AGorselNesne^.FIcGercekBoyutlar.Alt := AGorselNesne^.FDisGercekBoyutlar.Alt - (AGorselNesne^.FKalinlik.Alt + AGorselNesne^.FKenarBosluklari.Alt);
     end
     else
     begin
@@ -343,65 +361,65 @@ var
       begin
 
         // nesne gerçek dýþ koordinatlar
-        AGorselNesne^.FDisGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.A1;
-        AGorselNesne^.FDisGercekBoyutlar.A2 := AAtaNesne^.FIcGercekBoyutlar.A2;
-        AGorselNesne^.FDisGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.B1;
-        AGorselNesne^.FDisGercekBoyutlar.B2 := AGorselNesne^.FDisGercekBoyutlar.B1 + AGorselNesne^.FBoyutlar.Yukseklik2;
+        AGorselNesne^.FDisGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sol;
+        AGorselNesne^.FDisGercekBoyutlar.Sag := AAtaNesne^.FIcGercekBoyutlar.Sag;
+        AGorselNesne^.FDisGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Ust;
+        AGorselNesne^.FDisGercekBoyutlar.Alt := AGorselNesne^.FDisGercekBoyutlar.Ust + AGorselNesne^.FBoyutlar.Yukseklik2;
 
-        AAtaNesne^.FIcGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.B1 + AGorselNesne^.FBoyutlar.Yukseklik2;
+        AAtaNesne^.FIcGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Ust + AGorselNesne^.FBoyutlar.Yukseklik2;
       end
       else if(AGorselNesne^.Hiza = hzSag) then
       begin
 
         // nesne gerçek dýþ koordinatlar
-        AGorselNesne^.FDisGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.B1;
-        AGorselNesne^.FDisGercekBoyutlar.B2 := AAtaNesne^.FIcGercekBoyutlar.B2;
-        AGorselNesne^.FDisGercekBoyutlar.A2 := AAtaNesne^.FIcGercekBoyutlar.A2;
-        AGorselNesne^.FDisGercekBoyutlar.A1 := AGorselNesne^.FDisGercekBoyutlar.A2 - AGorselNesne^.FBoyutlar.Genislik2;
+        AGorselNesne^.FDisGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Ust;
+        AGorselNesne^.FDisGercekBoyutlar.Alt := AAtaNesne^.FIcGercekBoyutlar.Alt;
+        AGorselNesne^.FDisGercekBoyutlar.Sag := AAtaNesne^.FIcGercekBoyutlar.Sag;
+        AGorselNesne^.FDisGercekBoyutlar.Sol := AGorselNesne^.FDisGercekBoyutlar.Sag - AGorselNesne^.FBoyutlar.Genislik2;
 
-        AAtaNesne^.FIcGercekBoyutlar.A2 := AAtaNesne^.FIcGercekBoyutlar.A2 - AGorselNesne^.FBoyutlar.Genislik2;
+        AAtaNesne^.FIcGercekBoyutlar.Sag := AAtaNesne^.FIcGercekBoyutlar.Sag - AGorselNesne^.FBoyutlar.Genislik2;
       end
       else if(AGorselNesne^.Hiza = hzAlt) then
       begin
 
         // nesne gerçek dýþ koordinatlar
-        AGorselNesne^.FDisGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.A1;
-        AGorselNesne^.FDisGercekBoyutlar.A2 := AAtaNesne^.FIcGercekBoyutlar.A2;
-        AGorselNesne^.FDisGercekBoyutlar.B2 := AAtaNesne^.FIcGercekBoyutlar.B2;
-        AGorselNesne^.FDisGercekBoyutlar.B1 := AGorselNesne^.FDisGercekBoyutlar.B2 - AGorselNesne^.FBoyutlar.Yukseklik2;
+        AGorselNesne^.FDisGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sol;
+        AGorselNesne^.FDisGercekBoyutlar.Sag := AAtaNesne^.FIcGercekBoyutlar.Sag;
+        AGorselNesne^.FDisGercekBoyutlar.Alt := AAtaNesne^.FIcGercekBoyutlar.Alt;
+        AGorselNesne^.FDisGercekBoyutlar.Ust := AGorselNesne^.FDisGercekBoyutlar.Alt - AGorselNesne^.FBoyutlar.Yukseklik2;
 
-        AAtaNesne^.FIcGercekBoyutlar.B2 := AAtaNesne^.FIcGercekBoyutlar.B2 - AGorselNesne^.FBoyutlar.Yukseklik2;
+        AAtaNesne^.FIcGercekBoyutlar.Alt := AAtaNesne^.FIcGercekBoyutlar.Alt - AGorselNesne^.FBoyutlar.Yukseklik2;
       end
       else if(AGorselNesne^.Hiza = hzSol) then
       begin
 
         // nesne gerçek dýþ koordinatlar
-        AGorselNesne^.FDisGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.B1;
-        AGorselNesne^.FDisGercekBoyutlar.B2 := AAtaNesne^.FIcGercekBoyutlar.B2;
-        AGorselNesne^.FDisGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.A1;
-        AGorselNesne^.FDisGercekBoyutlar.A2 := AGorselNesne^.FDisGercekBoyutlar.A1 + AGorselNesne^.FBoyutlar.Genislik2;
+        AGorselNesne^.FDisGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Ust;
+        AGorselNesne^.FDisGercekBoyutlar.Alt := AAtaNesne^.FIcGercekBoyutlar.Alt;
+        AGorselNesne^.FDisGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sol;
+        AGorselNesne^.FDisGercekBoyutlar.Sag := AGorselNesne^.FDisGercekBoyutlar.Sol + AGorselNesne^.FBoyutlar.Genislik2;
 
-        AAtaNesne^.FIcGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.A1 + AGorselNesne^.FBoyutlar.Genislik2;
+        AAtaNesne^.FIcGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sol + AGorselNesne^.FBoyutlar.Genislik2;
       end
       else if(AGorselNesne^.Hiza = hzTum) then
       begin
 
         // nesne gerçek dýþ koordinatlar
-        AGorselNesne^.FDisGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.A1;
-        AGorselNesne^.FDisGercekBoyutlar.A2 := AAtaNesne^.FIcGercekBoyutlar.A2;
-        AGorselNesne^.FDisGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.B1;
-        AGorselNesne^.FDisGercekBoyutlar.B2 := AAtaNesne^.FIcGercekBoyutlar.B2;
+        AGorselNesne^.FDisGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sol;
+        AGorselNesne^.FDisGercekBoyutlar.Sag := AAtaNesne^.FIcGercekBoyutlar.Sag;
+        AGorselNesne^.FDisGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Ust;
+        AGorselNesne^.FDisGercekBoyutlar.Alt := AAtaNesne^.FIcGercekBoyutlar.Alt;
 
         // yatay ve dikey deðerler eþitleniyor
-        AAtaNesne^.FIcGercekBoyutlar.A1 := AAtaNesne^.FIcGercekBoyutlar.A2;
-        AAtaNesne^.FIcGercekBoyutlar.B1 := AAtaNesne^.FIcGercekBoyutlar.B2;
+        AAtaNesne^.FIcGercekBoyutlar.Sol := AAtaNesne^.FIcGercekBoyutlar.Sag;
+        AAtaNesne^.FIcGercekBoyutlar.Ust := AAtaNesne^.FIcGercekBoyutlar.Alt;
       end;
 
       { TODO : nesne iç kalýnlýklarý ve diðer deðerleri de hesaplamaya eklenecektir }
-      AGorselNesne^.FIcGercekBoyutlar.A1 := AGorselNesne^.FDisGercekBoyutlar.A1;
-      AGorselNesne^.FIcGercekBoyutlar.A2 := AGorselNesne^.FDisGercekBoyutlar.A2;
-      AGorselNesne^.FIcGercekBoyutlar.B1 := AGorselNesne^.FDisGercekBoyutlar.B1;
-      AGorselNesne^.FIcGercekBoyutlar.B2 := AGorselNesne^.FDisGercekBoyutlar.B2;
+      AGorselNesne^.FIcGercekBoyutlar.Sol := AGorselNesne^.FDisGercekBoyutlar.Sol;
+      AGorselNesne^.FIcGercekBoyutlar.Sag := AGorselNesne^.FDisGercekBoyutlar.Sag;
+      AGorselNesne^.FIcGercekBoyutlar.Ust := AGorselNesne^.FDisGercekBoyutlar.Ust;
+      AGorselNesne^.FIcGercekBoyutlar.Alt := AGorselNesne^.FDisGercekBoyutlar.Alt;
     end;
   end;
 begin
@@ -410,32 +428,32 @@ begin
   begin
 
     // nesne gerçek dýþ koordinatlar
-    Self.FDisGercekBoyutlar.A1 := Self.FBoyutlar.Sol2;
-    Self.FDisGercekBoyutlar.B1 := Self.FBoyutlar.Ust2;
-    Self.FDisGercekBoyutlar.A2 := Self.FDisGercekBoyutlar.A1 + (Self.FBoyutlar.Genislik2 - 1);
-    Self.FDisGercekBoyutlar.B2 := Self.FDisGercekBoyutlar.B1 + (Self.FBoyutlar.Yukseklik2 - 1);
+    Self.FDisGercekBoyutlar.Sol := Self.FBoyutlar.Sol2;
+    Self.FDisGercekBoyutlar.Ust := Self.FBoyutlar.Ust2;
+    Self.FDisGercekBoyutlar.Sag := Self.FDisGercekBoyutlar.Sol + (Self.FBoyutlar.Genislik2 - 1);
+    Self.FDisGercekBoyutlar.Alt := Self.FDisGercekBoyutlar.Ust + (Self.FBoyutlar.Yukseklik2 - 1);
 
     // nesne gerçek iç koordinatlar
-    Self.FIcGercekBoyutlar.A1 := Self.FDisGercekBoyutlar.A1 + (Self.FKalinlik.Sol + Self.FKenarBosluklari.Sol);
-    Self.FIcGercekBoyutlar.B1 := Self.FDisGercekBoyutlar.B1 + (Self.FKalinlik.Ust + Self.FKenarBosluklari.Ust);
-    Self.FIcGercekBoyutlar.A2 := Self.FDisGercekBoyutlar.A2 - (Self.FKalinlik.Sag + Self.FKenarBosluklari.Sag);
-    Self.FIcGercekBoyutlar.B2 := Self.FDisGercekBoyutlar.B2 - (Self.FKalinlik.Alt + Self.FKenarBosluklari.Alt);
+    Self.FIcGercekBoyutlar.Sol := Self.FDisGercekBoyutlar.Sol + (Self.FKalinlik.Sol + Self.FKenarBosluklari.Sol);
+    Self.FIcGercekBoyutlar.Ust := Self.FDisGercekBoyutlar.Ust + (Self.FKalinlik.Ust + Self.FKenarBosluklari.Ust);
+    Self.FIcGercekBoyutlar.Sag := Self.FDisGercekBoyutlar.Sag - (Self.FKalinlik.Sag + Self.FKenarBosluklari.Sag);
+    Self.FIcGercekBoyutlar.Alt := Self.FDisGercekBoyutlar.Alt - (Self.FKalinlik.Alt + Self.FKenarBosluklari.Alt);
     Exit;
   end
   else if(Self.GorselNesneTipi = gntMenu) or (Self.GorselNesneTipi = gntAcilirMenu) then
   begin
 
     // nesne gerçek dýþ koordinatlar
-    Self.FDisGercekBoyutlar.A1 := Self.FBoyutlar.Sol2;
-    Self.FDisGercekBoyutlar.B1 := Self.FBoyutlar.Ust2;
-    Self.FDisGercekBoyutlar.A2 := Self.FDisGercekBoyutlar.A1 + (Self.FBoyutlar.Genislik2 - 1);
-    Self.FDisGercekBoyutlar.B2 := Self.FDisGercekBoyutlar.B1 + (Self.FBoyutlar.Yukseklik2 - 1);
+    Self.FDisGercekBoyutlar.Sol := Self.FBoyutlar.Sol2;
+    Self.FDisGercekBoyutlar.Ust := Self.FBoyutlar.Ust2;
+    Self.FDisGercekBoyutlar.Sag := Self.FDisGercekBoyutlar.Sol + (Self.FBoyutlar.Genislik2 - 1);
+    Self.FDisGercekBoyutlar.Alt := Self.FDisGercekBoyutlar.Ust + (Self.FBoyutlar.Yukseklik2 - 1);
 
     // nesne gerçek iç koordinatlar
-    Self.FIcGercekBoyutlar.A1 := Self.FDisGercekBoyutlar.A1 + (Self.FKalinlik.Sol + Self.FKenarBosluklari.Sol);
-    Self.FIcGercekBoyutlar.B1 := Self.FDisGercekBoyutlar.B1 + (Self.FKalinlik.Ust + Self.FKenarBosluklari.Ust);
-    Self.FIcGercekBoyutlar.A2 := Self.FDisGercekBoyutlar.A2 - (Self.FKalinlik.Sag + Self.FKenarBosluklari.Sag);
-    Self.FIcGercekBoyutlar.B2 := Self.FDisGercekBoyutlar.B2 - (Self.FKalinlik.Alt + Self.FKenarBosluklari.Alt);
+    Self.FIcGercekBoyutlar.Sol := Self.FDisGercekBoyutlar.Sol + (Self.FKalinlik.Sol + Self.FKenarBosluklari.Sol);
+    Self.FIcGercekBoyutlar.Ust := Self.FDisGercekBoyutlar.Ust + (Self.FKalinlik.Ust + Self.FKenarBosluklari.Ust);
+    Self.FIcGercekBoyutlar.Sag := Self.FDisGercekBoyutlar.Sag - (Self.FKalinlik.Sag + Self.FKenarBosluklari.Sag);
+    Self.FIcGercekBoyutlar.Alt := Self.FDisGercekBoyutlar.Alt - (Self.FKalinlik.Alt + Self.FKenarBosluklari.Alt);
     Exit;
   end
   else if(Self.GorselNesneTipi = gntPencere) then
@@ -444,16 +462,16 @@ begin
     _GorselNesne := @Self;
 
     // pencere - nesne gerçek dýþ koordinatlar
-    _GorselNesne^.FDisGercekBoyutlar.A1 := _GorselNesne^.FBoyutlar.Sol2;
-    _GorselNesne^.FDisGercekBoyutlar.B1 := _GorselNesne^.FBoyutlar.Ust2;
-    _GorselNesne^.FDisGercekBoyutlar.A2 := _GorselNesne^.FDisGercekBoyutlar.A1 + (_GorselNesne^.FBoyutlar.Genislik2 - 1);
-    _GorselNesne^.FDisGercekBoyutlar.B2 := _GorselNesne^.FDisGercekBoyutlar.B1 + (_GorselNesne^.FBoyutlar.Yukseklik2 - 1);
+    _GorselNesne^.FDisGercekBoyutlar.Sol := _GorselNesne^.FBoyutlar.Sol2;
+    _GorselNesne^.FDisGercekBoyutlar.Ust := _GorselNesne^.FBoyutlar.Ust2;
+    _GorselNesne^.FDisGercekBoyutlar.Sag := _GorselNesne^.FDisGercekBoyutlar.Sol + (_GorselNesne^.FBoyutlar.Genislik2 - 1);
+    _GorselNesne^.FDisGercekBoyutlar.Alt := _GorselNesne^.FDisGercekBoyutlar.Ust + (_GorselNesne^.FBoyutlar.Yukseklik2 - 1);
 
     // pencere - nesne gerçek iç koordinatlar
-    _GorselNesne^.FIcGercekBoyutlar.A1 := _GorselNesne^.FDisGercekBoyutlar.A1 + (_GorselNesne^.FKalinlik.Sol + _GorselNesne^.FKenarBosluklari.Sol);
-    _GorselNesne^.FIcGercekBoyutlar.B1 := _GorselNesne^.FDisGercekBoyutlar.B1 + (_GorselNesne^.FKalinlik.Ust + _GorselNesne^.FKenarBosluklari.Ust);
-    _GorselNesne^.FIcGercekBoyutlar.A2 := _GorselNesne^.FDisGercekBoyutlar.A2 - (_GorselNesne^.FKalinlik.Sag + _GorselNesne^.FKenarBosluklari.Sag);
-    _GorselNesne^.FIcGercekBoyutlar.B2 := _GorselNesne^.FDisGercekBoyutlar.B2 - (_GorselNesne^.FKalinlik.Alt + _GorselNesne^.FKenarBosluklari.Alt);
+    _GorselNesne^.FIcGercekBoyutlar.Sol := _GorselNesne^.FDisGercekBoyutlar.Sol + (_GorselNesne^.FKalinlik.Sol + _GorselNesne^.FKenarBosluklari.Sol);
+    _GorselNesne^.FIcGercekBoyutlar.Ust := _GorselNesne^.FDisGercekBoyutlar.Ust + (_GorselNesne^.FKalinlik.Ust + _GorselNesne^.FKenarBosluklari.Ust);
+    _GorselNesne^.FIcGercekBoyutlar.Sag := _GorselNesne^.FDisGercekBoyutlar.Sag - (_GorselNesne^.FKalinlik.Sag + _GorselNesne^.FKenarBosluklari.Sag);
+    _GorselNesne^.FIcGercekBoyutlar.Alt := _GorselNesne^.FDisGercekBoyutlar.Alt - (_GorselNesne^.FKalinlik.Alt + _GorselNesne^.FKenarBosluklari.Alt);
 
     // pencere nesnesinin alt nesnelerinin bellek bölgesine konumlan
     _AltNesneler := _GorselNesne^.FAltNesneBellekAdresi;
@@ -468,7 +486,7 @@ begin
       begin
 
         _GorselNesne := _AltNesneler[i];
-        if(_GorselNesne^.Gorunum) then
+        if(_GorselNesne^.FGorunum) then
         begin
 
           Hizala(_AtaNesne, _GorselNesne);
@@ -485,7 +503,7 @@ begin
             begin
 
               _GorselNesne2 := _AltNesneler2[j];
-              if(_GorselNesne2^.Gorunum) then
+              if(_GorselNesne2^.FGorunum) then
               begin
 
                 Hizala(_AtaNesne2, _GorselNesne2);
@@ -512,10 +530,10 @@ begin
   Result := CizimGorselNesneBoyutlariniAl(AKimlik);
 
   // nesne koordinatlarýna nesnenin kalýnlýk deðerlerini ekle
-  Result.A1 += _GorselNesne^.FKalinlik.A1;
-  Result.B1 += _GorselNesne^.FKalinlik.B1;
-  Result.A2 -= _GorselNesne^.FKalinlik.A2;
-  Result.B2 -= _GorselNesne^.FKalinlik.B2;
+  Result.Sol += _GorselNesne^.FKalinlik.Sol;
+  Result.Ust += _GorselNesne^.FKalinlik.Ust;
+  Result.Sag -= _GorselNesne^.FKalinlik.Sag;
+  Result.Alt -= _GorselNesne^.FKalinlik.Alt;
 end;
 
 {==============================================================================
@@ -532,7 +550,7 @@ begin
   repeat
 
     // nesne görünür durumdaysa AtaNesne nesnesini al
-    if(_GorselNesne^.Gorunum) then
+    if(_GorselNesne^.FGorunum) then
 
       _GorselNesne := _GorselNesne^.AtaNesne
     else
@@ -598,10 +616,10 @@ begin
   Result := False;
 
   // fare belirtilen koordinatlar içerisinde mi ?
-  if(NoktaA1 < AAlan.A1) then Exit;
-  if(NoktaA1 > AAlan.A2) then Exit;
-  if(NoktaB1 < AAlan.B1) then Exit;
-  if(NoktaB1 > AAlan.B2) then Exit;
+  if(NoktaA1 < AAlan.Sol) then Exit;
+  if(NoktaA1 > AAlan.Sag) then Exit;
+  if(NoktaB1 < AAlan.Ust) then Exit;
+  if(NoktaB1 > AAlan.Alt) then Exit;
 
   Result := True;
 end;
@@ -672,7 +690,7 @@ var
 begin
 
   _Rect := CizimAlaniniAl(Kimlik);
-  YaziYaz(FAtaNesne, _Rect.A1 + A1, _Rect.B1 + B1, AKarakterDizi, ARenk);
+  YaziYaz(FAtaNesne, _Rect.Sol + A1, _Rect.Ust + B1, AKarakterDizi, ARenk);
 end;
 
 {==============================================================================
@@ -701,6 +719,44 @@ begin
 end;
 
 {==============================================================================
+  grafiksel ekrana hizalayarak yazý yazar
+ ==============================================================================}
+procedure TGorselNesne.YaziYaz(APencere: PGorselNesne; AYaziHiza: TYaziHiza;
+  AAlan: TAlan; AYazi: string; ARenk: TRenk);
+var
+  i, j, A1, B1: TISayi4;
+begin
+
+  // karakter katarýnýn uzunluðunu al
+  j := Length(AYazi);
+  if(j = 0) then Exit;
+
+  if(AYaziHiza.Yatay = yhSag) then
+    A1 := AAlan.Sag - (j * 8)
+  else if(AYaziHiza.Yatay = yhOrta) then
+    A1 := AAlan.Sol + ((AAlan.Sag - AAlan.Sol) div 2) - ((j * 8) div 2)
+  else //if(AYaziHiza.Yatay = yhSol) then
+    A1 := AAlan.Sol;
+
+  if(AYaziHiza.Dikey = dhAlt) then
+    B1 := AAlan.Alt - 16
+  else if(AYaziHiza.Dikey = dhOrta) then
+    B1 := AAlan.Ust + ((AAlan.Alt - AAlan.Ust) div 2) - (16 div 2)
+  else //if(AYaziHiza.Dikey = dhUst) then
+    B1 := AAlan.Ust;
+
+  for i := 1 to j do
+  begin
+
+    // karakteri yaz
+    HarfYaz(APencere, A1, B1, AYazi[i], ARenk);
+
+    // karakter geniþliðini geniþlik deðerine ekle
+    A1 += 8;
+  end;
+end;
+
+{==============================================================================
   dikdörtgensel (4 nokta) grafiksel ekrana karakter katarý yazar
  ==============================================================================}
 // Önemli bilgi: þu aþamada çoklu satýr iþlevi olmadýðý için Y1 -> Y2 kontrolü YAPILMAMAKTADIR
@@ -712,26 +768,26 @@ var
 begin
 
   {
-      Nokta4.A1:Nokta4.B1 = sol üst köþe (örn: 100, 100)
-      Nokta4.A2:Nokta4.B2 = sað alt köþe (örn: 200, 200)
-      A1 = çizim Nokta4.A1'den kaç pixel uzaklýktan baþlayacak (örn: 10 = 110)
-      B1 = çizim Nokta4.B1'den kaç pixel uzaklýktan baþlayacak (örn: 12 = 112)
+      Nokta4.Sol:Nokta4.Ust = sol üst köþe (örn: 100, 100)
+      Nokta4.Sag:Nokta4.Alt = sað alt köþe (örn: 200, 200)
+      A1 = çizim Nokta4.Sol'den kaç pixel uzaklýktan baþlayacak (örn: 10 = 110)
+      B1 = çizim Nokta4.Ust'den kaç pixel uzaklýktan baþlayacak (örn: 12 = 112)
   }
 
   // karakter katarýnýn uzunluðunu al
   _KarakterDiziUz := Length(AKarakterDizi);
   if(_KarakterDiziUz = 0) then Exit;
 
-  _A1 := Nokta4.A1 + A1;
-  _B1 := Nokta4.B1 + B1;
+  _A1 := Nokta4.Sol + A1;
+  _B1 := Nokta4.Ust + B1;
 
-  if(_A1 >= Nokta4.A2) then Exit;
-  if(_B1 >= Nokta4.B2) then Exit;
+  if(_A1 >= Nokta4.Sag) then Exit;
+  if(_B1 >= Nokta4.Alt) then Exit;
 
   for _i := 1 to _KarakterDiziUz do
   begin
 
-    if((_A1 + 8) >= Nokta4.A2) then Break;
+    if((_A1 + 8) >= Nokta4.Sag) then Break;
 
     // karakteri yaz
     HarfYaz(APencere, _A1, _B1, AKarakterDizi[_i], ARenk);
@@ -775,7 +831,7 @@ begin
   _Alan := CizimAlaniniAl(Kimlik);
 
   // sayýsal deðeri ekrana yaz
-  YaziYaz(FAtaNesne, _Alan.A1 + A1, _Alan.B1 + B1, _Deger, ARenk);
+  YaziYaz(FAtaNesne, _Alan.Sol + A1, _Alan.Ust + B1, _Deger, ARenk);
 end;
 
 {==============================================================================
@@ -811,7 +867,7 @@ begin
   _Alan := CizimAlaniniAl(Kimlik);
 
   // saat deðerini belirtilen koordinatlara yaz
-  YaziYaz(FAtaNesne, _Alan.A1 + A1, _Alan.B1 + B1, _Saat, ARenk);
+  YaziYaz(FAtaNesne, _Alan.Sol + A1, _Alan.Ust + B1, _Saat, ARenk);
 end;
 
 {==============================================================================
@@ -893,20 +949,20 @@ var
 begin
 
   // çizim koordinatlarýnýnýn sýnýrlarýn içerisinde olup olmadýðýný kontrol et
-  if(A1 < Nokta4.A1) then
-    _A1 := Nokta4.A1
+  if(A1 < Nokta4.Sol) then
+    _A1 := Nokta4.Sol
   else _A1 := A1;
 
-  if(B1 < Nokta4.B1) then
-    _B1 := Nokta4.B1
+  if(B1 < Nokta4.Ust) then
+    _B1 := Nokta4.Ust
   else _B1 := B1;
 
-  if(A2 > Nokta4.A2) then
-    _A2 := Nokta4.A2
+  if(A2 > Nokta4.Sag) then
+    _A2 := Nokta4.Sag
   else _A2 := A2;
 
-  if(B2 > Nokta4.B2) then
-    _B2 := Nokta4.B2
+  if(B2 > Nokta4.Alt) then
+    _B2 := Nokta4.Alt
   else _B2 := B2;
 
   // dýþ kenarlýk
@@ -939,10 +995,10 @@ var
   _Alan: TAlan;
 begin
 
-  _Alan.A1 := A1;
-  _Alan.B1 := B1;
-  _Alan.A2 := A2;
-  _Alan.B2 := B2;
+  _Alan.Sol := A1;
+  _Alan.Ust := B1;
+  _Alan.Sag := A2;
+  _Alan.Alt := B2;
   DikdortgenDoldur(APencere, _Alan, ACizgiRengi, ADolguRengi);
 end;
 
@@ -956,10 +1012,10 @@ var
 begin
 
   // dýþ kenarlýk
-  _A1 := AAlan.A1;
-  _B1 := AAlan.B1;
-  _A2 := AAlan.A2;
-  _B2 := AAlan.B2;
+  _A1 := AAlan.Sol;
+  _B1 := AAlan.Ust;
+  _A2 := AAlan.Sag;
+  _B2 := AAlan.Alt;
   Dikdortgen(APencere, _A1, _B1, _A2, _B2, ACizgiRengi);
 
   // iç kenarlýk
@@ -1193,7 +1249,7 @@ var
     CAR, CAG, CAB, CBR, CBG, CBB: Byte;
   begin
 
-    D := _B1 / (Alan.B2 - Alan.B1 + 1);
+    D := _B1 / (Alan.Alt - Alan.Ust + 1);
     RedGreenBlue(ARenk1, CAR, CAG, CAB);
     RedGreenBlue(ARenk2, CBR, CBG, CBB);
 
@@ -1203,14 +1259,14 @@ var
   end;
 begin
 
-  for _A1 := 0 to Alan.A2 - Alan.A1 do
+  for _A1 := 0 to Alan.Sag - Alan.Sol do
   begin
 
-    for _B1 := 0 to Alan.B2 - Alan.B1 do
+    for _B1 := 0 to Alan.Alt - Alan.Ust do
     begin
 
       _Renk := Gradient;
-      //PixelYaz(APencere, Alan.A1 + _A1, Alan.B1 + _B1, _Renk);
+      //PixelYaz(APencere, Alan.Sol + _A1, Alan.Ust + _B1, _Renk);
       PixelYaz(APencere, Alan.Sol + _A1, Alan.Ust + _B1, _Renk);
     end;
   end;
@@ -1229,8 +1285,8 @@ var
     CAR, CAG, CAB, CBR, CBG, CBB: Byte;
   begin
 
-    DX := ((Alan.A2 - Alan.A1) / 2) - _A1;
-    DY := ((Alan.B2 - Alan.B1) / 2) - _B1;
+    DX := ((Alan.Sag - Alan.Sol) / 2) - _A1;
+    DY := ((Alan.Alt - Alan.Ust) / 2) - _B1;
 
     D := Sqrt(DX * DX + DY * DY);
     P := D / 255;
@@ -1247,14 +1303,14 @@ var
   end;
 begin
 
-  for _A1 := 0 to Alan.A2 - Alan.A1 do
+  for _A1 := 0 to Alan.Sag - Alan.Sol do
   begin
 
-    for _B1 := 0 to Alan.B2 - Alan.B1 do
+    for _B1 := 0 to Alan.Alt - Alan.Ust do
     begin
 
       _Renk := Gradient;
-      PixelYaz(APencere, Alan.A1 + _A1, Alan.B1 + _B1, _Renk);
+      PixelYaz(APencere, Alan.Sol + _A1, Alan.Ust + _B1, _Renk);
     end;
   end;
 end;
@@ -1274,7 +1330,7 @@ var
     CAR, CAG, CAB, CBR, CBG, CBB: Byte;
   begin
 
-    D := _B1 / (_Alan.B2 - _Alan.B1 + 1);
+    D := _B1 / (_Alan.Alt - _Alan.Ust + 1);
     RedGreenBlue(_Renk1, CAR, CAG, CAB);
     RedGreenBlue(_Renk2, CBR, CBG, CBB);
 
@@ -1286,38 +1342,38 @@ begin
 
   _Renk1 := ARenk1;
   _Renk2 := ARenk2;
-  _Alan.A1 := Alan.A1;
-  _Alan.A2 := Alan.A2;
-  _Alan.B1 := Alan.B1;
-  _Alan.B2 := Alan.B1 + ((Alan.B2 - Alan.B1) div 2);
+  _Alan.Sol := Alan.Sol;
+  _Alan.Sag := Alan.Sag;
+  _Alan.Ust := Alan.Ust;
+  _Alan.Alt := Alan.Ust + ((Alan.Alt - Alan.Ust) div 2);
 
-  for _A1 := 0 to _Alan.A2 - _Alan.A1 do
+  for _A1 := 0 to _Alan.Sag - _Alan.Sol do
   begin
 
-    for _B1 := 0 to _Alan.B2 - _Alan.B1 do
+    for _B1 := 0 to _Alan.Alt - _Alan.Ust do
     begin
 
       _Renk := Gradient;
-      //PixelYaz(APencere, Alan.A1 + _A1, Alan.B1 + _B1, _Renk);
+      //PixelYaz(APencere, Alan.Sol + _A1, Alan.Ust + _B1, _Renk);
       PixelYaz(APencere, _Alan.Sol + _A1, _Alan.Ust + _B1, _Renk);
     end;
   end;
 
   _Renk1 := ARenk2;
   _Renk2 := ARenk1;
-  _Alan.A1 := Alan.A1;
-  _Alan.A2 := Alan.A2;
-  _Alan.B1 := Alan.B1 + ((Alan.B2 - Alan.B1) div 2);
-  _Alan.B2 := Alan.B2;
+  _Alan.Sol := Alan.Sol;
+  _Alan.Sag := Alan.Sag;
+  _Alan.Ust := Alan.Ust + ((Alan.Alt - Alan.Ust) div 2);
+  _Alan.Alt := Alan.Alt;
 
-  for _A1 := 0 to _Alan.A2 - _Alan.A1 do
+  for _A1 := 0 to _Alan.Sag - _Alan.Sol do
   begin
 
-    for _B1 := 0 to _Alan.B2 - _Alan.B1 do
+    for _B1 := 0 to _Alan.Alt - _Alan.Ust do
     begin
 
       _Renk := Gradient;
-      //PixelYaz(APencere, Alan.A1 + _A1, Alan.B1 + _B1, _Renk);
+      //PixelYaz(APencere, Alan.Sol + _A1, Alan.Ust + _B1, _Renk);
       PixelYaz(APencere, _Alan.Sol + _A1, _Alan.Ust + _B1, _Renk);
     end;
   end;
@@ -1332,12 +1388,12 @@ begin
   begin
 
     // ilk üst ve sol çizgiyi çiz
-    YatayCizgi(APencere, AAlan.A1, AAlan.B1, AAlan.A2-1, $808080);
-    DikeyCizgi(APencere, AAlan.A1, AAlan.B1, AAlan.B2-1, $808080);
+    YatayCizgi(APencere, AAlan.Sol, AAlan.Ust, AAlan.Sag-1, $808080);
+    DikeyCizgi(APencere, AAlan.Sol, AAlan.Ust, AAlan.Alt-1, $808080);
 
     // ilk alt ve sað çizgiyi çiz
-    YatayCizgi(APencere, AAlan.A2, AAlan.B2, AAlan.A1, $EFEFEF);
-    DikeyCizgi(APencere, AAlan.A2, AAlan.B2, AAlan.B1, $EFEFEF);
+    YatayCizgi(APencere, AAlan.Sag, AAlan.Alt, AAlan.Sol, $EFEFEF);
+    DikeyCizgi(APencere, AAlan.Sag, AAlan.Alt, AAlan.Ust, $EFEFEF);
 
     if(AKalinlik > 1) then
     begin
@@ -1346,12 +1402,12 @@ begin
       begin
 
         // içe doðru diðer üst ve sol çizgiyi çiz
-        YatayCizgi(APencere, AAlan.A1 + _i, AAlan.B1 + _i, AAlan.A2 - _i - 1, $404040);
-        DikeyCizgi(APencere, AAlan.A1 + _i, AAlan.B1 + _i, AAlan.B2 - _i - 1, $404040);
+        YatayCizgi(APencere, AAlan.Sol + _i, AAlan.Ust + _i, AAlan.Sag - _i - 1, $404040);
+        DikeyCizgi(APencere, AAlan.Sol + _i, AAlan.Ust + _i, AAlan.Alt - _i - 1, $404040);
 
         // içe doðru diðer alt ve sað çizgiyi çiz
-        YatayCizgi(APencere, AAlan.A2 - _i, AAlan.B2 - _i, AAlan.A1 + _i, $D4D0C8);
-        DikeyCizgi(APencere, AAlan.A2 - _i, AAlan.B2 - _i, AAlan.B1 + _i, $D4D0C8);
+        YatayCizgi(APencere, AAlan.Sag - _i, AAlan.Alt - _i, AAlan.Sol + _i, $D4D0C8);
+        DikeyCizgi(APencere, AAlan.Sag - _i, AAlan.Alt - _i, AAlan.Ust + _i, $D4D0C8);
       end;
     end;
   end;

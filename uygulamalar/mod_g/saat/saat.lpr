@@ -45,11 +45,11 @@ begin
 
       Pencere0.Tuval.KalemRengi := $041F2F;
 
-      GetTime(@SaatDizi);
+      SaatAl(@SaatDizi);
       s := TimeToStr(SaatDizi);
       Pencere0.Tuval.YaziYaz(46, 8, s);
 
-      GetDate(@TarihDizi);
+      TarihAl(@TarihDizi);
       s := DateToStr(TarihDizi, True);
       Pencere0.Tuval.YaziYaz(22, 28, s);
     end;

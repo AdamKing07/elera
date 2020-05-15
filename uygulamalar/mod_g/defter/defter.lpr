@@ -9,6 +9,9 @@ program defter;
 
   Güncelleme Tarihi: 03/11/2019
 
+  Bilgi: çekirdek tarafýndan defter.c programýna bilgileri iþlemesi için
+    Isaretci(4)^ adresinde 4096 * 10 byte yer tahsis edilmiþtir.
+
  ==============================================================================}
 {$mode objfpc}
 uses gorev, gn_pencere, gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_dugme,
@@ -16,7 +19,7 @@ uses gorev, gn_pencere, gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_dugme,
 
 const
   ProgramAdi: string = 'Dijital Defter';
-  DOSYA_BELLEK_KAPASITESI = Integer(8 * 1024);
+  DOSYA_BELLEK_KAPASITESI = Integer(4096 * 10);
 
 var
   Gorev0: TGorev;
@@ -31,14 +34,16 @@ var
   DosyaKimlik: TKimlik;
   DosyaUzunluk: TSayi4;
   DosyaAdi: string;
-  DosyaBellek: array[0..DOSYA_BELLEK_KAPASITESI] of Char;
+  DosyaBellek: PChar;
 
 procedure BellekTemizle;
 var
   i: TSayi4;
+  p: PChar;
 begin
 
-  for i := 0 to DOSYA_BELLEK_KAPASITESI - 1 do DosyaBellek[i] := #0;
+  p := DosyaBellek;
+  for i := 0 to DOSYA_BELLEK_KAPASITESI - 1 do p[i] := #0;
 end;
 
 procedure DosyaAc;
@@ -62,7 +67,7 @@ begin
 
     //_EOF(DosyaKimlik);
 
-    _FileRead(DosyaKimlik, @DosyaBellek);
+    _FileRead(DosyaKimlik, DosyaBellek);
   end;
 
   _CloseFile(DosyaKimlik);
@@ -116,6 +121,9 @@ begin
   Defter0.Goster;
 
   Pencere0.Goster;
+
+  // programa tahsis edilmiþ bellek adresini al
+  DosyaBellek := PChar(Isaretci(4)^);
 
   DosyaAdi := '';
 

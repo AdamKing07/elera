@@ -157,8 +157,8 @@ begin
 
   _ResimDugme^.FAtaNesneMi := False;
   _ResimDugme^.FareGostergeTipi := fitOK;
-  _ResimDugme^.Gorunum := False;
-  _ResimDugme^.Baslik := '';
+  _ResimDugme^.FGorunum := False;
+  _ResimDugme^.FBaslik := '';
   _ResimDugme^.FDeger := AResimSiraNo;
   _ResimDugme^.Durum := ddNormal;
 
@@ -187,11 +187,11 @@ begin
   if(_ResimDugme = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_ResimDugme^.Gorunum = False) then
+  if(_ResimDugme^.FGorunum = False) then
   begin
 
     // resim düğme nesnesinin görünürlüğünü aktifleştir
-    _ResimDugme^.Gorunum := True;
+    _ResimDugme^.FGorunum := True;
 
     // ata nesne görünür durumda mı ?
     if(_ResimDugme^.AtaNesneGorunurMu) then
@@ -230,10 +230,10 @@ begin
 
   // kenarlık çizimi
   if(_ResimDugme^.FDurum = ddNormal) then
-    DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B2,
+    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt,
       RENK_GUMUS, RENK_GUMUS)
   else
-    DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B2,
+    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt,
       RENK_SIYAH, RENK_SIYAH);
 
   // resim düğme içeriğinin resim ile çizilmesi
@@ -245,11 +245,11 @@ begin
     // sistem kaynak resim sayısı şu an itibariyle 16 tanedir
     if(_ResimSiraNo > 15) then _ResimSiraNo := 0;
 
-    KaynaktanResimCiz(_Pencere, _Alan.A1 + 1, _Alan.B1 + 1, _ResimSiraNo);
+    KaynaktanResimCiz(_Pencere, _Alan.Sol + 1, _Alan.Ust + 1, _ResimSiraNo);
   end
   // resim düğme içeriğinin renk ile doldurulması
   else
-    DikdortgenDoldur(_Pencere, _Alan.A1 + 1, _Alan.B1 + 1, _Alan.A2 - 1, _Alan.B2 - 1,
+    DikdortgenDoldur(_Pencere, _Alan.Sol + 1, _Alan.Ust + 1, _Alan.Sag - 1, _Alan.Alt - 1,
       _ResimDugme^.FDeger, _ResimDugme^.FDeger);
 
   // uygulamaya mesaj gönder

@@ -35,47 +35,47 @@ begin
     $EBEBE0);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
-  PanelListesi[0].Olustur(Pencere0.Kimlik, 10, 10, 50, 50, 2, RENK_KIRMIZI,
+  PanelListesi[0].Olustur(Pencere0.Kimlik, 10, 10, 50, 50, 3, RENK_KIRMIZI,
     RENK_BEYAZ, RENK_SIYAH, 'Panel1');
   PanelListesi[0].Hizala(hzUst);
   PanelListesi[0].Goster;
 
-  PanelListesi[1].Olustur(Pencere0.Kimlik, 150, 10, 50, 50, 2, RENK_KIRMIZI,
+  PanelListesi[1].Olustur(Pencere0.Kimlik, 150, 10, 50, 50, 3, RENK_KIRMIZI,
     RENK_BEYAZ, RENK_SIYAH, 'Panel2');
   PanelListesi[1].Hizala(hzAlt);
   PanelListesi[1].Goster;
 
-  PanelListesi[2].Olustur(Pencere0.Kimlik, 290, 10, 50, 50, 2, RENK_MAVI,
+  PanelListesi[2].Olustur(Pencere0.Kimlik, 290, 10, 50, 50, 3, RENK_MAVI,
     RENK_BEYAZ, RENK_SIYAH, 'Panel3');
   PanelListesi[2].Hizala(hzSol);
   PanelListesi[2].Goster;
 
-  PanelListesi[3].Olustur(Pencere0.Kimlik, 10, 150, 50, 50, 2, RENK_MAVI,
+  PanelListesi[3].Olustur(Pencere0.Kimlik, 10, 150, 50, 50, 3, RENK_MAVI,
     RENK_BEYAZ, RENK_SIYAH, 'Panel4');
   PanelListesi[3].Hizala(hzSag);
   PanelListesi[3].Goster;
 
-  PanelListesi[4].Olustur(Pencere0.Kimlik, 150, 150, 50, 50, 2, RENK_YESIL,
+  PanelListesi[4].Olustur(Pencere0.Kimlik, 150, 150, 50, 50, 3, RENK_YESIL,
     RENK_BEYAZ, RENK_SIYAH, 'Panel5');
   PanelListesi[4].Hizala(hzSol);
   PanelListesi[4].Goster;
 
-  PanelListesi[5].Olustur(Pencere0.Kimlik, 290, 150, 50, 50, 2, RENK_YESIL,
+  PanelListesi[5].Olustur(Pencere0.Kimlik, 290, 150, 50, 50, 3, RENK_YESIL,
     RENK_BEYAZ, RENK_SIYAH, 'Panel6');
   PanelListesi[5].Hizala(hzSag);
   PanelListesi[5].Goster;
 
-  PanelListesi[6].Olustur(Pencere0.Kimlik, 10, 290, 50, 50, 2, RENK_BORDO,
+  PanelListesi[6].Olustur(Pencere0.Kimlik, 10, 290, 50, 50, 3, RENK_BORDO,
     RENK_BEYAZ, RENK_SIYAH, 'Panel7');
   PanelListesi[6].Hizala(hzUst);
   PanelListesi[6].Goster;
 
-  PanelListesi[7].Olustur(Pencere0.Kimlik, 150, 290, 50, 50, 2, RENK_BORDO,
+  PanelListesi[7].Olustur(Pencere0.Kimlik, 150, 290, 50, 50, 3, RENK_BORDO,
     RENK_BEYAZ, RENK_SIYAH, 'Panel8');
   PanelListesi[7].Hizala(hzAlt);
   PanelListesi[7].Goster;
 
-  PanelListesi[8].Olustur(Pencere0.Kimlik, 290, 290, 50, 50, 2, RENK_PEMBE,
+  PanelListesi[8].Olustur(Pencere0.Kimlik, 290, 290, 50, 50, 3, RENK_PEMBE,
     RENK_SARI, RENK_SIYAH, 'Panel9');
   PanelListesi[8].Hizala(hzTum);
   PanelListesi[8].Goster;

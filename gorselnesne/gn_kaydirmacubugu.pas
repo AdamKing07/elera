@@ -183,8 +183,8 @@ begin
 
   _KaydirmaCubugu^.FAtaNesneMi := False;
   _KaydirmaCubugu^.FareGostergeTipi := fitOK;
-  _KaydirmaCubugu^.Gorunum := False;
-  _KaydirmaCubugu^.Baslik := '';
+  _KaydirmaCubugu^.FGorunum := False;
+  _KaydirmaCubugu^.FBaslik := '';
   _KaydirmaCubugu^.FAzalmaDDurum := ddNormal;
   _KaydirmaCubugu^.FArtmaDDurum := ddNormal;
 
@@ -225,11 +225,11 @@ begin
   if(_KaydirmaCubugu = nil) then Exit;
 
   // nesne görünür durumda mý ?
-  if(_KaydirmaCubugu^.Gorunum = False) then
+  if(_KaydirmaCubugu^.FGorunum = False) then
   begin
 
     // kaydýrma çubuðu nesnesinin görünürlüðünü aktifleþtir
-    _KaydirmaCubugu^.Gorunum := True;
+    _KaydirmaCubugu^.FGorunum := True;
 
     // ata nesne görünür durumda mý ?
     if(_KaydirmaCubugu^.AtaNesneGorunurMu) then
@@ -272,13 +272,13 @@ begin
   begin
 
     // kaydýrma çubuk uzunluðu = ara boþluðun yarýsý
-    FCubukU := ((_Alan.B2 - _Alan.B1) - ((_KaydirmaCubugu^.FBoyutlar.Genislik2 + 1) * 2)) div 2;
+    FCubukU := ((_Alan.Alt - _Alan.Ust) - ((_KaydirmaCubugu^.FBoyutlar.Genislik2 + 1) * 2)) div 2;
   end
   else
   begin
 
     // kaydýrma çubuk uzunluðu = ara boþluðun yarýsý
-    FCubukU := ((_Alan.A2 - _Alan.A1) - ((_KaydirmaCubugu^.FBoyutlar.Yukseklik2 + 1) * 2)) div 2;
+    FCubukU := ((_Alan.Sag - _Alan.Sol) - ((_KaydirmaCubugu^.FBoyutlar.Yukseklik2 + 1) * 2)) div 2;
   end;
 
   FYuzde1 := (FMevcutDeger * 100) / FUstDeger;
@@ -292,26 +292,26 @@ begin
     DikdortgenDoldur(_Pencere, _Alan, RENK_BEYAZ, RENK_BEYAZ);
 
     if(FAzalmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A1 + 14, _Alan.B2,
+      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sol + 14, _Alan.Alt,
         $7F7F7F, RENK_BEYAZ)
     else
-      DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A1 + 14, _Alan.B2,
+      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sol + 14, _Alan.Alt,
         $7F7F7F, $C3C3C3);
 
     if(FArtmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.A2 - 14, _Alan.B1, _Alan.A2, _Alan.B2,
+      DikdortgenDoldur(_Pencere, _Alan.Sag - 14, _Alan.Ust, _Alan.Sag, _Alan.Alt,
         $7F7F7F, RENK_BEYAZ)
     else
-      DikdortgenDoldur(_Pencere, _Alan.A2 - 14, _Alan.B1, _Alan.A2, _Alan.B2,
+      DikdortgenDoldur(_Pencere, _Alan.Sag - 14, _Alan.Ust, _Alan.Sag, _Alan.Alt,
         $7F7F7F, $C3C3C3);
 
     KaydirmaOklariniCiz(_Pencere, _Alan, _KaydirmaCubugu^.Yon);
 
-    Cizgi(_Pencere, _Alan.A1 + 16, _Alan.B1, _Alan.A2 - 16, _Alan.B1, $7F7F7F);
-    Cizgi(_Pencere, _Alan.A1 + 16, _Alan.B2, _Alan.A2 - 16, _Alan.B2, $7F7F7F);
+    Cizgi(_Pencere, _Alan.Sol + 16, _Alan.Ust, _Alan.Sag - 16, _Alan.Ust, $7F7F7F);
+    Cizgi(_Pencere, _Alan.Sol + 16, _Alan.Alt, _Alan.Sag - 16, _Alan.Alt, $7F7F7F);
 
-    DikdortgenDoldur(_Pencere, _Alan.A1 + 16 + i, _Alan.B1 + 2, _Alan.A1 + 16 + i + FCubukU,
-      _Alan.B2 - 2, $7F7F7F, $7F7F7F);
+    DikdortgenDoldur(_Pencere, _Alan.Sol + 16 + i, _Alan.Ust + 2, _Alan.Sol + 16 + i + FCubukU,
+      _Alan.Alt - 2, $7F7F7F, $7F7F7F);
   end
   else
   // dikey kaydýrma çubuðu
@@ -320,26 +320,26 @@ begin
     DikdortgenDoldur(_Pencere, _Alan, RENK_BEYAZ, RENK_BEYAZ);
 
     if(FAzalmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B1 + 14,
+      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Ust + 14,
         $7F7F7F, RENK_BEYAZ)
     else
-      DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B1 + 14,
+      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Ust + 14,
         $7F7F7F, $C3C3C3);
 
     if(FArtmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B2 - 14, _Alan.A2, _Alan.B2,
+      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Alt - 14, _Alan.Sag, _Alan.Alt,
         $7F7F7F, RENK_BEYAZ)
     else
-      DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B2 - 14, _Alan.A2, _Alan.B2,
+      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Alt - 14, _Alan.Sag, _Alan.Alt,
         $7F7F7F, $C3C3C3);
 
     KaydirmaOklariniCiz(_Pencere, _Alan, _KaydirmaCubugu^.Yon);
 
-    Cizgi(_Pencere, _Alan.A1, _Alan.B1 + 16, _Alan.A1, _Alan.B2 - 16, $7F7F7F);
-    Cizgi(_Pencere, _Alan.A2, _Alan.B1 + 16, _Alan.A2, _Alan.B2 - 16, $7F7F7F);
+    Cizgi(_Pencere, _Alan.Sol, _Alan.Ust + 16, _Alan.Sol, _Alan.Alt - 16, $7F7F7F);
+    Cizgi(_Pencere, _Alan.Sag, _Alan.Ust + 16, _Alan.Sag, _Alan.Alt - 16, $7F7F7F);
 
-    DikdortgenDoldur(_Pencere, _Alan.A1 + 2, _Alan.B1 + 16 + i, _Alan.A2 - 2,
-      _Alan.B1 + 16 + i + FCubukU, $7F7F7F, $7F7F7F);
+    DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 16 + i, _Alan.Sag - 2,
+      _Alan.Ust + 16 + i + FCubukU, $7F7F7F, $7F7F7F);
   end;
 
   // uygulamaya mesaj gönder
@@ -364,7 +364,7 @@ begin
       begin
 
         if(p1^ = 1) then
-          PixelYaz(APencere, AAlan.A1 + 4 + A1, AAlan.B1 + 3 + B1, RENK_SIYAH);
+          PixelYaz(APencere, AAlan.Sol + 4 + A1, AAlan.Ust + 3 + B1, RENK_SIYAH);
 
         Inc(p1);
       end;
@@ -378,7 +378,7 @@ begin
       begin
 
         if(p1^ = 1) then
-          PixelYaz(APencere, (AAlan.A2 - 9) + A1, AAlan.B1 + 3 + B1, RENK_SIYAH);
+          PixelYaz(APencere, (AAlan.Sag - 9) + A1, AAlan.Ust + 3 + B1, RENK_SIYAH);
 
         Inc(p1);
       end;
@@ -395,7 +395,7 @@ begin
       begin
 
         if(p1^ = 1) then
-          PixelYaz(APencere, AAlan.A1 + 3 + A1, AAlan.B1 + 4 + B1, RENK_SIYAH);
+          PixelYaz(APencere, AAlan.Sol + 3 + A1, AAlan.Ust + 4 + B1, RENK_SIYAH);
 
         Inc(p1);
       end;
@@ -409,7 +409,7 @@ begin
       begin
 
         if(p1^ = 1) then
-          PixelYaz(APencere, (AAlan.A1 + 3) + A1, (AAlan.B2 - 9) + B1, RENK_SIYAH);
+          PixelYaz(APencere, (AAlan.Sol + 3) + A1, (AAlan.Alt - 9) + B1, RENK_SIYAH);
 
         Inc(p1);
       end;
@@ -445,31 +445,32 @@ begin
     if(_KaydirmaCubugu^.FareNesneOlayAlanindaMi(AKimlik)) then
     begin
 
+      // tek kat artýþ ve eksiltme ->
       if(_KaydirmaCubugu^.FYon = yYatay) then
       begin
 
-        _AlanAzalma.A1 := 0;
-        _AlanAzalma.B1 := 0;
-        _AlanAzalma.A2 := 14;
-        _AlanAzalma.B2 := 14;
+        _AlanAzalma.Sol := 0;
+        _AlanAzalma.Sag := 14;
+        _AlanAzalma.Ust := 0;
+        _AlanAzalma.Alt := 14;
 
-        _AlanArtis.A2 := _KaydirmaCubugu^.FBoyutlar.Genislik2;
-        _AlanArtis.B2 := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
-        _AlanArtis.A1 := _AlanArtis.A2 - 14;
-        _AlanArtis.B1 := 0;
+        _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2;
+        _AlanArtis.Sol := _AlanArtis.Sag - 14;
+        _AlanArtis.Ust := 0;
+        _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
       end
       else
       begin
 
-        _AlanAzalma.A1 := 0;
-        _AlanAzalma.B1 := 0;
-        _AlanAzalma.A2 := 14;
-        _AlanAzalma.B2 := 14;
+        _AlanAzalma.Sol := 0;
+        _AlanAzalma.Sag := 14;
+        _AlanAzalma.Ust := 0;
+        _AlanAzalma.Alt := 14;
 
-        _AlanArtis.A2 := _KaydirmaCubugu^.FBoyutlar.Genislik2;
-        _AlanArtis.B2 := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
-        _AlanArtis.A1 := 0;
-        _AlanArtis.B1 := _AlanArtis.B2 - 14;
+        _AlanArtis.Sol := 0;
+        _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2;
+        _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
+        _AlanArtis.Ust := _AlanArtis.Alt - 14;
       end;
 
       if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanAzalma)) then
@@ -488,7 +489,59 @@ begin
 
         Inc(FMevcutDeger);
         if(FMevcutDeger > FUstDeger) then FMevcutDeger := FUstDeger;
+      end
+      // <- tek kat artýþ ve eksiltme
+
+      else
+      // 20 kat artýþ ve eksiltme ->
+      begin
+
+        if(_KaydirmaCubugu^.FYon = yYatay) then
+        begin
+
+          _AlanAzalma.Sol := 14;
+          _AlanAzalma.Sag := 28;
+          _AlanAzalma.Ust := 0;
+          _AlanAzalma.Alt := 14;
+
+          _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2 - 14;
+          _AlanArtis.Sol := _AlanArtis.Sag - 14;
+          _AlanArtis.Ust := 0;
+          _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
+        end
+        else
+        begin
+
+          _AlanAzalma.Sol := 0;
+          _AlanAzalma.Sag := 14;
+          _AlanAzalma.Ust := 14;
+          _AlanAzalma.Alt := 28;
+
+          _AlanArtis.Sol := 0;
+          _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2;
+          _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2 - 14;
+          _AlanArtis.Ust := _AlanArtis.Alt - 14;
+        end;
+
+        if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanAzalma)) then
+          _KaydirmaCubugu^.FAzalmaDDurum := ddBasili
+        else if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanArtis)) then
+          _KaydirmaCubugu^.FArtmaDDurum := ddBasili;
+
+        if(FAzalmaDDurum = ddBasili) then
+        begin
+
+          Dec(FMevcutDeger, 20);
+          if(FMevcutDeger < FAltDeger) then FMevcutDeger := FAltDeger;
+        end
+        else if(FArtmaDDurum = ddBasili) then
+        begin
+
+          Inc(FMevcutDeger, 20);
+          if(FMevcutDeger > FUstDeger) then FMevcutDeger := FUstDeger;
+        end;
       end;
+      // <- 20 kat artýþ ve eksiltme
 
       // fare olaylarýný yakala
       OlayYakalamayaBasla(_KaydirmaCubugu);

@@ -170,7 +170,7 @@ begin
 
   _Menu^.FAtaNesneMi := False;
   _Menu^.FareGostergeTipi := fitOK;
-  _Menu^.Gorunum := False;
+  _Menu^.FGorunum := False;
 
   // menü çizimi için bellekte yer ayır
   _Menu^.FCizimBellekAdresi := GGercekBellek.Ayir(_Menu^.FBoyutlar.Genislik2 *
@@ -202,7 +202,7 @@ begin
 
   // nesnenin ad ve başlık değeri
   _Menu^.NesneAdi := NesneAdiAl(gntMenu);
-  _Menu^.Baslik := '';
+  _Menu^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_Menu^.GorevKimlik]^.OlayEkle1(_Menu^.GorevKimlik, _Menu,
@@ -248,7 +248,7 @@ begin
   GAktifMasaustu^.FMenu := _Menu;
 
   // nesnenin görünürlüğünü aktifleştir
-  _Menu^.Gorunum := True;
+  _Menu^.FGorunum := True;
 
   // daha önceden seçilmiş index değerini kaldır
   _Menu^.FSeciliSiraNo := -1;
@@ -267,7 +267,7 @@ begin
   if(_Menu = nil) then Exit;
 
   // nesnenin görünürlüğünü pasifleştir
-  _Menu^.Gorunum := False;
+  _Menu^.FGorunum := False;
 end;
 
 {==============================================================================
@@ -291,10 +291,10 @@ begin
   _Alan := _Menu^.CizimGorselNesneBoyutlariniAl(Kimlik);
 
   // dış kenarlık
-  Dikdortgen(_Menu, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B2, $97D5DB);
+  Dikdortgen(_Menu, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt, $97D5DB);
 
   // iç dolgu rengi
-  DikdortgenDoldur(_Menu, _Alan.A1 + 1, _Alan.B1 + 1, _Alan.A2 - 1, _Alan.B2 - 1,
+  DikdortgenDoldur(_Menu, _Alan.Sol + 1, _Alan.Ust + 1, _Alan.Sag - 1, _Alan.Alt - 1,
     RENK_BEYAZ, RENK_BEYAZ);
 
   _YL := _Menu^.FMenuElemanBaslik;
@@ -305,8 +305,8 @@ begin
   begin
 
     // çizim / yazım için kullanılacak _A1 & _B1 koordinatları
-    _A1 := _Alan.A1 + 30;   // 30 pixel soldan sağa doğru. menü resimleri için
-    _B1 := _Alan.B1 + 08;   // 08 = dikey ortalama için
+    _A1 := _Alan.Sol + 30;   // 30 pixel soldan sağa doğru. menü resimleri için
+    _B1 := _Alan.Ust + 08;   // 08 = dikey ortalama için
 
     // menü kutusunda görüntülenecek eleman sayısı
     if(_YL^.ElemanSayisi > _Menu^.FMenuElemanBaslik^.ElemanSayisi) then
@@ -325,7 +325,7 @@ begin
       if(_SiraNo = _Menu^.FSeciliSiraNo) then
       begin
 
-        DikdortgenDoldur(_Menu, _A1, _B1 - 4, _A1 + _Menu^.FBoyutlar.A2 - 34, _B1 + 20,
+        DikdortgenDoldur(_Menu, _A1, _B1 - 4, _A1 + _Menu^.FBoyutlar.Sag - 34, _B1 + 20,
           $60A3AE, $60A3AE);
 
         YaziYaz(_Menu, _A1 + 5, _B1, s, RENK_BEYAZ);
@@ -377,7 +377,7 @@ begin
       _Menu^.FSeciliSiraNo := (AOlay.Deger2 - 4) div _Menu^.FElemanYukseklik;
 
       // popupmenu'yü gizle
-      _Menu^.Gorunum := False;
+      _Menu^.FGorunum := False;
 
       // uygulamaya mesaj gönder
       GorevListesi[_Menu^.GorevKimlik]^.OlayEkle1(_Menu^.GorevKimlik,

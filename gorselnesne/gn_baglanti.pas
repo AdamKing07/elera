@@ -138,14 +138,14 @@ begin
 
   _Baglanti^.FAtaNesneMi := False;
   _Baglanti^.FareGostergeTipi := fitEl;
-  _Baglanti^.Gorunum := False;
+  _Baglanti^.FGorunum := False;
   _Baglanti^.FNormalColor := ANormalRenk;
   _Baglanti^.FOdakRenk := AOdakRenk;
   _Baglanti^.FOdakMevcut := False;
 
   // nesnenin ad ve başlık değeri
   _Baglanti^.NesneAdi := NesneAdiAl(gntBaglanti);
-  _Baglanti^.Baslik := ABaslik;
+  _Baglanti^.FBaslik := ABaslik;
 
   // uygulamaya mesaj gönder
   GorevListesi[_Baglanti^.GorevKimlik]^.OlayEkle1(_Baglanti^.GorevKimlik,
@@ -169,11 +169,11 @@ begin
   if(_Baglanti = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_Baglanti^.Gorunum = False) then
+  if(_Baglanti^.FGorunum = False) then
   begin
 
     // bağlantı nesnesinin görünürlüğünü aktifleştir
-    _Baglanti^.Gorunum := True;
+    _Baglanti^.FGorunum := True;
 
     // bağlantı nesnesi ve üst nesneler görünür durumda mı ?
     if(_Baglanti^.AtaNesneGorunurMu) then
@@ -211,8 +211,8 @@ begin
   // bağlantı başlığını yaz
   if(FOdakMevcut) then
 
-    YaziYaz(_Pencere, _Alan.A1, _Alan.B1, _Baglanti^.Baslik, FOdakRenk)
-  else YaziYaz(_Pencere, _Alan.A1, _Alan.B1, _Baglanti^.Baslik, FNormalColor);
+    YaziYaz(_Pencere, _Alan.Sol, _Alan.Ust, _Baglanti^.FBaslik, FOdakRenk)
+  else YaziYaz(_Pencere, _Alan.Sol, _Alan.Ust, _Baglanti^.FBaslik, FNormalColor);
 
   // uygulamaya mesaj gönder
   {GorevListesi[_Baglanti^.GorevKimlik]^.OlayEkle1(_Baglanti^.GorevKimlik,

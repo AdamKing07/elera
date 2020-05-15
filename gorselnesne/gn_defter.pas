@@ -6,7 +6,11 @@
   Dosya Adı: gn_defter.pas
   Dosya İşlevi: defter nesnesi (memo) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 12/04/2020
+  Güncelleme Tarihi: 13/05/2020
+
+  Bilgi: bu görsel nesne 13.05.2020 itibariyle nesnenin program bölümüne eklenen
+    40K ve çekirdek bölümüne eklenen 40K bellek kullanmaktadır.
+    bu bellek miktarı şu an için gereklidir. ileride yapısallık bağlamında değiştirilebilir.
 
  ==============================================================================}
 {$mode objfpc}
@@ -18,9 +22,6 @@ uses gorselnesne, paylasim, gn_kaydirmacubugu;
 
 type
   PDefter = ^TDefter;
-
-  { TDefter }
-
   TDefter = object(TGorselNesne)
   private
     FYatayKCubugu, FDikeyKCubugu: PKaydirmaCubugu;
@@ -204,12 +205,12 @@ begin
 
   _Defter^.FAtaNesneMi := False;
   _Defter^.FareGostergeTipi := fitGiris;
-  _Defter^.Gorunum := False;
+  _Defter^.FGorunum := False;
   _Defter^.FDefterRenk := ADefterRenk;
   _Defter^.FYaziRenk := AYaziRenk;
 
   // defter nesnesinin içeriği için bellek rezerv et
-  _YaziBellekAdresi := GGercekBellek.Ayir(4095);
+  _YaziBellekAdresi := GGercekBellek.Ayir(4096 * 10);
   _Defter^.FYaziBellekAdresi := _YaziBellekAdresi;
 
   _Defter^.FYaziUzunlugu := 0;
@@ -218,7 +219,7 @@ begin
 
   // nesnenin ad ve başlık değeri
   _Defter^.NesneAdi := NesneAdiAl(gntDefter);
-  _Defter^.Baslik := '';
+  _Defter^.FBaslik := '';
 
   _Defter^.FYatayKCubugu := _Defter^.FYatayKCubugu^.Olustur(_Defter^.Kimlik,
     10, 10, 20, 20, yYatay);
@@ -257,7 +258,7 @@ begin
   if(_Defter = nil) then Exit;
 
   if(_Defter^.FYaziBellekAdresi <> nil) then
-    GGercekBellek.YokEt(_Defter^.FYaziBellekAdresi, 4096);
+    GGercekBellek.YokEt(_Defter^.FYaziBellekAdresi, 4096 * 10);
 
   YokEt0;
 end;
@@ -276,13 +277,13 @@ begin
   if(_Defter = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_Defter^.Gorunum = False) then
+  if(_Defter^.FGorunum = False) then
   begin
 
     // defter nesnesinin görünürlüğünü aktifleştir
-    _Defter^.Gorunum := True;
-    _Defter^.FYatayKCubugu^.Gorunum := True;
-    _Defter^.FDikeyKCubugu^.Gorunum := True;
+    _Defter^.FGorunum := True;
+    _Defter^.FYatayKCubugu^.FGorunum := True;
+    _Defter^.FDikeyKCubugu^.FGorunum := True;
 
     // defter nesnesi ve üst nesneler görünür durumda mı ?
     if(_Defter^.AtaNesneGorunurMu) then
@@ -323,13 +324,13 @@ begin
   // defterin üst nesneye bağlı olarak koordinatlarını al
   _Alan := _Defter^.CizimGorselNesneBoyutlariniAl(Kimlik);
 
-  DikeySinir := _Alan.B2 - 16 - 16;   // kaydırma çubuğu ve karakter yüksekliği
+  DikeySinir := _Alan.Alt - 16 - 16;   // kaydırma çubuğu ve karakter yüksekliği
 
   // kenarlık çizgisini çiz
   KenarlikCiz(_Pencere, _Alan, 2);
 
   // iç dolgu rengi
-  DikdortgenDoldur(_Pencere, _Alan.A1 + 2, _Alan.B1 + 2, _Alan.A2 - 2, _Alan.B2 - 2,
+  DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt - 2,
     _Defter^.FDefterRenk, _Defter^.FDefterRenk);
 
   // eğer defter nesnesi için bellek ayrıldıysa defter içeriğini nesne içeriğine
@@ -340,8 +341,8 @@ begin
     //SISTEM_MESAJ('Yatay Kar Say: %d, Dikey Kar Say: %d', [FYatayKarSay, FDikeyKarSay]);
 
     // _A1 ve _B1 başlangıç değerleri
-    _A1 := _Alan.A1 + 4;
-    _B1 := _Alan.B1 + 4;
+    _A1 := _Alan.Sol + 4;
+    _B1 := _Alan.Ust + 4;
 
     // defter içerik bellek bölgesine konumlan
     _YaziBellekAdresi := PChar(Self.FYaziBellekAdresi);
@@ -369,7 +370,7 @@ begin
         begin
 
           if(_SatirNo > _Defter^.FDikeyKCubugu^.MevcutDeger) then _B1 += 16;
-          _A1 := _Alan.A1 + 4;
+          _A1 := _Alan.Sol + 4;
         end;
       end
       else
@@ -397,25 +398,25 @@ begin
     end;
   end;
 
-  _Defter^.FYatayKCubugu^.FBoyutlar.Sol2 := _Defter^.FDisGercekBoyutlar.A1;
-  _Defter^.FYatayKCubugu^.FBoyutlar.Genislik2 := _Defter^.FDisGercekBoyutlar.A2 - _Defter^.FDisGercekBoyutlar.A1 - 16;
-  _Defter^.FYatayKCubugu^.FBoyutlar.Ust2 := _Defter^.FDisGercekBoyutlar.B2 - 16;
+  _Defter^.FYatayKCubugu^.FBoyutlar.Sol2 := _Defter^.FDisGercekBoyutlar.Sol;
+  _Defter^.FYatayKCubugu^.FBoyutlar.Genislik2 := _Defter^.FDisGercekBoyutlar.Sag - _Defter^.FDisGercekBoyutlar.Sol - 16;
+  _Defter^.FYatayKCubugu^.FBoyutlar.Ust2 := _Defter^.FDisGercekBoyutlar.Alt - 16;
   _Defter^.FYatayKCubugu^.FBoyutlar.Yukseklik2 := 15;
-  _Defter^.FDikeyKCubugu^.FBoyutlar.Sol2 := _Defter^.FDisGercekBoyutlar.A2 - _Defter^.FDisGercekBoyutlar.A1 - 16;
+  _Defter^.FDikeyKCubugu^.FBoyutlar.Sol2 := _Defter^.FDisGercekBoyutlar.Sag - _Defter^.FDisGercekBoyutlar.Sol - 16;
   _Defter^.FDikeyKCubugu^.FBoyutlar.Genislik2 := 15;
-  _Defter^.FDikeyKCubugu^.FBoyutlar.Ust2 := _Defter^.FDisGercekBoyutlar.B1;
-  _Defter^.FDikeyKCubugu^.FBoyutlar.Yukseklik2 := _Defter^.FDisGercekBoyutlar.B2 - _Defter^.FDisGercekBoyutlar.B1 - 16;
+  _Defter^.FDikeyKCubugu^.FBoyutlar.Ust2 := _Defter^.FDisGercekBoyutlar.Ust;
+  _Defter^.FDikeyKCubugu^.FBoyutlar.Yukseklik2 := _Defter^.FDisGercekBoyutlar.Alt - _Defter^.FDisGercekBoyutlar.Ust - 16;
 
-  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.A1 := _Defter^.FDisGercekBoyutlar.A1;
-  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.A2 := _Defter^.FDisGercekBoyutlar.A2 - 15;
-  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.B1 := _Defter^.FDisGercekBoyutlar.B2 - 16;
-  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.B2 := _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.B1 + 14;
+  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.Sol := _Defter^.FDisGercekBoyutlar.Sol;
+  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.Sag := _Defter^.FDisGercekBoyutlar.Sag - 15;
+  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.Ust := _Defter^.FDisGercekBoyutlar.Alt - 16;
+  _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.Alt := _Defter^.FYatayKCubugu^.FDisGercekBoyutlar.Ust + 14;
   _Defter^.FYatayKCubugu^.Ciz;
 
-  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.A1 := _Defter^.FDisGercekBoyutlar.A2 - 16;
-  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.A2 := _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.A1 + 14;
-  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.B1 := _Defter^.FDisGercekBoyutlar.B1;
-  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.B2 := _Defter^.FDisGercekBoyutlar.B2 - 15;
+  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.Sol := _Defter^.FDisGercekBoyutlar.Sag - 16;
+  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.Sag := _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.Sol + 14;
+  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.Ust := _Defter^.FDisGercekBoyutlar.Ust;
+  _Defter^.FDikeyKCubugu^.FDisGercekBoyutlar.Alt := _Defter^.FDisGercekBoyutlar.Alt - 15;
   _Defter^.FDikeyKCubugu^.Ciz;
 end;
 
@@ -427,7 +428,7 @@ begin
 
   Self.FYaziUzunlugu := 0;
 
-  BellekDoldur(Self.FYaziBellekAdresi, 4096, 0);
+  BellekDoldur(Self.FYaziBellekAdresi, 4096 * 10, 0);
 
   YatayDikeyKarakterSayisiniAl;
 
@@ -448,7 +449,7 @@ begin
 
   // verinin uzunluğunu al
   _Uzunluk := StrLen(AYaziBellekAdresi);
-  if(_Uzunluk = 0) or (_Uzunluk > 4096) then Exit;
+  if(_Uzunluk = 0) or (_Uzunluk > (4096 * 10)) then Exit;
 
   //SISTEM_MESAJ('Uzunluk: %d', [_Uzunluk]);
 
@@ -480,7 +481,7 @@ begin
 
   // verinin uzunluğunu al
   _Uzunluk := Length(ADeger);
-  if(_Uzunluk = 0) or (_Uzunluk > 4096) then Exit;
+  if(_Uzunluk = 0) or (_Uzunluk > (4096 * 10)) then Exit;
 
   // karakter katarını hedef bölgeye kopyala
   p := PByte(TSayi4(FYaziBellekAdresi) + FYaziUzunlugu);
@@ -540,7 +541,7 @@ var
   _KaydirmaCubugu: PKaydirmaCubugu;
 begin
 
-  _NesneTipi := _Defter^.NesneTipiAl(AKimlik);
+  _NesneTipi := _Defter^.NesneTipiniAl(AKimlik);
   if(_NesneTipi = gntDefter) then
 
     _Defter := PDefter(_Defter^.NesneAl(AKimlik))

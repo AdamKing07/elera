@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 06/04/2020
+  Güncelleme Tarihi: 12/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,7 +21,8 @@ const
   // bir görev için tanýmlanan üst sýnýr olay sayýsý
   // olay belleði 4K olarak tanýmlanmýþtýr. 4096 / SizeOf(TOlay)
   USTSINIR_OLAY         = 64;
-  PROGRAM_YIGIN_BELLEK  = 4096 * 4;    // program yýðýný (stack) için ayrýlacak bellek
+  PROGRAM_YIGIN_BELLEK  = 4096 * 4;           // program yýðýný (stack) için ayrýlacak bellek
+  DEFTER_BELLEK_U       = TSayi4(4096 * 10);  // defter programý için program belleðinde ayrýlacak alan
 
 type
   TDosyaTip = (dtDiger, dtCalistirilabilir, dtSurucu, dtResim, dtBelge);
@@ -83,7 +84,7 @@ function IliskiliProgramAl(ADosyaUzanti: string): TDosyaIliskisi;
 implementation
 
 uses genel, gdt, bolumleme, dosya, sistemmesaj, donusum, zamanlayici, gn_islevler,
-  yonetim, islevler;
+  yonetim, islevler, src_com;
 
 const
   IstisnaAciklamaListesi: array[0..15] of string = (
@@ -152,7 +153,7 @@ var
   _Gorev: PGorev;
   _DosyaBellek: Isaretci;
   _OlayKayit: POlayKayit;
-  _DosyaU, i: TSayi4;
+  _DosyaU, i, ProgramBellekU: TSayi4;
   _Surucu, _Dizin,
   _DosyaAdi: string;
   _DosyaKimlik: TKimlik;
@@ -222,7 +223,14 @@ begin
     _DosyaU := FileSize(_DosyaKimlik);
 
     // dosyanýn çalýþtýrýlmasý için bellekte yer rezerv et
-    _DosyaBellek := GGercekBellek.Ayir(_DosyaU + PROGRAM_YIGIN_BELLEK);
+    // defter.c programýna verileri iþlemesi için fazladan 40K yer tahsis et
+    if(_DosyaAdi = 'defter.c') then
+      ProgramBellekU := _DosyaU + PROGRAM_YIGIN_BELLEK + DEFTER_BELLEK_U
+    else ProgramBellekU := _DosyaU + PROGRAM_YIGIN_BELLEK;
+
+    ProgramBellekU := ((ProgramBellekU shr 12) + 1) shl 12;
+
+    _DosyaBellek := GGercekBellek.Ayir(ProgramBellekU);
     if(_DosyaBellek = nil) then
     begin
 
@@ -281,13 +289,15 @@ begin
     _Gorev^.FBellekBaslangicAdresi := TSayi4(_DosyaBellek);
 
     // bellek miktarý
-    _Gorev^.FBellekUzunlugu := _DosyaU + PROGRAM_YIGIN_BELLEK;
+    _Gorev^.FBellekUzunlugu := ProgramBellekU;
 
     // iþlem baþlangýç adresi
     _Gorev^.FKodBaslangicAdres := _ELFBaslik^.KodBaslangicAdresi;
 
     // iþlemin yýðýn adresi
-    _Gorev^.FYiginBaslangicAdres := (_DosyaU + PROGRAM_YIGIN_BELLEK) - 1024;
+    if(_DosyaAdi = 'defter.c') then
+      _Gorev^.FYiginBaslangicAdres := (ProgramBellekU - DEFTER_BELLEK_U) - 4096
+    else _Gorev^.FYiginBaslangicAdres := ProgramBellekU - 4096;
 
     // dosyanýn çalýþtýrýlmasý için seçicileri oluþtur
     _Gorev^.SecicileriOlustur;
@@ -306,8 +316,16 @@ begin
 
     // deðiþken gönderimi
     // ilk deðiþken - çalýþan iþlemin adý
-    PSayi4(_DosyaBellek)^ := 0;
-    p1 := PChar(_DosyaBellek + 4);
+
+    // program bellek baþlangýcýnýn ilk 32 byte'ý çekirdeðin programa
+    // bilgi vermesi amacýyla ayrýlmýþtýr.
+    PSayi4(_DosyaBellek + 00)^ := TSayi4(_DosyaBellek);
+    if(_DosyaAdi = 'defter.c') then
+      PSayi4(_DosyaBellek + 04)^ := ProgramBellekU - DEFTER_BELLEK_U
+    else PSayi4(_DosyaBellek + 04)^ := ProgramBellekU;
+
+    PSayi4(_DosyaBellek + 32)^ := 0;
+    p1 := PChar(_DosyaBellek + 32 + 4);
     Tasi2(@_TamDosyaYolu[1], p1, Length(_TamDosyaYolu));
     p1 += Length(_TamDosyaYolu);
     p1^ := #0;
@@ -316,7 +334,7 @@ begin
     if(_Degiskenler <> '') then
     begin
 
-      PSayi4(_DosyaBellek)^ := 1;
+      PSayi4(_DosyaBellek + 32)^ := 1;
       Inc(p1);
       Tasi2(@_Degiskenler[1], p1, Length(_Degiskenler));
       p1 += Length(_Degiskenler);

@@ -172,12 +172,12 @@ begin
 
   _SecimDugme^.FAtaNesneMi := False;
   _SecimDugme^.FareGostergeTipi := fitOK;
-  _SecimDugme^.Gorunum := False;
+  _SecimDugme^.FGorunum := False;
   _SecimDugme^.FSecimDurumu := sdNormal;
 
   // nesnenin ad ve başlık değeri
   _SecimDugme^.NesneAdi := NesneAdiAl(gntSecimDugmesi);
-  _SecimDugme^.Baslik := ABaslik;
+  _SecimDugme^.FBaslik := ABaslik;
 
   // uygulamaya mesaj gönder
   GorevListesi[_SecimDugme^.GorevKimlik]^.OlayEkle1(_SecimDugme^.GorevKimlik,
@@ -201,11 +201,11 @@ begin
   if(_SecimDugme = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_SecimDugme^.Gorunum = False) then
+  if(_SecimDugme^.FGorunum = False) then
   begin
 
     // seçim düğmesi nesnesinin görünürlüğünü aktifleştir
-    _SecimDugme^.Gorunum := True;
+    _SecimDugme^.FGorunum := True;
 
     // seçim düğmesi nesnesi ve üst nesneler görünür durumda mı ?
     if(_SecimDugme^.AtaNesneGorunurMu) then
@@ -254,11 +254,11 @@ begin
       begin
 
         case _p^ of
-          1: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, $D4D0C8);
-          2: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, $808080);
-          3: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, $404040);
-          4: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, RENK_BEYAZ);
-          5: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, RENK_SIYAH);
+          1: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, $D4D0C8);
+          2: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, $808080);
+          3: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, $404040);
+          4: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, RENK_BEYAZ);
+          5: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, RENK_SIYAH);
         end;
 
         Inc(_p);
@@ -276,11 +276,11 @@ begin
       begin
 
         case _p^ of
-          1: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, $D4D0C8);
-          2: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, $808080);
-          3: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, $404040);
-          4: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, RENK_BEYAZ);
-          5: PixelYaz(_Pencere, _Alan.A1 + 1 + X, _Alan.B1 + 1 + Y, RENK_SIYAH);
+          1: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, $D4D0C8);
+          2: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, $808080);
+          3: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, $404040);
+          4: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, RENK_BEYAZ);
+          5: PixelYaz(_Pencere, _Alan.Sol + 1 + X, _Alan.Ust + 1 + Y, RENK_SIYAH);
         end;
 
         Inc(_p);
@@ -289,8 +289,8 @@ begin
   end;
 
   // seçim düğmesi başlığı
-  if(Length(_SecimDugme^.Baslik) > 0) then YaziYaz(_Pencere, _Alan.A1 + 17,
-    _Alan.B1 + 1, _SecimDugme^.Baslik, RENK_SIYAH);
+  if(Length(_SecimDugme^.FBaslik) > 0) then YaziYaz(_Pencere, _Alan.Sol + 17,
+    _Alan.Ust + 1, _SecimDugme^.FBaslik, RENK_SIYAH);
 
   // uygulamaya mesaj gönder
   GorevListesi[_SecimDugme^.GorevKimlik]^.OlayEkle1(_SecimDugme^.GorevKimlik,

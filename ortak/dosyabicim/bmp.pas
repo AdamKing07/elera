@@ -187,7 +187,7 @@ begin
       for _TuvalA1 := 0 to _Genislik - 1 do
       begin
 
-        GEkranKartSurucusu.NoktaYaz(_Masaustu, _Alan.A1 + _TuvalA1, _Alan.B1 + _TuvalB1,
+        GEkranKartSurucusu.NoktaYaz(_Masaustu, _Alan.Sol + _TuvalA1, _Alan.Ust + _TuvalB1,
           _Renk^, True);
         Inc(_Renk);
       end;
@@ -211,8 +211,8 @@ begin
       _Genislik := AGoruntuYapi.Genislik;
       _SatirdakiByteSayisi := _Genislik * 4;
       _Yukseklik := AGoruntuYapi.Yukseklik;
-      _YatayArtis := _Genislik / (_Alan.A2 - _Alan.A1);
-      _DikeyArtis := _Yukseklik / (_Alan.B2 - _Alan.B1);
+      _YatayArtis := _Genislik / (_Alan.Sag - _Alan.Sol);
+      _DikeyArtis := _Yukseklik / (_Alan.Alt - _Alan.Ust);
     end
     else
     begin
@@ -239,7 +239,7 @@ begin
         __Renk := _Renk;
         Inc(__Renk, Round(_A1));
 
-        GEkranKartSurucusu.NoktaYaz(_Pencere, _Alan.A1 + _TuvalA1, _Alan.B1 + _TuvalB1,
+        GEkranKartSurucusu.NoktaYaz(_Pencere, _Alan.Sol + _TuvalA1, _Alan.Ust + _TuvalB1,
           __Renk^, True);
       end;
     end;

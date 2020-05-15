@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: program arabiriminde kullanılacak sabit değerleri içerir
 
-  Güncelleme Tarihi: 19/04/2020
+  Güncelleme Tarihi: 15/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -87,8 +87,11 @@ const
   PENCERE_CIZ		              = $00100200 + SAC_GNESNE;
 
   DUGME_OLUSTUR 	            = $00010300 + SAC_GNESNE;
+  DUGME_YOKET 	              = $00400300 + SAC_GNESNE;
   DUGME_HIZALA                = $01040300 + SAC_GNESNE;
+  DUGME_BASLIKDEGISTIR        = $02040300 + SAC_GNESNE;
   DUGME_GOSTER		            = $00080300 + SAC_GNESNE;
+  DUGME_GIZLE	                = $00200300 + SAC_GNESNE;
 
   GUCDUGME_OLUSTUR	          = $00010400 + SAC_GNESNE;
   GUCDUGME_GOSTER	            = $00080400 + SAC_GNESNE;
@@ -217,8 +220,9 @@ const
   IPADRES_YAZ		              = $00000600 + SAC_YAZIM;
   SAYI_YAZ10  	              = $00000700 + SAC_YAZIM;
 
-  GET_TIME		                = $00000100 + SAC_SAYAC;
-  GET_DATE		                = $00000200 + SAC_SAYAC;
+  SAYAC_SAAT_AL		            = $00000100 + SAC_SAYAC;
+  SAYAC_TARIH_AL		          = $00000200 + SAC_SAYAC;
+  SAYAC_BEKLE                 = $00001000 + SAC_SAYAC;
 
   SISTEMBILGISI_AL		        = $00000100 + SAC_SISTEM;
   ISLEMCIBILGISI_AL		        = $00000200 + SAC_SISTEM;

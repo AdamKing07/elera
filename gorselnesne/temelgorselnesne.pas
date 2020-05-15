@@ -26,6 +26,7 @@ type
     FGorunum: Boolean;                            // görünür / görünmez özelliði
     FHiza: THiza;                                 // nesnenin hizalanacaðý (çizgi üstünde tutulacaðý) yön
     FBoyutlar: TAlan;                             // nesnenin dikdörtgensel koordinatlarý
+    FYaziHiza: TYaziHiza;                         // nesneye yazýlacak yazýnýn hizalanmasý
 
     // nesnenin dýþ boyutlarý (ve eðer içeriðine nesne alabiliyorsa (TMasaUstu, TPencere gibi))
     // diðer nesnelerin yaslanma durumlarýnýn hesaplanacaðý iç gerçek (ekranýn 0 koordinatýna baðlý) boyutlar
@@ -38,8 +39,6 @@ type
   published
     property GorevKimlik: TKimlik read FGorevKimlik write FGorevKimlik;
     property NesneAdi: string read FNesneAdi write FNesneAdi;
-    property Baslik: string read FBaslik write FBaslik;
-    property Gorunum: Boolean read FGorunum write FGorunum;
     property Hiza: THiza read FHiza write FHiza;
     property AltNesneSayisi: TISayi4 read FAltNesneSayisi write FAltNesneSayisi;
     property FareGostergeTipi: TFareImlecTipi read FFareGostergeTipi write FFareGostergeTipi;

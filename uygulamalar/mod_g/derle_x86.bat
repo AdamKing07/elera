@@ -80,6 +80,10 @@ cd grvyntcs
 call derle.bat
 cd..
 
+cd hafiza
+call derle.bat
+cd..
+
 cd iletisim
 call derle.bat
 cd..

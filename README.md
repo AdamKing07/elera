@@ -21,7 +21,9 @@ Ekran Görüntüleri
 
 ![Görüntü5](elera5.png)
 
-![Görüntü5](elera6.png)
+![Görüntü6](elera6.png)
+
+![Görüntü7](elera7.png)
 
 ---
 Öğretici Videolar

@@ -245,7 +245,7 @@ begin
   begin
 
     _SonBulunanGorselNesne := GAktifMasaustu^.FMenu;
-    if(_SonBulunanGorselNesne^.Gorunum) then
+    if(_SonBulunanGorselNesne^.FGorunum) then
     begin
 
       if(GorselNesneAlanIcerisindeMi(_SonBulunanGorselNesne, A1, B1)) then
@@ -276,7 +276,7 @@ begin
         _GorselNesne := PGorselNesne(_AltNesneGNBellekAdresi[i]);
 
         // görsel nesne görünür durumda mı ?
-        if(_GorselNesne^.Gorunum) then
+        if(_GorselNesne^.FGorunum) then
         begin
 
           // görsel nesne A1 ve B1 koordinatı içerisinde mi ?
@@ -314,10 +314,10 @@ begin
 
   // nesnenin A1, B1 koordinatları içerisinde olup olmadığını kontrol et
   Result := False;
-  if(_Alan.A1 > A1) then Exit;
-  if(_Alan.A2 < A1) then Exit;
-  if(_Alan.B1 > B1) then Exit;
-  if(_Alan.B2 < B1) then Exit;
+  if(_Alan.Sol > A1) then Exit;
+  if(_Alan.Sag < A1) then Exit;
+  if(_Alan.Ust > B1) then Exit;
+  if(_Alan.Alt < B1) then Exit;
 
   // tüm koşullar sağlanmışsa nesne belirtilen koordinattadır
   Result := True;

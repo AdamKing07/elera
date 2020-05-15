@@ -194,7 +194,7 @@ begin
 
   _ListeKutusu^.FAtaNesneMi := False;
   _ListeKutusu^.FareGostergeTipi := fitOK;
-  _ListeKutusu^.Gorunum := False;
+  _ListeKutusu^.FGorunum := False;
 
   _ListeKutusu^.FYaziListesi := nil;
   YL := YL^.Olustur;
@@ -209,7 +209,7 @@ begin
 
   // nesnenin ad ve başlık değeri
   _ListeKutusu^.NesneAdi := NesneAdiAl(gntListeKutusu);
-  _ListeKutusu^.Baslik := '';
+  _ListeKutusu^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
@@ -281,11 +281,11 @@ begin
   if(_ListeKutusu = nil) then Exit;
 
   // eğer nesne görünür değilse
-  if(_ListeKutusu^.Gorunum = False) then
+  if(_ListeKutusu^.FGorunum = False) then
   begin
 
     // nesnenin görünürlüğünü aktifleştir
-    _ListeKutusu^.Gorunum := True;
+    _ListeKutusu^.FGorunum := True;
 
     // nesne ve üst nesneler görünür ise
     if(_ListeKutusu^.AtaNesneGorunurMu) then
@@ -329,7 +329,7 @@ begin
   KenarlikCiz(_Pencere, _Alan, 2);
 
   // iç dolgu rengi
-  DikdortgenDoldur(_Pencere, _Alan.A1 + 2, _Alan.B1 + 2, _Alan.A2 - 2, _Alan.B2 - 2,
+  DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt - 2,
     RENK_BEYAZ, RENK_BEYAZ);
 
   YL := _ListeKutusu^.FYaziListesi;
@@ -339,11 +339,11 @@ begin
   begin
 
     // çizim / yazım için kullanılacak x & y koordinatları
-    X := _Alan.A1 + 4;
-    Y := _Alan.B1 + 4;
+    X := _Alan.Sol + 4;
+    Y := _Alan.Ust + 4;
 
-    _ListeKutusu^.FGorunenElemanSayisi := ((_ListeKutusu^.FDisGercekBoyutlar.B2 -
-      _ListeKutusu^.FDisGercekBoyutlar.B1) + 17) div 18;
+    _ListeKutusu^.FGorunenElemanSayisi := ((_ListeKutusu^.FDisGercekBoyutlar.Alt -
+      _ListeKutusu^.FDisGercekBoyutlar.Ust) + 17) div 18;
 
     // liste kutusunda görüntülenecek eleman sayısı
     if(YL^.ElemanSayisi > _ListeKutusu^.FGorunenElemanSayisi) then
@@ -362,7 +362,7 @@ begin
       if(_SiraNo = _ListeKutusu^.FSeciliSiraNo) then
       begin
 
-        DikdortgenDoldur(_Pencere, X, Y, X + _ListeKutusu^.FBoyutlar.A2 - 4 - 4,
+        DikdortgenDoldur(_Pencere, X, Y, X + _ListeKutusu^.FBoyutlar.Sag - 4 - 4,
           Y + 18, $3EC5FF, $3EC5FF);
       end;
       YaziYaz(_Pencere, X, Y + 1, s, RENK_SIYAH);
@@ -463,7 +463,7 @@ begin
       end
 
       // fare liste kutusunun aşağısında ise
-      else if(AOlay.Deger2 > _ListeKutusu^.FBoyutlar.B2) then
+      else if(AOlay.Deger2 > _ListeKutusu^.FBoyutlar.Alt) then
       begin
 
         // azami kaydırma değeri

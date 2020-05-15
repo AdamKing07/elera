@@ -150,7 +150,7 @@ begin
 
   _IslemGostergesi^.FAtaNesneMi := False;
   _IslemGostergesi^.FareGostergeTipi := fitOK;
-  _IslemGostergesi^.Gorunum := True;
+  _IslemGostergesi^.FGorunum := True;
 
   // diğer değer atamaları
   FAltDeger := 1;
@@ -159,7 +159,7 @@ begin
 
   // nesnenin ad ve başlık değeri
   _IslemGostergesi^.NesneAdi := NesneAdiAl(gntIslemGostergesi);
-  _IslemGostergesi^.Baslik := '';
+  _IslemGostergesi^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_IslemGostergesi^.GorevKimlik]^.OlayEkle1(_IslemGostergesi^.GorevKimlik,
@@ -192,7 +192,7 @@ begin
   _Alan := _IslemGostergesi^.CizimGorselNesneBoyutlariniAl(Kimlik);
 
   _U1 := (FUstDeger - FAltDeger) + 1;
-  _U2 := _Alan.A2;
+  _U2 := _Alan.Sag;
   if(_U1 > _U2) then
   begin
 
@@ -207,11 +207,11 @@ begin
   end;
 
   // ön renk doldurma işlemi. dolgu öncesi çizim
-  DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2, _Alan.B2, RENK_BEYAZ,
+  DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt, RENK_BEYAZ,
     RENK_BEYAZ);
 
   // artan renk ile (eğimli) doldur
-  _Alan.A2 := _Alan.A1 + _Deger;
+  _Alan.Sag := _Alan.Sol + _Deger;
   EgimliDoldur(_Pencere, _Alan, DUGME_NORMAL_ILKRENK, DUGME_NORMAL_SONRENK);
 
   // uygulamaya mesaj gönder

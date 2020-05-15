@@ -145,12 +145,12 @@ begin
 
   _GucDugme^.FAtaNesneMi := False;
   _GucDugme^.FareGostergeTipi := fitOK;
-  _GucDugme^.Gorunum := False;
+  _GucDugme^.FGorunum := False;
   _GucDugme^.FDurum := ddNormal;
 
   // nesnenin ad ve başlık değeri
   _GucDugme^.NesneAdi := NesneAdiAl(gntGucDugme);
-  _GucDugme^.Baslik := ABaslik;
+  _GucDugme^.FBaslik := ABaslik;
 
   // uygulamaya mesaj gönder
   GorevListesi[_GucDugme^.GorevKimlik]^.OlayEkle1(_GucDugme^.GorevKimlik,
@@ -174,11 +174,11 @@ begin
   if(_GucDugme = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_GucDugme^.Gorunum = False) then
+  if(_GucDugme^.FGorunum = False) then
   begin
 
     // güç düğmesi nesnesinin görünürlüğünü aktifleştir
-    _GucDugme^.Gorunum := True;
+    _GucDugme^.FGorunum := True;
 
     // güç düğmesi nesnesi ve üst nesneler görünür durumda mı ?
     if(_GucDugme^.AtaNesneGorunurMu) then
@@ -220,7 +220,7 @@ begin
     EgimliDoldur(_Pencere, _Alan, DUGME_NORMAL_ILKRENK, DUGME_NORMAL_SONRENK);
 
     // düğmenin başlığı
-    YaziYaz(_Pencere, _Alan.Sol + 4, _Alan.Ust + 4, _GucDugme^.Baslik,
+    YaziYaz(_Pencere, _Alan.Sol + 4, _Alan.Ust + 4, _GucDugme^.FBaslik,
       DUGME_NORMAL_YAZIRENK);
   end
   else if(_GucDugme^.FDurum = ddBasili) then
@@ -229,7 +229,7 @@ begin
     EgimliDoldur(_Pencere, _Alan, DUGME_BASILI_ILKRENK, DUGME_BASILI_SONRENK);
 
     // düğmenin başlığı
-    YaziYaz(_Pencere, _Alan.Sol + 5, _Alan.Ust + 5, _GucDugme^.Baslik,
+    YaziYaz(_Pencere, _Alan.Sol + 5, _Alan.Ust + 5, _GucDugme^.FBaslik,
       DUGME_BASILI_YAZIRENK);
   end;
 

@@ -6,7 +6,7 @@
   Dosya Adı: src_com.pas
   Dosya İşlevi: COM iletişim sürücüsü
 
-  Güncelleme Tarihi: 10/10/2019
+  Güncelleme Tarihi: 13/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -41,7 +41,8 @@ type
 procedure Yukle;
 function COMIletisimAygitiVarMi(ACOMIletisim: TCOMIletisim): Boolean;
 procedure COMIletisimAygitiniAyarla(ACOMIletisim: TCOMIletisim);
-procedure COMIletisimVeriGonder(APortNo: TSayi4; AVeri: string);
+procedure Yaz(APortNo: TSayi4; AVeri: string);
+procedure Yaz(APortNo: TSayi4; ABellekAdresi: PChar; AUzunluk: TSayi4);
 
 implementation
 
@@ -117,7 +118,7 @@ end;
 {==============================================================================
   COM iletişim aygıtı üzerinden veri gönderir
  ==============================================================================}
-procedure COMIletisimVeriGonder(APortNo: TSayi4; AVeri: string);
+procedure Yaz(APortNo: TSayi4; AVeri: string);
 var
   VeriUzunluk, i: TSayi4;
   _Deger: TSayi1;
@@ -144,6 +145,43 @@ begin
 
     // veriyi port'a gönder
     PortYaz1(TCOMIletisimListesi[APortNo].PortNo, Byte(AVeri[i]));
+  end;
+end;
+
+{==============================================================================
+  COM iletişim aygıtı üzerinden veri gönderir
+ ==============================================================================}
+procedure Yaz(APortNo: TSayi4; ABellekAdresi: PChar; AUzunluk: TSayi4);
+var
+  i: TSayi4;
+  _Deger: TSayi1;
+  p: PChar;
+begin
+
+  // port aralık kontrolü
+  if(APortNo < 1) or (APortNo > 4) then Exit;
+
+  // aygıt sistemde mevcut mu ?
+  if(TCOMIletisimListesi[APortNo].Mevcut = False) then Exit;
+
+  // port'a gönderilecek verinin uzunluğunu al
+  if(AUzunluk = 0) then Exit;
+
+  p := ABellekAdresi;
+
+  for i := 1 to AUzunluk do
+  begin
+
+    // LSR bit 5 = 1 oluncaya kadar bekle (Empty Transmitter Holding Register)
+    repeat
+
+      _Deger := PortAl1(TCOMIletisimListesi[APortNo].PortNo + 5);
+    until ((_Deger and $20) <> 0);
+
+    // veriyi port'a gönder
+    PortYaz1(TCOMIletisimListesi[APortNo].PortNo, TSayi1(p^));
+
+    Inc(p);
   end;
 end;
 

@@ -48,8 +48,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
 
     _Pencere^.HarfYaz(_Pencere, _A1, _B1, PChar(Degiskenler + 16)^,
       PRenk(Degiskenler + 12)^);
@@ -65,8 +65,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _Bellek := Isaretci((PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi));
 
     _Pencere^.YaziYaz(_Pencere, _A1, _B1, PShortString(_Bellek)^, PRenk(Degiskenler + 12)^);
@@ -82,8 +82,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
 
     _Pencere^.SayiYaz16(_Pencere, _A1, _B1, PLongBool(Degiskenler + 16)^, PISayi4(Degiskenler + 20)^,
       PISayi4(Degiskenler + 24)^, PRenk(Degiskenler + 12)^);
@@ -99,8 +99,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
 
     _Pencere^.SaatYaz(_Pencere, _A1, _B1, PSaat(Degiskenler + 16)^, PRenk(Degiskenler + 12)^);
 
@@ -115,8 +115,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _Bellek := PMACAdres(PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi);
 
     _Pencere^.MACAdresiYaz(_Pencere, _A1, _B1, PMACAdres(_Bellek)^, PRenk(Degiskenler + 12)^);
@@ -132,8 +132,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _Bellek := PIPAdres(PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi);
 
     _Pencere^.IPAdresiYaz(_Pencere, _A1, _B1, PIPAdres(_Bellek)^, PRenk(Degiskenler + 12)^);
@@ -149,8 +149,8 @@ begin
     if(_Pencere = nil) then Exit;
 
     _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.A1;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.B1;
+    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
+    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
 
     _Pencere^.SayiYaz10(_Pencere, _A1, _B1, PISayi4(Degiskenler + 16)^, PRenk(Degiskenler + 12)^);
 

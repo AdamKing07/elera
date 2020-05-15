@@ -39,7 +39,6 @@
       <Unit0>
         <Filename Value="iletisim.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="134"/>
         <CursorPos X="14" Y="160"/>
         <UsageCount Value="32"/>
@@ -292,9 +291,6 @@
         <Filename Value="temizle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="25"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit43>
@@ -359,8 +355,9 @@
       </Unit52>
       <Unit53>
         <Filename Value="../../../rtl_uygulama/linux/n_iletisim.pas"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="69"/>
+        <TopLine Value="67"/>
         <CursorPos X="15" Y="28"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
@@ -411,9 +408,6 @@
         <Filename Value="iletisim.ld"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="20"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit61>

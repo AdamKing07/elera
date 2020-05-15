@@ -85,7 +85,7 @@ begin
         // eðer daha önce bellek ayrýldýysa
         _KarmaListe^.FGorunenElemanSayisi := 0;
         _KarmaListe^.FGorunenIlkSiraNo := 0;
-        _KarmaListe^.Baslik := '';
+        _KarmaListe^.FBaslik := '';
         _KarmaListe^.FBoyutlar.Yukseklik2 := 22;
 
         _KarmaListe^.FYaziListesi^.Temizle;
@@ -103,7 +103,7 @@ begin
       begin
 
         p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-        p1^ := _KarmaListe^.Baslik;
+        p1^ := _KarmaListe^.FBaslik;
       end;
     end;
 
@@ -193,7 +193,7 @@ begin
 
   _KarmaListe^.FAtaNesneMi := False;
   _KarmaListe^.FareGostergeTipi := fitOK;
-  _KarmaListe^.Gorunum := False;
+  _KarmaListe^.FGorunum := False;
 
   _KarmaListe^.FYaziListesi := nil;
   YL := YL^.Olustur;
@@ -208,7 +208,7 @@ begin
 
   // nesnenin ad ve baþlýk deðeri
   _KarmaListe^.NesneAdi := NesneAdiAl(gntKarmaListe);
-  _KarmaListe^.Baslik := '';
+  _KarmaListe^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_KarmaListe^.GorevKimlik]^.OlayEkle1(_KarmaListe^.GorevKimlik,
@@ -252,11 +252,11 @@ begin
   if(_KarmaListe = nil) then Exit;
 
   // eðer nesne görünür deðilse
-  if(_KarmaListe^.Gorunum = False) then
+  if(_KarmaListe^.FGorunum = False) then
   begin
 
     // nesnenin görünürlüðünü aktifleþtir
-    _KarmaListe^.Gorunum := True;
+    _KarmaListe^.FGorunum := True;
 
     // nesne ve üst nesneler görünür ise
     if(_KarmaListe^.AtaNesneGorunurMu) then
@@ -302,22 +302,22 @@ begin
 
     YL := _KarmaListe^.FYaziListesi;
 
-    DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2 - 15, _Alan.B2,
+    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag - 15, _Alan.Alt,
       $7F7F7F, RENK_BEYAZ);
 
-    DikdortgenDoldur(_Pencere, _Alan.A2 - 15, _Alan.B1, _Alan.A2, _Alan.B1 + 22,
+    DikdortgenDoldur(_Pencere, _Alan.Sag - 15, _Alan.Ust, _Alan.Alt, _Alan.Ust + 22,
       $7F7F7F, $C3C3C3);
     OkResminiCiz(_Pencere, _Alan);
 
-    YaziYaz(_Pencere, _Alan.A1 + 4, _Alan.B1 + 4, _KarmaListe^.Baslik, RENK_LACIVERT);
+    YaziYaz(_Pencere, _Alan.Sol + 4, _Alan.Ust + 4, _KarmaListe^.FBaslik, RENK_LACIVERT);
 
     // nesnenin elemaný var mý ?
     if(YL^.ElemanSayisi > 0) then
     begin
 
       // çizim / yazým için kullanýlacak x & y koordinatlarý
-      X := _Alan.A1 + 4;
-      Y := _Alan.B1 + 22 + 5;
+      X := _Alan.Sol + 4;
+      Y := _Alan.Ust + 22 + 5;
 
       // karma listende görüntülenecek eleman sayýsý
       if(YL^.ElemanSayisi > _KarmaListe^.FGorunenElemanSayisi) then
@@ -339,14 +339,14 @@ begin
   // karma liste kutusunun kapalý olmasý durumunda
   begin
 
-    DikdortgenDoldur(_Pencere, _Alan.A1, _Alan.B1, _Alan.A2 - 15, _Alan.B1 + 22,
+    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag - 15, _Alan.Ust + 22,
       $7F7F7F, RENK_BEYAZ);
 
-    DikdortgenDoldur(_Pencere, _Alan.A2 - 15, _Alan.B1, _Alan.A2, _Alan.B1 + 22,
+    DikdortgenDoldur(_Pencere, _Alan.Sag - 15, _Alan.Ust, _Alan.Sag, _Alan.Ust + 22,
       $7F7F7F, $C3C3C3);
     OkResminiCiz(_Pencere, _Alan);
 
-    YaziYaz(_Pencere, _Alan.A1 + 4, _Alan.B1 + 4, _KarmaListe^.Baslik, RENK_LACIVERT);
+    YaziYaz(_Pencere, _Alan.Sol + 4, _Alan.Ust + 4, _KarmaListe^.FBaslik, RENK_LACIVERT);
   end;
 end;
 
@@ -382,10 +382,10 @@ begin
       // fare olaylarýný yakala
       OlayYakalamayaBasla(_KarmaListe);
 
-      _Alan.A2 := _KarmaListe^.FBoyutlar.Genislik2 - 1;
-      _Alan.B2 := 22;
-      _Alan.A1 := _Alan.A2 - 15;
-      _Alan.B1 := 1;
+      _Alan.Sag := _KarmaListe^.FBoyutlar.Genislik2 - 1;
+      _Alan.Alt := 22;
+      _Alan.Sol := _Alan.Sag - 15;
+      _Alan.Ust := 1;
 
       if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _Alan)) then
       begin
@@ -398,7 +398,7 @@ begin
       else
       begin
 
-        if(AOlay.Deger1 < _Alan.A2 - 22) then
+        if(AOlay.Deger1 < _Alan.Sag - 22) then
         begin
 
           // seçilen sýra numarasýný belirle
@@ -407,7 +407,7 @@ begin
           if(_SeciliSiraNo > 0) then
           begin
 
-            _KarmaListe^.Baslik := FYaziListesi^.Eleman[_KarmaListe^.FGorunenIlkSiraNo + _SeciliSiraNo - 1];
+            _KarmaListe^.FBaslik := FYaziListesi^.Eleman[_KarmaListe^.FGorunenIlkSiraNo + _SeciliSiraNo - 1];
           end;
 
           _KarmaListe^.FListeKutusuAcik := False;
@@ -478,7 +478,7 @@ begin
     begin
 
       if(p1^ = 1) then
-        PixelYaz(APencere, (AAlan.A2 - 12) + A1, (AAlan.B1 + 9) + B1, RENK_SIYAH);
+        PixelYaz(APencere, (AAlan.Sag - 12) + A1, (AAlan.Ust + 9) + B1, RENK_SIYAH);
 
       Inc(p1);
     end;
@@ -497,7 +497,7 @@ begin
     AKarmaListe^.FGorunenElemanSayisi := 2;
 
   if(AKarmaListe^.FYaziListesi^.ElemanSayisi > 0) then
-    AKarmaListe^.Baslik := AKarmaListe^.FYaziListesi^.Eleman[0];
+    AKarmaListe^.FBaslik := AKarmaListe^.FYaziListesi^.Eleman[0];
 
   AKarmaListe^.FBoyutlar.Yukseklik2 := 22 + (AKarmaListe^.FGorunenElemanSayisi * 22);
 end;

@@ -83,7 +83,7 @@ begin
 
       _DurumCubugu := PDurumCubugu(_DurumCubugu^.NesneAl(PKimlik(Degiskenler + 00)^));
       p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      _DurumCubugu^.Baslik := p1^;
+      _DurumCubugu^.FBaslik := p1^;
       _DurumCubugu^.Ciz;
     end
 
@@ -165,11 +165,11 @@ begin
 
   _DurumCubugu^.FAtaNesneMi := False;
   _DurumCubugu^.FareGostergeTipi := fitOK;
-  _DurumCubugu^.Gorunum := False;
+  _DurumCubugu^.FGorunum := False;
 
   // nesnenin ad ve başlık değeri
   _DurumCubugu^.NesneAdi := NesneAdiAl(gntDurumCubugu);
-  _DurumCubugu^.Baslik := ADurumYazisi;
+  _DurumCubugu^.FBaslik := ADurumYazisi;
 
   // uygulamaya mesaj gönder
   GorevListesi[_DurumCubugu^.GorevKimlik]^.OlayEkle1(_DurumCubugu^.GorevKimlik,
@@ -193,11 +193,11 @@ begin
   if(_DurumCubugu = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_DurumCubugu^.Gorunum = False) then
+  if(_DurumCubugu^.FGorunum = False) then
   begin
 
     // durum çubuğu nesnesinin görünürlüğünü aktifleştir
-    _DurumCubugu^.Gorunum := True;
+    _DurumCubugu^.FGorunum := True;
 
     // durum çubuğu nesnesi ve üst nesneler görünür durumda mı ?
     if(_DurumCubugu^.AtaNesneGorunurMu) then
@@ -239,11 +239,11 @@ begin
   KenarlikCiz(_Pencere, _Alan, 1);
 
   // iç dolgu rengi
-  DikdortgenDoldur(_Pencere, _Alan.A1 + 1, _Alan.B1 + 1, _Alan.A2 - 1, _Alan.B2 - 1,
+  DikdortgenDoldur(_Pencere, _Alan.Sol + 1, _Alan.Ust + 1, _Alan.Sag - 1, _Alan.Alt - 1,
     $D4D0C8, $D4D0C8);
 
-  XX := _Alan.A2 - 12 - 1;
-  YY := _Alan.B2 - 12 - 1;
+  XX := _Alan.Sag - 12 - 1;
+  YY := _Alan.Alt - 12 - 1;
 
   p1 := PByte(@DurumCubuguResim);
   for Y := 1 to 12 do
@@ -262,7 +262,7 @@ begin
   end;
 
   // durum çubuğu başlığı
-  YaziYaz(_Pencere, _Alan.A1 + 3, _Alan.B1 + 2, _DurumCubugu^.Baslik, RENK_SIYAH);
+  YaziYaz(_Pencere, _Alan.Sol + 3, _Alan.Ust + 2, _DurumCubugu^.FBaslik, RENK_SIYAH);
 
   // uygulamaya mesaj gönder
   {GorevListesi[_DurumCubugu^.GorevKimlik]^.EventAdd1(_DurumCubugu^.GorevKimlik,

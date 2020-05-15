@@ -36,7 +36,7 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="214">
+    <Units Count="215">
       <Unit0>
         <Filename Value="cekirdek.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -49,378 +49,378 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="14" Y="18"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit1>
       <Unit2>
         <Filename Value="..\shared\core\gdt.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\shared\core\idt.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1812"/>
         <CursorPos X="35" Y="1826"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\shared\core\irq.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="19"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\shared\hardware\cmos.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="10" Y="22"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit5>
       <Unit6>
         <Filename Value="..\shared\hardware\islemci.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit6>
       <Unit7>
         <Filename Value="..\shared\hardware\pic.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="24"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\shared\hardware\pit.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="17"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit8>
       <Unit9>
         <Filename Value="..\shared\drivers\network\drv_pcnet32.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="18"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit9>
       <Unit10>
         <Filename Value="..\shared\ints\int34.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="64"/>
         <CursorPos X="43" Y="12"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit10>
       <Unit11>
         <Filename Value="..\shared\font\fnt8x16.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="870"/>
         <CursorPos X="19" Y="1080"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit11>
       <Unit12>
         <Filename Value="..\shared\drivers\graphic\src_vesa20.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="43" Y="326"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit12>
       <Unit13>
         <Filename Value="..\shared\others\mp_draw.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="17" Y="18"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="139"/>
       </Unit13>
       <Unit14>
         <Filename Value="..\shared\others\vbmm.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="91"/>
         <CursorPos X="40" Y="105"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="73"/>
       </Unit14>
       <Unit15>
         <Filename Value="..\shared\cursors\cursors.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="3" Y="24"/>
-        <UsageCount Value="140"/>
+        <UsageCount Value="138"/>
       </Unit15>
       <Unit16>
         <Filename Value="..\shared\drivers\mouse\drv_ps2.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="29"/>
         <CursorPos X="32" Y="52"/>
-        <UsageCount Value="140"/>
+        <UsageCount Value="138"/>
       </Unit16>
       <Unit17>
         <Filename Value="..\shared\drivers\drv_com.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="9"/>
         <CursorPos X="29" Y="24"/>
-        <UsageCount Value="140"/>
+        <UsageCount Value="138"/>
       </Unit17>
       <Unit18>
         <Filename Value="..\shared\drivers\drv_flp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="20" Y="30"/>
-        <UsageCount Value="140"/>
+        <UsageCount Value="138"/>
       </Unit18>
       <Unit19>
         <Filename Value="..\shared\drivers\drv_ide.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="206"/>
         <CursorPos X="3" Y="219"/>
-        <UsageCount Value="140"/>
+        <UsageCount Value="138"/>
       </Unit19>
       <Unit20>
         <Filename Value="..\shared\drivers\drv_keyb.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="20"/>
-        <UsageCount Value="140"/>
+        <UsageCount Value="138"/>
       </Unit20>
       <Unit21>
         <Filename Value="..\shared\core\paylasim.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="197"/>
         <CursorPos X="20" Y="211"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="91"/>
       </Unit21>
       <Unit22>
         <Filename Value="..\shared\core\partman.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="14" Y="18"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="88"/>
       </Unit22>
       <Unit23>
         <Filename Value="..\shared\fs\fat12.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="121"/>
+        <UsageCount Value="119"/>
       </Unit23>
       <Unit24>
         <Filename Value="..\shared\fs\fat16.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="6" Y="17"/>
-        <UsageCount Value="120"/>
+        <UsageCount Value="118"/>
       </Unit24>
       <Unit25>
         <Filename Value="..\shared\drivers\drv_sb.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="33" Y="28"/>
-        <UsageCount Value="117"/>
+        <UsageCount Value="115"/>
       </Unit25>
       <Unit26>
         <Filename Value="..\shared\objects\yazilistesi.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit26>
       <Unit27>
         <Filename Value="..\shared\fformat\bmp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="180"/>
         <CursorPos X="36" Y="194"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit27>
       <Unit28>
         <Filename Value="..\shared\ints\int_process.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="96"/>
         <CursorPos X="6" Y="18"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit28>
       <Unit29>
         <Filename Value="..\shared\usb\usb.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos X="29" Y="59"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit29>
       <Unit30>
         <Filename Value="..\shared\usb\ohci.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="14" Y="23"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit30>
       <Unit31>
         <Filename Value="..\shared\usb\uhci.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="69"/>
         <CursorPos X="38" Y="92"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit31>
       <Unit32>
         <Filename Value="..\shared\usb\ehci.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit32>
       <Unit33>
         <Filename Value="..\shared\core\pmemory.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21" Y="23"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit33>
       <Unit34>
         <Filename Value="..\shared\core\convert.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="49"/>
         <CursorPos X="15" Y="69"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit34>
       <Unit35>
         <Filename Value="..\shared\ints\int_counter.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos X="6" Y="17"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit35>
       <Unit36>
         <Filename Value="..\shared\ints\k_cizim.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="3" Y="39"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit36>
       <Unit37>
         <Filename Value="..\shared\core\olay.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="111"/>
         <CursorPos X="35" Y="117"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit37>
       <Unit38>
         <Filename Value="..\shared\ints\int_event.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="4" Y="33"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit38>
       <Unit39>
         <Filename Value="..\shared\core\files.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="347"/>
         <CursorPos X="52" Y="361"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit39>
       <Unit40>
         <Filename Value="..\shared\ints\int_files.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit40>
       <Unit41>
         <Filename Value="..\shared\ints\int_memory.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="11" Y="23"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit41>
       <Unit42>
         <Filename Value="..\shared\ints\int_messages.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos X="21" Y="21"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit42>
       <Unit43>
         <Filename Value="..\shared\core\messages.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="27"/>
         <CursorPos X="21" Y="41"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit43>
       <Unit44>
         <Filename Value="..\shared\ints\k_fare.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit44>
       <Unit45>
         <Filename Value="..\shared\ints\kesme_ag.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit45>
       <Unit46>
         <Filename Value="..\shared\core\pci.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="34" Y="41"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit46>
       <Unit47>
         <Filename Value="..\shared\ints\int_pci.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="9" Y="23"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit47>
       <Unit48>
         <Filename Value="..\shared\ints\int_screen.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="36"/>
         <CursorPos X="47" Y="51"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit48>
       <Unit49>
         <Filename Value="..\shared\core\storage.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit49>
       <Unit50>
         <Filename Value="..\shared\ints\int_storage.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="23" Y="21"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit50>
       <Unit51>
         <Filename Value="..\shared\ints\int_sys.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos X="46" Y="52"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit51>
       <Unit52>
         <Filename Value="yonetim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="200"/>
-        <CursorPos X="48" Y="221"/>
+        <TopLine Value="129"/>
+        <CursorPos X="19" Y="135"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit52>
       <Unit53>
         <Filename Value="..\shared\ints\k_zamanlayici.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit53>
       <Unit54>
         <Filename Value="..\shared\core\gn_islevler.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="355"/>
         <CursorPos X="20" Y="209"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit54>
       <Unit55>
         <Filename Value="..\shared\ints\int_tmode.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="14" Y="21"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit55>
       <Unit56>
         <Filename Value="..\shared\ints\kesme_gn.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit56>
       <Unit57>
         <Filename Value="..\shared\ints\k_yazim.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15" Y="7"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit57>
       <Unit58>
         <Filename Value="yukleyici.pas"/>
@@ -432,94 +432,95 @@
         <Filename Value="macmsg.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="24"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="126"/>
       </Unit59>
       <Unit60>
         <Filename Value="..\vobjects\temelgorselnesne.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="27"/>
         <CursorPos X="14" Y="40"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit60>
       <Unit61>
         <Filename Value="..\vobjects\gorselnesne.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="262"/>
         <CursorPos X="51" Y="627"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit61>
       <Unit62>
         <Filename Value="..\vobjects\nesne.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit62>
       <Unit63>
         <Filename Value="..\vobjects\gn_dugme.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="184"/>
         <CursorPos X="17" Y="197"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit63>
       <Unit64>
         <Filename Value="..\vobjects\gn_masaustu.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="357"/>
         <CursorPos X="30" Y="376"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit64>
       <Unit65>
         <Filename Value="..\vobjects\gn_pencere.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1319"/>
         <CursorPos X="49" Y="1341"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit65>
       <Unit66>
         <Filename Value="..\vobjects\gn_listekutusu.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="341"/>
         <CursorPos X="36" Y="351"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit66>
       <Unit67>
         <Filename Value="..\vobjects\gn_defter.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="256"/>
         <CursorPos X="42" Y="269"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit67>
       <Unit68>
         <Filename Value="..\vobjects\gn_gucdugmesi.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="176"/>
         <CursorPos X="13" Y="189"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit68>
       <Unit69>
         <Filename Value="..\vobjects\gn_menu.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="350"/>
         <CursorPos X="9" Y="363"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit69>
       <Unit70>
         <Filename Value="..\shared\core\genel.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="73" Y="7"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit70>
       <Unit71>
         <Filename Value="..\vobjects\gn_islemgostergesi.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="160"/>
         <CursorPos X="29" Y="173"/>
-        <UsageCount Value="85"/>
+        <UsageCount Value="83"/>
       </Unit71>
       <Unit72>
         <Filename Value="..\surumbil.txt"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="17"/>
+        <CursorPos Y="2"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -529,13 +530,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="273"/>
         <CursorPos X="44" Y="280"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit73>
       <Unit74>
         <Filename Value="..\bellek.txt"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
-        <CursorPos X="40" Y="18"/>
+        <EditorIndex Value="16"/>
+        <CursorPos X="33" Y="14"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -545,14 +546,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="14" Y="26"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit75>
       <Unit76>
         <Filename Value="..\vobjects\gn_giriskutusu.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="125"/>
         <CursorPos X="13" Y="224"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit76>
       <Unit77>
         <Filename Value="planlama.txt"/>
@@ -566,169 +567,169 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="389"/>
         <CursorPos X="31" Y="332"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit78>
       <Unit79>
         <Filename Value="..\vobjects\gn_etiket.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="197"/>
         <CursorPos Y="216"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit79>
       <Unit80>
         <Filename Value="..\vobjects\gn_durumcubugu.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="143"/>
         <CursorPos X="16" Y="153"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit80>
       <Unit81>
         <Filename Value="..\vobjects\gn_secimkutusu.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="212"/>
         <CursorPos X="13" Y="225"/>
-        <UsageCount Value="87"/>
+        <UsageCount Value="85"/>
       </Unit81>
       <Unit82>
         <Filename Value="..\vobjects\gn_baglanti.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="196"/>
         <CursorPos X="42" Y="210"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit82>
       <Unit83>
         <Filename Value="..\shared\network\ag.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="158"/>
         <CursorPos X="39" Y="172"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit83>
       <Unit84>
         <Filename Value="..\shared\network\socket.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="58"/>
         <CursorPos X="41" Y="72"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit84>
       <Unit85>
         <Filename Value="..\shared\network\tcp.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="14" Y="7"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit85>
       <Unit86>
         <Filename Value="..\shared\network\ip.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="33" Y="7"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit86>
       <Unit87>
         <Filename Value="..\shared\network\arp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit87>
       <Unit88>
         <Filename Value="..\shared\network\checksum.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit88>
       <Unit89>
         <Filename Value="..\shared\network\icmp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="14" Y="18"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit89>
       <Unit90>
         <Filename Value="..\shared\network\udp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="14" Y="18"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit90>
       <Unit91>
         <Filename Value="..\vobjects\gn_resim.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="240"/>
         <CursorPos X="33" Y="252"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit91>
       <Unit92>
         <Filename Value="..\shared\network\dhcp.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="84"/>
+        <UsageCount Value="82"/>
       </Unit92>
       <Unit93>
         <Filename Value="..\shared\network\dns.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="14" Y="17"/>
-        <UsageCount Value="85"/>
+        <UsageCount Value="83"/>
       </Unit93>
       <Unit94>
         <Filename Value="..\shared\ints\int_socket.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="78"/>
         <CursorPos X="27" Y="100"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit94>
       <Unit95>
         <Filename Value="..\shared\ints\int_others.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="27"/>
         <CursorPos X="14" Y="18"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit95>
       <Unit96>
         <Filename Value="..\core\g\zamanlayici.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="171"/>
       </Unit96>
       <Unit97>
         <Filename Value="..\core\g\gorev.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="173"/>
+        <UsageCount Value="171"/>
       </Unit97>
       <Unit98>
         <Filename Value="..\shared\core\tmode.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="10" Y="38"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit98>
       <Unit99>
         <Filename Value="..\shared\fs\fat32.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="429"/>
         <CursorPos X="17" Y="442"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit99>
       <Unit100>
         <Filename Value="..\shared\network\netbios.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="89"/>
+        <UsageCount Value="87"/>
       </Unit100>
       <Unit101>
         <Filename Value="..\vobjects\gn_listegorunum.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="319"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="93"/>
       </Unit101>
       <Unit102>
         <Filename Value="..\shared\objects\sayilistesi.pp"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="130"/>
+        <UsageCount Value="128"/>
       </Unit102>
       <Unit103>
         <Filename Value="..\shared\others\giysi.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="28" Y="36"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="81"/>
       </Unit103>
       <Unit104>
         <Filename Value="..\ortak\donanim\islemci.pas"/>
@@ -763,14 +764,19 @@
       <Unit109>
         <Filename Value="..\ortak\cekirdek\genel.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="28"/>
+        <CursorPos X="25" Y="37"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit109>
       <Unit110>
         <Filename Value="..\ortak\cekirdek\gn_islevler.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="29"/>
+        <CursorPos X="30" Y="9"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit110>
       <Unit111>
         <Filename Value="..\ortak\cekirdek\idt.pas"/>
@@ -789,26 +795,34 @@
       <Unit113>
         <Filename Value="..\ortak\cekirdek\sistemmesaj.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="139"/>
+        <CursorPos X="5" Y="157"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit113>
       <Unit114>
         <Filename Value="..\ortak\cekirdek\olay.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="30"/>
+        <TopLine Value="307"/>
+        <CursorPos X="22" Y="319"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit114>
       <Unit115>
         <Filename Value="..\ortak\cekirdek\bolumleme.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="166"/>
         <UsageCount Value="224"/>
       </Unit115>
       <Unit116>
         <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="25" Y="13"/>
+        <EditorIndex Value="28"/>
+        <TopLine Value="666"/>
+        <CursorPos X="3" Y="679"/>
         <UsageCount Value="224"/>
         <Loaded Value="True"/>
       </Unit116>
@@ -834,7 +848,7 @@
         <Filename Value="..\ortak\cekirdek\tmode.pp"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="34" Y="14"/>
-        <UsageCount Value="210"/>
+        <UsageCount Value="208"/>
       </Unit120>
       <Unit121>
         <Filename Value="..\ortak\cekirdek\sanalbellek.pas"/>
@@ -870,8 +884,6 @@
         <Filename Value="..\ortak\suruculer\src_ide.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="176"/>
-        <CursorPos X="38" Y="200"/>
         <UsageCount Value="224"/>
       </Unit126>
       <Unit127>
@@ -903,8 +915,11 @@
       <Unit131>
         <Filename Value="..\ortak\suruculer\grafik\src_vesa20.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="26"/>
+        <TopLine Value="442"/>
+        <CursorPos X="24" Y="455"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit131>
       <Unit132>
         <Filename Value="..\ortak\suruculer\fare\src_ps2.pas"/>
@@ -930,6 +945,8 @@
         <Filename Value="..\ortak\dosyabicim\bmp.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="224"/>
+        <CursorPos X="78" Y="242"/>
         <UsageCount Value="224"/>
       </Unit135>
       <Unit136>
@@ -953,8 +970,10 @@
       <Unit139>
         <Filename Value="..\ortak\dosyasistemi\fat12.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="14"/>
+        <CursorPos X="49" Y="10"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit139>
       <Unit140>
         <Filename Value="..\ortak\ag\dns.pas"/>
@@ -1032,6 +1051,8 @@
         <Filename Value="..\ortak\kesme\k_cizim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="107"/>
+        <CursorPos X="26" Y="128"/>
         <UsageCount Value="224"/>
       </Unit152>
       <Unit153>
@@ -1044,6 +1065,8 @@
         <Filename Value="..\ortak\kesme\k_yazim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="139"/>
+        <CursorPos X="50" Y="153"/>
         <UsageCount Value="224"/>
       </Unit154>
       <Unit155>
@@ -1080,6 +1103,7 @@
         <Filename Value="..\ortak\kesme\k_dosya.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="91"/>
         <UsageCount Value="224"/>
       </Unit160>
       <Unit161>
@@ -1141,7 +1165,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="8"/>
         <CursorPos X="6" Y="23"/>
-        <UsageCount Value="211"/>
+        <UsageCount Value="209"/>
       </Unit170>
       <Unit171>
         <Filename Value="..\ortak\kesme\kesme34.pas"/>
@@ -1154,13 +1178,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="15" Y="23"/>
-        <UsageCount Value="146"/>
+        <UsageCount Value="144"/>
       </Unit172>
       <Unit173>
         <Filename Value="..\ortak\diger\giysi.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="44" Y="40"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit173>
       <Unit174>
         <Filename Value="..\ortak\usb\uhci.pas"/>
@@ -1189,28 +1215,36 @@
       <Unit178>
         <Filename Value="..\gorselnesne\gn_pencere.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="13"/>
+        <TopLine Value="562"/>
+        <CursorPos X="39" Y="576"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit178>
       <Unit179>
         <Filename Value="..\gorselnesne\gn_resim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="256"/>
+        <CursorPos X="15" Y="269"/>
         <UsageCount Value="224"/>
       </Unit179>
       <Unit180>
         <Filename Value="..\gorselnesne\gn_secimdugme.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="196"/>
+        <CursorPos X="19" Y="208"/>
         <UsageCount Value="224"/>
       </Unit180>
       <Unit181>
         <Filename Value="..\gorselnesne\gorselnesne.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="15"/>
-        <CursorPos X="5" Y="29"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="152"/>
+        <CursorPos X="3" Y="157"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit181>
       <Unit182>
         <Filename Value="..\gorselnesne\nesne.pas"/>
@@ -1222,46 +1256,55 @@
         <Filename Value="..\gorselnesne\temelgorselnesne.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="42" Y="180"/>
         <UsageCount Value="224"/>
       </Unit183>
       <Unit184>
         <Filename Value="..\gorselnesne\gn_baglanti.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="164"/>
+        <CursorPos X="17" Y="176"/>
         <UsageCount Value="224"/>
       </Unit184>
       <Unit185>
         <Filename Value="..\gorselnesne\gn_defter.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="370"/>
-        <CursorPos X="33" Y="381"/>
+        <EditorIndex Value="21"/>
+        <TopLine Value="273"/>
+        <CursorPos X="30" Y="286"/>
         <UsageCount Value="224"/>
         <Loaded Value="True"/>
       </Unit185>
       <Unit186>
         <Filename Value="..\gorselnesne\gn_degerdugmesi.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="32"/>
+        <TopLine Value="158"/>
+        <CursorPos X="21" Y="170"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit186>
       <Unit187>
-        <Filename Value="..\gorselnesne\gn_dugme.pas"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="289"/>
-        <CursorPos X="38" Y="360"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="143"/>
+        <CursorPos X="20" Y="20"/>
         <UsageCount Value="224"/>
         <Loaded Value="True"/>
       </Unit187>
       <Unit188>
         <Filename Value="..\gorselnesne\gn_durumcubugu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="31"/>
+        <TopLine Value="188"/>
+        <CursorPos X="20" Y="200"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit188>
       <Unit189>
-        <Filename Value="..\gorselnesne\gn_etiket.pas"/>
+        <Filename Value="..\gorselnesne\gn_etiket.pp"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="224"/>
@@ -1269,54 +1312,74 @@
       <Unit190>
         <Filename Value="..\gorselnesne\gn_giriskutusu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="283"/>
-        <CursorPos X="32" Y="293"/>
+        <EditorIndex Value="18"/>
+        <TopLine Value="210"/>
+        <CursorPos X="20" Y="222"/>
         <UsageCount Value="224"/>
         <Loaded Value="True"/>
       </Unit190>
       <Unit191>
         <Filename Value="..\gorselnesne\gn_gucdugme.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos Y="290"/>
+        <EditorIndex Value="25"/>
+        <TopLine Value="169"/>
+        <CursorPos X="17" Y="181"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit191>
       <Unit192>
         <Filename Value="..\gorselnesne\gn_onaykutusu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="19"/>
+        <TopLine Value="168"/>
+        <CursorPos X="19" Y="180"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit192>
       <Unit193>
         <Filename Value="..\gorselnesne\gn_islemgostergesi.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="20"/>
+        <TopLine Value="140"/>
+        <CursorPos X="22" Y="153"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit193>
       <Unit194>
         <Filename Value="..\gorselnesne\gn_listegorunum.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="476"/>
+        <CursorPos X="5" Y="486"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit194>
       <Unit195>
         <Filename Value="..\gorselnesne\gn_listekutusu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="24"/>
+        <TopLine Value="276"/>
+        <CursorPos X="20" Y="288"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit195>
       <Unit196>
         <Filename Value="..\gorselnesne\gn_masaustu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="27"/>
+        <TopLine Value="266"/>
+        <CursorPos X="22" Y="278"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit196>
       <Unit197>
         <Filename Value="..\gorselnesne\gn_menu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="23"/>
+        <TopLine Value="368"/>
+        <CursorPos X="15" Y="380"/>
         <UsageCount Value="224"/>
+        <Loaded Value="True"/>
       </Unit197>
       <Unit198>
         <Filename Value="..\ortak\diger\hamresim.pas"/>
@@ -1333,17 +1396,22 @@
       <Unit200>
         <Filename Value="..\oz\g\zamanlayici.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="253"/>
+        <CursorPos Y="266"/>
         <UsageCount Value="201"/>
+        <Loaded Value="True"/>
       </Unit200>
       <Unit201>
         <Filename Value="..\oz\g\gorev.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="547"/>
+        <CursorPos X="3" Y="547"/>
         <UsageCount Value="201"/>
       </Unit201>
       <Unit202>
-        <Filename Value="..\gorselnesne\gn_panel.pas"/>
+        <Filename Value="..\gorselnesne\gn_panel.pp"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="200"/>
@@ -1353,13 +1421,16 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="139"/>
         <CursorPos X="24" Y="161"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit203>
       <Unit204>
         <Filename Value="..\gorselnesne\gn_resimdugme.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="182"/>
+        <CursorPos X="19" Y="194"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit204>
       <Unit205>
         <Filename Value="..\ortak\donanim\acpi.pas"/>
@@ -1370,22 +1441,22 @@
       <Unit206>
         <Filename Value="..\gorselnesne\gn_kaydirmacubugu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="154"/>
-        <CursorPos X="28" Y="210"/>
+        <EditorIndex Value="22"/>
+        <TopLine Value="220"/>
+        <CursorPos X="23" Y="232"/>
         <UsageCount Value="203"/>
         <Loaded Value="True"/>
       </Unit206>
       <Unit207>
         <Filename Value="..\rtl_uygulama\linux\inc\gn_kaydirmacubugu.inc"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit207>
       <Unit208>
         <Filename Value="..\rtl_uygulama\linux\inc\gn_kaydirmacubugub.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="24" Y="4"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit208>
       <Unit209>
         <Filename Value="..\rtl_uygulama\linux\linux.pp"/>
@@ -1393,7 +1464,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="29" Y="32"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="3"/>
       </Unit209>
       <Unit210>
         <Filename Value="..\ortak\diger\hamresim2.pas"/>
@@ -1404,144 +1475,158 @@
       <Unit211>
         <Filename Value="..\gorselnesne\gn_karmaliste.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="247"/>
+        <CursorPos X="19" Y="259"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit211>
       <Unit212>
         <Filename Value="..\gorselnesne\gn_acilirmenu.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="190"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="371"/>
+        <CursorPos X="23" Y="378"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit212>
       <Unit213>
         <Filename Value="..\notlar.txt"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="15"/>
         <CursorPos X="74" Y="17"/>
-        <UsageCount Value="44"/>
+        <UsageCount Value="83"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit213>
+      <Unit214>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="139"/>
+        <CursorPos X="9" Y="155"/>
+        <UsageCount Value="41"/>
+        <Loaded Value="True"/>
+      </Unit214>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="227" Column="25" TopLine="210"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="44" Column="15" TopLine="33"/>
       </Position1>
       <Position2>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="280" Column="27" TopLine="257"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="386" Column="8" TopLine="380"/>
       </Position2>
       <Position3>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="383" Column="25" TopLine="367"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="47" Column="15" TopLine="31"/>
       </Position3>
       <Position4>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="384" Column="25" TopLine="367"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="474" Column="40" TopLine="463"/>
       </Position4>
       <Position5>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="385" Column="25" TopLine="367"/>
+        <Filename Value="yonetim.pas"/>
       </Position5>
       <Position6>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="386" Column="25" TopLine="367"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="44" TopLine="25"/>
       </Position6>
       <Position7>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="392" Column="25" TopLine="370"/>
+        <Filename Value="yonetim.pas"/>
       </Position7>
       <Position8>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="393" Column="25" TopLine="383"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="18" Column="36"/>
       </Position8>
       <Position9>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="394" Column="25" TopLine="383"/>
+        <Filename Value="..\gorselnesne\gn_acilirmenu.pas"/>
+        <Caret Line="378" Column="23" TopLine="371"/>
       </Position9>
       <Position10>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="395" Column="74" TopLine="383"/>
+        <Filename Value="..\ortak\cekirdek\sistemmesaj.pas"/>
+        <Caret Line="157" Column="5" TopLine="139"/>
       </Position10>
       <Position11>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="396" Column="25" TopLine="392"/>
+        <Filename Value="..\gorselnesne\gn_listegorunum.pas"/>
+        <Caret Line="486" Column="5" TopLine="476"/>
       </Position11>
       <Position12>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="381" Column="22" TopLine="327"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="519" Column="11" TopLine="506"/>
       </Position12>
       <Position13>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="310" Column="3" TopLine="296"/>
+        <Filename Value="..\oz\g\zamanlayici.pas"/>
+        <Caret Line="53" Column="11" TopLine="40"/>
       </Position13>
       <Position14>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="345" Column="56" TopLine="333"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
+        <Caret Line="44" Column="74" TopLine="30"/>
       </Position14>
       <Position15>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="368" Column="31" TopLine="356"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
+        <Caret Line="140" Column="20" TopLine="127"/>
       </Position15>
       <Position16>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="377" Column="79" TopLine="365"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
+        <Caret Line="27" Column="14" TopLine="14"/>
       </Position16>
       <Position17>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="343" Column="41" TopLine="220"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="23" Column="3" TopLine="15"/>
       </Position17>
       <Position18>
-        <Filename Value="..\gorselnesne\gn_kaydirmacubugu.pas"/>
-        <Caret Line="30" Column="15" TopLine="16"/>
+        <Filename Value="..\gorselnesne\gorselnesne.pas"/>
+        <Caret Line="36" Column="25" TopLine="20"/>
       </Position18>
       <Position19>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="382" Column="13" TopLine="361"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
+        <Caret Line="32" Column="21" TopLine="14"/>
       </Position19>
       <Position20>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="337" Column="5" TopLine="321"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="34" Column="32" TopLine="18"/>
       </Position20>
       <Position21>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="60" Column="3" TopLine="49"/>
       </Position21>
       <Position22>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="28" Column="43" TopLine="5"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="39" Column="21" TopLine="21"/>
       </Position22>
       <Position23>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="337" Column="33" TopLine="315"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="149" Column="3" TopLine="147"/>
       </Position23>
       <Position24>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="488" Column="47" TopLine="465"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="37" Column="15" TopLine="26"/>
       </Position24>
       <Position25>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="28" Column="43" TopLine="14"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="56" TopLine="53"/>
       </Position25>
       <Position26>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="455" Column="32" TopLine="441"/>
+        <Filename Value="..\gorselnesne\gn_gorselanayapi.pp"/>
+        <Caret Line="39" Column="14" TopLine="24"/>
       </Position26>
       <Position27>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="28" Column="15" TopLine="14"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
+        <Caret Line="168" Column="18" TopLine="52"/>
       </Position27>
       <Position28>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="513" Column="5" TopLine="491"/>
+        <Filename Value="..\gorselnesne\gn_dugme.pp"/>
+        <Caret Line="72" Column="20" TopLine="62"/>
       </Position28>
       <Position29>
-        <Filename Value="..\gorselnesne\gn_defter.pas"/>
-        <Caret Line="28" Column="5" TopLine="13"/>
+        <Filename Value="..\surumbil.txt"/>
+        <Caret Line="3"/>
       </Position29>
       <Position30>
         <Filename Value="..\surumbil.txt"/>
-        <Caret Line="6" Column="17"/>
+        <Caret Line="128" Column="66" TopLine="112"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

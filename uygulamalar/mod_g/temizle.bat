@@ -78,6 +78,10 @@ cd grvyntcs
 call temizle.bat
 cd..
 
+cd hafiza
+call temizle.bat
+cd..
+
 cd iletisim
 call temizle.bat
 cd..

@@ -195,14 +195,14 @@ begin
   _Masaustu^.AltNesneSayisi := 0;
   _Masaustu^.FAltNesneBellekAdresi := nil;
   _Masaustu^.FareGostergeTipi := fitOK;
-  _Masaustu^.Gorunum := False;
+  _Masaustu^.FGorunum := False;
   _Masaustu^.FMasaustuArkaPlan := 1;        // masaüstü arkaplan renk değeri kullanılacak
   _Masaustu^.FMasaustuRenk := RENK_SIYAH;
   _Masaustu^.FMenu := nil;
 
   // nesnenin ad ve başlık değeri
   _Masaustu^.NesneAdi := NesneAdiAl(gntMasaustu);
-  _Masaustu^.Baslik := AMasaustuAdi;
+  _Masaustu^.FBaslik := AMasaustuAdi;
 
   // masaüstünün çizileceği bellek adresi
   _Masaustu^.FCizimBellekAdresi := GGercekBellek.Ayir(_Masaustu^.FBoyutlar.Genislik2 *
@@ -275,7 +275,7 @@ begin
     GAktifMasaustu := _Masaustu;
 
     // nesnenin görünürlüğünü aktifleştir
-    GAktifMasaustu^.Gorunum := True;
+    GAktifMasaustu^.FGorunum := True;
 
     // masaüstü ve alt nesnelerinin hepsini yeniden çiz
     GAktifMasaustu^.Guncelle;
@@ -338,10 +338,10 @@ begin
 
   _Renk := _Masaustu^.FMasaustuRenk;
 
-  for _B1 := _Masaustu^.FDisGercekBoyutlar.B1 to _Masaustu^.FDisGercekBoyutlar.B2 do
+  for _B1 := _Masaustu^.FDisGercekBoyutlar.Ust to _Masaustu^.FDisGercekBoyutlar.Alt do
   begin
 
-    for _A1 := _Masaustu^.FDisGercekBoyutlar.A1 to _Masaustu^.FDisGercekBoyutlar.A2 do
+    for _A1 := _Masaustu^.FDisGercekBoyutlar.Sol to _Masaustu^.FDisGercekBoyutlar.Sag do
     begin
 
       GEkranKartSurucusu.NoktaYaz(_Masaustu, _A1, _B1, _Renk, False);

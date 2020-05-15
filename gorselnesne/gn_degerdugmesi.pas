@@ -134,12 +134,12 @@ begin
 
   _DegerDugmesi^.FAtaNesneMi := False;
   _DegerDugmesi^.FareGostergeTipi := fitOK;
-  _DegerDugmesi^.Gorunum := False;
+  _DegerDugmesi^.FGorunum := False;
   _DegerDugmesi^.FDurum := ddNormal;
 
   // nesnenin ad ve başlık değeri
   _DegerDugmesi^.NesneAdi := NesneAdiAl(gntDegerDugmesi);
-  _DegerDugmesi^.Baslik := '';
+  _DegerDugmesi^.FBaslik := '';
 
   // uygulamaya mesaj gönder
   GorevListesi[_DegerDugmesi^.GorevKimlik]^.OlayEkle1(_DegerDugmesi^.GorevKimlik,
@@ -163,11 +163,11 @@ begin
   if(_DegerDugmesi = nil) then Exit;
 
   // nesne görünür durumda mı ?
-  if(_DegerDugmesi^.Gorunum = False) then
+  if(_DegerDugmesi^.FGorunum = False) then
   begin
 
     // düğme nesnesinin görünürlüğünü aktifleştir
-    _DegerDugmesi^.Gorunum := True;
+    _DegerDugmesi^.FGorunum := True;
 
     // düğme nesnesi ve üst nesneler görünür durumda mı ?
     if(_DegerDugmesi^.AtaNesneGorunurMu) then
@@ -236,11 +236,11 @@ begin
   _Pencere := PencereAtaNesnesiniAl(_DegerDugmesi);
   if(_Pencere = nil) then Exit;
 
-  _Orta := (AAlan.B2 - AAlan.B1 - 1) div 2;
-  _Alan.A1 := AAlan.A1;
-  _Alan.B1 := AAlan.B1;
-  _Alan.A2 := AAlan.A2;
-  _Alan.B2 := AAlan.B1 + _Orta;
+  _Orta := (AAlan.Alt - AAlan.Ust - 1) div 2;
+  _Alan.Sol := AAlan.Sol;
+  _Alan.Ust := AAlan.Ust;
+  _Alan.Sag := AAlan.Sag;
+  _Alan.Alt := AAlan.Ust + _Orta;
 
   if(AUstDugmeyeBasildi) then
    i := 5
@@ -254,16 +254,16 @@ begin
     begin
 
       if(p1^ = 1) then
-        PixelYaz(_Pencere, _Alan.A1 + i + A1, _Alan.B1 + 2 + B1, RENK_SIYAH);
+        PixelYaz(_Pencere, _Alan.Sol + i + A1, _Alan.Ust + 2 + B1, RENK_SIYAH);
 
       Inc(p1);
     end;
   end;
 
-  _Alan.A1 := AAlan.A1;
-  _Alan.B1 := AAlan.B2 - _Orta;
-  _Alan.A2 := AAlan.A2;
-  _Alan.B2 := AAlan.B2;
+  _Alan.Sol := AAlan.Sol;
+  _Alan.Ust := AAlan.Alt - _Orta;
+  _Alan.Sag := AAlan.Sag;
+  _Alan.Alt := AAlan.Alt;
 
   if(AAltDugmeyeBasildi) then
     i := 5
@@ -277,7 +277,7 @@ begin
     begin
 
       if(p1^ = 1) then
-        PixelYaz(_Pencere, _Alan.A1 + i + A1, _Alan.B1 + 2 + B1, RENK_SIYAH);
+        PixelYaz(_Pencere, _Alan.Sol + i + A1, _Alan.Ust + 2 + B1, RENK_SIYAH);
 
       Inc(p1);
     end;
@@ -309,11 +309,11 @@ begin
     if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
 
     // üst tuşa basılmış mı?
-    _Orta := (_DegerDugmesi^.FBoyutlar.B2 - 1) div 2;
-    _Alan.A1 := 0;
-    _Alan.B1 := 0;
-    _Alan.A2 := _DegerDugmesi^.FBoyutlar.A2;
-    _Alan.B2 := _Orta;
+    _Orta := (_DegerDugmesi^.FBoyutlar.Alt - 1) div 2;
+    _Alan.Sol := 0;
+    _Alan.Ust := 0;
+    _Alan.Sag := _DegerDugmesi^.FBoyutlar.Sag;
+    _Alan.Alt := _Orta;
     if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _Alan)) then
     begin
 
@@ -329,10 +329,10 @@ begin
     if not(_DegerDugmesi^.FUstDugmeyeBasildi) then
     begin
 
-      _Alan.A1 := 0;
-      _Alan.B1 := _Orta + 2;
-      _Alan.A2 := _DegerDugmesi^.FBoyutlar.A2;
-      _Alan.B2 := _DegerDugmesi^.FBoyutlar.B2;
+      _Alan.Sol := 0;
+      _Alan.Ust := _Orta + 2;
+      _Alan.Sag := _DegerDugmesi^.FBoyutlar.Sag;
+      _Alan.Alt := _DegerDugmesi^.FBoyutlar.Alt;
       if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _Alan)) then
       begin
 

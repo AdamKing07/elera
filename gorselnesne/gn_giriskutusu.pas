@@ -69,7 +69,7 @@ begin
 
       _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneAl(PKimlik(Degiskenler + 00)^));
       p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      p1^ := _GirisKutusu^.Baslik;
+      p1^ := _GirisKutusu^.FBaslik;
     end;
 
     // düzenleme kutusunun salt okunur özelliðini deðiþtir
@@ -97,7 +97,7 @@ begin
 
       _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneAl(PKimlik(Degiskenler + 00)^));
       p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      _GirisKutusu^.Baslik := p1^;
+      _GirisKutusu^.FBaslik := p1^;
       _GirisKutusu^.Ciz;
     end
 
@@ -178,18 +178,18 @@ begin
 
   _GirisKutusu^.FAtaNesneMi := False;
   _GirisKutusu^.FareGostergeTipi := fitGiris;
-  _GirisKutusu^.Gorunum := False;
+  _GirisKutusu^.FGorunum := False;
   _GirisKutusu^.FYazilamaz := False;
   _GirisKutusu^.FSadeceRakam := False;
 
   // nesnenin ad ve baþlýk deðeri
   _GirisKutusu^.NesneAdi := NesneAdiAl(gntGirisKutusu);
-  _GirisKutusu^.Baslik := ABaslik;
+  _GirisKutusu^.FBaslik := ABaslik;
   _GirisKutusu^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
 
   _GirisKutusu^.FSilDugmesi := _GirisKutusu^.FSilDugmesi^.Olustur(_GirisKutusu^.Kimlik,
     10, 10, 20, 20, 'x');
-  _GirisKutusu^.FSilDugmesi^.RenkBelirle(RENK_BEYAZ, RENK_SIYAH);
+  _GirisKutusu^.FSilDugmesi^.CizimModelDegistir(False, RENK_BEYAZ, RENK_BEYAZ, RENK_SIYAH, RENK_KIRMIZI);
   _GirisKutusu^.FSilDugmesi^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
   _GirisKutusu^.FSilDugmesi^.FEfendiNesne := _GirisKutusu;
 
@@ -215,11 +215,11 @@ begin
   if(_GirisKutusu = nil) then Exit;
 
   // nesne görünür durumda mý ?
-  if(_GirisKutusu^.Gorunum = False) then
+  if(_GirisKutusu^.FGorunum = False) then
   begin
 
     // düzenleme kutusu nesnesinin görünürlüðünü aktifleþtir
-    _GirisKutusu^.Gorunum := True;
+    _GirisKutusu^.FGorunum := True;
     _GirisKutusu^.FSilDugmesi^.Gorunum := True;
 
     // düzenleme kutusu nesnesi ve üst nesneler görünür durumda mý ?
@@ -260,22 +260,22 @@ begin
   KenarlikCiz(_Pencere, _Alan, 1);
 
   // iç dolgu rengi
-  DikdortgenDoldur(_Pencere, _Alan.A1 + 1, _Alan.B1 + 1, _Alan.A2 - 1, _Alan.B2 - 1,
+  DikdortgenDoldur(_Pencere, _Alan.Sol + 1, _Alan.Ust + 1, _Alan.Sag - 1, _Alan.Alt - 1,
     RENK_BEYAZ, RENK_BEYAZ);
 
   // nesnenin içerik deðeri. #255 = klavye kursörü
   if(FYazilamaz) then
 
-    YaziYaz(_Pencere, _Alan.A1+4, _Alan.B1+5, _GirisKutusu^.Baslik, RENK_SIYAH)
-  else YaziYaz(_Pencere, _Alan.A1+4, _Alan.B1+5, _GirisKutusu^.Baslik + #255, RENK_SIYAH);
+    YaziYaz(_Pencere, _Alan.Sol+4, _Alan.Ust+5, _GirisKutusu^.FBaslik, RENK_SIYAH)
+  else YaziYaz(_Pencere, _Alan.Sol+4, _Alan.Ust+5, _GirisKutusu^.FBaslik + #255, RENK_SIYAH);
 
   // nesne içine nesne eklendiðinde:
   // 1 - eklenecek nesne için çizim alaný tahsis edilecek
   // 2 - nesnenin ekleneceði üst nesnenin çizim alaný sýnýrlandýrýlacak
-  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.A1 := _GirisKutusu^.FDisGercekBoyutlar.A2 - 20;
-  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.B1 := _GirisKutusu^.FDisGercekBoyutlar.B1 + 1;
-  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.A2 := _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.A1 + 19;
-  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.B2 := _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.B1 + 19;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.Sol := _GirisKutusu^.FDisGercekBoyutlar.Sag - 20;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.Ust := _GirisKutusu^.FDisGercekBoyutlar.Ust + 1;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.Sag := _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.Sol + 19;
+  _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.Alt := _GirisKutusu^.FSilDugmesi^.FDisGercekBoyutlar.Ust + 19;
 
   _GirisKutusu^.FSilDugmesi^.Ciz;
 end;
@@ -294,7 +294,7 @@ var
   _Dugme: PDugme;
 begin
 
-  _NesneTipi := _GirisKutusu^.NesneTipiAl(AKimlik);
+  _NesneTipi := _GirisKutusu^.NesneTipiniAl(AKimlik);
   if(_NesneTipi = gntGirisKutusu) then
 
     _GirisKutusu := PGirisKutusu(_GirisKutusu^.NesneAl(AKimlik))
@@ -323,7 +323,7 @@ begin
   else if(AOlay.Olay = FO_TIKLAMA) and (AOlay.Kimlik = _Dugme^.Kimlik) then
   begin
 
-    _GirisKutusu^.Baslik := '';
+    _GirisKutusu^.FBaslik := '';
     _GirisKutusu^.Ciz;
   end
   // klavye tuþ basýmý
@@ -349,7 +349,7 @@ begin
       else if(C = #8) then
       begin
 
-        s := _GirisKutusu^.Baslik;
+        s := _GirisKutusu^.FBaslik;
         if(Length(s) = 1) then
 
           s := ''
@@ -358,7 +358,7 @@ begin
 
           s := Copy(s, 1, Length(s) - 1);
         end;
-        _GirisKutusu^.Baslik := s;
+        _GirisKutusu^.FBaslik := s;
 
         GorevListesi[_GirisKutusu^.GorevKimlik]^.OlayEkle1(_GirisKutusu^.GorevKimlik,
           _GirisKutusu, AOlay.Olay, _Tus, AOlay.Deger2);
@@ -372,7 +372,7 @@ begin
           if(C in ['0'..'9', 'A'..'F', 'a'..'f']) then
           begin
 
-            _GirisKutusu^.Baslik := _GirisKutusu^.Baslik + C;
+            _GirisKutusu^.FBaslik := _GirisKutusu^.FBaslik + C;
             GorevListesi[_GirisKutusu^.GorevKimlik]^.OlayEkle1(_GirisKutusu^.GorevKimlik,
               _GirisKutusu, AOlay.Olay, _Tus, AOlay.Deger2);
           end;
@@ -380,7 +380,7 @@ begin
         else
         begin
 
-          _GirisKutusu^.Baslik := _GirisKutusu^.Baslik + C;
+          _GirisKutusu^.FBaslik := _GirisKutusu^.FBaslik + C;
           GorevListesi[_GirisKutusu^.GorevKimlik]^.OlayEkle1(_GirisKutusu^.GorevKimlik,
             _GirisKutusu, AOlay.Olay, _Tus, AOlay.Deger2);
         end;
