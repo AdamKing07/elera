@@ -6,7 +6,7 @@
   Program Adý: dugmeler.lpr
   Program Ýþlevi: resim düðme test programý
 
-  Güncelleme Tarihi: 09/11/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -34,34 +34,35 @@ var
   Pencere0: TPencere;
   rdDugmeler: array[0..15] of TResimDugme;
   OlayKayit: TOlayKayit;
-  _A1, _B1, i: TISayi4;
+  Sol, Ust, i: TISayi4;
 
 begin
-  Pencere0.Olustur(-1, 200, 200, 142, 164, ptBoyutlandirilabilir, ProgramAdi,
-    RENK_BEYAZ);
+
+  Pencere0.Olustur(-1, 200, 200, 128, 128, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
-  _A1 := 8;
-  _B1 := 8;
+  Sol := 4;
+  Ust := 4;
   for i := 1 to 16 do
   begin
 
-    //rdDugmeler[i - 1].Olustur(Pencere0.Kimlik, _A1, _B1, 26, 26, RenkListesi[i - 1]);
-    rdDugmeler[i - 1].Olustur(Pencere0.Kimlik, _A1, _B1, 26, 26, ResimListesi[i - 1]);
+    //rdDugmeler[i - 1].Olustur(Pencere0.Kimlik, Sol, Ust, 26, 26, RenkListesi[i - 1]);
+    rdDugmeler[i - 1].Olustur(Pencere0.Kimlik, Sol, Ust, 26, 26, ResimListesi[i - 1]);
     rdDugmeler[i - 1].Goster;
 
-    _A1 += 30;
+    Sol += 30;
     if((i mod 4) = 0) then
     begin
 
-      _A1 := 8;
-      _B1 += 30;
+      Sol := 8;
+      Ust += 30;
     end;
   end;
 
   Pencere0.Goster;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
@@ -72,5 +73,5 @@ begin
     begin
 
     end;
-  until (1 = 2);
+  end;
 end.

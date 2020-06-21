@@ -7,7 +7,7 @@ program dnssorgu;
   Program Adý: dnssorgu.lpr
   Program Ýþlevi: dns adres sorgulama programý
 
-  Güncelleme Tarihi: 19/04/2020
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -32,15 +32,15 @@ var
   DNSAdresSorgu, DNSAdresYanit: string;
   DNSDurum: TDNSDurum;
   DNSKimlik: TKimlik;
-  _DNSPaket: PDNSPaket;
-  _VeriBellek: array[0..1023] of TSayi1;
-  _SorguSayisi, _YanitSayisi: TSayi2;
-  _DNSBolum: TSayi4;
-  _B1: PByte;
-  _B1Uzunluk, i: TSayi1;
-  _B2: PSayi2;
-  _B4: PSayi4;
-  _IPAdres: TIPAdres;
+  DNSPaket: PDNSPaket;
+  Veriler: array[0..1023] of TSayi1;
+  SorguSayisi, YanitSayisi: TSayi2;
+  DNSBolum: TSayi4;
+  Veri1: PByte;
+  Veri1U, i: TSayi1;
+  Veri2: PSayi2;
+  Veri4: PSayi4;
+  IPAdres: TIPAdres;
 
 procedure Sorgula;
 begin
@@ -81,7 +81,7 @@ begin
 
   DNSKimlik := -1;
 
-  Pencere0.Olustur(-1, 100, 100, 370, 280, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 100, 100, 358, 250, ptIletisim, ProgramAdi, RENK_BEYAZ);
 
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 18, 'Beklemede.');
   DurumCubugu0.Goster;
@@ -89,7 +89,7 @@ begin
   etDNSAdi.Olustur(Pencere0.Kimlik, 10, 10, RENK_SIYAH, 'DNS Adres:');
   etDNSAdi.Goster;
 
-  gkDNSAdi.Olustur(Pencere0.Kimlik, 96, 5, 186, 22, DNSAdresSorgu);
+  gkDNSAdi.Olustur(Pencere0.Kimlik, 96, 7, 186, 22, DNSAdresSorgu);
   gkDNSAdi.Goster;
 
   dugSorgula.Olustur(Pencere0.Kimlik, 286, 6, 62, 22, 'Sorgula');
@@ -103,7 +103,8 @@ begin
   Zamanlayici0.Olustur(100);
   Zamanlayici0.Baslat;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
 
@@ -117,19 +118,19 @@ begin
         if(DNSDurum = ddSorgulandi) then
         begin
 
-          DNS.IcerikAl(@_VeriBellek[0]);
+          DNS.IcerikAl(@Veriler[0]);
 
           // ilk 4 byte dns yanýt verisinin uzunluðunu içerir
-          _DNSPaket := PDNSPaket(@_VeriBellek[4]);
+          DNSPaket := PDNSPaket(@Veriler[4]);
 
           // sorgu sayýsý ve yanýt sayýsý kontrolü
-          _SorguSayisi := Takas2(_DNSPaket^.SorguSayisi);
-          _YanitSayisi := Takas2(_DNSPaket^.YanitSayisi);
-          //SISTEM_MESAJ_S16('SorguSayisi: ', TSayi4(_SorguSayisi), 4);
-          //SISTEM_MESAJ_S16('YanitSayisi: ', TSayi4(_YanitSayisi), 4);
+          SorguSayisi := Takas2(DNSPaket^.SorguSayisi);
+          YanitSayisi := Takas2(DNSPaket^.YanitSayisi);
+          //SISTEM_MESAJ_S16('SorguSayisi: ', TSayi4(SorguSayisi), 4);
+          //SISTEM_MESAJ_S16('YanitSayisi: ', TSayi4(YanitSayisi), 4);
 
           // tek bir sorgudan farklý veya yanýtýn olmamasý durumunda çýkýþ yap
-          if(_SorguSayisi <> 1) or (_YanitSayisi = 0) then
+          if(SorguSayisi <> 1) or (YanitSayisi = 0) then
           begin
 
             DNS.Kapat;
@@ -145,61 +146,61 @@ begin
           // bilgi: [] arasýndaki veri sayýsal byte türünde veridir.
 
           // dns sorgu adresinin alýnmasý
-          _DNSBolum := 0;        // dns adresindeki her bir bölüm
+          DNSBolum := 0;        // dns adresindeki her bir bölüm
           DNSAdresYanit := '';
 
-          _B1 := @_DNSPaket^.Veriler;
-          while _B1^ <> 0 do
+          Veri1 := @DNSPaket^.Veriler;
+          while Veri1^ <> 0 do
           begin
 
-            if(_DNSBolum > 0) then DNSAdresYanit := DNSAdresYanit + '.';
+            if(DNSBolum > 0) then DNSAdresYanit := DNSAdresYanit + '.';
 
-            _B1Uzunluk := _B1^;     // kaydýn uzunluðu
-            Inc(_B1);
+            Veri1U := Veri1^;     // kaydýn uzunluðu
+            Inc(Veri1);
             i := 0;
-            while i < _B1Uzunluk do
+            while i < Veri1U do
             begin
 
-              DNSAdresYanit := DNSAdresYanit + Char(_B1^);
-              Inc(_B1);
+              DNSAdresYanit := DNSAdresYanit + Char(Veri1^);
+              Inc(Veri1);
               Inc(i);
-              Inc(_DNSBolum);
+              Inc(DNSBolum);
             end;
           end;
-          Inc(_B1);
+          Inc(Veri1);
 
           defSonuc.YaziEkle('Yanýt Bilgileri:' + #13#10);
           defSonuc.YaziEkle('DNS Adý: ' + DNSAdresYanit + #13#10);
 
-          _B2 := PSayi2(_B1);
-          Inc(_B2);
-          Inc(_B2);
-          Inc(_B2);
+          Veri2 := PSayi2(Veri1);
+          Inc(Veri2);
+          Inc(Veri2);
+          Inc(Veri2);
 
-          defSonuc.YaziEkle('Tip: ' + IntToStr(Takas2(_B2^)) + #13#10);
-          Inc(_B2);
-          defSonuc.YaziEkle('Sýnýf: ' + IntToStr(Takas2(_B2^)) + #13#10);
-          Inc(_B2);
+          defSonuc.YaziEkle('Tip: ' + IntToStr(Takas2(Veri2^)) + #13#10);
+          Inc(Veri2);
+          defSonuc.YaziEkle('Sýnýf: ' + IntToStr(Takas2(Veri2^)) + #13#10);
+          Inc(Veri2);
 
-          _B4 := PSayi4(_B2);
-          defSonuc.YaziEkle('Yaþam Ömrü: ' + IntToStr(Takas4(_B4^)) + #13#10);
-          Inc(_B4);
+          Veri4 := PSayi4(Veri2);
+          defSonuc.YaziEkle('Yaþam Ömrü: ' + IntToStr(Takas4(Veri4^)) + #13#10);
+          Inc(Veri4);
 
-          _B2 := PSayi2(_B4);
-          //SISTEM_MESAJ_S16('Veri Uzunluðu: ', Takas2(_B2^), 4);
-          Inc(_B2);
+          Veri2 := PSayi2(Veri4);
+          //SISTEM_MESAJ_S16('Veri Uzunluðu: ', Takas2(Veri2^), 4);
+          Inc(Veri2);
 
-          _B1 := PSayi1(_B2);
+          Veri1 := PSayi1(Veri2);
 
-          _IPAdres[0] := _B1^;
-          Inc(_B1);
-          _IPAdres[1] := _B1^;
-          Inc(_B1);
-          _IPAdres[2] := _B1^;
-          Inc(_B1);
-          _IPAdres[3] := _B1^;
+          IPAdres[0] := Veri1^;
+          Inc(Veri1);
+          IPAdres[1] := Veri1^;
+          Inc(Veri1);
+          IPAdres[2] := Veri1^;
+          Inc(Veri1);
+          IPAdres[3] := Veri1^;
 
-          defSonuc.YaziEkle('IP Adresi: ' + IPToStr(_IPAdres));
+          defSonuc.YaziEkle('IP Adresi: ' + IPToStr(IPAdres));
 
           DurumCubugu0.DurumYazisiDegistir('Beklemede.');
 
@@ -217,8 +218,8 @@ begin
 
       if(OlayKayit.Kimlik = dugSorgula.Kimlik) then Sorgula;
     end;
-  until (1 = 2);
+  end;
 
-  // program kapanýrken bu iþlev çalýþtýrýlacak
+  // program kapanýrken bu iþlev çalýþtýrýlacak. (daha zaman var, þu an deðil :D)
   DNS.YokEt;
 end.

@@ -1,1 +1,0 @@
-procedure EkranCozunurlugunuAl(ANokta: PNokta);

@@ -7,7 +7,7 @@ program dskgor;
   Program Adý: dskgor.lpr
   Program Ýþlevi: depolama aygýtý sektör içeriðini görüntüler
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -69,45 +69,45 @@ end;
 
 procedure SektorAdresleriniYaz(ASektorNo: TSayi4);
 var
-  _SektorNo, _B1, i: TSayi4;
+  SektorNo, Ust, i: TSayi4;
 begin
 
-  _B1 := 58;
-  _SektorNo := ASektorNo * 512;
+  Ust := 58;
+  SektorNo := ASektorNo * 512;
 
   for i := 0 to 31 do
   begin
 
     Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-    Pencere0.Tuval.SayiYaz16(0, _B1, True, 8, _SektorNo);
-    _SektorNo += 16;
-    _B1 += 16;
+    Pencere0.Tuval.SayiYaz16(0, Ust, True, 8, SektorNo);
+    SektorNo += 16;
+    Ust += 16;
   end;
 end;
 
 procedure SektorSiraDegerleriniYaz;
 var
-  _A1, _B1, _Deger: TSayi4;
+  Sol, Ust, Deger: TSayi4;
 begin
 
-  for  _B1 := 0 to 31 do
+  for  Ust := 0 to 31 do
   begin
 
-    for _A1 := 0 to 15 do
+    for Sol := 0 to 15 do
     begin
 
-      _Deger := DiskBellek[(_B1 * 16) + _A1];
-      if((_A1 and 1) = 1) then
+      Deger := DiskBellek[(Ust * 16) + Sol];
+      if((Sol and 1) = 1) then
       begin
 
         Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-        Pencere0.Tuval.SayiYaz16(((_A1 * 3) + 11) * 8, (_B1 * 16) + 58, False, 2, _Deger)
+        Pencere0.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 58, False, 2, Deger)
       end
       else
       begin
 
         Pencere0.Tuval.KalemRengi := RENK_MAVI;
-        Pencere0.Tuval.SayiYaz16(((_A1 * 3) + 11) * 8, (_B1 * 16) + 58, False, 2, _Deger);
+        Pencere0.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 58, False, 2, Deger);
       end;
     end;
   end;
@@ -115,20 +115,20 @@ end;
 
 procedure SektorIceriginiYaz;
 var
-  _A1, _B1: TSayi4;
-  _Deger: Char;
+  Sol, Ust: TSayi4;
+  Deger: Char;
 begin
 
-  for _B1 := 0 to 31 do
+  for Ust := 0 to 31 do
   begin
 
-    for _A1 := 0 to 15 do
+    for Sol := 0 to 15 do
     begin
 
-      _Deger := Char(DiskBellek[(_B1 * 16) + _A1]);
+      Deger := Char(DiskBellek[(Ust * 16) + Sol]);
 
       Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.HarfYaz((_A1 + 59) * 8, (_B1 * 16) + 58, _Deger);
+      Pencere0.Tuval.HarfYaz((Sol + 59) * 8, (Ust * 16) + 58, Deger);
     end;
   end;
 end;
@@ -136,7 +136,7 @@ end;
 begin
 
   // ana form oluþtur
-  Pencere0.Olustur(-1, 10, 10, 615, 626, ptBoyutlandirilabilir, ProgramAdi, $D1F0ED);
+  Pencere0.Olustur(-1, 100, 20, 615, 400, ptBoyutlandirilabilir, ProgramAdi, $D1F0ED);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   // toplam fiziksel sürücü sayýsýný al
@@ -170,15 +170,15 @@ begin
   gkAdres.Goster;
 
   // sektör no azaltma düðmesi
-  dugAzalt.Olustur(Pencere0.Kimlik, 220, 30, 35, 22, ' <');
+  dugAzalt.Olustur(Pencere0.Kimlik, 220, 29, 20, 22, '<');
   dugAzalt.Goster;
 
   // sektör no artýrma düðmesi
-  dugArtir.Olustur(Pencere0.Kimlik, 257, 30, 35, 22, ' >');
+  dugArtir.Olustur(Pencere0.Kimlik, 242, 29, 20, 22, '>');
   dugArtir.Goster;
 
   // sektör no yeniden okuma düðmesi
-  dugYenile.Olustur(Pencere0.Kimlik, 294, 30, 80, 22, ' Yenile');
+  dugYenile.Olustur(Pencere0.Kimlik, 264, 29, 80, 22, 'Yenile');
   dugYenile.Goster;
 
   // durum göstergesi
@@ -193,7 +193,8 @@ begin
   ToplamSektor := 0;
   MevcutSektor := 0;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_TUSBASILDI) then
@@ -319,6 +320,5 @@ begin
         end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

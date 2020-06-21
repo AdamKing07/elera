@@ -14,7 +14,7 @@ unit anabirim;
 
 interface
 
-uses gn_pencere, gorev;
+uses gn_pencere, n_gorev;
 
 type
   TAnaBirim = object

@@ -7,7 +7,7 @@ program grafik5;
   Program Adı: grafik5.lpr
   Program İşlevi: çoklu dikdörtgen / kare çizim programı - double değer testi
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ program grafik5;
 uses gorev, gn_pencere, zamanlayici;
 
 const
-  ProgramAdi: string = 'Grafik - 5';
+  ProgramAdi: string = 'Grafik-5';
   USTDEGER_NOKTASAYISI = 55;
 
 type
@@ -30,7 +30,7 @@ var
   Pencere0: TPencere;
   Zamanlayici0: TZamanlayici;
   OlayKayit: TOlayKayit;
-  i, j, X, Y: TISayi4;
+  i, j, Sol, Ust: TISayi4;
   SayacListesi: array[0..USTDEGER_NOKTASAYISI - 1] of TSayac;
   HizListesi: array[0..7] of Double = (0.1, 1.0, 2.0, 3.0, 3.5, 2.5, 1.5, 0.5);
   RenkListesi: array[0..7] of Integer = ($FF0000, $00FF00, $FFFF00, $0000FF, $FF00FF,
@@ -38,29 +38,29 @@ var
 
 function RDTSCDegeriAl: TISayi4;
 var
-  _Deger: TISayi4;
+  Deger: TISayi4;
 begin
 
   // RDTSC değerini al - geçici işlev
   asm
     mov eax,19
     int $34
-    mov _Deger,eax
+    mov Deger,eax
   end;
 
-  Result := _Deger;
+  Result := Deger;
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 150, 150, 450 + 8, 300 + 35, ptIletisim, ProgramAdi, $F7EEF3);
+  Pencere0.Olustur(-1, 150, 150, 450, 300, ptIletisim, ProgramAdi, $F7EEF3);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
-  Zamanlayici0.Olustur(50);
+  Zamanlayici0.Olustur(30);
 
   Pencere0.Goster;
 
-  // tüm nokta değişkenlerini ilk değerlerle yükle
+  // tüm nokta değişkenlerini ilk değerlerle Ustükle
   for i := 0 to USTDEGER_NOKTASAYISI - 1 do
   begin
 
@@ -71,10 +71,11 @@ begin
     SayacListesi[i].Renk := RenkListesi[j and 7];
   end;
 
-  // zamanlayıcıyı başlat
+  // zamanlayıcıUstı başlat
   Zamanlayici0.Baslat;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayAl(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
@@ -103,11 +104,10 @@ begin
       for i := 0 to USTDEGER_NOKTASAYISI - 1 do
       begin
 
-        X := i * 8;
-        Y := Round(SayacListesi[i].MevcutDeger);
-        Pencere0.Tuval.Dikdortgen(X, Y, 7, 7, SayacListesi[i].Renk, True);
+        Sol := i * 8;
+        Ust := Round(SayacListesi[i].MevcutDeger);
+        Pencere0.Tuval.Dikdortgen(Sol, Ust, 7, 7, SayacListesi[i].Renk, True);
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

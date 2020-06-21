@@ -7,7 +7,7 @@ program grfktest;
   Program Adý: grfktest.lpr
   Program Ýþlevi: grafik test programý (fps deðerini ölçer)
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -30,21 +30,21 @@ var
 
 procedure NoktalariCiz;
 var
-  _Renk: TRenk;
-  _A1, _B1: LongInt;
+  Renk: TRenk;
+  Sol, Ust: TSayi4;
 begin
 
   Inc(RenkSiraDegeri);
   RenkSiraDegeri := RenkSiraDegeri and 7;
-  _Renk := RenkListesi[RenkSiraDegeri];
+  Renk := RenkListesi[RenkSiraDegeri];
 
-  for _B1 := 0 to 200 - 1 do
+  for Ust := 0 to 200 - 1 do
   begin
 
-    for _A1 := 0 to 200 - 1 do
+    for Sol := 0 to 200 - 1 do
     begin
 
-      Pencere0.Tuval.PixelYaz(_A1, _B1, _Renk);
+      Pencere0.Tuval.PixelYaz(Sol, Ust, Renk);
     end;
   end;
 
@@ -57,7 +57,7 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 200 + 8, 200 + 30, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Goster;
@@ -65,7 +65,8 @@ begin
   Zamanlayici0.Olustur(100);
   Zamanlayici0.Baslat;
 
-  repeat
+  while True do
+  begin
 
     if(Gorev0.OlayAl(OlayKayit) = 0) then
 
@@ -82,6 +83,5 @@ begin
       FPSDegeri := FPSSayaci;
       FPSSayaci := 0;
     end;
-
-  until (1 = 2);
+  end;
 end.

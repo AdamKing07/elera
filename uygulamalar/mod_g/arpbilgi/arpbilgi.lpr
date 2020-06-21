@@ -6,7 +6,7 @@
   Program Adý: arpbilgi.lpr
   Program Ýþlevi: ARP girdileri hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 07/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -40,7 +40,8 @@ begin
 
   ARPKayitSayisi := 0;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
@@ -76,6 +77,5 @@ begin
         end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

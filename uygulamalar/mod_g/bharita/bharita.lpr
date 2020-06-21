@@ -7,7 +7,7 @@ program bharita;
   Program Adý: bharita.lpr
   Program Ýþlevi: bellek içerik harita programý
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 07/06/2020
 
   Not:
     programýn çalýþmasý için gereken 8K bellek makinenin kilitlenmesine sebep olduðu
@@ -28,34 +28,35 @@ var
   Zamanlayici0: TZamanlayici;
   OlayKayit: TOlayKayit;
   DurumCubugu0: TDurumCubugu;
-  _ToplamRAMBlok, _AyrilmisRAMBlok,
-  _KullanilanRAMBlok, _BosRAMBlok,
-  _RAMUzunlugu: TSayi4;
+  ToplamRAMBlok, AyrilmisRAMBlok,
+  KullanilanRAMBlok, _BosRAMBlok,
+  RAMUzunlugu: TSayi4;
   s: string;
-  A1, B1: TSayi4;
+  Sol, Ust: TSayi4;
   p: PSayi1;
 
-procedure NoktaIsaretle(AA1, AB1: Integer; ARenk: TRenk);
+procedure NoktaIsaretle(ASol, AUst: TSayi4; ARenk: TRenk);
 var
-  _A1, _B1: Integer;
+  Sol, Ust: Integer;
 begin
 
-  _A1 := AA1 * 3;
-  _B1 := AB1 * 3;
+  Sol := ASol * 3;
+  Ust := AUst * 3;
 
-  Pencere0.Tuval.PixelYaz(_A1, _B1, ARenk);
-  Pencere0.Tuval.PixelYaz(_A1 + 1, _B1, ARenk);
+  Pencere0.Tuval.PixelYaz(Sol, Ust, ARenk);
+  Pencere0.Tuval.PixelYaz(Sol + 1, Ust, ARenk);
 
-  Pencere0.Tuval.PixelYaz(_A1, _B1 + 1, ARenk);
-  Pencere0.Tuval.PixelYaz(_A1 + 1, _B1 + 1, ARenk);
+  Pencere0.Tuval.PixelYaz(Sol, Ust + 1, ARenk);
+  Pencere0.Tuval.PixelYaz(Sol + 1, Ust + 1, ARenk);
 end;
 
 var
-  _VeriBellek: array[0..4095] of TSayi1;
+  Veriler: array[0..4095] of TSayi1;
 
 begin
 
-  Pencere0.Olustur(-1, 5, 5, 395, 250, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 5, 5, (128 * 3) - 1, (64 * 3) + 20 - 1, ptBoyutlandirilabilir,
+    ProgramAdi, RENK_SIYAH);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Boþ Blok Sayýsý: 0');
@@ -67,7 +68,8 @@ begin
   Zamanlayici0.Olustur(300);
   Zamanlayici0.Baslat;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
@@ -78,54 +80,53 @@ begin
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      GenelBellekBilgisiAl(@_ToplamRAMBlok, @_AyrilmisRAMBlok, @_KullanilanRAMBlok,
-        @_BosRAMBlok, @_RAMUzunlugu);
+      GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
+        @_BosRAMBlok, @RAMUzunlugu);
 
-      s := 'Boþ Blok Sayýsý: ' + IntToStr(_ToplamRAMBlok);
+      s := 'Boþ Blok Sayýsý: ' + IntToStr(ToplamRAMBlok);
       s += ' / ';
       s += IntToStr(_BosRAMBlok);
       DurumCubugu0.DurumYazisiDegistir(s);
 
-      Pencere0.Tuval.Dikdortgen(0, 0, 128 * 3, 64 * 3, $000000, True);
+//      Pencere0.Tuval.Dikdortgen(0, 0, 128 * 3, 64 * 3, $000000, True);
 
       // 1. 4K bellek sistemden okunuyor
-      BellekIcerikOku(ISaretci(MEVCUTBELLEKADRESI), @_VeriBellek[0], 4096);
+      BellekIcerikOku(ISaretci(MEVCUTBELLEKADRESI), @Veriler[0], 4096);
 
-      p := PByte(@_VeriBellek[0]);
-      for B1 := 0 to 31 do
+      p := PByte(@Veriler[0]);
+      for Ust := 0 to 31 do
       begin
 
-        for A1 := 0 to 127 do
+        for Sol := 0 to 127 do
         begin
 
           if(p^ = 0) then
 
-            NoktaIsaretle(A1, B1, $00FF00)
-          else if(p^ = 1) then NoktaIsaretle(A1, B1, $FF0000);
+            NoktaIsaretle(Sol, Ust, $00FF00)
+          else if(p^ = 1) then NoktaIsaretle(Sol, Ust, $FF0000);
 
           Inc(p);
         end;
       end;
 
       // 2. 4K bellek sistemden okunuyor
-      BellekIcerikOku(Pointer(MEVCUTBELLEKADRESI + 4096), @_VeriBellek[0], 4096);
+      BellekIcerikOku(Pointer(MEVCUTBELLEKADRESI + 4096), @Veriler[0], 4096);
 
-      p := PByte(@_VeriBellek[0]);
-      for B1 := 32 to 63 do
+      p := PByte(@Veriler[0]);
+      for Ust := 32 to 63 do
       begin
 
-        for A1 := 0 to 127 do
+        for Sol := 0 to 127 do
         begin
 
           if(p^ = 0) then
 
-            NoktaIsaretle(A1, B1, $00FF00)
-          else if(p^ = 1) then NoktaIsaretle(A1, B1, $FF0000);
+            NoktaIsaretle(Sol, Ust, $00FF00)
+          else if(p^ = 1) then NoktaIsaretle(Sol, Ust, $FF0000);
 
           Inc(p);
         end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

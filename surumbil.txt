@@ -1,6 +1,12 @@
+  + tüm görsel nesneler TPanel nesnesinden türetilecek þekilde yeniden yapýlandýrýldý
   + nesnelere yatay / dikey yazý hizalama iþlevi eklendi
   + hafýza programý kodlandý
-
+  + görsel nesnelerin birbirleriyle etkileþim çalýþmasý (bileþen) tamamlandý
+  + tüm görsel nesnelere Olustur, YokEt, Goster, Gizle, Boyutlandir, Ciz, OlaylariIsle iþlevleri
+    standart olarak kodlandý
+  + çizim ve olay koordinat sistemi 0 baþlangýç deðerine göre yeniden yapýlandýrýldý
+  + pencere nesnesinin geniþlik ve yükseklik deðerleri çizim alaný ile eþdeðerlendi
+  + sistem yönetimine 2. görev eklendi
   + görsel nesnelerin birbirleriyle etkileþim çalýþmalarý baþladý
   + daha önce kodlanan dns taslak çalýþmasý geliþtirilerek; birden fazla dns baðlantýsý,
     çekirdek / program api iþlevleri ve bu yapýlarýn üzerinde çalýþan dnssorgu programý kodlandý

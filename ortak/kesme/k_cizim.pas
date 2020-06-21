@@ -45,7 +45,7 @@ begin
     _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler + 00)^, gntPencere);
     if(_Pencere = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl(_Pencere^.Kimlik);
+    _Alan := _Pencere^.CizimAlaniniAl2(_Pencere^.Kimlik);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
 
@@ -64,7 +64,7 @@ begin
     _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler + 00)^, gntPencere);
     if(_Pencere = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler + 00)^);
+    _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler + 00)^);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _A2 := PISayi4(Degiskenler + 12)^ + _A1;
@@ -95,7 +95,7 @@ begin
     _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler)^, gntPencere);
     if(_Pencere = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler + 00)^);
+    _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler + 00)^);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _A2 := PISayi4(Degiskenler + 12)^ + _Alan.Sol;
@@ -112,7 +112,7 @@ begin
     _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler)^, gntPencere);
     if(_Pencere = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl(PKimlik(Degiskenler + 00)^);
+    _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler + 00)^);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
     _YariCap := PISayi4(Degiskenler + 12)^;

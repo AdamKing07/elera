@@ -6,7 +6,7 @@
   Dosya Adı: gn_listekutusu.pas
   Dosya İşlevi: liste kutusu yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 07/11/2019
+  Güncelleme Tarihi: 13/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,27 +14,31 @@ unit gn_listekutusu;
 
 interface
 
-uses gorselnesne, paylasim, n_yazilistesi;
+uses gorselnesne, paylasim, n_yazilistesi, gn_panel;
 
 type
   PListeKutusu = ^TListeKutusu;
-  TListeKutusu = object(TGorselNesne)
+  TListeKutusu = object(TPanel)
   private
     FSeciliSiraNo: TISayi4;               // seçili sıra değeri
     FGorunenIlkSiraNo: TISayi4;           // görünen ilk elemanın sıra numarası
     FGorunenElemanSayisi: TISayi4;        // nesne içindeki görünen eleman sayısı
     FYaziListesi: PYaziListesi;
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): PListeKutusu;
-    procedure YokEt(AKimlik: TKimlik);
-    function SeciliYaziyiAl: string;
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+      ASol, AUst, AGenislik, AYukseklik: TISayi4): PListeKutusu;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    function SeciliYaziyiAl: string;
+    procedure ListeyeEkle(ADeger: string);
   end;
 
-function ListeKutusuCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function ListeKutusuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 
 implementation
 
@@ -43,30 +47,41 @@ uses genel, gn_islevler, gn_pencere, temelgorselnesne;
 {==============================================================================
   liste kutusu kesme çağrılarını yönetir
  ==============================================================================}
-function ListeKutusuCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function ListeKutusuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PPencere;
-  _ListeKutusu: PListeKutusu;
-  _Hiza: THiza;
-  p1: PShortString;
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  ListeKutusu: PListeKutusu;
+  Hiza: THiza;
+  p: PKarakterKatari;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     // nesne oluştur
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^, PISayi4(Degiskenler + 16)^);
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+        PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^);
+    end;
+
+    ISLEV_GOSTER:
+    begin
+
+      ListeKutusu := PListeKutusu(ListeKutusu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      ListeKutusu^.Goster;
+    end;
 
     // eleman ekle
     $0100:
     begin
 
-      _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeKutusu));
-      if(_ListeKutusu <> nil) then _ListeKutusu^.FYaziListesi^.Ekle(
-        PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi)^);
+      ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeKutusu));
+      if(ListeKutusu <> nil) then ListeKutusu^.ListeyeEkle(
+        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
       Result := 1;
     end;
 
@@ -74,26 +89,26 @@ begin
     $0200:
     begin
 
-      _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeKutusu));
-      if(_ListeKutusu <> nil) then Result := _ListeKutusu^.FSeciliSiraNo;
+      ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeKutusu));
+      if(ListeKutusu <> nil) then Result := ListeKutusu^.FSeciliSiraNo;
     end;
 
     // liste içeriğini temizle
     $0300:
     begin
 
-      _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeKutusu));
-      if(_ListeKutusu <> nil) then
+      ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeKutusu));
+      if(ListeKutusu <> nil) then
       begin
 
         // eğer daha önce bellek ayrıldıysa
-        _ListeKutusu^.FGorunenIlkSiraNo := 0;
-        _ListeKutusu^.FSeciliSiraNo := -1;
+        ListeKutusu^.FGorunenIlkSiraNo := 0;
+        ListeKutusu^.FSeciliSiraNo := -1;
 
-        _ListeKutusu^.FYaziListesi^.Temizle;
-        _ListeKutusu^.Ciz;
+        ListeKutusu^.FYaziListesi^.Temizle;
+        ListeKutusu^.Ciz;
       end;
     end;
 
@@ -101,22 +116,22 @@ begin
     $0400:
     begin
 
-      _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeKutusu));
-      if(_ListeKutusu <> nil) then Result := _ListeKutusu^.FSeciliSiraNo;
-      p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      p1^ := _ListeKutusu^.SeciliYaziyiAl;
+      ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeKutusu));
+      if(ListeKutusu <> nil) then Result := ListeKutusu^.FSeciliSiraNo;
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p^ := ListeKutusu^.SeciliYaziyiAl;
     end;
 
     $0104:
     begin
 
-      _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Hiza := PHiza(Degiskenler + 04)^;
-      _ListeKutusu^.Hiza := _Hiza;
+      ListeKutusu := PListeKutusu(ListeKutusu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Hiza := PHiza(ADegiskenler + 04)^;
+      ListeKutusu^.FHiza := Hiza;
 
-      _Pencere := PPencere(_ListeKutusu^.FAtaNesne);
-      _Pencere^.Guncelle;
+      Pencere := PPencere(ListeKutusu^.FAtaNesne);
+      Pencere^.Guncelle;
     end;
 
     else Result := HATA_ISLEV;
@@ -126,145 +141,76 @@ end;
 {==============================================================================
   liste kutusu nesnesini oluşturur
  ==============================================================================}
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 var
-  _ListeKutusu: PListeKutusu;
+  ListeKutusu: PListeKutusu;
 begin
 
-  _ListeKutusu := _ListeKutusu^.Olustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik);
-  if(_ListeKutusu = nil) then
+  ListeKutusu := ListeKutusu^.Olustur(ktNesne, AAtaNesne, ASol, AUst, AGenislik, AYukseklik);
+  if(ListeKutusu = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _ListeKutusu^.Kimlik;
+
+  else Result := ListeKutusu^.Kimlik;
 end;
 
 {==============================================================================
   liste kutusu nesnesini oluşturur
  ==============================================================================}
-function TListeKutusu.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): PListeKutusu;
+function TListeKutusu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst, AGenislik, AYukseklik: TISayi4): PListeKutusu;
 var
-  _AtaNesne: PGorselNesne;
-  _ListeKutusu: PListeKutusu;
+  ListeKutusu: PListeKutusu;
   YL: PYaziListesi;
 begin
 
-  // nesnenin bağlanacağı ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  ListeKutusu := PListeKutusu(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
+    AGenislik, AYukseklik, 0, 0, 0, 0, ''));
 
-  // liste kutusu nesnesi için yer ayır
-  _ListeKutusu := PListeKutusu(Olustur0(gntListeKutusu));
-  if(_ListeKutusu = nil) then
-  begin
+  // görsel nesne tipi
+  ListeKutusu^.NesneTipi := gntListeKutusu;
 
-    Result := nil;
-    Exit;
-  end;
+  ListeKutusu^.Baslik := '';
 
-  // liste kutusu nesnesini ata nesnesine ekle
-  if(_ListeKutusu^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
+  ListeKutusu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-    // hata olması durumunda nesneyi yok et ve hata koduyla işlevden çık
-    _ListeKutusu^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
+  ListeKutusu^.AnaOlayCagriAdresi := @OlaylariIsle;
 
-  // nesne değerlerini ata
-  _ListeKutusu^.GorevKimlik := CalisanGorev;
-  _ListeKutusu^.AtaNesne := _AtaNesne;
-  _ListeKutusu^.Hiza := hzYok;
-  _ListeKutusu^.FBoyutlar.Sol2 := A1;
-  _ListeKutusu^.FBoyutlar.Ust2 := B1;
-  _ListeKutusu^.FBoyutlar.Genislik2 := AGenislik;
-  _ListeKutusu^.FBoyutlar.Yukseklik2 := AYukseklik;
+  ListeKutusu^.FCizimBaslangic.Sol := ListeKutusu^.AtaNesne^.FCizimBaslangic.Sol +
+    ListeKutusu^.AtaNesne^.FKalinlik.Sol + ASol;
+  ListeKutusu^.FCizimBaslangic.Ust := ListeKutusu^.AtaNesne^.FCizimBaslangic.Ust +
+    ListeKutusu^.AtaNesne^.FKalinlik.Ust + AUst;
 
-  // kenar kalınlıkları
-  _ListeKutusu^.FKalinlik.Sol := 0;
-  _ListeKutusu^.FKalinlik.Ust := 0;
-  _ListeKutusu^.FKalinlik.Sag := 0;
-  _ListeKutusu^.FKalinlik.Alt := 0;
-
-  // kenar boşlukları
-  _ListeKutusu^.FKenarBosluklari.Sol := 0;
-  _ListeKutusu^.FKenarBosluklari.Ust := 0;
-  _ListeKutusu^.FKenarBosluklari.Sag := 0;
-  _ListeKutusu^.FKenarBosluklari.Alt := 0;
-
-  _ListeKutusu^.FAtaNesneMi := False;
-  _ListeKutusu^.FareGostergeTipi := fitOK;
-  _ListeKutusu^.FGorunum := False;
-
-  _ListeKutusu^.FYaziListesi := nil;
+  ListeKutusu^.FYaziListesi := nil;
   YL := YL^.Olustur;
-  if(YL <> nil) then _ListeKutusu^.FYaziListesi := YL;
+  if(YL <> nil) then ListeKutusu^.FYaziListesi := YL;
 
   // nesnenin kullanacağı diğer değerler
-  _ListeKutusu^.FGorunenIlkSiraNo := 0;
-  _ListeKutusu^.FSeciliSiraNo := -1;
+  ListeKutusu^.FGorunenIlkSiraNo := 0;
+  ListeKutusu^.FSeciliSiraNo := -1;
 
   // liste kutusunda görüntülenecek eleman sayısı
-  _ListeKutusu^.FGorunenElemanSayisi := (AYukseklik + 17) div 18;
-
-  // nesnenin ad ve başlık değeri
-  _ListeKutusu^.NesneAdi := NesneAdiAl(gntListeKutusu);
-  _ListeKutusu^.FBaslik := '';
-
-  // uygulamaya mesaj gönder
-  GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
-    _ListeKutusu, CO_OLUSTUR, 0, 0);
-
-  // liste kutusunu görüntüle
-  _ListeKutusu^.Goster;
+  ListeKutusu^.FGorunenElemanSayisi := (AYukseklik + 17) div 18;
 
   // nesne adresini geri döndür
-  Result := _ListeKutusu;
+  Result := ListeKutusu;
 end;
 
 {==============================================================================
   nesne ve nesneye ayrılan kaynakları yok eder
  ==============================================================================}
-procedure TListeKutusu.YokEt(AKimlik: TKimlik);
+procedure TListeKutusu.YokEt;
 var
-  _ListeKutusu: PListeKutusu;
+  ListeKutusu: PListeKutusu;
 begin
 
   // nesnenin kimlik, tip değerlerini denetle.
-  _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(AKimlik, gntListeKutusu));
-  if(_ListeKutusu = nil) then Exit;
+  ListeKutusu := PListeKutusu(ListeKutusu^.NesneAl(Kimlik));
+  if(ListeKutusu = nil) then Exit;
 
-  if(_ListeKutusu^.FYaziListesi <> nil) then _ListeKutusu^.FYaziListesi^.YokEt;
+  if(ListeKutusu^.FYaziListesi <> nil) then ListeKutusu^.FYaziListesi^.YokEt;
 
-  YokEt0;
-end;
-
-{==============================================================================
-  liste kutusundaki seçili elemanın yazı (text) değerini geri döndürür
- ==============================================================================}
-function TListeKutusu.SeciliYaziyiAl: string;
-var
-  _ListeKutusu: PListeKutusu;
-  YL: PYaziListesi;
-begin
-
-  Result := '';
-
-  // nesnenin Kimlik, tip değerlerini denetle.
-  _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(Kimlik, gntListeKutusu));
-  if(_ListeKutusu = nil) then Exit;
-
-  YL := _ListeKutusu^.FYaziListesi;
-
-  // nesnenin elemanı var mı ?
-  if(YL^.ElemanSayisi > 0) then
-  begin
-
-    if(FSeciliSiraNo < YL^.ElemanSayisi) then
-
-      Result := YL^.Eleman[FSeciliSiraNo]
-    else Result := '';
-  end;
+  inherited YokEt;
 end;
 
 {==============================================================================
@@ -272,32 +218,37 @@ end;
  ==============================================================================}
 procedure TListeKutusu.Goster;
 var
-  _Pencere: PPencere;
-  _ListeKutusu: PListeKutusu;
+  Pencere: PPencere;
 begin
 
-  // nesnenin kimlik, tip değerlerini denetle.
-  _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(Kimlik, gntListeKutusu));
-  if(_ListeKutusu = nil) then Exit;
+  inherited Goster;
 
-  // eğer nesne görünür değilse
-  if(_ListeKutusu^.FGorunum = False) then
-  begin
+  Pencere := PPencere(PListeKutusu(@Self)^.AtaNesne);
+  if not(Pencere = nil) and (Pencere^.Gorunum) then
+    Pencere^.Ciz;
+end;
 
-    // nesnenin görünürlüğünü aktifleştir
-    _ListeKutusu^.FGorunum := True;
+{==============================================================================
+  liste kutusu nesnesini gizler
+ ==============================================================================}
+procedure TListeKutusu.Gizle;
+begin
 
-    // nesne ve üst nesneler görünür ise
-    if(_ListeKutusu^.AtaNesneGorunurMu) then
-    begin
+  inherited Goster;
+end;
 
-      // nesnenin sahibi olan pencere nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_ListeKutusu);
+{==============================================================================
+  liste kutusu nesnesini boyutlandırır
+ ==============================================================================}
+procedure TListeKutusu.Boyutlandir;
+var
+  ListeKutusu: PListeKutusu;
+begin
 
-      // pencereyi güncelleştir
-      _Pencere^.Guncelle;
-    end;
-  end;
+  ListeKutusu := PListeKutusu(ListeKutusu^.NesneAl(Kimlik));
+  if(ListeKutusu = nil) then Exit;
+
+  ListeKutusu^.Hizala;
 end;
 
 {==============================================================================
@@ -305,69 +256,65 @@ end;
  ==============================================================================}
 procedure TListeKutusu.Ciz;
 var
-  _Pencere: PPencere;
-  _ListeKutusu: PListeKutusu;
+  ListeKutusu: PListeKutusu;
   YL: PYaziListesi;
-  _Alan: TAlan;
-  _SiraNo, X, Y,
-  _GorunenElemanSayisi: TISayi4;
+  Alan: TAlan;
+  SiraNo, Sol, Ust,
+  GorunenElemanSayisi: TISayi4;
   s: string;
 begin
 
   // nesnenin kimlik, tip değerlerini denetle.
-  _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(Kimlik, gntListeKutusu));
-  if(_ListeKutusu = nil) then Exit;
-
-  // ata nesne bir pencere mi?
-  _Pencere := PencereAtaNesnesiniAl(_ListeKutusu);
-  if(_Pencere = nil) then Exit;
+  ListeKutusu := PListeKutusu(ListeKutusu^.NesneAl(Kimlik));
+  if(ListeKutusu = nil) then Exit;
 
   // liste kutusunun üst nesneye bağlı olarak koordinatlarını al
-  _Alan := _ListeKutusu^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  Alan := ListeKutusu^.FCizimAlan;
 
   // kenarlık çizgisini çiz
-  KenarlikCiz(_Pencere, _Alan, 2);
+  KenarlikCiz(ListeKutusu, Alan, 2);
 
   // iç dolgu rengi
-  DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt - 2,
-    RENK_BEYAZ, RENK_BEYAZ);
+  ListeKutusu^.DikdortgenDoldur(ListeKutusu, Alan.Sol + 2, Alan.Ust + 2,
+    Alan.Sag - 2, Alan.Alt - 2, RENK_BEYAZ, RENK_BEYAZ);
 
-  YL := _ListeKutusu^.FYaziListesi;
+  YL := ListeKutusu^.FYaziListesi;
 
   // nesnenin elemanı var mı ?
   if(YL^.ElemanSayisi > 0) then
   begin
 
-    // çizim / yazım için kullanılacak x & y koordinatları
-    X := _Alan.Sol + 4;
-    Y := _Alan.Ust + 4;
+    // çizim / yazım için kullanılacak Sol & Ust koordinatları
+    Sol := Alan.Sol + 4;
+    Ust := Alan.Ust + 4;
 
-    _ListeKutusu^.FGorunenElemanSayisi := ((_ListeKutusu^.FDisGercekBoyutlar.Alt -
-      _ListeKutusu^.FDisGercekBoyutlar.Ust) + 17) div 18;
+    ListeKutusu^.FGorunenElemanSayisi := ((ListeKutusu^.FCizimAlan.Alt -
+      ListeKutusu^.FCizimAlan.Ust) + 17) div 18;
 
     // liste kutusunda görüntülenecek eleman sayısı
-    if(YL^.ElemanSayisi > _ListeKutusu^.FGorunenElemanSayisi) then
-      _GorunenElemanSayisi := _ListeKutusu^.FGorunenElemanSayisi + _ListeKutusu^.FGorunenIlkSiraNo
-    else _GorunenElemanSayisi := YL^.ElemanSayisi + _ListeKutusu^.FGorunenIlkSiraNo;
+    if(YL^.ElemanSayisi > ListeKutusu^.FGorunenElemanSayisi) then
+      GorunenElemanSayisi := ListeKutusu^.FGorunenElemanSayisi + ListeKutusu^.FGorunenIlkSiraNo
+    else GorunenElemanSayisi := YL^.ElemanSayisi + ListeKutusu^.FGorunenIlkSiraNo;
 
     // listenin ilk elemanın sıra numarası
-    for _SiraNo := _ListeKutusu^.FGorunenIlkSiraNo to _GorunenElemanSayisi - 1 do
+    for SiraNo := ListeKutusu^.FGorunenIlkSiraNo to GorunenElemanSayisi - 1 do
     begin
 
       // belirtilen elemanın karakter katar değerini al
-      s := YL^.Eleman[_SiraNo];
+      s := YL^.Eleman[SiraNo];
 
       // elemanın seçili olması durumunda seçili olduğunu belirt
       // belirtilen sıra seçili değilse sadece eleman değerini yaz
-      if(_SiraNo = _ListeKutusu^.FSeciliSiraNo) then
+      if(SiraNo = ListeKutusu^.FSeciliSiraNo) then
       begin
 
-        DikdortgenDoldur(_Pencere, X, Y, X + _ListeKutusu^.FBoyutlar.Sag - 4 - 4,
-          Y + 18, $3EC5FF, $3EC5FF);
+        ListeKutusu^.DikdortgenDoldur(ListeKutusu, Sol, Ust, Sol + ListeKutusu^.FBoyut.Genislik - 4 - 4,
+          Ust + 18, $3EC5FF, $3EC5FF);
       end;
-      YaziYaz(_Pencere, X, Y + 1, s, RENK_SIYAH);
 
-      y += 18;
+      ListeKutusu^.YaziYaz(ListeKutusu, Sol, Ust + 1, s, RENK_SIYAH);
+
+      Ust += 18;
     end;
   end;
 end;
@@ -375,46 +322,47 @@ end;
 {==============================================================================
   liste kutusu nesne olaylarını işler
  ==============================================================================}
-procedure TListeKutusu.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TListeKutusu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _ListeKutusu: PListeKutusu;
-  i, _SeciliSiraNo: TISayi4;
+  Pencere: PPencere;
+  ListeKutusu: PListeKutusu;
+  i, SeciliSiraNo: TISayi4;
 begin
 
   // nesnenin kimlik, tip değerlerini denetle.
-  _ListeKutusu := PListeKutusu(_ListeKutusu^.NesneTipiniKontrolEt(AKimlik, gntListeKutusu));
-  if(_ListeKutusu = nil) then Exit;
+  ListeKutusu := PListeKutusu(AGonderici);
+  if(ListeKutusu = nil) then Exit;
 
   // sol fare tuş basımı
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // liste kutusunun sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_ListeKutusu);
+    Pencere := EnUstPencereNesnesiniAl(ListeKutusu);
 
     // en üstte olmaması durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
 
     // sol tuşa basım işlemi nesnenin olay alanında mı gerçekleşti ?
-    if(_ListeKutusu^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(ListeKutusu^.FareNesneOlayAlanindaMi(ListeKutusu)) then
     begin
 
       // fare olaylarını yakala
-      OlayYakalamayaBasla(_ListeKutusu);
+      OlayYakalamayaBasla(ListeKutusu);
 
       // seçilen sıra numarasını belirle
-      _SeciliSiraNo := (AOlay.Deger2 - 4) div 18;
+      SeciliSiraNo := (AOlay.Deger2 - 4) div 18;
 
       // bu değere kaydırılan değeri de ekle
-      _ListeKutusu^.FSeciliSiraNo := (_SeciliSiraNo + _ListeKutusu^.FGorunenIlkSiraNo);
+      ListeKutusu^.FSeciliSiraNo := (SeciliSiraNo + ListeKutusu^.FGorunenIlkSiraNo);
 
       // liste kutusunu yeniden çiz
-      _ListeKutusu^.Ciz;
+      ListeKutusu^.Ciz;
 
-      // uygulamaya mesaj gönder
-      GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
-        _ListeKutusu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(ListeKutusu^.OlayCagriAdresi = nil) then
+        ListeKutusu^.OlayCagriAdresi(ListeKutusu, AOlay)
+      else GorevListesi[ListeKutusu^.GorevKimlik]^.OlayEkle(ListeKutusu^.GorevKimlik, AOlay);
     end;
   end
 
@@ -423,21 +371,25 @@ begin
   begin
 
     // fare olaylarını almayı bırak
-    OlayYakalamayiBirak(_ListeKutusu);
+    OlayYakalamayiBirak(ListeKutusu);
 
     // fare bırakma işlemi nesnenin olay alanında mı gerçekleşti ?
-    if(_ListeKutusu^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(ListeKutusu^.FareNesneOlayAlanindaMi(ListeKutusu)) then
     begin
 
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // nesneye FO_TIKLAMA mesajı gönder
-      GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
-        _ListeKutusu, FO_TIKLAMA, AOlay.Deger1, AOlay.Deger2);
+      AOlay.Olay := FO_TIKLAMA;
+      if not(ListeKutusu^.OlayCagriAdresi = nil) then
+        ListeKutusu^.OlayCagriAdresi(ListeKutusu, AOlay)
+      else GorevListesi[ListeKutusu^.GorevKimlik]^.OlayEkle(ListeKutusu^.GorevKimlik, AOlay);
     end;
 
-    // uygulamaya mesaj gönder
-    GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
-      _ListeKutusu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+    if not(ListeKutusu^.OlayCagriAdresi = nil) then
+      ListeKutusu^.OlayCagriAdresi(ListeKutusu, AOlay)
+    else GorevListesi[ListeKutusu^.GorevKimlik]^.OlayEkle(ListeKutusu^.GorevKimlik, AOlay);
   end
 
   // fare hakeret işlemi
@@ -452,32 +404,32 @@ begin
       if(AOlay.Deger2 < 0) then
       begin
 
-        _SeciliSiraNo := _ListeKutusu^.FGorunenIlkSiraNo;
-        Dec(_SeciliSiraNo);
-        if(_SeciliSiraNo >= 0) then
+        SeciliSiraNo := ListeKutusu^.FGorunenIlkSiraNo;
+        Dec(SeciliSiraNo);
+        if(SeciliSiraNo >= 0) then
         begin
 
-          _ListeKutusu^.FGorunenIlkSiraNo := _SeciliSiraNo;
-          _ListeKutusu^.FSeciliSiraNo := _SeciliSiraNo;
+          ListeKutusu^.FGorunenIlkSiraNo := SeciliSiraNo;
+          ListeKutusu^.FSeciliSiraNo := SeciliSiraNo;
         end;
       end
 
       // fare liste kutusunun aşağısında ise
-      else if(AOlay.Deger2 > _ListeKutusu^.FBoyutlar.Alt) then
+      else if(AOlay.Deger2 > ListeKutusu^.FBoyut.Yukseklik) then
       begin
 
         // azami kaydırma değeri
-        i := _ListeKutusu^.FYaziListesi^.ElemanSayisi - _ListeKutusu^.FGorunenElemanSayisi;
+        i := ListeKutusu^.FYaziListesi^.ElemanSayisi - ListeKutusu^.FGorunenElemanSayisi;
         if(i < 0) then i := 0;
 
-        _SeciliSiraNo := _ListeKutusu^.FGorunenIlkSiraNo;
-        Inc(_SeciliSiraNo);
-        if(_SeciliSiraNo < i) then
+        SeciliSiraNo := ListeKutusu^.FGorunenIlkSiraNo;
+        Inc(SeciliSiraNo);
+        if(SeciliSiraNo < i) then
         begin
 
-          _ListeKutusu^.FGorunenIlkSiraNo := _SeciliSiraNo;
+          ListeKutusu^.FGorunenIlkSiraNo := SeciliSiraNo;
           i := (AOlay.Deger2 - 4) div 18;
-          _ListeKutusu^.FSeciliSiraNo := i + _ListeKutusu^.FGorunenIlkSiraNo;
+          ListeKutusu^.FSeciliSiraNo := i + ListeKutusu^.FGorunenIlkSiraNo;
         end
       end
 
@@ -486,20 +438,27 @@ begin
       begin
 
         i := (AOlay.Deger2 - 4) div 18;
-        _ListeKutusu^.FSeciliSiraNo := i + _ListeKutusu^.FGorunenIlkSiraNo;
+        ListeKutusu^.FSeciliSiraNo := i + ListeKutusu^.FGorunenIlkSiraNo;
       end;
 
       // liste kutusunu yeniden çiz
-      _ListeKutusu^.Ciz;
+      ListeKutusu^.Ciz;
 
-      // uygulamaya mesaj gönder
-      GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
-        _ListeKutusu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(ListeKutusu^.OlayCagriAdresi = nil) then
+        ListeKutusu^.OlayCagriAdresi(ListeKutusu, AOlay)
+      else GorevListesi[ListeKutusu^.GorevKimlik]^.OlayEkle(ListeKutusu^.GorevKimlik, AOlay);
     end
 
     // nesne yakalanmamış ise uygulamaya sadece mesaj gönder
-    else GorevListesi[_ListeKutusu^.GorevKimlik]^.OlayEkle1(_ListeKutusu^.GorevKimlik,
-      _ListeKutusu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    else
+    begin
+
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(ListeKutusu^.OlayCagriAdresi = nil) then
+        ListeKutusu^.OlayCagriAdresi(ListeKutusu, AOlay)
+      else GorevListesi[ListeKutusu^.GorevKimlik]^.OlayEkle(ListeKutusu^.GorevKimlik, AOlay);
+    end;
   end
 
   else if(AOlay.Olay = FO_KAYDIRMA) then
@@ -509,9 +468,9 @@ begin
     if(AOlay.Deger1 < 0) then
     begin
 
-      _SeciliSiraNo := _ListeKutusu^.FGorunenIlkSiraNo;
-      Dec(_SeciliSiraNo);
-      if(_SeciliSiraNo >= 0) then _ListeKutusu^.FGorunenIlkSiraNo := _SeciliSiraNo;
+      SeciliSiraNo := ListeKutusu^.FGorunenIlkSiraNo;
+      Dec(SeciliSiraNo);
+      if(SeciliSiraNo >= 0) then ListeKutusu^.FGorunenIlkSiraNo := SeciliSiraNo;
     end
 
     // listeyi aşağıya kaydırma. son elemana doğru
@@ -519,19 +478,62 @@ begin
     begin
 
       // azami kaydırma değeri
-      i := _ListeKutusu^.FYaziListesi^.ElemanSayisi - _ListeKutusu^.FGorunenElemanSayisi;
+      i := ListeKutusu^.FYaziListesi^.ElemanSayisi - ListeKutusu^.FGorunenElemanSayisi;
       if(i < 0) then i := 0;
 
-      _SeciliSiraNo := _ListeKutusu^.FGorunenIlkSiraNo;
-      Inc(_SeciliSiraNo);
-      if(_SeciliSiraNo < i) then _ListeKutusu^.FGorunenIlkSiraNo := _SeciliSiraNo;
+      SeciliSiraNo := ListeKutusu^.FGorunenIlkSiraNo;
+      Inc(SeciliSiraNo);
+      if(SeciliSiraNo < i) then ListeKutusu^.FGorunenIlkSiraNo := SeciliSiraNo;
     end;
 
-    _ListeKutusu^.Ciz;
+    ListeKutusu^.Ciz;
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := ListeKutusu^.FFareImlecTipi;
+end;
+
+{==============================================================================
+  liste kutusundaki seçili elemanın yazı (text) değerini geri döndürür
+ ==============================================================================}
+function TListeKutusu.SeciliYaziyiAl: string;
+var
+  ListeKutusu: PListeKutusu;
+  YL: PYaziListesi;
+begin
+
+  Result := '';
+
+  // nesnenin Kimlik, tip değerlerini denetle.
+  ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(Kimlik, gntListeKutusu));
+  if(ListeKutusu = nil) then Exit;
+
+  YL := ListeKutusu^.FYaziListesi;
+
+  // nesnenin elemanı var mı ?
+  if(YL^.ElemanSayisi > 0) then
+  begin
+
+    if(FSeciliSiraNo < YL^.ElemanSayisi) then
+
+      Result := YL^.Eleman[FSeciliSiraNo]
+    else Result := '';
+  end;
+end;
+
+{==============================================================================
+  liste kutusu nesnesine eleman ekler
+ ==============================================================================}
+procedure TListeKutusu.ListeyeEkle(ADeger: string);
+var
+  ListeKutusu: PListeKutusu;
+begin
+
+  // nesnenin kimlik, tip değerlerini denetle.
+  ListeKutusu := PListeKutusu(ListeKutusu^.NesneAl(Kimlik));
+  if(ListeKutusu = nil) then Exit;
+
+  ListeKutusu^.FYaziListesi^.Ekle(ADeger);
 end;
 
 end.

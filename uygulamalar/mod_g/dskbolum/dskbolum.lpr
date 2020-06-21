@@ -7,7 +7,7 @@ program dskbolum;
   Program Adý: dskbolum.lpr
   Program Ýþlevi: sistemdeki mantýksal sürücü bilgisini verir
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -49,42 +49,42 @@ end;
 
 procedure AygitBilgileriniYaz(ASiraNo: TSayi4);
 var
-  _MantiksalSurucu3: PMantiksalSurucu3;
+  MantiksalSurucu3: PMantiksalSurucu3;
 begin
 
-  _MantiksalSurucu3 := @MantiksalSurucuListesi[ASiraNo];
+  MantiksalSurucu3 := @MantiksalSurucuListesi[ASiraNo];
 
   // sürücü tipi
   Pencere0.Tuval.KalemRengi := RENK_SIYAH;
   Pencere0.Tuval.YaziYaz(0, 2 * 16, 'Sürücü Tipi  :');
-  if(_MantiksalSurucu3^.SurucuTipi = SURUCUTIP_DISKET) then
+  if(MantiksalSurucu3^.SurucuTipi = SURUCUTIP_DISKET) then
     Pencere0.Tuval.YaziYaz(15 * 8, 2 * 16, 'Disket Sürücüsü')
-  else if(_MantiksalSurucu3^.SurucuTipi = SURUCUTIP_DISK) then
+  else if(MantiksalSurucu3^.SurucuTipi = SURUCUTIP_DISK) then
     Pencere0.Tuval.YaziYaz(15 * 8, 2 * 16, 'Disk Sürücüsü');
 
     // sürücü dosya sistemi
     Pencere0.Tuval.YaziYaz(0, 3 * 16, 'Dosya Sistemi:');
-    if(_MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT12) then
+    if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT12) then
       Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT12')
-    else if(_MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT16) then
+    else if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT16) then
       Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT16')
-    else if(_MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT32) then
+    else if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT32) then
       Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT32')
-    else if(_MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT32LBA) then
+    else if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT32LBA) then
       Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT32+LBA');
 
   // ilk sektör
   Pencere0.Tuval.YaziYaz(0, 4 * 16, 'Ýlk Sektör   :');
-  Pencere0.Tuval.SayiYaz16(15 * 8, 4 * 16, False, 8, _MantiksalSurucu3^.BolumIlkSektor);
+  Pencere0.Tuval.SayiYaz16(15 * 8, 4 * 16, False, 8, MantiksalSurucu3^.BolumIlkSektor);
 
   // toplam sektör
   Pencere0.Tuval.YaziYaz(0, 5 * 16, 'Toplam Sektör:');
-  Pencere0.Tuval.SayiYaz16(15 * 8, 5 * 16, False, 8, _MantiksalSurucu3^.BolumToplamSektor);
+  Pencere0.Tuval.SayiYaz16(15 * 8, 5 * 16, False, 8, MantiksalSurucu3^.BolumToplamSektor);
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 50, 50, 350, 135, ptBoyutlandirilabilir, ProgramAdi, $EEF0D1);
+  Pencere0.Olustur(-1, 50, 50, 310, 95, ptBoyutlandirilabilir, ProgramAdi, $EEF0D1);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   DiskSayisi := MantiksalDepolamaAygitSayisiAl;
@@ -111,7 +111,8 @@ begin
 
   SeciliDisk := 0;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
@@ -156,6 +157,5 @@ begin
         end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

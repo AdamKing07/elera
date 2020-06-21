@@ -22,7 +22,7 @@
    Sürüm Bilgileri
    ----------------------------------------------------------------------------
    Telif Bilgisi: haklar.txt dosyasýna bakýnýz
-   Güncelleme Tarihi: (27.10.2019 - Pazar)
+   Güncelleme Tarihi: (21.06.2020 - pazar)
 
 ==============================================================================}
 program cekirdek;

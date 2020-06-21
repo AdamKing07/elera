@@ -10,6 +10,7 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_etiket;
 
 interface
@@ -27,6 +28,11 @@ type
   published
     property Kimlik: TKimlik read FKimlik;
   end;
+
+function _EtiketOlustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ARenk: TRenk;
+  ABaslik: string): TKimlik; assembler;
+procedure _EtiketGoster(AKimlik: TKimlik); assembler;
+procedure _EtiketDegistir(AKimlik: TKimlik; ABaslik: string); assembler;
 
 implementation
 
@@ -48,6 +54,36 @@ procedure TEtiket.Degistir(ABaslik: string);
 begin
 
   _EtiketDegistir(FKimlik, ABaslik);
+end;
+
+function _EtiketOlustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ARenk: TRenk;
+  ABaslik: string): TKimlik;
+asm
+  push  ABaslik
+  push  ARenk
+  push  B1
+  push  A1
+  push  AAtaKimlik
+  mov   eax,ETIKET_OLUSTUR
+  int   $34
+  add   esp,20
+end;
+
+procedure _EtiketGoster(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,ETIKET_GOSTER
+  int   $34
+  add   esp,4
+end;
+
+procedure _EtiketDegistir(AKimlik: TKimlik; ABaslik: string);
+asm
+  push  ABaslik
+  push  AKimlik
+  mov   eax,ETIKET_DEGISTIR
+  int   $34
+  add   esp,8
 end;
 
 end.

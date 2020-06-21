@@ -11,8 +11,8 @@ program muyntcs;
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, ekran, gn_masaustu, gn_pencere, zamanlayici, gn_dugme, gn_gucdugme,
-  gn_menu, gn_etiket, gn_resimdugme, gn_acilirmenu;
+uses n_gorev, n_ekran, gn_masaustu, gn_pencere, n_zamanlayici, gn_dugme, gn_gucdugme,
+  gn_menu, gn_etiket, gn_resim, gn_acilirmenu;
 
 const
   PROGRAM_SAYISI = 10;
@@ -89,39 +89,39 @@ begin
     40, ptBasliksiz, '', $FFFFFF);
 
   // ELERA ana düðmesini oluþtur
-  gdELERA.Olustur(Pencere0.Kimlik, 6, 5, 60, 22, 'ELERA');
+  gdELERA.Olustur(Pencere0.Kimlik, 6, 9, 60, 22, 'ELERA');
   gdELERA.Goster;
 
   // 4 adet masaüstü düðmesi oluþtur
   A1 := 75;
-  dugMasaustuDugmeleri[0].Olustur(Pencere0.Kimlik, A1, 5, 20, 22, '1');
+  dugMasaustuDugmeleri[0].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '1');
   dugMasaustuDugmeleri[0].Goster;
 
   A1 += 22;
-  dugMasaustuDugmeleri[1].Olustur(Pencere0.Kimlik, A1, 5, 20, 22, '2');
+  dugMasaustuDugmeleri[1].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '2');
   dugMasaustuDugmeleri[1].Goster;
 
   A1 += 22;
-  dugMasaustuDugmeleri[2].Olustur(Pencere0.Kimlik, A1, 5, 20, 22, '3');
+  dugMasaustuDugmeleri[2].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '3');
   dugMasaustuDugmeleri[2].Goster;
 
   A1 += 22;
-  dugMasaustuDugmeleri[3].Olustur(Pencere0.Kimlik, A1, 5, 20, 22, '4');
+  dugMasaustuDugmeleri[3].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '4');
   dugMasaustuDugmeleri[3].Goster;
 
   // dosya yöneticisi programý için düðme
   A1 += 22+6;
-  dugDosyaYoneticisi.Olustur(Pencere0.Kimlik, A1, 5, 24, 22, 'DY');
+  dugDosyaYoneticisi.Olustur(Pencere0.Kimlik, A1, 9, 24, 22, 'DY');
   dugDosyaYoneticisi.Goster;
 
   // görev yöneticisi programý için düðme
   A1 += 26;
-  dugGorevYoneticisi.Olustur(Pencere0.Kimlik, A1, 5, 24, 22, 'GY');
+  dugGorevYoneticisi.Olustur(Pencere0.Kimlik, A1, 9, 24, 22, 'GY');
   dugGorevYoneticisi.Goster;
 
   // sistem mesaj görüntüleyici programý için düðme
   A1 += 26;
-  dugMesajGoruntuleyici.Olustur(Pencere0.Kimlik, A1, 5, 32, 22, 'MSJ');
+  dugMesajGoruntuleyici.Olustur(Pencere0.Kimlik, A1, 9, 32, 22, 'MSJ');
   dugMesajGoruntuleyici.Goster;
 
   // açýklama haline getirilen aþaðýdaki kodlar TResimDugme'nin þeffaf özelliði
@@ -139,13 +139,13 @@ begin
   dugMesajGoruntuleyici.Olustur(Pencere0.Kimlik, A1, 4, 24, 24, $80000000 + 4);
   dugMesajGoruntuleyici.Goster;}
 
-  etiSaat.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 100, 1, $800000, '00:00:00');
+  etiSaat.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 100, 5, $800000, '00:00:00');
   etiSaat.Goster;
 
-  etiTarih.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 118, 18, $800000, '00.00.0000 Aa');
+  etiTarih.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 118, 23, $800000, '00.00.0000 Aa');
   etiTarih.Goster;
 
-  etiAgBilgi.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 160, 9, $FF0000, '[Að]');
+  etiAgBilgi.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 160, 14, $FF0000, '[Að]');
   etiAgBilgi.Goster;
 
   // paneli (pencere) görüntüle
@@ -285,14 +285,13 @@ begin
     else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      GetTime(@Saat);
+      SaatAl(@Saat);
       s := TimeToStr(Saat);
       etiSaat.Degistir(s);
 
-      GetDate(@Tarih);
+      TarihAl(@Tarih);
       s := DateToStr(Tarih, True);
       etiTarih.Degistir(s);
     end;
-
-  until (1 = 2);
+  until 1 = 2;
 end.

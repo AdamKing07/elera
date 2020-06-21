@@ -6,7 +6,7 @@
   Program Adı: noktalar.lpr
   Program İşlevi: nokta işaretleme test programı
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 01/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -45,7 +45,7 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 300 + 8, 300 + 50, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 100, 100, 300, 300 + 20, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   OnayKutusu0.Olustur(Pencere0.Kimlik, 2, 2, 'Devam Et');
@@ -55,20 +55,20 @@ begin
 
   Zamanlayici0.Olustur(50);
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
 
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
 
       NoktalariCiz
+
     else if(OlayKayit.Olay = CO_DURUMDEGISTI) then
     begin
 
       if(OlayKayit.Deger1 = 1) then Zamanlayici0.Baslat
       else if(OlayKayit.Deger1 = 0) then Zamanlayici0.Durdur;
     end;
-
-  until (1 = 2);
-
+  end;
 end.

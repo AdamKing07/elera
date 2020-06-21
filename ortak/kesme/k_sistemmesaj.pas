@@ -54,14 +54,14 @@ begin
   else if(_IslevNo = 3) then
   begin
 
-    SISTEM_MESAJ(PShortString(Isaretci(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi))^, []);
+    SISTEM_MESAJ(PKarakterKatari(Isaretci(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi))^, []);
   end
 
   // programdan karakter katarı + sayısal değer türünde gelen mesajı sistem mesajlarına ekle
   else if(_IslevNo = 4) then
   begin
 
-    SISTEM_MESAJ_S16(PShortString(Isaretci(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi))^,
+    SISTEM_MESAJ_S16(PKarakterKatari(Isaretci(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi))^,
       PSayi4(Degiskenler + 04)^, PSayi4(Degiskenler + 08)^);
   end;
 end;

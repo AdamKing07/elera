@@ -10,6 +10,7 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_baglanti;
 
 interface
@@ -27,6 +28,10 @@ type
     property Kimlik: TKimlik read FKimlik;
   end;
 
+function _BaglantiOlustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ANormalRenk,
+  AOdakRenk: TRenk; ABaslik: string): TKimlik; assembler;
+procedure _BaglantiGoster(AKimlik: TKimlik); assembler;
+
 implementation
 
 function TBaglanti.Olustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ANormalRenk,
@@ -41,6 +46,28 @@ procedure TBaglanti.Goster;
 begin
 
   _BaglantiGoster(FKimlik);
+end;
+
+function _BaglantiOlustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ANormalRenk,
+  AOdakRenk: TRenk; ABaslik: string): TKimlik;
+asm
+  push  ABaslik
+  push  AOdakRenk
+  push  ANormalRenk
+  push  B1
+  push  A1
+  push  AAtaKimlik
+  mov   eax,BAGLANTI_OLUSTUR
+  int   $34
+  add   esp,24
+end;
+
+procedure _BaglantiGoster(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,BAGLANTI_GOSTER
+  int   $34
+  add   esp,4
 end;
 
 end.

@@ -10,6 +10,7 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_acilirmenu;
 
 interface
@@ -28,6 +29,13 @@ type
     function SeciliSiraNoAl: TISayi4;
     property Kimlik: TKimlik read FKimlik;
   end;
+
+function _AcilirMenuOlustur(AKenarRenk, AGovdeRenk, ASecimRenk, ANormalYaziRenk,
+  ASeciliYaziRenk: TRenk): TKimlik; assembler;
+procedure _AcilirMenuGoster(AKimlik: TKimlik); assembler;
+procedure _AcilirMenuGizle(AKimlik: TKimlik); assembler;
+procedure _AcilirMenuElemanEkle(AKimlik: TKimlik; AElemanAdi: string; AResimSiraNo: TISayi4); assembler;
+function _AcilirMenuSeciliSiraNoAl(AKimlik: TKimlik): TISayi4; assembler;
 
 implementation
 
@@ -62,6 +70,53 @@ function TAcilirMenu.SeciliSiraNoAl: TISayi4;
 begin
 
   Result := _AcilirMenuSeciliSiraNoAl(FKimlik);
+end;
+
+function _AcilirMenuOlustur(AKenarRenk, AGovdeRenk, ASecimRenk, ANormalYaziRenk,
+  ASeciliYaziRenk: TRenk): TKimlik;
+asm
+  push  ASeciliYaziRenk
+  push  ANormalYaziRenk
+  push  ASecimRenk
+  push  AGovdeRenk
+  push  AKenarRenk
+  mov   eax,ACILIRMENU_OLUSTUR
+  int   $34
+  add   esp,20
+end;
+
+procedure _AcilirMenuGoster(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,ACILIRMENU_GOSTER
+  int   $34
+  add   esp,4
+end;
+
+procedure _AcilirMenuGizle(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,ACILIRMENU_GIZLE
+  int   $34
+  add   esp,4
+end;
+
+procedure _AcilirMenuElemanEkle(AKimlik: TKimlik; AElemanAdi: string; AResimSiraNo: TISayi4);
+asm
+  push  AResimSiraNo
+  push  AElemanAdi
+  push  AKimlik
+  mov   eax,ACILIRMENU_ELEMANEKLE
+  int   $34
+  add   esp,12
+end;
+
+function _AcilirMenuSeciliSiraNoAl(AKimlik: TKimlik): TISayi4;
+asm
+  push  AKimlik
+  mov   eax,ACILIRMENU_SECILISIRANOAL
+  int   $34
+  add   esp,4
 end;
 
 end.

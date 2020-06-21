@@ -7,7 +7,7 @@ program dsybil;
   Program Adý: dsybil.lpr
   Program Ýþlevi: dosyalar hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -24,15 +24,16 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 300, 170, ptIletisim, ProgramAdi, $EADEA5);
+  Pencere0.Olustur(-1, 100, 100, 300, 150, ptIletisim, ProgramAdi, $EADEA5);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
-  dugKapat.Olustur(Pencere0.Kimlik, 110, 100, 80, 22, '  Kapat');
+  dugKapat.Olustur(Pencere0.Kimlik, 110, 100, 80, 22, 'Kapat');
   dugKapat.Goster;
 
   Pencere0.Goster;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
@@ -49,6 +50,5 @@ begin
       Pencere0.Tuval.YaziYaz(8, 32, '------------------');
       Pencere0.Tuval.YaziYaz(8, 48, ParamStr1(1));
     end;
-
-  until (1 = 2);
+  end;
 end.

@@ -10,6 +10,7 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_degerdugmesi;
 
 interface
@@ -27,6 +28,10 @@ type
     property Kimlik: TKimlik read FKimlik;
   end;
 
+function _DegerDugmesiOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4): TKimlik; assembler;
+procedure _DegerDugmesiGoster(AKimlik: TKimlik); assembler;
+
 implementation
 
 function TDegerDugmesi.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
@@ -41,6 +46,27 @@ procedure TDegerDugmesi.Goster;
 begin
 
   _DegerDugmesiGoster(FKimlik);
+end;
+
+function _DegerDugmesiOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4): TKimlik;
+asm
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AAtaKimlik
+  mov   eax,DEGERDUGMESI_OLUSTUR
+  int   $34
+  add   esp,20
+end;
+
+procedure _DegerDugmesiGoster(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,DEGERDUGMESI_GOSTER
+  int   $34
+  add   esp,4
 end;
 
 end.

@@ -24,7 +24,7 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 200, 200, 160, 80, ptIletisim, 'Tarih / Saat', $E3F5AB);
+  Pencere0.Olustur(-1, 200, 200, 160, 52, ptIletisim, 'Tarih / Saat', $E3F5AB);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Goster;

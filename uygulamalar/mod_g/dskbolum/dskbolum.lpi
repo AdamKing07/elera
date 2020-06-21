@@ -38,8 +38,8 @@
         <Filename Value="dskbolum.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="74"/>
-        <CursorPos X="52" Y="88"/>
+        <TopLine Value="63"/>
+        <CursorPos X="37" Y="87"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -116,7 +116,7 @@
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit12>
     </Units>
-    <JumpHistory Count="25" HistoryIndex="24">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="dskbolum.lpr"/>
         <Caret Line="73" Column="30" TopLine="50"/>
@@ -216,6 +216,21 @@
       <Position25>
         <Filename Value="dskbolum.lpr"/>
       </Position25>
+      <Position26>
+        <Filename Value="dskbolum.lpr"/>
+        <Caret Line="52" Column="19" TopLine="33"/>
+      </Position26>
+      <Position27>
+        <Filename Value="dskbolum.lpr"/>
+        <Caret Line="108" Column="50" TopLine="78"/>
+      </Position27>
+      <Position28>
+        <Filename Value="dskbolum.lpr"/>
+      </Position28>
+      <Position29>
+        <Filename Value="dskbolum.lpr"/>
+        <Caret Line="117" Column="8" TopLine="97"/>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

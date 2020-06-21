@@ -3,10 +3,10 @@
   Kodlayan: Fatih KILIÇ
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Dosya Adý: gn_kaydirmacubugu.pas
+  Dosya Adý: gn_kaydirmacubugu.pp
   Dosya Ýþlevi: kaydýrma çubuðu yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 03/04/2020
+  Güncelleme Tarihi: 20/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,83 +14,87 @@ unit gn_kaydirmacubugu;
 
 interface
 
-uses gorselnesne, paylasim, gn_pencere;
+uses gorselnesne, paylasim, gn_pencere, gn_panel, gn_resimdugmesi;
 
 type
   PKaydirmaCubugu = ^TKaydirmaCubugu;
-  TKaydirmaCubugu = object(TGorselNesne)
+  TKaydirmaCubugu = object(TPanel)
   private
-    FYon: TYon;
-    FAzalmaDDurum, FArtmaDDurum: TDugmeDurumu;    // azalma ve artma düðme durumlarý
-    FMevcutDeger, FAltDeger, FUstDeger: TISayi4;
-    FCubukU: TISayi4;                             // kaydýrma çubuðunun ortasýndaki çubuðun uzunluðu
+    procedure ResimDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   public
-    function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-      AYon: TYon): PKaydirmaCubugu;
-    procedure DegerleriBelirle(AAltDeger, AUstDeger: TISayi4);
+    FKCOlayGeriDonusumAdresi: TOlaylariIsle;
+    FYon: TYon;
+    FMevcutDeger, FAltDeger, FUstDeger: TISayi4;
+    // kaydýrma çubuðunun ortasýndaki çubuðun uzunluðu
+    FCubukU: TISayi4;
+    FEksiltmeDugmesi, FArtirmaDugmesi: PResimDugmesi;
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne; ASol, AUst,
+      AGenislik, AYukseklik: TISayi4; AYon: TYon): PKaydirmaCubugu;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
-    procedure KaydirmaOklariniCiz(APencere: PPencere; AAlan: TAlan; AYon: TYon);
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
-  published
-    property Yon: TYon read FYon write FYon;
-    property MevcutDeger: TISayi4 read FMevcutDeger write FMevcutDeger;
-    property AltDeger: TISayi4 read FAltDeger write FAltDeger;
-    property UstDeger: TISayi4 read FUstDeger write FUstDeger;
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure DegerleriBelirle(AAltDeger, AUstDeger: TISayi4);
   end;
 
-function KaydirmaCubuguCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function KaydirmaCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   AYon: TYon): TKimlik;
 
 implementation
 
-uses genel, gn_islevler, temelgorselnesne, hamresim2, sistemmesaj;
+uses genel, gn_islevler, temelgorselnesne;
 
 {==============================================================================
   kaydýrma çubuðu kesme çaðrýlarýný yönetir
  ==============================================================================}
-function KaydirmaCubuguCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function KaydirmaCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PPencere;
-  _KaydirmaCubugu: PKaydirmaCubugu;
-  _Hiza: THiza;
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  KaydirmaCubugu: PKaydirmaCubugu;
+  Hiza: THiza;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^, PISayi4(Degiskenler + 16)^,
-        PYon(Degiskenler + 20)^);
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+        PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^,
+        PYon(ADegiskenler + 20)^);
+    end;
 
     ISLEV_GOSTER:
     begin
 
-      _KaydirmaCubugu := PKaydirmaCubugu(_KaydirmaCubugu^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _KaydirmaCubugu^.Goster;
+      KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      KaydirmaCubugu^.Goster;
     end;
 
     $0104:
     begin
 
-      _KaydirmaCubugu := PKaydirmaCubugu(_KaydirmaCubugu^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Hiza := PHiza(Degiskenler + 04)^;
-      _KaydirmaCubugu^.Hiza := _Hiza;
+      KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Hiza := PHiza(ADegiskenler + 04)^;
+      KaydirmaCubugu^.FHiza := Hiza;
 
-      _Pencere := PPencere(_KaydirmaCubugu^.FAtaNesne);
-      _Pencere^.Guncelle;
+      Pencere := PPencere(KaydirmaCubugu^.FAtaNesne);
+      Pencere^.Guncelle;
     end;
 
     // alt, üst deðerlerini belirle
     $0204:
     begin
 
-      _KaydirmaCubugu := PKaydirmaCubugu(_KaydirmaCubugu^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntKaydirmaCubugu));
-      if(_KaydirmaCubugu <> nil) then _KaydirmaCubugu^.DegerleriBelirle(
-        PISayi4(Degiskenler + 04)^, PISayi4(Degiskenler + 08)^);
+      KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntKaydirmaCubugu));
+      if(KaydirmaCubugu <> nil) then KaydirmaCubugu^.DegerleriBelirle(
+        PISayi4(ADegiskenler + 04)^, PISayi4(ADegiskenler + 08)^);
     end
 
     else Result := HATA_ISLEV;
@@ -100,114 +104,102 @@ end;
 {==============================================================================
   kaydýrma çubuðu nesnesini oluþturur
  ==============================================================================}
-function NesneOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TKimlik;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   AYon: TYon): TKimlik;
 var
-  _KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu;
 begin
 
-  _KaydirmaCubugu := _KaydirmaCubugu^.Olustur(AtaKimlik, A1, B1, AGenislik, AYukseklik, AYon);
+  KaydirmaCubugu := KaydirmaCubugu^.Olustur(ktNesne, AAtaNesne, ASol, AUst,
+    AGenislik, AYukseklik, AYon);
 
-  if(_KaydirmaCubugu = nil) then
+  if(KaydirmaCubugu = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _KaydirmaCubugu^.Kimlik;
+
+  else Result := KaydirmaCubugu^.Kimlik;
 end;
 
 {==============================================================================
   kaydýrma çubuðu nesnesini oluþturur
  ==============================================================================}
-function TKaydirmaCubugu.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-  AYon: TYon): PKaydirmaCubugu;
+function TKaydirmaCubugu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst, AGenislik, AYukseklik: TISayi4; AYon: TYon): PKaydirmaCubugu;
 var
-  _AtaNesne: PGorselNesne;
-  _KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu;
+  Genislik, Yukseklik: TISayi4;
 begin
 
-  // nesnenin baðlanacaðý ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  Yukseklik := AYukseklik;
+  Genislik := AGenislik;
 
-  // kaydýrma çubuðu nesnesi oluþtur
-  _KaydirmaCubugu := PKaydirmaCubugu(Olustur0(gntKaydirmaCubugu));
-  if(_KaydirmaCubugu = nil) then
-  begin
-
-    Result := nil;
-    Exit;
-  end;
-
-  // kaydýrma çubuðu nesnesini ata nesneye ekle
-  if(_KaydirmaCubugu^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
-
-    // hata olmasý durumunda nesneyi yok et ve hata koduyla iþlevden çýk
-    _KaydirmaCubugu^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
-
-  // nesnenin ilk özellik deðerlerini ata
-  _KaydirmaCubugu^.GorevKimlik := CalisanGorev;
-  _KaydirmaCubugu^.AtaNesne := _AtaNesne;
-  _KaydirmaCubugu^.Hiza := hzYok;
-  _KaydirmaCubugu^.FBoyutlar.Sol2 := A1;
-  _KaydirmaCubugu^.FBoyutlar.Ust2 := B1;
-
-  // dikey kaydýrma çubuðunun geniþliði 15px olarak sabitleniyor
+  // dikey kaydýrma çubuðunun geniþliði 15px (0..15 = 16px) olarak sabitleniyor
   if(AYon = yDikey) then
-    _KaydirmaCubugu^.FBoyutlar.Genislik2 := 15
-  else _KaydirmaCubugu^.FBoyutlar.Genislik2 := AGenislik;
+    Genislik := 15
+  else Genislik := AGenislik;
 
-  // yatay kaydýrma çubuðunun yüksekliði 15px olarak sabitleniyor
+  // yatay kaydýrma çubuðunun yüksekliði 15px (0..15 = 16px) olarak sabitleniyor
   if(AYon = yYatay) then
-    _KaydirmaCubugu^.FBoyutlar.Yukseklik2 := 15
-  else _KaydirmaCubugu^.FBoyutlar.Yukseklik2 := AYukseklik;
+    Yukseklik := 15
+  else Yukseklik := AYukseklik;
 
-  // kenar kalýnlýklarý
-  _KaydirmaCubugu^.FKalinlik.Sol := 0;
-  _KaydirmaCubugu^.FKalinlik.Ust := 0;
-  _KaydirmaCubugu^.FKalinlik.Sag := 0;
-  _KaydirmaCubugu^.FKalinlik.Alt := 0;
+  KaydirmaCubugu := PKaydirmaCubugu(inherited Olustur(AKullanimTipi, AAtaNesne,
+    ASol, AUst, Genislik, Yukseklik, 3, RENK_GUMUS, RENK_BEYAZ, 0, ''));
 
-  // kenar boþluklarý
-  _KaydirmaCubugu^.FKenarBosluklari.Sol := 0;
-  _KaydirmaCubugu^.FKenarBosluklari.Ust := 0;
-  _KaydirmaCubugu^.FKenarBosluklari.Sag := 0;
-  _KaydirmaCubugu^.FKenarBosluklari.Alt := 0;
+  // görsel nesne tipi
+  KaydirmaCubugu^.NesneTipi := gntKaydirmaCubugu;
 
-  _KaydirmaCubugu^.Yon := AYon;
-  _KaydirmaCubugu^.MevcutDeger := 0;
-  _KaydirmaCubugu^.AltDeger := 0;
-  _KaydirmaCubugu^.UstDeger := 100;
+  KaydirmaCubugu^.Baslik := '';
 
-  _KaydirmaCubugu^.FAtaNesneMi := False;
-  _KaydirmaCubugu^.FareGostergeTipi := fitOK;
-  _KaydirmaCubugu^.FGorunum := False;
-  _KaydirmaCubugu^.FBaslik := '';
-  _KaydirmaCubugu^.FAzalmaDDurum := ddNormal;
-  _KaydirmaCubugu^.FArtmaDDurum := ddNormal;
+  KaydirmaCubugu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  // nesnenin ad deðeri
-  _KaydirmaCubugu^.NesneAdi := NesneAdiAl(gntKaydirmaCubugu);
+  KaydirmaCubugu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  KaydirmaCubugu^.FKCOlayGeriDonusumAdresi := nil;
 
-  // uygulamaya mesaj gönder
-  GorevListesi[_KaydirmaCubugu^.GorevKimlik]^.OlayEkle1(_KaydirmaCubugu^.GorevKimlik,
-    _KaydirmaCubugu, CO_OLUSTUR, 0, 0);
+  KaydirmaCubugu^.FYon := AYon;
+
+  if(AYon = yYatay) then
+  begin
+
+    // $10000000 + 4 = sol ok resmi
+    KaydirmaCubugu^.FEksiltmeDugmesi := FEksiltmeDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
+      0, 0, 15, Yukseklik, $10000000 + 4, True);
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+
+    // $10000000 + 3 = sað ok resmi
+    KaydirmaCubugu^.FArtirmaDugmesi := FArtirmaDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
+      Genislik - 15, 0, 15, Yukseklik, $10000000 + 3, True);
+    KaydirmaCubugu^.FArtirmaDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+  end
+  else
+  begin
+
+    // $10000000 + 4 = yukarý ok resmi
+    KaydirmaCubugu^.FEksiltmeDugmesi := FEksiltmeDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
+      0, 0, 15, 15, $10000000 + 1, True);
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+
+    // $10000000 + 3 = aþaðý ok resmi
+    KaydirmaCubugu^.FArtirmaDugmesi := FArtirmaDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
+      0, Yukseklik - 15, 15, 15, $10000000 + 2, True);
+    KaydirmaCubugu^.FArtirmaDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+  end;
+
+  KaydirmaCubugu^.FMevcutDeger := 0;
+  KaydirmaCubugu^.FAltDeger := 0;
+  KaydirmaCubugu^.FUstDeger := 100;
 
   // nesne adresini geri döndür
-  Result := _KaydirmaCubugu;
+  Result := KaydirmaCubugu;
 end;
 
 {==============================================================================
-  iþlem göstergesi en alt, en üst deðerlerini belirler
+  kaydýrma çubuðu nesnesini yok eder
  ==============================================================================}
-procedure TKaydirmaCubugu.DegerleriBelirle(AAltDeger, AUstDeger: TISayi4);
+procedure TKaydirmaCubugu.YokEt;
 begin
 
-  FAltDeger := AAltDeger;
-  FUstDeger := AUstDeger;
-  FMevcutDeger := AAltDeger;
+  inherited YokEt;
 end;
 
 {==============================================================================
@@ -215,32 +207,67 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.Goster;
 var
-  _Pencere: PPencere;
-  _KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _KaydirmaCubugu := PKaydirmaCubugu(_KaydirmaCubugu^.NesneTipiniKontrolEt(Kimlik,
-    gntKaydirmaCubugu));
-  if(_KaydirmaCubugu = nil) then Exit;
+  KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
+  if(KaydirmaCubugu = nil) then Exit;
 
-  // nesne görünür durumda mý ?
-  if(_KaydirmaCubugu^.FGorunum = False) then
+  KaydirmaCubugu^.FArtirmaDugmesi^.Goster;
+  KaydirmaCubugu^.FEksiltmeDugmesi^.Goster;
+
+  inherited Goster;
+end;
+
+{==============================================================================
+  kaydýrma çubuðu nesnesini gizler
+ ==============================================================================}
+procedure TKaydirmaCubugu.Gizle;
+begin
+
+  inherited Gizle;
+end;
+
+{==============================================================================
+  kaydýrma çubuðu nesnesini boyutlandýrýr
+ ==============================================================================}
+procedure TKaydirmaCubugu.Boyutlandir;
+var
+  KaydirmaCubugu: PKaydirmaCubugu;
+begin
+
+  KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
+  if(KaydirmaCubugu = nil) then Exit;
+
+  if(KaydirmaCubugu^.FYon = yYatay) then
   begin
 
-    // kaydýrma çubuðu nesnesinin görünürlüðünü aktifleþtir
-    _KaydirmaCubugu^.FGorunum := True;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FKonum.Sol := 0;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FKonum.Ust := 0;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FBoyut.Genislik := 16;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FBoyut.Yukseklik := 16;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.BoyutlariYenidenHesapla;
 
-    // ata nesne görünür durumda mý ?
-    if(_KaydirmaCubugu^.AtaNesneGorunurMu) then
-    begin
+    KaydirmaCubugu^.FArtirmaDugmesi^.FKonum.Sol := KaydirmaCubugu^.FBoyut.Genislik - 16;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FKonum.Ust := 0;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FBoyut.Genislik := 16;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FBoyut.Yukseklik := 16;
+    KaydirmaCubugu^.FArtirmaDugmesi^.BoyutlariYenidenHesapla;
+  end
+  else if(KaydirmaCubugu^.FYon = yDikey) then
+  begin
 
-      // kaydýrma çubuðu nesnesinin ata nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_KaydirmaCubugu);
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FKonum.Sol := 0;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FKonum.Ust := 0;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FBoyut.Genislik := 16;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.FBoyut.Yukseklik := 16;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.BoyutlariYenidenHesapla;
 
-      // pencere nesnesini güncelle
-      _Pencere^.Guncelle;
-    end;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FKonum.Sol := 0;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FKonum.Ust := KaydirmaCubugu^.FBoyut.Yukseklik - 16;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FBoyut.Genislik := 16;
+    KaydirmaCubugu^.FArtirmaDugmesi^.FBoyut.Yukseklik := 16;
+    KaydirmaCubugu^.FArtirmaDugmesi^.BoyutlariYenidenHesapla;
   end;
 end;
 
@@ -249,370 +276,142 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.Ciz;
 var
-  _Pencere: PPencere;
-  _KaydirmaCubugu: PKaydirmaCubugu;
-  _Alan: TAlan;
+  KaydirmaCubugu: PKaydirmaCubugu;
+  Alan: TAlan;
   FYuzde1, FYuzde2: Double;
   i: TISayi4;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _KaydirmaCubugu := PKaydirmaCubugu(_KaydirmaCubugu^.NesneTipiniKontrolEt(Kimlik,
-    gntKaydirmaCubugu));
-  if(_KaydirmaCubugu = nil) then Exit;
+  inherited Ciz;
 
-  // ata nesne bir pencere mi?
-  _Pencere := PencereAtaNesnesiniAl(_KaydirmaCubugu);
-  if(_Pencere = nil) then Exit;
+  KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
+  if(KaydirmaCubugu = nil) then Exit;
 
-  // kaydýrma çubuðunun ata nesne olan pencere nesnesine baðlý olarak koordinatlarýný al
-  _Alan := _KaydirmaCubugu^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  KaydirmaCubugu^.FEksiltmeDugmesi^.Ciz;
+  KaydirmaCubugu^.FArtirmaDugmesi^.Ciz;
 
-  if(_KaydirmaCubugu^.Yon = yDikey) then
+  // kaydýrma çubuðunun çizim alan koordinatlarýný al
+  Alan := KaydirmaCubugu^.FCizimAlan;
+
+  if(KaydirmaCubugu^.FYon = yDikey) then
   begin
 
     // kaydýrma çubuk uzunluðu = ara boþluðun yarýsý
-    FCubukU := ((_Alan.Alt - _Alan.Ust) - ((_KaydirmaCubugu^.FBoyutlar.Genislik2 + 1) * 2)) div 2;
+    KaydirmaCubugu^.FCubukU := (Alan.Alt - ((KaydirmaCubugu^.FBoyut.Genislik + 1) * 2)) div 2;
+
+    FYuzde1 := (KaydirmaCubugu^.FMevcutDeger * 100) / KaydirmaCubugu^.FUstDeger;
+    FYuzde2 := KaydirmaCubugu^.FCubukU / 100;
+    i := Round(FYuzde1 * FYuzde2);
+
+    DikdortgenDoldur(KaydirmaCubugu, Alan.Sol + 2, Alan.Ust + 16 + i,
+      Alan.Sag - 2, Alan.Ust + 16 + i + KaydirmaCubugu^.FCubukU, $7F7F7F, $7F7F7F);
   end
   else
   begin
 
     // kaydýrma çubuk uzunluðu = ara boþluðun yarýsý
-    FCubukU := ((_Alan.Sag - _Alan.Sol) - ((_KaydirmaCubugu^.FBoyutlar.Yukseklik2 + 1) * 2)) div 2;
-  end;
+    KaydirmaCubugu^.FCubukU := (Alan.Sag - ((KaydirmaCubugu^.FBoyut.Yukseklik + 1) * 2)) div 2;
 
-  FYuzde1 := (FMevcutDeger * 100) / FUstDeger;
-  FYuzde2 := FCubukU / 100;
-  i := Round(FYuzde1 * FYuzde2);
+    FYuzde1 := (KaydirmaCubugu^.FMevcutDeger * 100) / KaydirmaCubugu^.FUstDeger;
+    FYuzde2 := KaydirmaCubugu^.FCubukU / 100;
+    i := Round(FYuzde1 * FYuzde2);
 
-  // yatay kaydýrma çubuðu
-  if(_KaydirmaCubugu^.Yon = yYatay) then
-  begin
-
-    DikdortgenDoldur(_Pencere, _Alan, RENK_BEYAZ, RENK_BEYAZ);
-
-    if(FAzalmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sol + 14, _Alan.Alt,
-        $7F7F7F, RENK_BEYAZ)
-    else
-      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sol + 14, _Alan.Alt,
-        $7F7F7F, $C3C3C3);
-
-    if(FArtmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.Sag - 14, _Alan.Ust, _Alan.Sag, _Alan.Alt,
-        $7F7F7F, RENK_BEYAZ)
-    else
-      DikdortgenDoldur(_Pencere, _Alan.Sag - 14, _Alan.Ust, _Alan.Sag, _Alan.Alt,
-        $7F7F7F, $C3C3C3);
-
-    KaydirmaOklariniCiz(_Pencere, _Alan, _KaydirmaCubugu^.Yon);
-
-    Cizgi(_Pencere, _Alan.Sol + 16, _Alan.Ust, _Alan.Sag - 16, _Alan.Ust, $7F7F7F);
-    Cizgi(_Pencere, _Alan.Sol + 16, _Alan.Alt, _Alan.Sag - 16, _Alan.Alt, $7F7F7F);
-
-    DikdortgenDoldur(_Pencere, _Alan.Sol + 16 + i, _Alan.Ust + 2, _Alan.Sol + 16 + i + FCubukU,
-      _Alan.Alt - 2, $7F7F7F, $7F7F7F);
-  end
-  else
-  // dikey kaydýrma çubuðu
-  begin
-
-    DikdortgenDoldur(_Pencere, _Alan, RENK_BEYAZ, RENK_BEYAZ);
-
-    if(FAzalmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Ust + 14,
-        $7F7F7F, RENK_BEYAZ)
-    else
-      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Ust + 14,
-        $7F7F7F, $C3C3C3);
-
-    if(FArtmaDDurum = ddNormal) then
-      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Alt - 14, _Alan.Sag, _Alan.Alt,
-        $7F7F7F, RENK_BEYAZ)
-    else
-      DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Alt - 14, _Alan.Sag, _Alan.Alt,
-        $7F7F7F, $C3C3C3);
-
-    KaydirmaOklariniCiz(_Pencere, _Alan, _KaydirmaCubugu^.Yon);
-
-    Cizgi(_Pencere, _Alan.Sol, _Alan.Ust + 16, _Alan.Sol, _Alan.Alt - 16, $7F7F7F);
-    Cizgi(_Pencere, _Alan.Sag, _Alan.Ust + 16, _Alan.Sag, _Alan.Alt - 16, $7F7F7F);
-
-    DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 16 + i, _Alan.Sag - 2,
-      _Alan.Ust + 16 + i + FCubukU, $7F7F7F, $7F7F7F);
-  end;
-
-  // uygulamaya mesaj gönder
-  GorevListesi[_KaydirmaCubugu^.GorevKimlik]^.OlayEkle1(_KaydirmaCubugu^.GorevKimlik,
-    _KaydirmaCubugu, CO_CIZIM, 0, 0);
-end;
-
-procedure TKaydirmaCubugu.KaydirmaOklariniCiz(APencere: PPencere; AAlan: TAlan; AYon: TYon);
-var
-  p1: PByte;
-  B1, A1: Integer;
-begin
-
-  if(AYon = yYatay) then
-  begin
-
-    p1 := PByte(@OKSol);
-    for B1 := 1 to 7 do
-    begin
-
-      for A1 := 1 to 4 do
-      begin
-
-        if(p1^ = 1) then
-          PixelYaz(APencere, AAlan.Sol + 4 + A1, AAlan.Ust + 3 + B1, RENK_SIYAH);
-
-        Inc(p1);
-      end;
-    end;
-
-    p1 := PByte(@OKSag);
-    for B1 := 1 to 7 do
-    begin
-
-      for A1 := 1 to 4 do
-      begin
-
-        if(p1^ = 1) then
-          PixelYaz(APencere, (AAlan.Sag - 9) + A1, AAlan.Ust + 3 + B1, RENK_SIYAH);
-
-        Inc(p1);
-      end;
-    end;
-  end
-  else
-  begin
-
-    p1 := PByte(@OKUst);
-    for B1 := 1 to 4 do
-    begin
-
-      for A1 := 1 to 7 do
-      begin
-
-        if(p1^ = 1) then
-          PixelYaz(APencere, AAlan.Sol + 3 + A1, AAlan.Ust + 4 + B1, RENK_SIYAH);
-
-        Inc(p1);
-      end;
-    end;
-
-    p1 := PByte(@OKAlt);
-    for B1 := 1 to 4 do
-    begin
-
-      for A1 := 1 to 7 do
-      begin
-
-        if(p1^ = 1) then
-          PixelYaz(APencere, (AAlan.Sol + 3) + A1, (AAlan.Alt - 9) + B1, RENK_SIYAH);
-
-        Inc(p1);
-      end;
-    end;
+    DikdortgenDoldur(KaydirmaCubugu, Alan.Sol + 16 + i, Alan.Ust + 2,
+      Alan.Sol + 16 + i + KaydirmaCubugu^.FCubukU, Alan.Alt - 2, $7F7F7F, $7F7F7F);
   end;
 end;
 
 {==============================================================================
   kaydýrma çubuðu nesne olaylarýný iþler
  ==============================================================================}
-procedure TKaydirmaCubugu.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TKaydirmaCubugu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _KaydirmaCubugu: PKaydirmaCubugu;
-  _AlanArtis, _AlanAzalma: TAlan;
+  Pencere: PPencere;
+  KaydirmaCubugu: PKaydirmaCubugu;
 begin
 
-  _KaydirmaCubugu := PKaydirmaCubugu(_KaydirmaCubugu^.NesneTipiniKontrolEt(AKimlik,
-    gntKaydirmaCubugu));
-  if(_KaydirmaCubugu = nil) then Exit;
+  KaydirmaCubugu := PKaydirmaCubugu(AGonderici);
+  if(KaydirmaCubugu = nil) then Exit;
 
   // farenin sol tuþuna basým iþlemi
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // kaydýrma çubuðunun sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_KaydirmaCubugu);
+    Pencere := EnUstPencereNesnesiniAl(KaydirmaCubugu);
 
     // en üstte olmamasý durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
-
-    // sol tuþa basým iþlemi nesnenin olay alanýnda mý gerçekleþti ?
-    if(_KaydirmaCubugu^.FareNesneOlayAlanindaMi(AKimlik)) then
-    begin
-
-      // tek kat artýþ ve eksiltme ->
-      if(_KaydirmaCubugu^.FYon = yYatay) then
-      begin
-
-        _AlanAzalma.Sol := 0;
-        _AlanAzalma.Sag := 14;
-        _AlanAzalma.Ust := 0;
-        _AlanAzalma.Alt := 14;
-
-        _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2;
-        _AlanArtis.Sol := _AlanArtis.Sag - 14;
-        _AlanArtis.Ust := 0;
-        _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
-      end
-      else
-      begin
-
-        _AlanAzalma.Sol := 0;
-        _AlanAzalma.Sag := 14;
-        _AlanAzalma.Ust := 0;
-        _AlanAzalma.Alt := 14;
-
-        _AlanArtis.Sol := 0;
-        _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2;
-        _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
-        _AlanArtis.Ust := _AlanArtis.Alt - 14;
-      end;
-
-      if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanAzalma)) then
-        _KaydirmaCubugu^.FAzalmaDDurum := ddBasili
-      else if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanArtis)) then
-        _KaydirmaCubugu^.FArtmaDDurum := ddBasili;
-
-      if(FAzalmaDDurum = ddBasili) then
-      begin
-
-        Dec(FMevcutDeger);
-        if(FMevcutDeger < FAltDeger) then FMevcutDeger := FAltDeger;
-      end
-      else if(FArtmaDDurum = ddBasili) then
-      begin
-
-        Inc(FMevcutDeger);
-        if(FMevcutDeger > FUstDeger) then FMevcutDeger := FUstDeger;
-      end
-      // <- tek kat artýþ ve eksiltme
-
-      else
-      // 20 kat artýþ ve eksiltme ->
-      begin
-
-        if(_KaydirmaCubugu^.FYon = yYatay) then
-        begin
-
-          _AlanAzalma.Sol := 14;
-          _AlanAzalma.Sag := 28;
-          _AlanAzalma.Ust := 0;
-          _AlanAzalma.Alt := 14;
-
-          _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2 - 14;
-          _AlanArtis.Sol := _AlanArtis.Sag - 14;
-          _AlanArtis.Ust := 0;
-          _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2;
-        end
-        else
-        begin
-
-          _AlanAzalma.Sol := 0;
-          _AlanAzalma.Sag := 14;
-          _AlanAzalma.Ust := 14;
-          _AlanAzalma.Alt := 28;
-
-          _AlanArtis.Sol := 0;
-          _AlanArtis.Sag := _KaydirmaCubugu^.FBoyutlar.Genislik2;
-          _AlanArtis.Alt := _KaydirmaCubugu^.FBoyutlar.Yukseklik2 - 14;
-          _AlanArtis.Ust := _AlanArtis.Alt - 14;
-        end;
-
-        if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanAzalma)) then
-          _KaydirmaCubugu^.FAzalmaDDurum := ddBasili
-        else if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _AlanArtis)) then
-          _KaydirmaCubugu^.FArtmaDDurum := ddBasili;
-
-        if(FAzalmaDDurum = ddBasili) then
-        begin
-
-          Dec(FMevcutDeger, 20);
-          if(FMevcutDeger < FAltDeger) then FMevcutDeger := FAltDeger;
-        end
-        else if(FArtmaDDurum = ddBasili) then
-        begin
-
-          Inc(FMevcutDeger, 20);
-          if(FMevcutDeger > FUstDeger) then FMevcutDeger := FUstDeger;
-        end;
-      end;
-      // <- 20 kat artýþ ve eksiltme
-
-      // fare olaylarýný yakala
-      OlayYakalamayaBasla(_KaydirmaCubugu);
-
-      // kaydýrma çubuðu nesnesini yeniden çiz
-      _KaydirmaCubugu^.Ciz;
-
-      // uygulamaya veya efendi nesneye mesaj gönder
-      if not(_KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi = nil) then
-
-        _KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi(_KaydirmaCubugu^.Kimlik, AOlay)
-
-      else GorevListesi[_KaydirmaCubugu^.GorevKimlik]^.OlayEkle1(_KaydirmaCubugu^.GorevKimlik,
-
-        _KaydirmaCubugu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
-    end;
-  end
-  else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
-  begin
-
-    // fare olaylarýný almayý býrak
-    OlayYakalamayiBirak(_KaydirmaCubugu);
-
-    //  kaydýrma çubuðu durumlarýný eski konumuna geri getir
-    _KaydirmaCubugu^.FAzalmaDDurum := ddNormal;
-    _KaydirmaCubugu^.FArtmaDDurum := ddNormal;
-
-    // kaydýrma çubuðu nesnesini yeniden çiz
-    _KaydirmaCubugu^.Ciz;
-
-    // farenin tuþ býrakma iþlemi nesnenin olay alanýnda mý gerçekleþti ?
-    if(_KaydirmaCubugu^.FareNesneOlayAlanindaMi(AKimlik)) then
-    begin
-
-      // uygulamaya veya efendi nesneye mesaj gönder
-      AOlay.Olay := FO_TIKLAMA;
-      if not(_KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi = nil) then
-
-        _KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi(_KaydirmaCubugu^.Kimlik, AOlay)
-
-      else GorevListesi[_KaydirmaCubugu^.GorevKimlik]^.OlayEkle1(_KaydirmaCubugu^.GorevKimlik,
-
-        _KaydirmaCubugu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
-    end;
-
-    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(_KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi = nil) then
-
-      _KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi(_KaydirmaCubugu^.Kimlik, AOlay)
-
-    else GorevListesi[_KaydirmaCubugu^.GorevKimlik]^.OlayEkle1(_KaydirmaCubugu^.GorevKimlik,
-
-      _KaydirmaCubugu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
-  end
-  else if(AOlay.Olay = FO_HAREKET) then
-  begin
-
-    // kaydýrma çubuðu nesnesini yeniden çiz
-    _KaydirmaCubugu^.Ciz;
-
-    if not(_KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi = nil) then
-
-      _KaydirmaCubugu^.FEfendiNesneOlayCagriAdresi(_KaydirmaCubugu^.Kimlik, AOlay)
-
-    else GorevListesi[_KaydirmaCubugu^.GorevKimlik]^.OlayEkle1(_KaydirmaCubugu^.GorevKimlik,
-
-      _KaydirmaCubugu, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := KaydirmaCubugu^.FFareImlecTipi;
+end;
+
+{==============================================================================
+  kaydýrma çubuðunun sahip olduðu artýrma / eksiltme nesne olaylarýný iþler
+ ==============================================================================}
+procedure TKaydirmaCubugu.ResimDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+var
+  KaydirmaCubugu: PKaydirmaCubugu;
+  ResimDugmesi: PResimDugmesi;
+  i: TISayi4;
+begin
+
+  ResimDugmesi := PResimDugmesi(AGonderici);
+  if(ResimDugmesi = nil) then Exit;
+
+  KaydirmaCubugu := PKaydirmaCubugu(ResimDugmesi^.AtaNesne);
+
+  if(AOlay.Olay = FO_TIKLAMA) then
+  begin
+
+    if(AOlay.Kimlik = KaydirmaCubugu^.FEksiltmeDugmesi^.Kimlik) then
+    begin
+
+      i := KaydirmaCubugu^.FMevcutDeger;
+      Dec(i);
+      if(i < KaydirmaCubugu^.FAltDeger) then i := KaydirmaCubugu^.FAltDeger;
+    end
+    else
+    begin
+
+      i := KaydirmaCubugu^.FMevcutDeger;
+      Inc(i);
+      if(i > KaydirmaCubugu^.FUstDeger) then i := KaydirmaCubugu^.FUstDeger;
+    end;
+
+    KaydirmaCubugu^.FMevcutDeger := i;
+
+    KaydirmaCubugu^.Ciz;
+
+    AOlay.Kimlik := KaydirmaCubugu^.Kimlik;
+    AOlay.Deger1 := KaydirmaCubugu^.FMevcutDeger;
+
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(KaydirmaCubugu^.FKCOlayGeriDonusumAdresi = nil) then
+      KaydirmaCubugu^.FKCOlayGeriDonusumAdresi(KaydirmaCubugu, AOlay)
+    else GorevListesi[KaydirmaCubugu^.GorevKimlik]^.OlayEkle(KaydirmaCubugu^.GorevKimlik, AOlay);
+  end;
+
+  // geçerli fare göstergesini güncelle
+  GecerliFareGostegeTipi := KaydirmaCubugu^.FFareImlecTipi;
+end;
+
+{==============================================================================
+  iþlem göstergesi en alt, en üst deðerlerini belirler
+ ==============================================================================}
+procedure TKaydirmaCubugu.DegerleriBelirle(AAltDeger, AUstDeger: TISayi4);
+var
+  KaydirmaCubugu: PKaydirmaCubugu;
+begin
+
+  KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
+  if(KaydirmaCubugu = nil) then Exit;
+
+  KaydirmaCubugu^.FAltDeger := AAltDeger;
+  KaydirmaCubugu^.FUstDeger := AUstDeger;
+  KaydirmaCubugu^.FMevcutDeger := AAltDeger;
 end;
 
 end.

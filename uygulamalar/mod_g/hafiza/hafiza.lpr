@@ -7,7 +7,7 @@ program hafiza;
   Program Adý: hafiza.lpr
   Program Ýþlevi: hafýza güçlendirmek için geliþtirilmiþ uygulama
 
-  Güncelleme Tarihi: 15/05/2020
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -61,8 +61,8 @@ end;
 // program ilk deðer atamalarý
 procedure IlkDegerAtamalari;
 var
-  Sol, Ust,
-  i, j, DugmeSayisi: TISayi4;
+  Sol, Ust, i, j,
+  DugmeSayisi: TISayi4;
 begin
 
   ToplamTiklamaSayisi := 0;
@@ -108,7 +108,7 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 335, 385, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 100, 100, 328, 360, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Durum.Olustur(Pencere0.Kimlik, 92, 330, RENK_LACIVERT, 'Týklama Sayýsý: 0  ');
@@ -118,7 +118,8 @@ begin
 
   Pencere0.Goster;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
@@ -133,7 +134,8 @@ begin
       begin
 
         SeciliDugme1 := DugmeAl(OlayKayit.Kimlik);
-        if not(SeciliDugme1 = nil) then SeciliDugme1^.BaslikDegistir(IntToStr(SeciliDugme1^.Etiket));
+        if not(SeciliDugme1 = nil) then
+          SeciliDugme1^.BaslikDegistir(IntToStr(SeciliDugme1^.Etiket));
       end
 
       else if(TiklamaSayisi = 2) then
@@ -141,7 +143,7 @@ begin
 
         SeciliDugme2 := DugmeAl(OlayKayit.Kimlik);
 
-        // 1. ve 2. düðme ayný mý?
+        // 1. ve 2. týklama ayný düðmeye mi yapýldý?
         if(SeciliDugme1^.Kimlik = SeciliDugme2^.Kimlik) then
         begin
 
@@ -150,10 +152,13 @@ begin
         else
         begin
 
+          // bir rakamýn eþi bulunduysa
           if(SeciliDugme1^.Etiket = SeciliDugme2^.Etiket) then
           begin
 
             SeciliDugme2^.BaslikDegistir(IntToStr(SeciliDugme2^.Etiket));
+
+            Bekle(15);
 
             SeciliDugme1^.Gizle;
             SeciliDugme2^.Gizle;
@@ -162,6 +167,8 @@ begin
             if(BulunanCiftSayisi = 8) then
             begin
 
+              Bekle(40);
+
               for i := 0 to 15 do Dugmeler[i].YokEt;
 
               // oyunu baþa döndür
@@ -169,6 +176,7 @@ begin
             end;
           end
           else
+          // bir rakamýn eþi BULUNMADIYSA
           begin
 
             SeciliDugme2^.BaslikDegistir(IntToStr(SeciliDugme2^.Etiket));
@@ -183,5 +191,5 @@ begin
         TiklamaSayisi := 0;
       end;
     end;
-  until (1 = 2);
+  end;
 end.

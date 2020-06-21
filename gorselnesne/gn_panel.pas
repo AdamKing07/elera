@@ -1,0 +1,304 @@
+{==============================================================================
+
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasına bakınız
+
+  Dosya Adı: gn_panel.pas
+  Dosya İşlevi: panel yönetim işlevlerini içerir
+
+  Güncelleme Tarihi: 16/06/2020
+
+ ==============================================================================}
+{$mode objfpc}
+unit gn_panel;
+
+interface
+
+uses gorselnesne, paylasim;
+
+type
+  PPanel = ^TPanel;
+  TPanel = object(TGorselNesne)
+  public
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne; ASol, AUst,
+      AGenislik, AYukseklik: TISayi4; ACizimModel: TSayi4; AGovdeRenk1, AGovdeRenk2,
+      AYaziRenk: TRenk; ABaslik: string): PPanel;
+    procedure YokEt;
+    procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
+    procedure Ciz;
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+  end;
+
+function PanelCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
+  ACizimModel: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk; ABaslik: string): TKimlik;
+
+implementation
+
+uses genel, gorev, gn_islevler, temelgorselnesne, gn_pencere, gn_resimdugmesi,
+  gn_kaydirmacubugu, gn_dugme, gn_gucdugmesi, gn_defter, gn_baglanti, gn_degerdugmesi,
+  gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_islemgostergesi, gn_karmaliste,
+  gn_listegorunum, gn_listekutusu, gn_onaykutusu, gn_resim, gn_secimdugmesi;
+
+{==============================================================================
+    panel kesme çağrılarını yönetir
+ ==============================================================================}
+function PanelCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+var
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  Panel: PPanel;
+  Hiza: THiza;
+begin
+
+  case AIslevNo of
+
+    ISLEV_OLUSTUR:
+    begin
+
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+      PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^,
+      PISayi4(ADegiskenler + 16)^, PSayi4(ADegiskenler + 20)^, PRenk(ADegiskenler + 24)^,
+      PRenk(ADegiskenler + 28)^, PRenk(ADegiskenler + 32)^,
+      PKarakterKatari(PSayi4(ADegiskenler + 36)^ + AktifGorevBellekAdresi)^);
+    end;
+
+    ISLEV_GOSTER:
+    begin
+
+      Panel := PPanel(Panel^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Panel^.Goster;
+    end;
+
+    $0104:
+    begin
+
+      Panel := PPanel(Panel^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Hiza := PHiza(ADegiskenler + 04)^;
+      Panel^.FHiza := Hiza;
+
+      Pencere := PPencere(Panel^.FAtaNesne);
+      Pencere^.Guncelle;
+    end
+
+    else Result := HATA_ISLEV;
+  end;
+end;
+
+{==============================================================================
+  panel nesnesini oluşturur
+ ==============================================================================}
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
+  ACizimModel: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk; ABaslik: string): TKimlik;
+var
+  Panel: PPanel;
+begin
+
+  Panel := Panel^.Olustur(ktNesne, AAtaNesne, ASol, AUst, AGenislik, AYukseklik,
+    ACizimModel, AGovdeRenk1, AGovdeRenk2, AYaziRenk, ABaslik);
+
+  if(Panel = nil) then
+
+    Result := HATA_NESNEOLUSTURMA
+
+  else Result := Panel^.Kimlik;
+end;
+
+{==============================================================================
+  panel nesnesini oluşturur
+ ==============================================================================}
+function TPanel.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne; ASol, AUst,
+  AGenislik, AYukseklik: TISayi4; ACizimModel: TSayi4; AGovdeRenk1, AGovdeRenk2,
+  AYaziRenk: TRenk; ABaslik: string): PPanel;
+var
+  Panel: PPanel;
+begin
+
+  Panel := PPanel(inherited Olustur(AKullanimTipi, gntPanel, AAtaNesne, ASol, AUst, AGenislik,
+    AYukseklik, ACizimModel, AGovdeRenk1, AGovdeRenk2, AYaziRenk, ABaslik));
+
+  if(AKullanimTipi = ktTuvalNesne) then
+    Panel^.FTuvalNesne := Panel
+  else Panel^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
+
+  Panel^.AnaOlayCagriAdresi := @OlaylariIsle;
+
+  // nesne adresini geri döndür
+  Result := Panel;
+end;
+
+{==============================================================================
+  panel nesnesini yok eder
+ ==============================================================================}
+procedure TPanel.YokEt;
+begin
+
+  inherited YokEt;
+end;
+
+{==============================================================================
+  panel nesnesini görüntüler
+ ==============================================================================}
+procedure TPanel.Goster;
+begin
+
+  inherited Goster;
+end;
+
+{==============================================================================
+  panel nesnesini gizler
+ ==============================================================================}
+procedure TPanel.Gizle;
+begin
+
+  inherited Gizle;
+end;
+
+{==============================================================================
+  panel nesnesini boyutlandırır
+ ==============================================================================}
+procedure TPanel.Boyutlandir;
+var
+  Panel: PPanel;
+begin
+
+  Panel := PPanel(Panel^.NesneAl(Kimlik));
+  if(Panel = nil) then Exit;
+
+  Panel^.Hizala;
+end;
+
+{==============================================================================
+  panel nesnesini çizer
+ ==============================================================================}
+procedure TPanel.Ciz;
+var
+  GorselNesne,
+  AltGorselNesne: PGorselNesne;
+  AltNesneBellekAdresi: PPGorselNesne;
+  i: Integer;
+begin
+
+  GorselNesne := GorselNesne^.NesneAl(Kimlik);
+  if(GorselNesne = nil) then Exit;
+
+  inherited Ciz;
+
+  // nesnenin panel olması durumunda alt nesneleri de çiz
+  if(GorselNesne^.NesneTipi = gntPanel) then
+  begin
+
+    if(GorselNesne^.FAltNesneSayisi > 0) then
+    begin
+
+      AltNesneBellekAdresi := GorselNesne^.FAltNesneBellekAdresi;
+      for i := 0 to GorselNesne^.FAltNesneSayisi - 1 do
+      begin
+
+        AltGorselNesne := AltNesneBellekAdresi[i];
+        if(AltGorselNesne^.Gorunum) then
+        begin
+
+          // panelin altında olabilecek tüm nesneler
+          case AltGorselNesne^.NesneTipi of
+            gntBaglanti       : PBaglanti(AltGorselNesne)^.Ciz;
+            gntDefter         : PDefter(AltGorselNesne)^.Ciz;
+            gntDegerDugmesi   : PDegerDugmesi(AltGorselNesne)^.Ciz;
+            gntDugme          : PDugme(AltGorselNesne)^.Ciz;
+            gntDurumCubugu    : PDurumCubugu(AltGorselNesne)^.Ciz;
+            gntEtiket         : PEtiket(AltGorselNesne)^.Ciz;
+            gntGirisKutusu    : PGirisKutusu(AltGorselNesne)^.Ciz;
+            gntGucDugmesi     : PGucDugmesi(AltGorselNesne)^.Ciz;
+            gntIslemGostergesi: PIslemGostergesi(AltGorselNesne)^.Ciz;
+            gntKarmaListe     : PKarmaListe(AltGorselNesne)^.Ciz;
+            gntKaydirmaCubugu : PKaydirmaCubugu(AltGorselNesne)^.Ciz;
+            gntListeGorunum   : PListeGorunum(AltGorselNesne)^.Ciz;
+            gntListeKutusu    : PListeKutusu(AltGorselNesne)^.Ciz;
+            gntOnayKutusu     : POnayKutusu(AltGorselNesne)^.Ciz;
+            gntPanel          : PPanel(AltGorselNesne)^.Ciz;
+            gntResim          : PResim(AltGorselNesne)^.Ciz;
+            gntResimDugmesi   : PResimDugmesi(AltGorselNesne)^.Ciz;
+            gntSecimDugmesi   : PSecimDugmesi(AltGorselNesne)^.Ciz;
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+{==============================================================================
+  panel nesne olaylarını işler
+ ==============================================================================}
+procedure TPanel.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+var
+  Pencere: PPencere;
+  Panel: PPanel;
+begin
+
+  // nesnenin olay çağrı adresi türemiş başka bir nesne tarafından belirlenmişse,
+  // olayları koşulsuz olarak ilgili nesneye yönlendir
+  if not(AGonderici^.OlayCagriAdresi = nil) then
+  begin
+
+    AGonderici^.OlayCagriAdresi(AGonderici, AOlay);
+    Exit;
+  end;
+
+  Panel := PPanel(AGonderici);
+  if(Panel = nil) then Exit;
+
+  // sol tuşa basım işlemi
+  if(AOlay.Olay = FO_SOLTUS_BASILDI) then
+  begin
+
+    // panelin sahibi olan pencere en üstte mi ? kontrol et
+    Pencere := EnUstPencereNesnesiniAl(Panel);
+
+    // en üstte olmaması durumunda en üste getir
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
+
+    // sol tuş basım işlemi olay alanında gerçekleştiyse
+    if(Panel^.FareNesneOlayAlanindaMi(Panel)) then
+    begin
+
+      // fare mesajlarını panel nesnesine yönlendir
+      OlayYakalamayaBasla(Panel);
+
+      GorevListesi[Panel^.GorevKimlik]^.OlayEkle(Panel^.GorevKimlik, AOlay);
+    end;
+  end
+
+  // sol tuş bırakım işlemi
+  else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
+  begin
+
+    // fare mesajlarını yakalamayı bırak
+    OlayYakalamayiBirak(Panel);
+
+    // fare bırakma işlemi nesnenin olay alanında mı gerçekleşti ?
+    if(Panel^.FareNesneOlayAlanindaMi(Panel)) then
+    begin
+
+      // uygulamaya veya efendi nesneye mesaj gönder
+      AOlay.Olay := FO_TIKLAMA;
+      GorevListesi[Panel^.GorevKimlik]^.OlayEkle(Panel^.GorevKimlik, AOlay);
+    end;
+
+    // uygulamaya veya efendi nesneye mesaj gönder
+    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+    GorevListesi[Panel^.GorevKimlik]^.OlayEkle(Panel^.GorevKimlik, AOlay);
+  end
+  else
+  begin
+
+    GorevListesi[Panel^.GorevKimlik]^.OlayEkle(Panel^.GorevKimlik, AOlay);
+  end;
+
+  // geçerli fare göstergesini güncelle
+  GecerliFareGostegeTipi := Panel^.FFareImlecTipi;
+end;
+
+end.

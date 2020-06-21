@@ -7,7 +7,7 @@ program donusum;
   Program Adý: donusum.lpr
   Program Ýþlevi: sayýsal deðer çevrim / dönüþüm programý
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -27,7 +27,7 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 5, 5, 290, 160, ptIletisim, ProgramAdi, $CDF0DB);
+  Pencere0.Olustur(-1, 15, 15, 285, 140, ptIletisim, ProgramAdi, $CDF0DB);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Hata := True;
@@ -38,7 +38,8 @@ begin
 
   Pencere0.Goster;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_TUSBASILDI) then
@@ -76,6 +77,5 @@ begin
         Pencere0.Tuval.YaziYaz(130, 110, '-');
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

@@ -10,15 +10,13 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_listegorunum;
 
 interface
 
 type
   PListeGorunum = ^TListeGorunum;
-
-  { TListeGorunum }
-
   TListeGorunum = object
   private
     FKimlik: TKimlik;
@@ -33,6 +31,16 @@ type
     procedure BaslikEkle(ABaslikDeger: string; ABaslikGenisligi: TSayi4);
     property Kimlik: TKimlik read FKimlik;
   end;
+
+function _ListeGorunumOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik; assembler;
+procedure _ListeGorunumHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
+procedure _ListeGorunumElemanEkle(AKimlik: TKimlik; ADeger: string); assembler;
+function _ListeGorunumSeciliSiraAl(AKimlik: TKimlik): TISayi4; assembler;
+procedure _ListeGorunumSeciliYaziAl(AKimlik: TKimlik; AHedefBellek: Isaretci); assembler;
+procedure _ListeGorunumTemizle(AKimlik: TKimlik); assembler;
+procedure _ListeGorunumBasliklariTemizle(AKimlik: TKimlik); assembler;
+procedure _ListeGorunumBaslikEkle(AKimlik: TKimlik; ABaslikDeger: string;
+  ABaslikGenisligi: TSayi4); assembler;
 
 implementation
 
@@ -86,6 +94,80 @@ procedure TListeGorunum.BaslikEkle(ABaslikDeger: string; ABaslikGenisligi: TSayi
 begin
 
   _ListeGorunumBaslikEkle(FKimlik, ABaslikDeger, ABaslikGenisligi);
+end;
+
+function _ListeGorunumOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+asm
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AtaKimlik
+  mov   eax,LISTEGORUNUM_OLUSTUR
+  int   $34
+  add   esp,20
+end;
+
+procedure _ListeGorunumHizala(AKimlik: TKimlik; AHiza: THiza);
+asm
+  push  AHiza
+  push  AKimlik
+  mov   eax,PANEL_HIZALA
+  int   $34
+  add   esp,8
+end;
+
+procedure _ListeGorunumElemanEkle(AKimlik: TKimlik; ADeger: string);
+asm
+  push  ADeger
+  push  AKimlik
+  mov   eax,LISTEGORUNUM_ELEMANEKLE
+  int   $34
+  add   esp,8
+end;
+
+function _ListeGorunumSeciliSiraAl(AKimlik: TKimlik): TISayi4;
+asm
+  push  AKimlik
+  mov   eax,LISTEGORUNUM_SECILISIRAAL
+  int   $34
+  add   esp,4
+end;
+
+procedure _ListeGorunumSeciliYaziAl(AKimlik: TKimlik; AHedefBellek: Isaretci);
+asm
+  push  AHedefBellek
+  push  AKimlik
+  mov   eax,LISTEGORUNUM_SECILIYAZIAL
+  int   $34
+  add   esp,8
+end;
+
+procedure _ListeGorunumTemizle(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,LISTEGORUNUM_TEMIZLE
+  int   $34
+  add   esp,4
+end;
+
+procedure _ListeGorunumBasliklariTemizle(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,LISTEGORUNUM_BTEMIZLE
+  int   $34
+  add   esp,4
+end;
+
+procedure _ListeGorunumBaslikEkle(AKimlik: TKimlik; ABaslikDeger: string;
+  ABaslikGenisligi: TSayi4);
+asm
+  push  ABaslikGenisligi
+  push  ABaslikDeger
+  push  AKimlik
+  mov   eax,LISTEGORUNUM_BASLIKEKLE
+  int   $34
+  add   esp,12
 end;
 
 end.

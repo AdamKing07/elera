@@ -38,8 +38,8 @@
         <Filename Value="saat.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="8"/>
-        <CursorPos X="14" Y="52"/>
+        <TopLine Value="20"/>
+        <CursorPos X="41" Y="27"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -122,7 +122,7 @@
         <UsageCount Value="10"/>
       </Unit13>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="saat.lpr"/>
         <Caret Line="45" Column="44"/>
@@ -231,16 +231,12 @@
       </Position27>
       <Position28>
         <Filename Value="saat.lpr"/>
-        <Caret Line="28" Column="53" TopLine="32"/>
+        <Caret Line="48" Column="13" TopLine="32"/>
       </Position28>
       <Position29>
         <Filename Value="saat.lpr"/>
-        <Caret Line="48" Column="13" TopLine="32"/>
-      </Position29>
-      <Position30>
-        <Filename Value="saat.lpr"/>
         <Caret Line="52" Column="14" TopLine="8"/>
-      </Position30>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

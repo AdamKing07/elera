@@ -7,7 +7,7 @@ program bellkgor;
   Program Adý: bellkgor.lpr
   Program Ýþlevi: bellek içerik görüntüleme programý
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 07/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,16 +15,16 @@ uses gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, elera;
 
 const
   ProgramAdi: string = 'Bellek Ýçerik Görüntüleyici';
-  MEVCUTBELLEKADRESI = $10000;
+  ONDEGERBELLEKADRESI = $10000;
 
 var
   Pencere0: TPencere;
   DurumCubugu0: TDurumCubugu;
-  _ToplamRAMBlok, AyrilmisRAMBlok,
-  _KullanilanRAMBlok, _BosRAMBlok,
-  _BlokUzunlugu, _ToplamRAMUzunlugu,
-  _MevcutBellekAdresi: TSayi4;
-  _VeriBellek: array[0..1023] of TSayi1;
+  ToplamRAMBlok, AyrilmisRAMBlok,
+  KullanilanRAMBlok, _BosRAMBlok,
+  BlokUzunlugu, ToplamRAMUzunlugu,
+  MevcutBellekAdresi: TSayi4;
+  Veriler: array[0..1023] of TSayi1;
 
 var
   Gorev0: TGorev;
@@ -36,48 +36,48 @@ var
 
 procedure BellekAdresiniYaz(ABellekAdresi: TSayi4);
 var
-  _ABellekAdresi, i, _B1: TSayi4;
+  BellekAdresi, i, Ust: TSayi4;
 begin
 
-  _B1 := 32;
-  _ABellekAdresi := ABellekAdresi;
+  Ust := 32;
+  BellekAdresi := ABellekAdresi;
 
   for i := 0 to 31 do
   begin
 
     Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-    Pencere0.Tuval.SayiYaz16(0, _B1, True, 8, _ABellekAdresi);
-    _ABellekAdresi += 16;
-    _B1 += 16;
+    Pencere0.Tuval.SayiYaz16(0, Ust, True, 8, BellekAdresi);
+    BellekAdresi += 16;
+    Ust += 16;
   end;
 end;
 
 procedure BellekIcerigini16TabanliYaz;
 var
-  _A1, _B1: TSayi4;
-  _Deger: TSayi1;
+  Sol, Ust: TSayi4;
+  Deger: TSayi1;
 begin
 
-  for _B1 := 0 to 31 do
+  for Ust := 0 to 31 do
   begin
 
-    for _A1 := 0 to 15 do
+    for Sol := 0 to 15 do
     begin
 
-      _Deger := _VeriBellek[(_B1 * 16) + _A1];
-      if((_A1 and 1) = 1) then
+      Deger := Veriler[(Ust * 16) + Sol];
+      if((Sol and 1) = 1) then
       begin
 
         Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-        // (_A1 * 3) = 2 hex + 1 boþ deðer
+        // (Sol * 3) = 2 hex + 1 boþ deðer
         // + 11 = 10 hex + 1 boþ deðer
-        Pencere0.Tuval.SayiYaz16(((_A1 * 3) + 11) * 8, (_B1 * 16) + 32, False, 2, _Deger)
+        Pencere0.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 32, False, 2, Deger)
       end
       else
       begin
 
         Pencere0.Tuval.KalemRengi := RENK_MAVI;
-        Pencere0.Tuval.SayiYaz16(((_A1 * 3) + 11) * 8, (_B1 * 16) + 32, False, 2, _Deger);
+        Pencere0.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 32, False, 2, Deger);
       end;
     end;
   end;
@@ -85,60 +85,61 @@ end;
 
 procedure BellekIceriginiKarakterOlarakYaz;
 var
-  _A1, _B1: TSayi4;
-  _Deger: Char;
+  Sol, Ust: TSayi4;
+  Deger: Char;
 begin
 
-  for _B1 := 0 to 31 do
+  for Ust := 0 to 31 do
   begin
 
-    for _A1 := 0 to 15 do
+    for Sol := 0 to 15 do
     begin
 
-      _Deger := Char(_VeriBellek[(_B1 * 16) + _A1]);
+      Deger := Char(Veriler[(Ust * 16) + Sol]);
       Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.HarfYaz((_A1 + 59) * 8, (_B1 * 16) + 32, _Deger);
+      Pencere0.Tuval.HarfYaz((Sol + 59) * 8, (Ust * 16) + 32, Deger);
     end;
   end;
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 5, 5, 615, 600, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 5, 5, 615, 400, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Bellek Adresi: ' +
-    HexToStr(MEVCUTBELLEKADRESI, True, 8));
+    HexToStr(ONDEGERBELLEKADRESI, True, 8));
   DurumCubugu0.Goster;
 
-  Pencere0.Tuval.YaziYaz(0, 7, 'Adres[16lý]:');
+  Pencere0.Tuval.YaziYaz(0, 8, 'Adres[16lý]:');
 
-  gkAdres.Olustur(Pencere0.Kimlik, 110, 3, 120, 22, HexToStr(MEVCUTBELLEKADRESI,
+  gkAdres.Olustur(Pencere0.Kimlik, 110, 4, 120, 22, HexToStr(ONDEGERBELLEKADRESI,
     False, 8));
   gkAdres.SadeceRakam := True;
   gkAdres.Goster;
 
-  dugAzalt.Olustur(Pencere0.Kimlik, 238, 3, 35, 22, ' <');
+  dugAzalt.Olustur(Pencere0.Kimlik, 238, 3, 20, 22, '<');
   dugAzalt.Goster;
 
-  dugArtir.Olustur(Pencere0.Kimlik, 275, 3, 35, 22, ' >');
+  dugArtir.Olustur(Pencere0.Kimlik, 260, 3, 20, 22, '>');
   dugArtir.Goster;
 
-  dugYenile.Olustur(Pencere0.Kimlik, 312, 3, 80, 22, ' Yenile');
+  dugYenile.Olustur(Pencere0.Kimlik, 282, 3, 80, 22, 'Yenile');
   dugYenile.Goster;
 
-  GenelBellekBilgisiAl(@_ToplamRAMBlok, @AyrilmisRAMBlok, @_KullanilanRAMBlok,
-    @_BosRAMBlok, @_BlokUzunlugu);
+  GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
+    @_BosRAMBlok, @BlokUzunlugu);
 
-  _ToplamRAMUzunlugu := _ToplamRAMBlok * _BlokUzunlugu;
+  ToplamRAMUzunlugu := ToplamRAMBlok * BlokUzunlugu;
 
-  _MevcutBellekAdresi := MEVCUTBELLEKADRESI;
+  MevcutBellekAdresi := ONDEGERBELLEKADRESI;
 
   Pencere0.Goster;
 
-  BellekIcerikOku(Isaretci(_MevcutBellekAdresi), @_VeriBellek[0], 512);
+  BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_TUSBASILDI) then
@@ -148,12 +149,12 @@ begin
       begin
 
         s := gkAdres.IcerikAl;
-        _MevcutBellekAdresi := StrToHex(s);
+        MevcutBellekAdresi := StrToHex(s);
 
         DurumCubugu0.DurumYazisiDegistir('Bellek Adresi: ' +
-          HexToStr(_MevcutBellekAdresi, True, 8));
+          HexToStr(MevcutBellekAdresi, True, 8));
 
-        BellekIcerikOku(Isaretci(_MevcutBellekAdresi), @_VeriBellek[0], 512);
+        BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
 
         Pencere0.Ciz;
       end;
@@ -164,22 +165,22 @@ begin
       if(OlayKayit.Kimlik = dugArtir.Kimlik) then
       begin
 
-        if(_MevcutBellekAdresi + 512 > _ToplamRAMUzunlugu) then
-          _MevcutBellekAdresi := _ToplamRAMUzunlugu - 512
-        else _MevcutBellekAdresi := _MevcutBellekAdresi + 512;
+        if(MevcutBellekAdresi + 512 > ToplamRAMUzunlugu) then
+          MevcutBellekAdresi := ToplamRAMUzunlugu - 512
+        else MevcutBellekAdresi := MevcutBellekAdresi + 512;
       end
       else if(OlayKayit.Kimlik = dugAzalt.Kimlik) then
       begin
 
-        if(_MevcutBellekAdresi - 512 < 0) then
-          _MevcutBellekAdresi := 0
-        else _MevcutBellekAdresi := _MevcutBellekAdresi - 512;
+        if(MevcutBellekAdresi - 512 < 0) then
+          MevcutBellekAdresi := 0
+        else MevcutBellekAdresi := MevcutBellekAdresi - 512;
       end;
 
       DurumCubugu0.DurumYazisiDegistir('Bellek Adresi: ' +
-        HexToStr(_MevcutBellekAdresi, True, 8));
+        HexToStr(MevcutBellekAdresi, True, 8));
 
-      BellekIcerikOku(Pointer(_MevcutBellekAdresi), @_VeriBellek[0], 512);
+      BellekIcerikOku(Pointer(MevcutBellekAdresi), @Veriler[0], 512);
 
       Pencere0.Ciz;
     end
@@ -189,10 +190,9 @@ begin
       Pencere0.Tuval.KalemRengi := RENK_SIYAH;
       Pencere0.Tuval.YaziYaz(0, 7, 'Adres[16lý]:');
 
-      BellekAdresiniYaz(_MevcutBellekAdresi);
+      BellekAdresiniYaz(MevcutBellekAdresi);
       BellekIcerigini16TabanliYaz;
       BellekIceriginiKarakterOlarakYaz;
     end;
-
-  until (1 = 2);
+  end;
 end.

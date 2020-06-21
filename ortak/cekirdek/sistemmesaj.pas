@@ -6,7 +6,7 @@
   Dosya Adı: sistemmesaj.pas
   Dosya İşlevi: hata ayıklama (debug) amaçlı mesaj yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 06/04/2020
+  Güncelleme Tarihi: 14/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -29,13 +29,13 @@ type
   TSistemMesaj = object
   private
     FServisCalisiyor: Boolean;
-    FToplamMesaj: Integer;
+    FToplamMesaj: TSayi4;
   public
     procedure Yukle;
     procedure Ekle(AMesaj: string);
     procedure MesajAl(ASiraNo: TSayi4; var AMesaj: PMesaj);
     property ServisCalisiyor: Boolean read FServisCalisiyor write FServisCalisiyor;
-    property ToplamMesaj: Integer read FToplamMesaj;
+    property ToplamMesaj: TSayi4 read FToplamMesaj;
   end;
 
 { TODO : // aşağıdaki tüm çağrılar iptal edilerek bu çağrının içerisine alınacak }
@@ -326,14 +326,14 @@ end;
  ==============================================================================}
 procedure SISTEM_MESAJ_MAC(AMesaj: string; AMACAdres: TMACAdres);
 var
-  _MACAdres: string[17];
+  MACAdres: string[17];
   s: string;
 begin
 
   // mac adres değerini karaktere çevir
-  _MACAdres := MacToStr(AMACAdres);
+  MACAdres := MacToStr(AMACAdres);
 
-  s := AMesaj + _MACAdres;
+  s := AMesaj + MACAdres;
 
   if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);
 end;
@@ -343,14 +343,14 @@ end;
  ==============================================================================}
 procedure SISTEM_MESAJ_IP(AMesaj: string; AIPAdres: TIPAdres);
 var
-  _IPAdres: string[15];
+  IPAdres: string[15];
   s: string;
 begin
 
   // ip adres değerini karaktere çevir
-  _IPAdres := IpToStr(AIPAdres);
+  IPAdres := IpToStr(AIPAdres);
 
-  s := AMesaj + _IPAdres;
+  s := AMesaj + IPAdres;
 
   if(GSistemMesaj.ServisCalisiyor) then GSistemMesaj.Ekle(s);
 end;

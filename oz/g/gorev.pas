@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 12/05/2020
+  Güncelleme Tarihi: 17/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit gorev;
 
 interface
 
-uses paylasim, gorselnesne;
+uses paylasim;
 
 const
   // bir görev için tanýmlanan üst sýnýr olay sayýsý
@@ -41,6 +41,7 @@ type
     FBellekUzunlugu: TSayi4;              // iþlemin kullandýðý bellek uzunluðu
     FKodBaslangicAdres: TSayi4;           // iþlemin bellek baþlangýç adresi
     FYiginBaslangicAdres: TSayi4;         // iþlemin yýðýn adresi
+    FOlayBellekBosta: Boolean;            // olay belleðinin o anda iþlevler tarafýndan kullanýlmadýðýný belirtir
     procedure GorevSayaciYaz(ASayacDegeri: TSayi4);
     procedure OlaySayisiYaz(AOlaySayisi: TSayi4);
   protected
@@ -48,7 +49,7 @@ type
     function BosGorevBul: PGorev;
     procedure SecicileriOlustur;
   public
-    FOlayBellekAdresi: POlayKayit;        // olaylarýn yerleþtirileceði bellek bölgesi
+    FOlayBellekAdresi: POlay;        // olaylarýn yerleþtirileceði bellek bölgesi
     FOlaySayisi: TSayi4;                  // olay sayacý
 
     FGorevKimlik: TGorevKimlik;           // iþlem numarasý
@@ -59,13 +60,11 @@ type
     procedure Yukle;
     function Calistir(ATamDosyaYolu: string): PGorev;
     procedure DurumDegistir(AGorevKimlik: TGorevKimlik; AGorevDurum: TGorevDurum);
-    procedure OlayEkle1(AGorevKimlik: TGorevKimlik; AGorselNesne: PGorselNesne;
-      AOlay, ADeger1, ADeger2: TISayi4);
-    procedure OlayEkle2(AGorevKimlik: TGorevKimlik; AOlayKayit: TOlayKayit);
-    function OlayAl(var AOlay: TOlayKayit): Boolean;
+    procedure OlayEkle(AGorevKimlik: TGorevKimlik; AOlay: TOlay);
+    function OlayAl(var AOlay: TOlay): Boolean;
     function Sonlandir(AGorevKimlik: TGorevKimlik;
       const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
-    property EvBuffer: POlayKayit read FOlayBellekAdresi write FOlayBellekAdresi;
+    property OlayBellekAdresi: POlay read FOlayBellekAdresi write FOlayBellekAdresi;
   published
     property GorevKimlik: TGorevKimlik read FGorevKimlik;
     property BellekBaslangicAdresi: TSayi4 read FBellekBaslangicAdresi write FBellekBaslangicAdresi;
@@ -83,8 +82,7 @@ function IliskiliProgramAl(ADosyaUzanti: string): TDosyaIliskisi;
 
 implementation
 
-uses genel, gdt, bolumleme, dosya, sistemmesaj, donusum, zamanlayici, gn_islevler,
-  yonetim, islevler, src_com;
+uses genel, gdt, dosya, sistemmesaj, donusum, zamanlayici, gn_islevler, islevler;
 
 const
   IstisnaAciklamaListesi: array[0..15] of string = (
@@ -121,24 +119,25 @@ const
  ==============================================================================}
 procedure TGorev.Yukle;
 var
-  _Gorev: PGorev;
+  Gorev: PGorev;
   i: TISayi4;
 begin
 
   // görev bilgilerinin yerleþtirilmesi için bellek ayýr
-  _Gorev := GGercekBellek.Ayir(SizeOf(TGorev) * USTSINIR_GOREVSAYISI);
+  Gorev := GGercekBellek.Ayir(SizeOf(TGorev) * USTSINIR_GOREVSAYISI);
 
   // bellek giriþlerini görev yapýlarýyla eþleþtir
   for i := 1 to USTSINIR_GOREVSAYISI do
   begin
 
-    GorevListesi[i] := _Gorev;
+    GorevListesi[i] := Gorev;
 
     // görevi boþ olarak belirle
-    _Gorev^.FGorevDurum := gdBos;
-    _Gorev^.FGorevKimlik := i;
+    Gorev^.FGorevDurum := gdBos;
+    Gorev^.FGorevKimlik := i;
+    Gorev^.FOlayBellekBosta := True;
 
-    Inc(_Gorev);
+    Inc(Gorev);
   end;
 end;
 
@@ -150,19 +149,19 @@ var
 
 function TGorev.Calistir(ATamDosyaYolu: string): PGorev;
 var
-  _Gorev: PGorev;
-  _DosyaBellek: Isaretci;
-  _OlayKayit: POlayKayit;
-  _DosyaU, i, ProgramBellekU: TSayi4;
-  _Surucu, _Dizin,
-  _DosyaAdi: string;
-  _DosyaKimlik: TKimlik;
-  _ELFBaslik: PELFBaslik;
-  _TamDosyaYolu, _Degiskenler,
-  _DosyaUzanti: string;
+  Gorev: PGorev;
+  DosyaBellek: Isaretci;
+  Olay: POlay;
+  DosyaU, i, ProgramBellekU: TSayi4;
+  Surucu, Dizin,
+  DosyaAdi: string;
+  DosyaKimlik: TKimlik;
+  ELFBaslik: PELFBaslik;
+  TamDosyaYolu, Degiskenler,
+  DosyaUzanti: string;
   p1: PChar;
-  _IliskiliProgram: TDosyaIliskisi;
-  _AygitSurucusu: PAygitSurucusu;
+  IliskiliProgram: TDosyaIliskisi;
+  AygitSurucusu: PAygitSurucusu;
 begin
 
   if(CalistirGorevNo <> 0) then while CalistirGorevNo <> 0 do;
@@ -170,8 +169,8 @@ begin
   CalistirGorevNo := CalisanGorev;
 
   // boþ iþlem giriþi bul
-  _Gorev := _Gorev^.Olustur;
-  if(_Gorev = nil) then
+  Gorev := Gorev^.Olustur;
+  if(Gorev = nil) then
   begin
 
     SISTEM_MESAJ('GOREV.PAS: ' + ATamDosyaYolu + ' için görev oluþturulamýyor!', []);
@@ -181,57 +180,57 @@ begin
   end;
 
   // dosyayý, sürücü + dizin + dosya adý parçalarýna ayýr
-  DosyaYolunuParcala(ATamDosyaYolu, _Surucu, _Dizin, _DosyaAdi);
+  DosyaYolunuParcala(ATamDosyaYolu, Surucu, Dizin, DosyaAdi);
 
   // dosya adýnýn uzunluðunu al
-  _DosyaU := Length(_DosyaAdi);
+  DosyaU := Length(DosyaAdi);
 
   { TODO : .c dosyalarý ileride .ç (çalýþtýrýlabilir) olarak deðiþtirilecek. }
 
   // dosya uzantýsýný al
-  i := Pos('.', _DosyaAdi);
+  i := Pos('.', DosyaAdi);
   if(i > 0) then
 
-    _DosyaUzanti := Copy(_DosyaAdi, i + 1, _DosyaU - i)
-  else _DosyaUzanti := '';
+    DosyaUzanti := Copy(DosyaAdi, i + 1, DosyaU - i)
+  else DosyaUzanti := '';
 
-  _IliskiliProgram := IliskiliProgramAl(_DosyaUzanti);
+  IliskiliProgram := IliskiliProgramAl(DosyaUzanti);
 
-  _Degiskenler := '';
-  _TamDosyaYolu := _Surucu + ':\' + _DosyaAdi;
+  Degiskenler := '';
+  TamDosyaYolu := Surucu + ':\' + DosyaAdi;
 
   // dosya çalýþtýrýlabilir bir dosya deðil ise dosyanýn birlikte açýlacaðý
   // öndeðer olarak tanýmlanan programý bul
-  if((_IliskiliProgram.DosyaTip = dtResim) or (_IliskiliProgram.DosyaTip = dtBelge)
-    or (_IliskiliProgram.DosyaTip = dtDiger)) then
+  if((IliskiliProgram.DosyaTip = dtResim) or (IliskiliProgram.DosyaTip = dtBelge)
+    or (IliskiliProgram.DosyaTip = dtDiger)) then
   begin
 
     // eðer dosya çalýþtýrýlabilir deðil ise dosyayý, öndeðer olarak tanýmlanan
     // program ile çalýþtýr
-    _Degiskenler := _Surucu + ':\' + _DosyaAdi;     // çalýþtýrýlacak dosya
-    _DosyaAdi := _IliskiliProgram.Uygulama;         // çalýþtýrýlacak dosyayý çalýþtýracak program
-    _TamDosyaYolu := AcilisSurucuAygiti + ':\' + _DosyaAdi;
+    Degiskenler := Surucu + ':\' + DosyaAdi;     // çalýþtýrýlacak dosya
+    DosyaAdi := IliskiliProgram.Uygulama;         // çalýþtýrýlacak dosyayý çalýþtýracak program
+    TamDosyaYolu := AcilisSurucuAygiti + ':\' + DosyaAdi;
   end;
 
   // çalýþtýrýlacak dosyayý tanýmla ve aç
-  AssignFile(_DosyaKimlik, _TamDosyaYolu);
-  Reset(_DosyaKimlik);
+  AssignFile(DosyaKimlik, TamDosyaYolu);
+  Reset(DosyaKimlik);
   if(IOResult = 0) then
   begin
 
     // dosya uzunluðunu al
-    _DosyaU := FileSize(_DosyaKimlik);
+    DosyaU := FileSize(DosyaKimlik);
 
     // dosyanýn çalýþtýrýlmasý için bellekte yer rezerv et
     // defter.c programýna verileri iþlemesi için fazladan 40K yer tahsis et
-    if(_DosyaAdi = 'defter.c') then
-      ProgramBellekU := _DosyaU + PROGRAM_YIGIN_BELLEK + DEFTER_BELLEK_U
-    else ProgramBellekU := _DosyaU + PROGRAM_YIGIN_BELLEK;
+    if(DosyaAdi = 'defter.c') then
+      ProgramBellekU := DosyaU + PROGRAM_YIGIN_BELLEK + DEFTER_BELLEK_U
+    else ProgramBellekU := DosyaU + PROGRAM_YIGIN_BELLEK;
 
     ProgramBellekU := ((ProgramBellekU shr 12) + 1) shl 12;
 
-    _DosyaBellek := GGercekBellek.Ayir(ProgramBellekU);
-    if(_DosyaBellek = nil) then
+    DosyaBellek := GGercekBellek.Ayir(ProgramBellekU);
+    if(DosyaBellek = nil) then
     begin
 
       SISTEM_MESAJ('GOREV.PAS: ' + ATamDosyaYolu + ' için yeterli bellek yok!', []);
@@ -241,42 +240,42 @@ begin
     end;
 
     // dosyayý hedef adrese kopyala
-    if(Read(_DosyaKimlik, _DosyaBellek) = 0) then
+    if(Read(DosyaKimlik, DosyaBellek) = 0) then
     begin
 
       // dosyayý kapat
-      CloseFile(_DosyaKimlik);
-      SISTEM_MESAJ('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý okunamýyor!', []);
+      CloseFile(DosyaKimlik);
+      SISTEM_MESAJ('GOREV.PAS: ' + TamDosyaYolu + ' dosyasý okunamýyor!', []);
       Result := nil;
       CalistirGorevNo := 0;
       Exit;
     end;
 
     // dosyayý kapat
-    CloseFile(_DosyaKimlik);
+    CloseFile(DosyaKimlik);
 
     // ELF biçimindeki dosyanýn baþ tarafýna konumlan
-    _ELFBaslik := _DosyaBellek;
+    ELFBaslik := DosyaBellek;
 
     // aygýt sürücüsü çalýþmalarý - test - 31012019
     // testsrc.s çalýþtýrýlabilir aygýt sürücüsü dosyasý çalýþmalar devam etmektedir
-    if(_IliskiliProgram.DosyaTip = dtSurucu) then
+    if(IliskiliProgram.DosyaTip = dtSurucu) then
     begin
 
-      _AygitSurucusu := PAygitSurucusu(_DosyaBellek + PSayi4(_DosyaBellek + $100 + 8)^);
+      AygitSurucusu := PAygitSurucusu(DosyaBellek + PSayi4(DosyaBellek + $100 + 8)^);
       SISTEM_MESAJ('Aygýt sürücüsü / açýklama', []);
-      SISTEM_MESAJ(_AygitSurucusu^.AygitAdi, []);
-      SISTEM_MESAJ(_AygitSurucusu^.Aciklama, []);
-      SISTEM_MESAJ_S16('Deðer-1: ', _AygitSurucusu^.Deger1, 8);
-      SISTEM_MESAJ_S16('Deðer-2: ', _AygitSurucusu^.Deger2, 8);
-      SISTEM_MESAJ_S16('Deðer-3: ', _AygitSurucusu^.Deger3, 8);
+      SISTEM_MESAJ(AygitSurucusu^.AygitAdi, []);
+      SISTEM_MESAJ(AygitSurucusu^.Aciklama, []);
+      SISTEM_MESAJ_S16('Deðer-1: ', AygitSurucusu^.Deger1, 8);
+      SISTEM_MESAJ_S16('Deðer-2: ', AygitSurucusu^.Deger2, 8);
+      SISTEM_MESAJ_S16('Deðer-3: ', AygitSurucusu^.Deger3, 8);
       CalistirGorevNo := 0;
       Exit;
     end;
 
     // olay iþlemleri için bellekte yer ayýr
-    _OlayKayit := POlayKayit(GGercekBellek.Ayir(4096));
-    if(_OlayKayit = nil) then
+    Olay := POlay(GGercekBellek.Ayir(4096));
+    if(Olay = nil) then
     begin
 
       SISTEM_MESAJ('GOREV.PAS: olay bilgisi için bellek ayrýlamýyor!', []);
@@ -286,78 +285,78 @@ begin
     end;
 
     // bellek baþlangýç adresi
-    _Gorev^.FBellekBaslangicAdresi := TSayi4(_DosyaBellek);
+    Gorev^.FBellekBaslangicAdresi := TSayi4(DosyaBellek);
 
     // bellek miktarý
-    _Gorev^.FBellekUzunlugu := ProgramBellekU;
+    Gorev^.FBellekUzunlugu := ProgramBellekU;
 
     // iþlem baþlangýç adresi
-    _Gorev^.FKodBaslangicAdres := _ELFBaslik^.KodBaslangicAdresi;
+    Gorev^.FKodBaslangicAdres := ELFBaslik^.KodBaslangicAdresi;
 
     // iþlemin yýðýn adresi
-    if(_DosyaAdi = 'defter.c') then
-      _Gorev^.FYiginBaslangicAdres := (ProgramBellekU - DEFTER_BELLEK_U) - 4096
-    else _Gorev^.FYiginBaslangicAdres := ProgramBellekU - 4096;
+    if(DosyaAdi = 'defter.c') then
+      Gorev^.FYiginBaslangicAdres := (ProgramBellekU - DEFTER_BELLEK_U) - 4096
+    else Gorev^.FYiginBaslangicAdres := ProgramBellekU - 4096;
 
     // dosyanýn çalýþtýrýlmasý için seçicileri oluþtur
-    _Gorev^.SecicileriOlustur;
+    Gorev^.SecicileriOlustur;
 
     // görev deðiþim sayacýný sýfýrla
-    _Gorev^.FGorevSayaci := 0;
+    Gorev^.FGorevSayaci := 0;
 
     // görev olay sayacýný sýfýrla
-    _Gorev^.FOlaySayisi := 0;
+    Gorev^.FOlaySayisi := 0;
 
     // iþlemin olay bellek bölgesini ata
-    _Gorev^.FOlayBellekAdresi := _OlayKayit;
+    Gorev^.FOlayBellekAdresi := Olay;
 
     // iþlemin adý
-    _Gorev^.FProgramAdi := _DosyaAdi;
+    Gorev^.FProgramAdi := DosyaAdi;
 
     // deðiþken gönderimi
     // ilk deðiþken - çalýþan iþlemin adý
 
     // program bellek baþlangýcýnýn ilk 32 byte'ý çekirdeðin programa
     // bilgi vermesi amacýyla ayrýlmýþtýr.
-    PSayi4(_DosyaBellek + 00)^ := TSayi4(_DosyaBellek);
-    if(_DosyaAdi = 'defter.c') then
-      PSayi4(_DosyaBellek + 04)^ := ProgramBellekU - DEFTER_BELLEK_U
-    else PSayi4(_DosyaBellek + 04)^ := ProgramBellekU;
+    PSayi4(DosyaBellek + 00)^ := TSayi4(DosyaBellek);
+    if(DosyaAdi = 'defter.c') then
+      PSayi4(DosyaBellek + 04)^ := ProgramBellekU - DEFTER_BELLEK_U
+    else PSayi4(DosyaBellek + 04)^ := ProgramBellekU;
 
-    PSayi4(_DosyaBellek + 32)^ := 0;
-    p1 := PChar(_DosyaBellek + 32 + 4);
-    Tasi2(@_TamDosyaYolu[1], p1, Length(_TamDosyaYolu));
-    p1 += Length(_TamDosyaYolu);
+    PSayi4(DosyaBellek + 32)^ := 0;
+    p1 := PChar(DosyaBellek + 32 + 4);
+    Tasi2(@TamDosyaYolu[1], p1, Length(TamDosyaYolu));
+    p1 += Length(TamDosyaYolu);
     p1^ := #0;
 
     // eðer varsa ikinci deðiþken - çalýþan programýn kullanacaðý deðer
-    if(_Degiskenler <> '') then
+    if(Degiskenler <> '') then
     begin
 
-      PSayi4(_DosyaBellek + 32)^ := 1;
+      PSayi4(DosyaBellek + 32)^ := 1;
       Inc(p1);
-      Tasi2(@_Degiskenler[1], p1, Length(_Degiskenler));
-      p1 += Length(_Degiskenler);
+      Tasi2(@Degiskenler[1], p1, Length(Degiskenler));
+      p1 += Length(Degiskenler);
       p1^ := #0;
     end;
 
     // görevin durumunu çalýþýyor olarak belirle
-    _Gorev^.FGorevDurum := gdCalisiyor;
+    Gorev^.FGorevDurum := gdCalisiyor;
 
     // görev iþlem sayýsýný bir artýr
     Inc(CalisanGorevSayisi);
 
     // görev bellek adresini geri döndür
-    Result := @Self;
+    Result := Gorev;
 
     CalistirGorevNo := 0;
   end
   else
   begin
 
-    CloseFile(_DosyaKimlik);
-    _Gorev^.DurumDegistir(_Gorev^.GorevKimlik, gdBos);
-    SISTEM_MESAJ('GOREV.PAS: ' + _TamDosyaYolu + ' dosyasý bulunamadý!', []);
+    CloseFile(DosyaKimlik);
+    Gorev^.DurumDegistir(Gorev^.GorevKimlik, gdBos);
+    SISTEM_MESAJ('GOREV.PAS: ' + TamDosyaYolu + ' dosyasý bulunamadý!', []);
   end;
 
   CalistirGorevNo := 0;
@@ -368,13 +367,13 @@ end;
  ==============================================================================}
 function TGorev.Olustur: PGorev;
 var
-  _Gorev: PGorev;
+  Gorev: PGorev;
 begin
 
   // boþ iþlem giriþi bul
-  _Gorev := _Gorev^.BosGorevBul;
+  Gorev := Gorev^.BosGorevBul;
 
-  Result := _Gorev;
+  Result := Gorev;
 end;
 
 {==============================================================================
@@ -382,7 +381,7 @@ end;
  ==============================================================================}
 function TGorev.BosGorevBul: PGorev;
 var
-  _Gorev: PGorev;
+  Gorev: PGorev;
   i: TSayi4;
 begin
 
@@ -390,15 +389,15 @@ begin
   for i := 2 to USTSINIR_GOREVSAYISI do
   begin
 
-    _Gorev := GorevListesi[i];
+    Gorev := GorevListesi[i];
 
     // eðer görev giriþi boþ ise
-    if(_Gorev^.FGorevDurum = gdBos) then
+    if(Gorev^.FGorevDurum = gdBos) then
     begin
 
       // görev giriþini ayrýlmýþ olarak iþaretle ve çaðýran iþleve geri dön
-      _Gorev^.DurumDegistir(i, gdOlusturuldu);
-      Exit(_Gorev);
+      Gorev^.DurumDegistir(i, gdOlusturuldu);
+      Exit(Gorev);
     end;
   end;
 
@@ -410,36 +409,36 @@ end;
  ==============================================================================}
 procedure TGorev.SecicileriOlustur;
 var
-  _SeciciCSSiraNo, _SeciciDSSiraNo,
-  _SeciciTSSSiraNo: TGorevKimlik;
-  _Uzunluk, i: TSayi4;
+  SeciciCSSiraNo, SeciciDSSiraNo,
+  SeciciTSSSiraNo: TGorevKimlik;
+  Uzunluk, i: TSayi4;
 begin
 
   i := GorevKimlik;
 
-  _Uzunluk := FBellekUzunlugu shr 12;
+  Uzunluk := FBellekUzunlugu shr 12;
 
   // uygulamanýn TSS, CS, DS seçicilerini belirle
   // uygulamanýn ilk görev kimliði 2'dir. her bir program 3 seçici içerir
-  _SeciciCSSiraNo := ((i - 2) * 3) + AYRILMIS_SECICISAYISI;
-  _SeciciDSSiraNo := _SeciciCSSiraNo + 1;
-  _SeciciTSSSiraNo := _SeciciDSSiraNo + 1;
+  SeciciCSSiraNo := ((i - 2) * 3) + AYRILMIS_SECICISAYISI;
+  SeciciDSSiraNo := SeciciCSSiraNo + 1;
+  SeciciTSSSiraNo := SeciciDSSiraNo + 1;
 
   // uygulama için CS selektörünü oluþtur
   // kod seçicisi (CS)
   // Eriþim  : 1 = mevcut, 11 = DPL3, 11 = kod segment, 0 = dallanýlamaz, 1 = okunabilir, 0 = eriþilmedi
   // Esneklik: 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
-  GDTRGirdisiEkle(_SeciciCSSiraNo, FBellekBaslangicAdresi, _Uzunluk, %11111010, %11010000);
+  GDTRGirdisiEkle(SeciciCSSiraNo, FBellekBaslangicAdresi, Uzunluk, %11111010, %11010000);
   // uygulama için DS selektörünü oluþtur
   // veri seçicisi (DS)
   // Eriþim  : 1 = mevcut, 11 = DPL3, 10 = veri yazmaç, 0 = artarak büyüyen, 1 = yazýlabilir, 0 = eriþilmedi
   // Esneklik: 1 = gran = 4K çözünürlük, 1 = 32 bit, 0, 1 = bana tahsis edildi, 1111 = uzunluk 16..19 bit
-  GDTRGirdisiEkle(_SeciciDSSiraNo, FBellekBaslangicAdresi, _Uzunluk, %11110010, %11010000);
+  GDTRGirdisiEkle(SeciciDSSiraNo, FBellekBaslangicAdresi, Uzunluk, %11110010, %11010000);
   // uygulama için TSS selektörünü oluþtur
   // görev seçicisi (TSS)
   // Eriþim  : 1 = mevcut, 11 = DPL0, 010 = 32 bit kullanýlabilir TSS, 0 = meþgul biti (meþgul deðil), 1
   // Esneklik: 1 = gran = 1Byte çözünürlük, 00, 1 = bana tahsis edildi, 0000 = uzunluk 16..19 bit
-  GDTRGirdisiEkle(_SeciciTSSSiraNo, TSayi4(GorevTSSListesi[i]), TSS_UZUNLUK - 1,
+  GDTRGirdisiEkle(SeciciTSSSiraNo, TSayi4(GorevTSSListesi[i]), TSS_UZUNLUK - 1,
     %11101001, %00010000);
 
   // TSS'nin içeriðini sýfýrla
@@ -459,12 +458,12 @@ begin
   GorevTSSListesi[i]^.EIP := FKodBaslangicAdres;
   GorevTSSListesi[i]^.EFLAGS := $202;
   GorevTSSListesi[i]^.ESP := FYiginBaslangicAdres;
-  GorevTSSListesi[i]^.CS := (_SeciciCSSiraNo * 8) + 3;
-  GorevTSSListesi[i]^.DS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i]^.ES := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i]^.SS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i]^.FS := (_SeciciDSSiraNo * 8) + 3;
-  GorevTSSListesi[i]^.GS := (_SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.CS := (SeciciCSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.DS := (SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.ES := (SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.SS := (SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.FS := (SeciciDSSiraNo * 8) + 3;
+  GorevTSSListesi[i]^.GS := (SeciciDSSiraNo * 8) + 3;
   GorevTSSListesi[i]^.SS0 := SECICI_SISTEM_VERI * 8;
   GorevTSSListesi[i]^.ESP0 := (i * GOREV3_ESP_U) + GOREV3_ESP;
 end;
@@ -474,11 +473,11 @@ end;
  ==============================================================================}
 procedure TGorev.DurumDegistir(AGorevKimlik: TGorevKimlik; AGorevDurum: TGorevDurum);
 var
-  _Gorev: PGorev;
+  Gorev: PGorev;
 begin
 
-  _Gorev := GorevListesi[AGorevKimlik];
-  if(AGorevDurum <> _Gorev^.FGorevDurum) then _Gorev^.FGorevDurum := AGorevDurum;
+  Gorev := GorevListesi[AGorevKimlik];
+  if(AGorevDurum <> Gorev^.FGorevDurum) then Gorev^.FGorevDurum := AGorevDurum;
 end;
 
 {==============================================================================
@@ -501,112 +500,97 @@ end;
 
 {==============================================================================
   çekirdek tarafýndan görev için oluþturulan olayý kaydeder
-  not: bu iþlev görsel nesneler içindir
  ==============================================================================}
-procedure TGorev.OlayEkle1(AGorevKimlik: TGorevKimlik; AGorselNesne: PGorselNesne;
-  AOlay, ADeger1, ADeger2: TISayi4);
+procedure TGorev.OlayEkle(AGorevKimlik: TGorevKimlik; AOlay: TOlay);
 var
-  _Gorev: PGorev;
-  _OlayKayit: POlayKayit;
+  Gorev: PGorev;
+  Olay: POlay;
 begin
 
-  _Gorev := GorevListesi[AGorevKimlik];
+  while not FOlayBellekBosta do begin asm int $20 end; end;
 
-  if(_Gorev^.FGorevDurum = gdCalisiyor) then
+  FOlayBellekBosta := False;
+
+  Gorev := GorevListesi[AGorevKimlik];
+
+  if(Gorev^.FGorevDurum = gdCalisiyor) then
   begin
 
     // olay belleði dolu deðilse olayý kaydet
-    if(_Gorev^.FOlaySayisi < USTSINIR_OLAY) then
+    if(Gorev^.OlaySayisi < USTSINIR_OLAY) then
     begin
 
       // iþlemin olay belleðine konumlan
-      _OlayKayit := _Gorev^.FOlayBellekAdresi;
-      Inc(_OlayKayit, _Gorev^.FOlaySayisi);
+      Olay := Gorev^.OlayBellekAdresi;
+      Inc(Olay, Gorev^.OlaySayisi);
 
       // olayý iþlem belleðine kaydet
-      _OlayKayit^.Kimlik := AGorselNesne^.Kimlik;
-      _OlayKayit^.Olay := AOlay;
-      _OlayKayit^.Deger1 := ADeger1;
-      _OlayKayit^.Deger2 := ADeger2;
+      Olay^.Kimlik := AOlay.Kimlik;
+      Olay^.Olay := AOlay.Olay;
+      Olay^.Deger1 := AOlay.Deger1;
+      Olay^.Deger2 := AOlay.Deger2;
 
       // görevin olay sayacýný artýr
-      _Gorev^.FOlaySayisi := _Gorev^.FOlaySayisi + 1;
+      Gorev^.OlaySayisi := Gorev^.OlaySayisi + 1;
     end;
   end;
-end;
 
-{==============================================================================
-  çekirdek tarafýndan görev için oluþturulan olayý kaydeder
-  not: bu iþlev görsel olmayan nesneler içindir
- ==============================================================================}
-procedure TGorev.OlayEkle2(AGorevKimlik: TGorevKimlik; AOlayKayit: TOlayKayit);
-var
-  _Gorev: PGorev;
-  _OlayKayit: POlayKayit;
-begin
-
-  _Gorev := GorevListesi[AGorevKimlik];
-
-  if(_Gorev^.FGorevDurum = gdCalisiyor) then
-  begin
-
-    // olay belleði dolu deðilse olayý kaydet
-    if(_Gorev^.OlaySayisi < USTSINIR_OLAY) then
-    begin
-
-      // iþlemin olay belleðine konumlan
-      _OlayKayit := _Gorev^.EvBuffer;
-      Inc(_OlayKayit, _Gorev^.OlaySayisi);
-
-      // olayý iþlem belleðine kaydet
-      _OlayKayit^.Kimlik := AOlayKayit.Kimlik;
-      _OlayKayit^.Olay := AOlayKayit.Olay;
-      _OlayKayit^.Deger1 := AOlayKayit.Deger1;
-      _OlayKayit^.Deger2 := AOlayKayit.Deger2;
-
-      // görevin olay sayacýný artýr
-      _Gorev^.OlaySayisi := _Gorev^.OlaySayisi + 1;
-    end;
-  end;
+  FOlayBellekBosta := True;
 end;
 
 {==============================================================================
   görev için (çekirdek tarafýndan) oluþturulan olayý alýr
  ==============================================================================}
-function TGorev.OlayAl(var AOlay: TOlayKayit): Boolean;
+function TGorev.OlayAl(var AOlay: TOlay): Boolean;
 var
-  _OlayKayit1, _OlayKayit2: POlayKayit;
+  Olay1, Olay2: POlay;
 begin
+
+  while not FOlayBellekBosta do begin asm int $20 end; end;
+
+  FOlayBellekBosta := False;
 
   // öndeðer çýkýþ deðeri
   Result := False;
 
   // görev için oluþturulan olay yoksa çýk
-  if(OlaySayisi = 0) then Exit;
+  if(OlaySayisi = 0) then
+  begin
+
+    FOlayBellekBosta := True;
+    Exit;
+  end;
 
   // öndeðer çýkýþ deðeri
   Result := True;
 
   // görevin olay belleðine konumlan
-  _OlayKayit1 := EvBuffer;
+  Olay1 := OlayBellekAdresi;
 
   // olaylarý hedef alana kopyala
-  AOlay.Olay := _OlayKayit1^.Olay;
-  AOlay.Kimlik := _OlayKayit1^.Kimlik;
-  AOlay.Deger1 := _OlayKayit1^.Deger1;
-  AOlay.Deger2 := _OlayKayit1^.Deger2;
+  AOlay.Olay := Olay1^.Olay;
+  AOlay.Kimlik := Olay1^.Kimlik;
+  AOlay.Deger1 := Olay1^.Deger1;
+  AOlay.Deger2 := Olay1^.Deger2;
 
   // görevin olay sayacýný azalt
   OlaySayisi := OlaySayisi - 1;
 
   // tek bir olay var ise olay belleðini güncellemeye gerek yok
-  if(OlaySayisi = 0) then Exit;
+  if(OlaySayisi = 0) then
+  begin
+
+    FOlayBellekBosta := True;
+    Exit;
+  end;
 
   // olayý görevin olay belleðinden sil
-  _OlayKayit2 := _OlayKayit1;
-  Inc(_OlayKayit2);
+  Olay2 := Olay1;
+  Inc(Olay2);
 
-  Tasi2(_OlayKayit2, _OlayKayit1, SizeOf(TOlayKayit) * OlaySayisi);
+  Tasi2(Olay2, Olay1, SizeOf(TOlay) * OlaySayisi);
+
+  FOlayBellekBosta := True;
 end;
 
 {==============================================================================
@@ -615,10 +599,9 @@ end;
 var
   SonlandirGorevNo: TSayi4 = 0;
 
-function TGorev.Sonlandir(AGorevKimlik: TGorevKimlik;
-  const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
+function TGorev.Sonlandir(AGorevKimlik: TGorevKimlik; const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
 var
-  _Gorev: PGorev;
+  Gorev: PGorev;
 begin
 
   if(SonlandirGorevNo <> 0) then while SonlandirGorevNo <> 0 do;
@@ -626,7 +609,7 @@ begin
   SonlandirGorevNo := CalisanGorev;
 
   // çalýþan görevi durdur
-  _Gorev^.DurumDegistir(AGorevKimlik, gdDurduruldu);
+  Gorev^.DurumDegistir(AGorevKimlik, gdDurduruldu);
 
   // görevin sonlandýrýlma bilgisini ver
   if(ASonlanmaSebebi = -1) then
@@ -654,7 +637,7 @@ begin
   GorevGorselNesneleriniYokEt(AGorevKimlik);
 
   // göreve ait olay bellek bölgesini iptal et
-  GGercekBellek.YokEt(EvBuffer, 4096);
+  GGercekBellek.YokEt(OlayBellekAdresi, 4096);
 
   // görev için ayrýlan bellek bölgesini serbest býrak
   GGercekBellek.YokEt(Isaretci(BellekBaslangicAdresi), FBellekUzunlugu +
@@ -666,7 +649,7 @@ begin
   // görev sayýsýný bir azalt
   Dec(CalisanGorevSayisi);
 
-  GAktifMasaustu^.Guncelle;
+  //GAktifMasaustu^.Guncelle;   artýk anlamsýz
 
   SonlandirGorevNo := 0;
 end;
@@ -726,25 +709,25 @@ end;
  ==============================================================================}
 function CalistirilacakBirSonrakiGoreviBul: TGorevKimlik;
 var
-  _GorevKimlik: TGorevKimlik;
+  GorevKimlik: TGorevKimlik;
   i: TISayi4;
 begin
 
   // çalýþan göreve konumlan
-  _GorevKimlik := CalisanGorev;
+  GorevKimlik := CalisanGorev;
 
   // bir sonraki görevden itibaren tüm görevleri incele
   for i := 1 to USTSINIR_GOREVSAYISI do
   begin
 
-    Inc(_GorevKimlik);
-    if(_GorevKimlik > CalisanGorevSayisi) then _GorevKimlik := 1;
+    Inc(GorevKimlik);
+    if(GorevKimlik > CalisanGorevSayisi) then GorevKimlik := 1;
 
     // çalýþan görev aranan görev ise çaðýran iþleve geri dön
-    if(GorevListesi[_GorevKimlik]^.FGorevDurum = gdCalisiyor) then Break;
+    if(GorevListesi[GorevKimlik]^.FGorevDurum = gdCalisiyor) then Break;
   end;
 
-  Result := _GorevKimlik;
+  Result := GorevKimlik;
 end;
 
 {==============================================================================

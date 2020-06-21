@@ -132,7 +132,7 @@ begin
   {$ENDIF}
 
   // olay nesnesini ilk deðerlerini yükle
-  GOlay.Yukle;
+  GOlayYonetim.Yukle;
 
   SISTEM_MESAJ('+ Sistem içerisinde kullanýlacak görsel olmayan nesneler yükleniyor.', []);
   ListeleriIlkDegerlerleYukle;

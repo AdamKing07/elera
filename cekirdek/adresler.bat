@@ -1,5 +1,5 @@
-C:\lazarus\fpc\3.0.2\bin\i386-win32\objdump.exe -x cekirdkg.bin > adresler.txt
+C:\lazarus\fpc\3.0.4\bin\x86_64-win64\objdump.exe -x cekirdek.bin > adresler.txt
 
-echo cikis dosyasi adresler.txt adiyla kaydedildi.
+echo adres çıkış dosyası adresler.txt adıyla kaydedildi.
 
 pause

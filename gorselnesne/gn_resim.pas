@@ -6,7 +6,7 @@
   Dosya Adı: gn_resim.pas
   Dosya İşlevi: resim nesne yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 08/11/2019
+  Güncelleme Tarihi: 11/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,24 +14,27 @@ unit gn_resim;
 
 interface
 
-uses gorselnesne, paylasim, temelgorselnesne;
+uses gorselnesne, paylasim, temelgorselnesne, gn_panel;
 
 type
   PResim = ^TResim;
-  TResim = object(TGorselNesne)
+  TResim = object(TPanel)
   public
     FTuvaleSigdir: LongBool;
     FGoruntuYapi: TGoruntuYapi;
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-      ADosyaYolu: string): PResim;
-    procedure ResimYaz(ADosyaYolu: string);
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+      ASol, AUst, AGenislik, AYukseklik: TISayi4; ADosyaYolu: string): PResim;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure ResimYaz(ADosyaYolu: string);
   end;
 
-function ResimCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function ResimCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADosyaYolu: string): TKimlik;
 
 implementation
@@ -41,59 +44,63 @@ uses genel, gn_pencere, gn_islevler, bmp;
 {==============================================================================
   resim nesnesi kesme çağrılarını yönetir
  ==============================================================================}
-function ResimCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function ResimCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PPencere;
-  _Resim: PResim;
-  _Hiza: THiza;
-  p: PShortString;
-  _TuvaleSigdir: Boolean;
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  Resim: PResim;
+  Hiza: THiza;
+  p: PKarakterKatari;
+  TuvaleSigdir: Boolean;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^, PISayi4(Degiskenler + 16)^,
-        PShortString(PSayi4(Degiskenler + 20)^ + AktifGorevBellekAdresi)^);
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+        PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^,
+        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + AktifGorevBellekAdresi)^);
+    end;
 
     ISLEV_GOSTER:
     begin
 
-      _Resim := PResim(_Resim^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Resim^.Goster;
+      Resim := PResim(Resim^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Resim^.Goster;
     end;
 
     $0104:
     begin
 
-      _Resim := PResim(_Resim^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Hiza := PHiza(Degiskenler + 04)^;
-      _Resim^.Hiza := _Hiza;
+      Resim := PResim(Resim^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Hiza := PHiza(ADegiskenler + 04)^;
+      Resim^.FHiza := Hiza;
 
-      _Pencere := PPencere(_Resim^.FAtaNesne);
-      _Pencere^.Guncelle;
+      Pencere := PPencere(Resim^.FAtaNesne);
+      Pencere^.Guncelle;
     end;
 
     // resmi değiştir
     $0204:
     begin
 
-      _Resim := PResim(_Resim^.NesneAl(PKimlik(Degiskenler + 00)^));
-      p := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      _Resim^.ResimYaz(p^);
+      Resim := PResim(Resim^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      Resim^.ResimYaz(p^);
     end;
 
     $0304:
     begin
 
-      _Resim := PResim(_Resim^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _TuvaleSigdir := PLongBool(Degiskenler + 04)^;
-      _Resim^.FTuvaleSigdir := _TuvaleSigdir;
+      Resim := PResim(Resim^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      TuvaleSigdir := PLongBool(ADegiskenler + 04)^;
+      Resim^.FTuvaleSigdir := TuvaleSigdir;
 
-      _Pencere := PPencere(_Resim^.FAtaNesne);
-      _Pencere^.Guncelle;
+      Pencere := PPencere(Resim^.FAtaNesne);
+      Pencere^.Guncelle;
     end;
 
     else Result := HATA_ISLEV;
@@ -103,152 +110,97 @@ end;
 {==============================================================================
   resim nesnesini oluşturur
  ==============================================================================}
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADosyaYolu: string): TKimlik;
 var
-  _Resim: PResim;
+  Resim: PResim;
 begin
 
-  _Resim := _Resim^.Olustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik, ADosyaYolu);
+  Resim := Resim^.Olustur(ktNesne, AAtaNesne, ASol, AUst, AGenislik, AYukseklik, ADosyaYolu);
 
-  if(_Resim = nil) then
+  if(Resim = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _Resim^.Kimlik;
+
+  else Result := Resim^.Kimlik;
 end;
 
 {==============================================================================
   resim nesnesini oluşturur
  ==============================================================================}
-function TResim.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-  ADosyaYolu: string): PResim;
+function TResim.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst, AGenislik, AYukseklik: TISayi4; ADosyaYolu: string): PResim;
 var
-  _AtaNesne: PGorselNesne;
-  _Resim: PResim;
+  Resim: PResim;
 begin
 
-  // nesnenin bağlanacağı ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  Resim := PResim(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst, AGenislik,
+    AYukseklik, 2, RENK_BEYAZ, RENK_BEYAZ, 0, ''));
 
-  // resim nesnesi için bellekte yer ayır
-  _Resim := PResim(Olustur0(gntResim));
-  if(_Resim = nil) then
-  begin
+  // görsel nesne tipi
+  Resim^.NesneTipi := gntResim;
 
-    Result := nil;
-    Exit;
-  end;
+  Resim^.Baslik := '';
 
-  // resim nesnesini üst nesneye ekle
-  if(_Resim^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
+  Resim^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-    // hata olması durumunda nesneyi yok et ve hata koduyla işlevden çık
-    _Resim^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
+  Resim^.AnaOlayCagriAdresi := @OlaylariIsle;
 
-  // nesne değerlerini ata
-  _Resim^.GorevKimlik := CalisanGorev;
-  _Resim^.AtaNesne := _AtaNesne;
-  _Resim^.FTuvaleSigdir := False;
-  _Resim^.Hiza := hzYok;
-  _Resim^.FBoyutlar.Sol2 := A1;
-  _Resim^.FBoyutlar.Ust2 := B1;
-  _Resim^.FBoyutlar.Genislik2 := AGenislik;
-  _Resim^.FBoyutlar.Yukseklik2 := AYukseklik;
+  Resim^.FTuvaleSigdir := False;
 
-  // kenar kalınlıkları
-  _Resim^.FKalinlik.Sol := 0;
-  _Resim^.FKalinlik.Ust := 0;
-  _Resim^.FKalinlik.Sag := 0;
-  _Resim^.FKalinlik.Alt := 0;
+  Resim^.FCizimBaslangic.Sol := Resim^.AtaNesne^.FCizimBaslangic.Sol +
+    Resim^.AtaNesne^.FKalinlik.Sol + ASol;
+  Resim^.FCizimBaslangic.Ust := Resim^.AtaNesne^.FCizimBaslangic.Ust +
+    Resim^.AtaNesne^.FKalinlik.Ust + AUst;
 
-  // kenar boşlukları
-  _Resim^.FKenarBosluklari.Sol := 0;
-  _Resim^.FKenarBosluklari.Ust := 0;
-  _Resim^.FKenarBosluklari.Sag := 0;
-  _Resim^.FKenarBosluklari.Alt := 0;
-
-  _Resim^.FAtaNesneMi := False;
-  _Resim^.FareGostergeTipi := fitOK;
-  _Resim^.FGorunum := False;
-  _Resim^.FGoruntuYapi.BellekAdresi := nil;
-
-  // nesnenin ad ve başlık değeri
-  _Resim^.NesneAdi := NesneAdiAl(gntResim);
-  _Resim^.FBaslik := '';
+  Resim^.FGoruntuYapi.BellekAdresi := nil;
 
   // eğer dosya adı belirtilmişse, dosyayı yükle
   if(Length(ADosyaYolu) > 0) then ResimYaz(ADosyaYolu);
 
-  // uygulamaya mesaj gönder
-  GorevListesi[_Resim^.GorevKimlik]^.OlayEkle1(_Resim^.GorevKimlik, _Resim,
-    CO_OLUSTUR, 0, 0);
-
   // nesne adresini geri döndür
-  Result := _Resim;
+  Result := Resim;
 end;
 
 {==============================================================================
-  resim değerini belirler
+  resim nesnesini yok eder
  ==============================================================================}
-procedure TResim.ResimYaz(ADosyaYolu: string);
-var
-  _Resim: PResim;
+procedure TResim.YokEt;
 begin
 
-  // nesnenin kimlik, tip değerlerini denetle.
-  _Resim := PResim(_Resim^.NesneTipiniKontrolEt(Kimlik, gntResim));
-  if(_Resim = nil) then Exit;
-
-  // daha önce resim için bellek rezerv edildiyse belleği iptal et
-  if not(_Resim^.FGoruntuYapi.BellekAdresi = nil) then
-  begin
-
-    GGercekBellek.YokEt(_Resim^.FGoruntuYapi.BellekAdresi, _Resim^.FGoruntuYapi.Genislik *
-      _Resim^.FGoruntuYapi.Yukseklik * 4);
-    _Resim^.FGoruntuYapi.BellekAdresi := nil;
-  end;
-
-  if(Length(ADosyaYolu) > 0) then _Resim^.FGoruntuYapi := BMPDosyasiYukle(ADosyaYolu);
-
-  Ciz;
+  inherited YokEt;
 end;
 
 {==============================================================================
   resim nesnesini görüntüler
  ==============================================================================}
 procedure TResim.Goster;
-var
-  _Pencere: PPencere;
-  _Resim: PResim;
 begin
 
-  // nesnenin kimlik, tip değerlerini denetle.
-  _Resim := PResim(_Resim^.NesneTipiniKontrolEt(Kimlik, gntResim));
-  if(_Resim = nil) then Exit;
+  inherited Goster;
+end;
 
-  // nesne görünür durumda mı ?
-  if(_Resim^.FGorunum = False) then
-  begin
+{==============================================================================
+  resim nesnesini gizler
+ ==============================================================================}
+procedure TResim.Gizle;
+begin
 
-    // resim nesnesinin görünürlüğünü aktifleştir
-    _Resim^.FGorunum := True;
+  inherited Gizle;
+end;
 
-    // resim nesnesi ve üst nesneler görünür durumda mı ?
-    if(_Resim^.AtaNesneGorunurMu) then
-    begin
+{==============================================================================
+  resim nesnesini boyutlandırır
+ ==============================================================================}
+procedure TResim.Boyutlandir;
+var
+  Resim: PResim;
+begin
 
-      // görünür ise düğme nesnesinin üst nesnesi olan pencere nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_Resim);
+  Resim := PResim(Resim^.NesneAl(Kimlik));
+  if(Resim = nil) then Exit;
 
-      // pencere nesnesini yenile
-      _Pencere^.Guncelle;
-    end;
-  end;
+  Resim^.Hizala;
 end;
 
 {==============================================================================
@@ -256,87 +208,111 @@ end;
  ==============================================================================}
 procedure TResim.Ciz;
 var
-  _Pencere: PPencere;
-  _Resim: PResim;
-  _Alan: TAlan;
+  Resim: PResim;
 begin
 
-  _Resim := PResim(_Resim^.NesneTipiniKontrolEt(Kimlik, gntResim));
-  if(_Resim = nil) then Exit;
+  Resim := PResim(Resim^.NesneAl(Kimlik));
+  if(Resim = nil) then Exit;
 
-  _Pencere := PPencere(_Resim^.AtaNesne);
+  inherited Ciz;
 
-  if(_Resim^.FGorunum) then
+  if(Resim^.Gorunum) then
   begin
 
-    // resim nesnesinin üst nesneye bağlı olarak koordinatlarını al
-    _Alan := _Resim^.CizimGorselNesneBoyutlariniAl(Kimlik);
-    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag, _Alan.Alt, RENK_BEYAZ,
-      RENK_BEYAZ);
-
-    if not(_Resim^.FGoruntuYapi.BellekAdresi = nil) then
-      ResimCiz(gntResim, _Resim^.Kimlik, _Resim^.FGoruntuYapi);
+    if not(Resim^.FGoruntuYapi.BellekAdresi = nil) then
+      ResimCiz(gntResim, Resim, Resim^.FGoruntuYapi);
   end;
 end;
 
 {==============================================================================
   resim nesne olaylarını işler
  ==============================================================================}
-procedure TResim.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TResim.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _Resim: PResim;
+  Pencere: PPencere;
+  Resim: PResim;
 begin
 
-  _Resim := PResim(_Resim^.NesneTipiniKontrolEt(AKimlik, gntResim));
-  if(_Resim = nil) then Exit;
+  Resim := PResim(AGonderici);
+  if(Resim = nil) then Exit;
 
   // farenin sol tuşuna basım işlemi
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // resim nesnesinin sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_Resim);
+    Pencere := EnUstPencereNesnesiniAl(Resim);
 
     // en üstte olmaması durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
 
     // fare olaylarını yakala
-    OlayYakalamayaBasla(_Resim);
+    OlayYakalamayaBasla(Resim);
 
-    // uygulamaya mesaj gönder
-    GorevListesi[_Resim^.GorevKimlik]^.OlayEkle1(_Resim^.GorevKimlik, _Resim,
-      AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(Resim^.OlayCagriAdresi = nil) then
+      Resim^.OlayCagriAdresi(Resim, AOlay)
+    else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
     // fare olaylarını almayı bırak
-    OlayYakalamayiBirak(_Resim);
-
-    // uygulamaya mesaj gönder
-    GorevListesi[_Resim^.GorevKimlik]^.OlayEkle1(_Resim^.GorevKimlik, _Resim,
-      AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    OlayYakalamayiBirak(Resim);
 
     // farenin tuş bırakma işlemi nesnenin olay alanında mı gerçekleşti ?
-    if(_Resim^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(Resim^.FareNesneOlayAlanindaMi(Resim)) then
     begin
 
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // nesneye FO_TIKLAMA mesajı gönder
-      GorevListesi[_Resim^.GorevKimlik]^.OlayEkle1(_Resim^.GorevKimlik, _Resim,
-        FO_TIKLAMA, AOlay.Deger1, AOlay.Deger2);
+      AOlay.Olay := FO_TIKLAMA;
+      if not(Resim^.OlayCagriAdresi = nil) then
+        Resim^.OlayCagriAdresi(Resim, AOlay)
+      else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
     end;
+
+    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+    if not(Resim^.OlayCagriAdresi = nil) then
+      Resim^.OlayCagriAdresi(Resim, AOlay)
+    else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_HAREKET) then
   begin
 
-    GorevListesi[_Resim^.GorevKimlik]^.OlayEkle1(_Resim^.GorevKimlik, _Resim,
-      AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    if not(Resim^.OlayCagriAdresi = nil) then
+      Resim^.OlayCagriAdresi(Resim, AOlay)
+    else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := Resim^.FFareImlecTipi;
+end;
+
+{==============================================================================
+  resim değerini belirler
+ ==============================================================================}
+procedure TResim.ResimYaz(ADosyaYolu: string);
+var
+  Resim: PResim;
+begin
+
+  // nesnenin kimlik, tip değerlerini denetle.
+  Resim := PResim(Resim^.NesneAl(Kimlik));
+  if(Resim = nil) then Exit;
+
+  // daha önce resim için bellek rezerv edildiyse belleği iptal et
+  if not(Resim^.FGoruntuYapi.BellekAdresi = nil) then
+  begin
+
+    GGercekBellek.YokEt(Resim^.FGoruntuYapi.BellekAdresi, Resim^.FGoruntuYapi.Genislik *
+      Resim^.FGoruntuYapi.Yukseklik * 4);
+    Resim^.FGoruntuYapi.BellekAdresi := nil;
+  end;
+
+  if(Length(ADosyaYolu) > 0) then Resim^.FGoruntuYapi := BMPDosyasiYukle(ADosyaYolu);
+
+  Ciz;
 end;
 
 end.

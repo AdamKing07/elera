@@ -14,10 +14,10 @@ unit k_gorselnesne;
 
 interface
 
-uses paylasim, gn_masaustu, gn_pencere, gn_dugme, gn_gucdugme, gn_listekutusu,
+uses paylasim, gn_masaustu, gn_pencere, gn_dugme, gn_gucdugmesi, gn_listekutusu,
   gn_menu, gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
-  gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_panel, gn_resimdugme, gn_kaydirmacubugu, gn_karmaliste, gn_acilirmenu;
+  gn_etiket, gn_durumcubugu, gn_secimdugmesi, gn_baglanti, gn_resim, gn_listegorunum,
+  gn_panel, gn_resimdugmesi, gn_kaydirmacubugu, gn_karmaliste, gn_acilirmenu;
 
 const
   MEVCUT_GN_SAYISI = 22;    // görsel nesne sayısı

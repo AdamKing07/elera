@@ -7,7 +7,7 @@ program dsyyntcs;
   Program Adý: dsyyntcs.lpr
   Program Ýþlevi: dosya yöneticisi
 
-  Güncelleme Tarihi: 03/11/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -26,7 +26,7 @@ var
   dugSuruculer: array[1..6] of TDugme;
   OlayKayit: TOlayKayit;
   MantiksalSurucuListesi: array[1..6] of TMantiksalSurucu3;
-  MantiksalDepolamaAygitSayisi, i, _DugmeA1, _DosyaSayisi: LongInt;
+  MantiksalDepolamaAygitSayisi, i, DugmeSol, DosyaSayisi: TSayi4;
   GecerliSurucu, SeciliYazi, s: string;
 
 function MantiksalDepolamaAygitSayisiAl: TISayi4; assembler;
@@ -47,12 +47,12 @@ end;
 
 procedure DosyalariListele;
 var
-  _DosyaArama: TDosyaArama;
-  _AramaSonuc: TSayi4;
-  _SonDegisimTarihi, _SonDegisimSaati: TSayi2;
-  _TarihDizi: array[0..2] of TSayi2;
-  _SaatDizi: array[0..2] of TSayi1;
-  _Tarih, _Saat, _GirdiTip: string;
+  DosyaArama: TDosyaArama;
+  AramaSonuc: TSayi4;
+  SonDegisimTarihi, SonDegisimSaati: TSayi2;
+  TarihDizi: array[0..2] of TSayi2;
+  SaatDizi: array[0..2] of TSayi1;
+  Tarih, Saat, GirdiTip: string;
 begin
 
   if(GecerliSurucu <> '') then
@@ -60,39 +60,39 @@ begin
 
     lgDosyaListesi.Temizle;
 
-    _DosyaSayisi := 0;
+    DosyaSayisi := 0;
 
-    _AramaSonuc := _FindFirst(GecerliSurucu + ':\*.*', 0, _DosyaArama);
+    AramaSonuc := _FindFirst(GecerliSurucu + ':\*.*', 0, DosyaArama);
 
-    while (_AramaSonuc = 0) do
+    while (AramaSonuc = 0) do
     begin
 
-      _SonDegisimTarihi := _DosyaArama.SonDegisimTarihi;
-      _TarihDizi[0] := _SonDegisimTarihi and 31;
-      _TarihDizi[1] := (_SonDegisimTarihi shr 5) and 15;
-      _TarihDizi[2] := ((_SonDegisimTarihi shr 9) and 127) + 1980;
-      _Tarih := DateToStr(_TarihDizi, False);
+      SonDegisimTarihi := DosyaArama.SonDegisimTarihi;
+      TarihDizi[0] := SonDegisimTarihi and 31;
+      TarihDizi[1] := (SonDegisimTarihi shr 5) and 15;
+      TarihDizi[2] := ((SonDegisimTarihi shr 9) and 127) + 1980;
+      Tarih := DateToStr(TarihDizi, False);
 
-      _SonDegisimSaati := _DosyaArama.SonDegisimSaati;
-      _SaatDizi[2] := (_SonDegisimSaati and 31) * 2;
-      _SaatDizi[1] := (_SonDegisimSaati shr 5) and 63;
-      _SaatDizi[0] := (_SonDegisimSaati shr 11) and 31;
-      _Saat := TimeToStr(_SaatDizi);
+      SonDegisimSaati := DosyaArama.SonDegisimSaati;
+      SaatDizi[2] := (SonDegisimSaati and 31) * 2;
+      SaatDizi[1] := (SonDegisimSaati shr 5) and 63;
+      SaatDizi[0] := (SonDegisimSaati shr 11) and 31;
+      Saat := TimeToStr(SaatDizi);
 
-      if((_DosyaArama.Ozellikler and $10) = $10) then
-        _GirdiTip := 'Dizin'
-      else _GirdiTip := 'Dosya';
+      if((DosyaArama.Ozellikler and $10) = $10) then
+        GirdiTip := 'Dizin'
+      else GirdiTip := 'Dosya';
 
-      lgDosyaListesi.ElemanEkle(_DosyaArama.DosyaAdi + '|' + _Tarih + ' ' + _Saat + '|' +
-        _GirdiTip + '|' + IntToStr(_DosyaArama.DosyaUzunlugu));
+      lgDosyaListesi.ElemanEkle(DosyaArama.DosyaAdi + '|' + Tarih + ' ' + Saat + '|' +
+        GirdiTip + '|' + IntToStr(DosyaArama.DosyaUzunlugu));
 
-      Inc(_DosyaSayisi);
+      Inc(DosyaSayisi);
 
-      _AramaSonuc := _FindNext(_DosyaArama);
+      AramaSonuc := _FindNext(DosyaArama);
     end;
-    _FindClose(_DosyaArama);
+    _FindClose(DosyaArama);
 
-    DurumCubugu0.DurumYazisiDegistir('Toplam Dosya: ' + IntToStr(_DosyaSayisi));
+    DurumCubugu0.DurumYazisiDegistir('Toplam Dosya: ' + IntToStr(DosyaSayisi));
 
     Pencere0.Ciz;
   end;
@@ -100,7 +100,7 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 20, 20, 510, 325, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 80, 80, 510, 355, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Panel0.Olustur(Pencere0.Kimlik, 0, 0, 100, 45, 0, 0, 0, 0, '');
@@ -122,16 +122,16 @@ begin
   if(MantiksalDepolamaAygitSayisi > 0) then
   begin
 
-    _DugmeA1 := 2;
+    DugmeSol := 2;
     for i := 1 to MantiksalDepolamaAygitSayisi do
     begin
 
       if(MantiksalDepolamaAygitBilgisiAl(i, @MantiksalSurucuListesi[i])) then
       begin
 
-        dugSuruculer[i].Olustur(Panel0.Kimlik, _DugmeA1, 2, 65, 22, MantiksalSurucuListesi[i].AygitAdi);
+        dugSuruculer[i].Olustur(Panel0.Kimlik, DugmeSol, 2, 65, 22, MantiksalSurucuListesi[i].AygitAdi);
         dugSuruculer[i].Goster;
-        _DugmeA1 += 70;
+        DugmeSol += 70;
       end;
     end;
   end;
@@ -153,7 +153,8 @@ begin
   Pencere0.Goster;
 
   // ana döngü
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
 
@@ -210,6 +211,5 @@ begin
         Pencere0.Tuval.YaziYaz(2, 30, 'Aktif Sürücü: Yok')
       else Pencere0.Tuval.YaziYaz(2, 30, 'Aktif Sürücü: ' + GecerliSurucu);
     end;
-
-  until (1 = 2);
+  end;
 end.

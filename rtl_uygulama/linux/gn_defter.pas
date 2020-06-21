@@ -10,6 +10,7 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_defter;
 
 interface
@@ -30,6 +31,14 @@ type
   published
     property Kimlik: TKimlik read FKimlik;
   end;
+
+function _DefterOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+  ADefterRenk, AYaziRenk: TRenk): TKimlik; assembler;
+procedure _DefterHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
+procedure _DefterGoster(AKimlik: TKimlik); assembler;
+procedure _DefterYaziEklePChar(AKimlik: TKimlik; ABellekAdresi: PChar); assembler;
+procedure _DefterYaziEkleStr(AKimlik: TKimlik; ADeger: string); assembler;
+procedure _DefterTemizle(AKimlik: TKimlik); assembler;
 
 implementation
 
@@ -70,6 +79,64 @@ procedure TDefter.Temizle;
 begin
 
   _DefterTemizle(FKimlik);
+end;
+
+function _DefterOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+  ADefterRenk, AYaziRenk: TRenk): TKimlik;
+asm
+  push  AYaziRenk
+  push  ADefterRenk
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AAtaKimlik
+  mov   eax,DEFTER_OLUSTUR
+  int   $34
+  add   esp,28
+end;
+
+procedure _DefterHizala(AKimlik: TKimlik; AHiza: THiza);
+asm
+  push  AHiza
+  push  AKimlik
+  mov   eax,DEFTER_HIZALA
+  int   $34
+  add   esp,8
+end;
+
+procedure _DefterGoster(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,DEFTER_GOSTER
+  int   $34
+  add   esp,4
+end;
+
+procedure _DefterYaziEklePChar(AKimlik: TKimlik; ABellekAdresi: PChar);
+asm
+  push  ABellekAdresi
+  push  AKimlik
+  mov   eax,DEFTER_YAZIEKLEP
+  int   $34
+  add   esp,8
+end;
+
+procedure _DefterYaziEkleStr(AKimlik: TKimlik; ADeger: string);
+asm
+  push  ADeger
+  push  AKimlik
+  mov   eax,DEFTER_YAZIEKLES
+  int   $34
+  add   esp,8
+end;
+
+procedure _DefterTemizle(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,DEFTER_TEMIZLE
+  int   $34
+  add   esp,4
 end;
 
 end.

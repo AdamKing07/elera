@@ -6,7 +6,7 @@
   Dosya Adı: gn_islevler.pas
   Dosya İşlevi: görsel nesne (visual object) işlevlerini içerir
 
-  Güncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 21/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,48 +14,51 @@ unit gn_islevler;
 
 interface
 
-uses gorselnesne, genel, paylasim, gn_masaustu, gn_pencere, gn_listekutusu, gn_menu,
-  gn_defter, gn_listegorunum, gn_karmaliste, gn_acilirmenu;
+uses gorselnesne, genel, paylasim, gn_masaustu, gn_pencere;
 
 var
   AktifPencere: PPencere;
   YakalananGorselNesne: PGorselNesne;  // farenin, üzerine sol tuş ile basılıp seçildiği nesne
 
 procedure Yukle;
-function GorselNesneIslevCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function GorselNesneIslevCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TGorevKimlik);
-function GorselNesneBul(A1, B1: TISayi4): PGorselNesne;
-function GorselNesneAlanIcerisindeMi(AGorselNesne: PGorselNesne; A1, B1: TISayi4): Boolean;
-function PencereAtaNesnesiniAl(AGorselNesne: PGorselNesne): PPencere;
-procedure OlayYakalamayaBasla(AOlayNesne: PGorselNesne);
-procedure OlayYakalamayiBirak(AOlayNesne: PGorselNesne);
+function GorselNesneBul(var AKonum: TKonum): PGorselNesne;
+function EnUstNesneyiAl(AGorselNesne: PGorselNesne): PGorselNesne;
+function EnUstPencereNesnesiniAl(AGorselNesne: PGorselNesne): PPencere;
+procedure OlayYakalamayaBasla(AGorselNesne: PGorselNesne);
+procedure OlayYakalamayiBirak(AGorselNesne: PGorselNesne);
 
 implementation
+
+uses sistemmesaj;
 
 {==============================================================================
   görsel nesne yükleme işlevlerini gerçekleştirir
  ==============================================================================}
 procedure Yukle;
 var
-  _GNBellekAdresi: Isaretci;
+  GNBellekAdresi: Isaretci;
   i: TSayi4;
 begin
 
-  GN_UZUNLUK := Align(SizeOf(TPencere), 16);
+  { TODO : 64 Byte = fazladan ayrılan ve şu an hesaplanamadığı için en üst değer
+    olarak ayrılan temkin değeri. gereken değer teyit edilip otomatikleştirilecek }
+  GN_UZUNLUK := Align(SizeOf(TPencere) + 64, 16);
 
   // görsel nesneler için bellekte yer tahsis et
-  _GNBellekAdresi := GGercekBellek.Ayir(USTSINIR_GORSELNESNE * GN_UZUNLUK);
+  GNBellekAdresi := GGercekBellek.Ayir(USTSINIR_GORSELNESNE * GN_UZUNLUK);
 
   // nesneye ait işaretçileri bellek bölgeleriyle eşleştir
   for i := 1 to USTSINIR_GORSELNESNE do
   begin
 
-    GorselNesneListesi[i] := _GNBellekAdresi;
+    GorselNesneListesi[i] := GNBellekAdresi;
 
     // nesneyi kullanılmadı olarak işaretle
     GorselNesneListesi[i]^.Kimlik := HATA_KIMLIK;
 
-    _GNBellekAdresi += GN_UZUNLUK;
+    GNBellekAdresi += GN_UZUNLUK;
   end;
 
   // görsel nesne değişkenlerini ilk değerlerle yükle
@@ -63,51 +66,57 @@ begin
   ToplamGNSayisi := 0;
   AktifPencere := nil;
   GAktifMasaustu := nil;
+  GAktifMenu := nil;
   YakalananGorselNesne := nil;
 end;
 
 {==============================================================================
   genel nesne çağrılarını yönetir
  ==============================================================================}
-function GorselNesneIslevCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function GorselNesneIslevCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _GorselNesne: PGorselNesne;
-  _Kimlik: TKimlik;
-  _BellekAdresi: Isaretci;
+  GorselNesne: PGorselNesne;
+  Kimlik: TKimlik;
+  BellekAdresi: Isaretci;
+  Konum: TKonum;
 begin
 
   // yatay & dikey koordinattaki nesneyi al
-  if(IslevNo = 1) then
+  if(AIslevNo = 1) then
   begin
 
-    _GorselNesne := GorselNesneBul(PISayi4(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^);
-    Result := _GorselNesne^.Kimlik;
+    Konum.Sol := PISayi4(ADegiskenler + 00)^;
+    Konum.Ust := PISayi4(ADegiskenler + 04)^;
+    GorselNesne := GorselNesneBul(Konum);
+    Result := GorselNesne^.Kimlik;
   end
 
   // görsel nesne bilgilerini hedef bellek bölgesine kopyala
   // bilgi: bu işlevin alt yapı çalışması yapılacak
-  else if(IslevNo = 2) then
+  else if(AIslevNo = 2) then
   begin
 
-    _Kimlik := PISayi4(Degiskenler + 00)^;
-    if(_Kimlik >= 1) and (_Kimlik <= USTSINIR_GORSELNESNE) then
+    Kimlik := PISayi4(ADegiskenler + 00)^;
+    if(Kimlik >= 1) and (Kimlik <= USTSINIR_GORSELNESNE) then
     begin
 
-      _GorselNesne := GorselNesneListesi[_Kimlik];
-      _BellekAdresi := Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      Tasi2(_GorselNesne, _BellekAdresi, SizeOf(TGorselNesne));
+      GorselNesne := GorselNesneListesi[Kimlik];
+      BellekAdresi := Isaretci(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      Tasi2(GorselNesne, BellekAdresi, SizeOf(TGorselNesne));
 
       Result := 1;
     end else Result := 0;
   end
 
   // yatay & dikey koordinattaki nesnenin adını al
-  else if(IslevNo = 3) then
+  else if(AIslevNo = 3) then
   begin
 
-    _GorselNesne := GorselNesneBul(PISayi4(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^);
-    _BellekAdresi := Isaretci(PSayi4(Degiskenler + 08)^ + AktifGorevBellekAdresi);
-    Tasi2(@_GorselNesne^.NesneAdi[0], _BellekAdresi, Length(_GorselNesne^.NesneAdi) + 1);
+    Konum.Sol := PISayi4(ADegiskenler + 00)^;
+    Konum.Ust := PISayi4(ADegiskenler + 04)^;
+    GorselNesne := GorselNesneBul(Konum);
+    BellekAdresi := Isaretci(PSayi4(ADegiskenler + 08)^ + AktifGorevBellekAdresi);
+    Tasi2(@GorselNesne^.NesneAdi[0], BellekAdresi, Length(GorselNesne^.NesneAdi) + 1);
   end;
 end;
 
@@ -116,106 +125,78 @@ end;
  ==============================================================================}
 procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TGorevKimlik);
 var
-  _Masaustu: PMasaustu;
-  _Pencere: PGorselNesne;
-  _MasaustuGNBellekAdresi,
-  _PencereGNBellekAdresi: PPGorselNesne;
-  _PencereSiraNo, _PencereAltNesneSiraNo, i: TISayi4;
+  Masaustu: PMasaustu;
+  Pencere: PGorselNesne;
+  MasaustuGNBellekAdresi,
+  PencereGNBellekAdresi: PPGorselNesne;
+  PencereSiraNo, PencereAltNesneSiraNo, i: TISayi4;
 begin
 
   // geçerli bir masaüstü var mı ?
-  _Masaustu := GAktifMasaustu;
-  if not(_Masaustu = nil) then
+  Masaustu := GAktifMasaustu;
+  if not(Masaustu = nil) then
   begin
 
     // masaüstü nesnesinin alt nesnesi var ise
-    if(_Masaustu^.AltNesneSayisi > 0) then
+    if(Masaustu^.FAltNesneSayisi > 0) then
     begin
 
       // masaüstünün alt nesnelerinin bellek adresini al
-      _MasaustuGNBellekAdresi := _Masaustu^.FAltNesneBellekAdresi;
+      MasaustuGNBellekAdresi := Masaustu^.FAltNesneBellekAdresi;
 
       // masaüstü alt nesnelerini teker teker ara
-      for _PencereSiraNo := 0 to _Masaustu^.AltNesneSayisi - 1 do
+      for PencereSiraNo := 0 to Masaustu^.FAltNesneSayisi - 1 do
       begin
 
-        _Pencere := _MasaustuGNBellekAdresi[_PencereSiraNo];
+        Pencere := MasaustuGNBellekAdresi[PencereSiraNo];
 
         // aranan pencerenin sahibi olan görev ile araştırılan görev kimliği eşit mi?
         // öyle ise pencere ve alt nesnelerini yok et
-        if(_Pencere^.GorevKimlik = AGorevKimlik) then
+        if(Pencere^.GorevKimlik = AGorevKimlik) then
         begin
 
           // pencere nesnesinin alt nesnesi var mı?
-          if(_Pencere^.AltNesneSayisi > 0) then
+          if(Pencere^.FAltNesneSayisi > 0) then
           begin
 
             // pencere nesnesinin alt nesne bellek bölgesine konumlan
-            _PencereGNBellekAdresi := _Pencere^.FAltNesneBellekAdresi;
-            for _PencereAltNesneSiraNo := 0 to _Pencere^.AltNesneSayisi - 1 do
+            PencereGNBellekAdresi := Pencere^.FAltNesneBellekAdresi;
+            for PencereAltNesneSiraNo := 0 to Pencere^.FAltNesneSayisi - 1 do
             begin
 
-              // -> ek kaynak kullanan görsel nesneler - BAŞLANGIÇ
-
-              if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntListeKutusu) then
-                PListeKutusu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
-                  PListeKutusu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
-              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntListeGorunum) then
-                PListeGorunum(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
-                  PListeGorunum(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
-              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntMenu) then
-                PMenu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
-                  PMenu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
-              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntDefter) then
-                PDefter(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
-                  PDefter(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
-              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntKarmaListe) then
-                PKarmaListe(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
-                  PKarmaListe(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
-              else if(_PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.GorselNesneTipi = gntAcilirMenu) then
-                PAcilirMenu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.YokEt(
-                  PAcilirMenu(_PencereGNBellekAdresi[_PencereAltNesneSiraNo])^.Kimlik)
-              else
-
-              // <- ek kaynak kullanan görsel nesneler - SON
-
-              // aksi durumda sadece nesneyi yok et
-              _PencereGNBellekAdresi[_PencereAltNesneSiraNo]^.YokEt0;
+              PencereGNBellekAdresi[PencereAltNesneSiraNo]^.YokEt;
             end;
 
             // pencere nesnesinin alt nesne için ayrılan bellek bloğunu iptal et
-            GGercekBellek.YokEt(_Pencere^.FAltNesneBellekAdresi, 4096);
+            GGercekBellek.YokEt(Pencere^.FAltNesneBellekAdresi, 4096);
           end;
 
           // bulunan pencereyi masaüstü listesinden çıkart
-          _MasaustuGNBellekAdresi[_PencereSiraNo] := nil;
+          MasaustuGNBellekAdresi[PencereSiraNo] := nil;
 
           // pencereyi yok et
-          _Pencere^.YokEt0;
+          Pencere^.YokEt;
 
           // masaüstü alt nesne sayısını bir azalt
-          i := _Masaustu^.AltNesneSayisi;
+          i := Masaustu^.FAltNesneSayisi;
           Dec(i);
-          _Masaustu^.AltNesneSayisi := i;
+          Masaustu^.FAltNesneSayisi := i;
 
           // eğer alt nesne sayısı halen mevcut ise
           // sıralamayı tekrar gözden geçir
-          if(_Masaustu^.AltNesneSayisi > 0) then
+          if(Masaustu^.FAltNesneSayisi > 0) then
           begin
 
-            for i := 0 to _Masaustu^.AltNesneSayisi - 1 do
+            for i := 0 to Masaustu^.FAltNesneSayisi - 1 do
             begin
 
-              if(_MasaustuGNBellekAdresi[i] = nil) then
-                _MasaustuGNBellekAdresi[i] := _MasaustuGNBellekAdresi[i + 1];
+              if(MasaustuGNBellekAdresi[i] = nil) then
+                MasaustuGNBellekAdresi[i] := MasaustuGNBellekAdresi[i + 1];
             end;
           end
 
           // aksi durumda masaüstü alt nesne bellek bölgesini iptal et
-          else GGercekBellek.YokEt(_Masaustu^.FAltNesneBellekAdresi, 4096);
-
-          // masaüstü nesnesini yeniden çiz
-          _Masaustu^.Guncelle;
+          else GGercekBellek.YokEt(Masaustu^.FAltNesneBellekAdresi, 4096);
 
           // bir sonraki döngüye devam etmeden çık
           Exit;
@@ -228,112 +209,251 @@ end;
 {==============================================================================
   belirtilen koordinattaki nesneyi bulur
  ==============================================================================}
-function GorselNesneBul(A1, B1: TISayi4): PGorselNesne;
+function GorselNesneBul(var AKonum: TKonum): PGorselNesne;
 var
-  _AltNesneGNBellekAdresi: PPGorselNesne;
-  _GorselNesne: PGorselNesne;
-  _BulunanNesne, _SonBulunanGorselNesne: PGorselNesne;
-  i: TISayi4;
+  PencereGN, SonBulunanGN, SorgulananGN,
+  GenelGN: PGorselNesne;
+  i, j: TISayi4;
+  SonNesneA, NesneA: TAlan;
+  PencereTipi: TPencereTipi;
+
+  function AlanIcindeMi(AAlan: TAlan): Boolean;
+  begin
+
+    // farenin nesne koordinatları içerisinde olup olmadığını kontrol et
+    Result := False;
+    if(AKonum.Sol < AAlan.Sol) then Exit;
+    if(AKonum.Sol > AAlan.Sag) then Exit;
+    if(AKonum.Ust < AAlan.Ust) then Exit;
+    if(AKonum.Ust > AAlan.Alt) then Exit;
+
+    // tüm koşullar sağlanmışsa fare belirtilen nesnenin alanı içerisindedir
+    Result := True;
+  end;
 begin
 
   // aktif masaüstü yok ise nil değeri ile çık
   if(GAktifMasaustu = nil) then Exit(nil);
 
-  // masaüstüne bağlı menü mevcut mu? test et
-  // NOT: menü işlevi geçici olarak masaüstü nesnesine eklendi. geliştirilecek
-  if(GAktifMasaustu^.FMenu <> nil) then
+  // 1. aktif menü mevcut mu? kontrol et
+  SonBulunanGN := GAktifMenu;
+  if(SonBulunanGN <> nil) then
   begin
 
-    _SonBulunanGorselNesne := GAktifMasaustu^.FMenu;
-    if(_SonBulunanGorselNesne^.FGorunum) then
+    if(SonBulunanGN^.Gorunum) then
     begin
 
-      if(GorselNesneAlanIcerisindeMi(_SonBulunanGorselNesne, A1, B1)) then
-        Exit(_SonBulunanGorselNesne);
+      SonNesneA.Sol := SonBulunanGN^.FKonum.Sol;
+      SonNesneA.Ust := SonBulunanGN^.FKonum.Ust;
+      SonNesneA.Sag := SonNesneA.Sol + SonBulunanGN^.FBoyut.Genislik;
+      SonNesneA.Alt := SonNesneA.Ust + SonBulunanGN^.FBoyut.Yukseklik;
+
+      if(AlanIcindeMi(SonNesneA)) then
+      begin
+
+        AKonum.Sol := AKonum.Sol - SonBulunanGN^.FKonum.Sol;
+        AKonum.Ust := AKonum.Ust - SonBulunanGN^.FKonum.Ust;
+        Exit(SonBulunanGN);
+      end;
     end;
   end;
 
-  // son bulunan nesne, geçerli masaüstü
-  _SonBulunanGorselNesne := GAktifMasaustu;
+  // 2. aktif masaüstünün sorgulanması
+  SonBulunanGN := GAktifMasaustu;
 
-  // kısır döngüye gir
-  while 1 = 1 do
+  SonNesneA.Sol := SonBulunanGN^.FKonum.Sol + SonBulunanGN^.FKalinlik.Sol;
+  SonNesneA.Ust := SonBulunanGN^.FKonum.Ust + SonBulunanGN^.FKalinlik.Ust;
+  SonNesneA.Sag := SonNesneA.Sol + SonBulunanGN^.FBoyut.Genislik;
+  SonNesneA.Alt := SonNesneA.Ust + SonBulunanGN^.FBoyut.Yukseklik;
+
+  if(SonBulunanGN^.FAltNesneSayisi = 0) then
   begin
 
-    if(_SonBulunanGorselNesne^.FAtaNesneMi) and (_SonBulunanGorselNesne^.AltNesneSayisi > 0) then
+    AKonum.Sol := AKonum.Sol - SonBulunanGN^.FKonum.Sol;
+    AKonum.Ust := AKonum.Ust - SonBulunanGN^.FKonum.Ust;
+    Exit(SonBulunanGN);
+  end;
+
+  // 3. pencerelerin sorgulanması
+  if(SonBulunanGN^.FAltNesneSayisi > 0) then
+  begin
+
+    // alt nesnesi olan nesnenin alt nesnelerini ara. sondan başa doğru (3..0 gibi)
+    for i := SonBulunanGN^.FAltNesneSayisi - 1 downto 0 do
     begin
 
-      // ata nesne olan görsel nesnenin alt nesne bellek adresi
-      _AltNesneGNBellekAdresi := _SonBulunanGorselNesne^.FAltNesneBellekAdresi;
+      // görsel nesneyi al
+      PencereGN := SonBulunanGN^.FAltNesneBellekAdresi[i];
 
-      _BulunanNesne := nil;
-
-      // alt nesnesi olan nesnenin alt nesnelerini ara. sondan başa doğru (3..0 gibi)
-      for i := _SonBulunanGorselNesne^.AltNesneSayisi - 1 downto 0 do
+      if(PencereGN^.NesneTipi = gntPencere) then
       begin
 
-        // görsel nesneyi al
-        _GorselNesne := PGorselNesne(_AltNesneGNBellekAdresi[i]);
-
         // görsel nesne görünür durumda mı ?
-        if(_GorselNesne^.FGorunum) then
+        if(PencereGN^.Gorunum) then
         begin
 
-          // görsel nesne A1 ve B1 koordinatı içerisinde mi ?
-          if(GorselNesneAlanIcerisindeMi(_GorselNesne, A1, B1)) then
+          NesneA.Sol := SonNesneA.Sol + PencereGN^.FKonum.Sol;
+          NesneA.Ust := SonNesneA.Ust + PencereGN^.FKonum.Ust;
+          NesneA.Sag := NesneA.Sol + PencereGN^.FBoyut.Genislik;
+          NesneA.Alt := NesneA.Ust + PencereGN^.FBoyut.Yukseklik;
+
+          // fare görsel nesne alan içerisinde mi ?
+          if(AlanIcindeMi(NesneA)) then
           begin
 
-            // bulunan nesne olarak görsel nesneyi kaydet
-            _BulunanNesne := _GorselNesne;
-            Break;
+            SonNesneA.Sol := NesneA.Sol;
+            SonNesneA.Ust := NesneA.Ust;
+
+            // 3.1 kontrol düğmelerinin sorgulanması
+            PencereTipi := PPencere(PencereGN)^.FPencereTipi;
+            if(PencereTipi = ptBoyutlanabilir) or (PencereTipi = ptIletisim) then
+            begin
+
+              // kapatma düğmesinin sorgulanması
+              SorgulananGN := PPencere(PencereGN)^.FKapatmaDugmesi;
+              NesneA.Sol := SonNesneA.Sol + SorgulananGN^.FKonum.Sol;
+              NesneA.Ust := SonNesneA.Ust + SorgulananGN^.FKonum.Ust;
+              NesneA.Sag := NesneA.Sol + SorgulananGN^.FBoyut.Genislik;
+              NesneA.Alt := NesneA.Ust + SorgulananGN^.FBoyut.Yukseklik;
+
+              if(AlanIcindeMi(NesneA)) then
+              begin
+
+                AKonum.Sol := (AKonum.Sol - NesneA.Sol);
+                AKonum.Ust := (AKonum.Ust - NesneA.Ust);
+                Exit(SorgulananGN);
+              end;
+
+              { TODO : bu kısımda ise küçültme ve büyütme düğmesi sorgulanacaktır }
+            end;
+
+            // pencere nesnesinin kalınlığını da son koordinata ekle
+            SonNesneA.Sol += PencereGN^.FKalinlik.Sol;
+            SonNesneA.Ust += PencereGN^.FKalinlik.Ust;
+            SonBulunanGN := PencereGN;
+
+            // 4 - alt nesnelerin sorgulanması
+            while True do
+            begin
+
+              GenelGN := nil;
+
+              if(SonBulunanGN^.FAltNesneSayisi > 0) then
+              begin
+
+                // alt nesnesi olan nesnenin alt nesnelerini ara. sondan başa doğru (3..0 gibi)
+                for j := SonBulunanGN^.FAltNesneSayisi - 1 downto 0 do
+                begin
+
+                  // görsel nesneyi al
+                  SorgulananGN := SonBulunanGN^.FAltNesneBellekAdresi[j];
+
+                  // görsel nesne görünür durumda mı ?
+                  if(SorgulananGN^.Gorunum) then
+                  begin
+
+                    NesneA.Sol := SonNesneA.Sol + SorgulananGN^.FKonum.Sol;
+                    NesneA.Ust := SonNesneA.Ust + SorgulananGN^.FKonum.Ust;
+                    NesneA.Sag := NesneA.Sol + SorgulananGN^.FBoyut.Genislik;
+                    NesneA.Alt := NesneA.Ust + SorgulananGN^.FBoyut.Yukseklik;
+
+                    // fare görsel nesne alan içerisinde mi ?
+                    if(AlanIcindeMi(NesneA)) then
+                    begin
+
+                      SonNesneA.Sol := NesneA.Sol;
+                      SonNesneA.Ust := NesneA.Ust;
+                      GenelGN := SorgulananGN;
+                      SonBulunanGN := GenelGN;
+                      Break;
+                    end;
+                  end;
+                end;
+
+                if(GenelGN = nil) then
+                begin
+
+                  if(SonBulunanGN^.NesneTipi = gntPencere) then
+                  begin
+
+                    SonNesneA.Sol -= SonBulunanGN^.FKalinlik.Sol;
+                    SonNesneA.Ust -= SonBulunanGN^.FKalinlik.Ust;
+
+                    AKonum.Sol := (AKonum.Sol - SonNesneA.Sol);
+                    AKonum.Ust := (AKonum.Ust - SonNesneA.Ust);
+                    Exit(SonBulunanGN);
+                  end
+                  else
+                  begin
+
+                    AKonum.Sol := (AKonum.Sol - SonNesneA.Sol);
+                    AKonum.Ust := (AKonum.Ust - SonNesneA.Ust);
+                    Exit(SonBulunanGN);
+                  end;
+                end else SonBulunanGN := GenelGN;
+              end
+              else
+              begin
+
+                if(SonBulunanGN^.NesneTipi = gntPencere) then
+                begin
+
+                  SonNesneA.Sol -= SonBulunanGN^.FKalinlik.Sol;
+                  SonNesneA.Ust -= SonBulunanGN^.FKalinlik.Ust;
+
+                  AKonum.Sol := (AKonum.Sol - SonNesneA.Sol);
+                  AKonum.Ust := (AKonum.Ust - SonNesneA.Ust);
+                  Exit(SonBulunanGN);
+                end
+                else
+                begin
+
+                  AKonum.Sol := (AKonum.Sol - SonNesneA.Sol);
+                  AKonum.Ust := (AKonum.Ust - SonNesneA.Ust);
+                  Exit(SonBulunanGN);
+                end;
+              end;
+            end;
           end;
         end;
       end;
+    end;
 
-      if(_BulunanNesne = nil) then Exit(_SonBulunanGorselNesne);
-
-      _SonBulunanGorselNesne := _BulunanNesne;
-
-    end else Exit(_SonBulunanGorselNesne);
+    AKonum.Sol := AKonum.Sol - SonBulunanGN^.FKonum.Sol;
+    AKonum.Ust := AKonum.Ust - SonBulunanGN^.FKonum.Ust;
+    Exit(SonBulunanGN);
   end;
 end;
 
 {==============================================================================
-  nesnenin yatay & dikey koordinat içerisinde olup olmadığını kontrol eder
+  nesnenin en üst atası olan masaüstü veya pencere nesnesini alır
  ==============================================================================}
-function GorselNesneAlanIcerisindeMi(AGorselNesne: PGorselNesne; A1, B1: TISayi4): Boolean;
-var
-  _Alan: TAlan;
+function EnUstNesneyiAl(AGorselNesne: PGorselNesne): PGorselNesne;
 begin
 
-  // nesnenin üst nesneye bağlı gerçek koordinatlarını al
-  _Alan.Sol2 := AGorselNesne^.FDisGercekBoyutlar.Sol2;
-  _Alan.Ust2 := AGorselNesne^.FDisGercekBoyutlar.Ust2;
-  _Alan.Genislik2 := AGorselNesne^.FDisGercekBoyutlar.Genislik2;
-  _Alan.Yukseklik2 := AGorselNesne^.FDisGercekBoyutlar.Yukseklik2;
-
-  // nesnenin A1, B1 koordinatları içerisinde olup olmadığını kontrol et
-  Result := False;
-  if(_Alan.Sol > A1) then Exit;
-  if(_Alan.Sag < A1) then Exit;
-  if(_Alan.Ust > B1) then Exit;
-  if(_Alan.Alt < B1) then Exit;
-
-  // tüm koşullar sağlanmışsa nesne belirtilen koordinattadır
-  Result := True;
-end;
-
-{==============================================================================
-  nesnenin atası olan pencere nesnesini alır
- ==============================================================================}
-function PencereAtaNesnesiniAl(AGorselNesne: PGorselNesne): PPencere;
-begin
-
-  // nesnenin ata nesnesi pencere olana kadar ara
-  while (AGorselNesne^.GorselNesneTipi <> gntPencere) do
+  // nesnenin ata nesnesi masaüstü veya pencere olana kadar ara
+  while (AGorselNesne^.NesneTipi <> gntMasaustu) or (AGorselNesne^.NesneTipi <> gntPencere) do
   begin
 
     AGorselNesne := AGorselNesne^.AtaNesne;
+    if(AGorselNesne = nil) then Exit(nil);
+  end;
+
+  Result := AGorselNesne;
+end;
+
+{==============================================================================
+  nesnenin en üst atası olan masaüstü veya pencere nesnesini alır
+ ==============================================================================}
+function EnUstPencereNesnesiniAl(AGorselNesne: PGorselNesne): PPencere;
+begin
+
+  // nesnenin ata nesnesi pencere olana kadar ara
+  while (AGorselNesne^.NesneTipi <> gntPencere) do
+  begin
+
+    AGorselNesne := AGorselNesne^.AtaNesne;
+    if(AGorselNesne = nil) then Exit(nil);
   end;
 
   Result := PPencere(AGorselNesne);
@@ -342,23 +462,23 @@ end;
 {==============================================================================
   nesnenin fare olaylarını yakalamasını sağlar
  ==============================================================================}
-procedure OlayYakalamayaBasla(AOlayNesne: PGorselNesne);
+procedure OlayYakalamayaBasla(AGorselNesne: PGorselNesne);
 begin
 
   // olaylar başka nesne tarafından yakalanmıyorsa, olay nesnesini
   // yakalanan nesne olarak ata
-  if(YakalananGorselNesne = nil) then YakalananGorselNesne := AOlayNesne;
+  if(YakalananGorselNesne = nil) then YakalananGorselNesne := AGorselNesne;
 end;
 
 {==============================================================================
   fare olayları yakalama işlevi nesne tarafından serbest bırakılır
  ==============================================================================}
-procedure OlayYakalamayiBirak(AOlayNesne: PGorselNesne);
+procedure OlayYakalamayiBirak(AGorselNesne: PGorselNesne);
 begin
 
   // olay daha önce nesne tarafından yakalanmışsa, nesneyi yakalanan nesne
   // olmaktan çıkar
-  if(YakalananGorselNesne = AOlayNesne) then YakalananGorselNesne := nil;
+  if(YakalananGorselNesne = AGorselNesne) then YakalananGorselNesne := nil;
 end;
 
 end.

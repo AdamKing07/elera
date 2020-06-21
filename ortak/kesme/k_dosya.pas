@@ -38,7 +38,7 @@ begin
     2:
     begin
 
-      Result := FindFirst(PShortString(Isaretci(PSayi4(Degiskenler + 00)^ +
+      Result := FindFirst(PKarakterKatari(Isaretci(PSayi4(Degiskenler + 00)^ +
         AktifGorevBellekAdresi))^, PSayi2(Degiskenler + 04)^,
         PDosyaArama(PSayi4(Degiskenler + 06)^ + AktifGorevBellekAdresi)^);
     end;
@@ -64,7 +64,7 @@ begin
     begin
 
       AssignFile(PKimlik(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi)^,
-        PShortString(Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi))^);
+        PKarakterKatari(Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi))^);
     end;
 
     // dosyayý aç

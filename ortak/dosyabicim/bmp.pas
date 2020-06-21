@@ -6,7 +6,7 @@
   Dosya Adı: bmp.pas
   Dosya İşlevi: bmp dosya işlevlerini içerir
 
-  Güncelleme Tarihi: 08/11/2019
+  Güncelleme Tarihi: 11/06/2020
 
   Not-1: şu an itibariyle sadece 24 bitlik resim görüntüleme desteği vardır
   Not-2: tüm renkler 32 bitlik değerlerle işlenmektedir
@@ -17,7 +17,7 @@ unit bmp;
 
 interface
 
-uses dosya, gercekbellek, genel, paylasim, gn_pencere;
+uses dosya, gercekbellek, genel, paylasim, gn_pencere, gorselnesne;
 
 type
   PRGBRenk = ^TRGBRenk;
@@ -45,8 +45,7 @@ type
   end;
 
 function BMPDosyasiYukle(ADosyaTamYol: string): TGoruntuYapi;
-procedure ResimCiz(AGorselNesneTipi: TGorselNesneTipi; AKimlik: TKimlik;
-  AGoruntuYapi: TGoruntuYapi);
+procedure ResimCiz(AGNTip: TGNTip; AGorselNesne: PGorselNesne; AGoruntuYapi: TGoruntuYapi);
 
 implementation
 
@@ -55,192 +54,192 @@ uses gn_masaustu, gn_resim, islevler, gn_islevler;
 // bmp biçimindeki dosyayı resim olarak belleğe yükler
 function BMPDosyasiYukle(ADosyaTamYol: string): TGoruntuYapi;
 var
-  _DosyaBellek: Isaretci;
-  _DosyaUzunlugu: TISayi4;
-  _DosyaKimlik: TKimlik;
-  _DosyaTamYol, _DosyaUzantisi,
-  _Surucu, _Dizin, _DosyaAdi: string;
-  _BMPBicim: PBMPBicim;
-  _GoruntuYapi: TGoruntuYapi;
-  _SatirdakiByteSayisi, _Satir,
-  _A1, _B1, i: TISayi4;
-  _PRenk: PRGBRenk;
-  _Renk: TRenk;
-  _HedefBellek: ^TRenk;
+  DosyaBellek: Isaretci;
+  DosyaUzunlugu: TISayi4;
+  DosyaKimlik: TKimlik;
+  DosyaTamYol, DosyaUzantisi,
+  Surucu, Dizin, DosyaAdi: string;
+  BMPBicim: PBMPBicim;
+  GoruntuYapi: TGoruntuYapi;
+  SatirdakiByteSayisi, Satir,
+  Sol, Ust, i: TISayi4;
+  PRenk: PRGBRenk;
+  Renk: TRenk;
+  HedefBellek: ^TRenk;
 begin
 
   Result.BellekAdresi := nil;
 
   // dosyayı sürücü + dizin + dosya parçalarına ayır
-  DosyaYolunuParcala(ADosyaTamYol, _Surucu, _Dizin, _DosyaAdi);
+  DosyaYolunuParcala(ADosyaTamYol, Surucu, Dizin, DosyaAdi);
 
   // dosya adının uzunluğunu al
-  _DosyaUzunlugu := Length(_DosyaAdi);
+  DosyaUzunlugu := Length(DosyaAdi);
 
   // dosya uzantısını al
-  i := Pos('.', _DosyaAdi);
+  i := Pos('.', DosyaAdi);
   if(i > 0) then
-    _DosyaUzantisi := Copy(_DosyaAdi, i + 1, _DosyaUzunlugu - i)
-  else _DosyaUzantisi := '';
+    DosyaUzantisi := Copy(DosyaAdi, i + 1, DosyaUzunlugu - i)
+  else DosyaUzantisi := '';
 
-  if(_DosyaUzantisi = 'bmp') then
+  if(DosyaUzantisi = 'bmp') then
   begin
 
-    _DosyaTamYol := _Surucu + ':\' + _DosyaAdi;
+    DosyaTamYol := Surucu + ':\' + DosyaAdi;
 
-    AssignFile(_DosyaKimlik, _DosyaTamYol);
-    Reset(_DosyaKimlik);
+    AssignFile(DosyaKimlik, DosyaTamYol);
+    Reset(DosyaKimlik);
     if(IOResult = 0) then
     begin
 
       // dosya uzunluğunu al
-      _DosyaUzunlugu := FileSize(_DosyaKimlik);
+      DosyaUzunlugu := FileSize(DosyaKimlik);
 
-      // dosyanın belleğe _B1üklenmesi için bellekte yer ayır
-      _DosyaBellek := GGercekBellek.Ayir(_DosyaUzunlugu);
-      if(_DosyaBellek = nil) then
+      // dosyanın belleğe Ustüklenmesi için bellekte yer ayır
+      DosyaBellek := GGercekBellek.Ayir(DosyaUzunlugu);
+      if(DosyaBellek = nil) then
       begin
 
         // dosyayı kapat
-        CloseFile(_DosyaKimlik);
+        CloseFile(DosyaKimlik);
         Exit;
       end;
 
       // dosyayı hedef adrese kopyala
-      Read(_DosyaKimlik, _DosyaBellek);
+      Read(DosyaKimlik, DosyaBellek);
 
       // dosyayı kapat
-      CloseFile(_DosyaKimlik);
+      CloseFile(DosyaKimlik);
 
-      _BMPBicim := _DosyaBellek;
-      _GoruntuYapi.Genislik := _BMPBicim^.Genislik;
-      _GoruntuYapi.Yukseklik := _BMPBicim^.Yukseklik;
+      BMPBicim := DosyaBellek;
+      GoruntuYapi.Genislik := BMPBicim^.Genislik;
+      GoruntuYapi.Yukseklik := BMPBicim^.Yukseklik;
 
-      _GoruntuYapi.BellekAdresi := GGercekBellek.Ayir(_GoruntuYapi.Genislik *
-        _GoruntuYapi.Yukseklik * 4);
-      if(_GoruntuYapi.BellekAdresi = nil) then Exit;
+      GoruntuYapi.BellekAdresi := GGercekBellek.Ayir(GoruntuYapi.Genislik *
+        GoruntuYapi.Yukseklik * 4);
+      if(GoruntuYapi.BellekAdresi = nil) then Exit;
 
       // resim dosyasındaki her bir satırdaki byte sayısı
-      _SatirdakiByteSayisi := (_GoruntuYapi.Genislik * 3 + 3) and $FFFFFFFC;
+      SatirdakiByteSayisi := (GoruntuYapi.Genislik * 3 + 3) and $FFFFFFFC;
 
-      _Satir := -1;
+      Satir := -1;
 
-      for _B1 := _GoruntuYapi.Yukseklik - 1 downto 0 do
+      for Ust := GoruntuYapi.Yukseklik - 1 downto 0 do
       begin
 
-        _HedefBellek := _GoruntuYapi.BellekAdresi + (_B1 * (_GoruntuYapi.Genislik * 4));
+        HedefBellek := GoruntuYapi.BellekAdresi + (Ust * (GoruntuYapi.Genislik * 4));
 
-        Inc(_Satir);
-        _PRenk := _DosyaBellek + _BMPBicim^.VeriAdres + (_SatirdakiByteSayisi * _Satir);
+        Inc(Satir);
+        PRenk := DosyaBellek + BMPBicim^.VeriAdres + (SatirdakiByteSayisi * Satir);
 
-        for _A1 := 0 to _GoruntuYapi.Genislik - 1 do
+        for Sol := 0 to GoruntuYapi.Genislik - 1 do
         begin
 
-          _Renk := (_PRenk^.B shl 16) + (_PRenk^.G shl 8) + (_PRenk^.R);
-          _HedefBellek^ := _Renk;
-          Inc(_PRenk);
-          Inc(_HedefBellek);
+          Renk := (PRenk^.B shl 16) + (PRenk^.G shl 8) + (PRenk^.R);
+          HedefBellek^ := Renk;
+          Inc(PRenk);
+          Inc(HedefBellek);
         end;
       end;
 
       // dosyanın açıldığı belleği serbest bırak
-      GGercekBellek.YokEt(_DosyaBellek, _DosyaUzunlugu);
+      GGercekBellek.YokEt(DosyaBellek, DosyaUzunlugu);
 
-      Result := _GoruntuYapi;
+      Result := GoruntuYapi;
     end;
   end;
 end;
 
 // bmp biçiminde belleğe yüklenmiş resmi görsel nesneye çizer
-procedure ResimCiz(AGorselNesneTipi: TGorselNesneTipi; AKimlik: TKimlik;
+procedure ResimCiz(AGNTip: TGNTip; AGorselNesne: PGorselNesne;
   AGoruntuYapi: TGoruntuYapi);
 var
-  _Masaustu: PMasaustu;
-  _Pencere: PPencere;
-  _Resim: PResim;
-  _Renk, __Renk: ^TRenk;
-  _Alan: TAlan;
-  _Yukseklik, _Genislik, _SatirdakiByteSayisi,
-  _TuvalA1, _TuvalB1: TISayi4;
-  _YatayArtis, _DikeyArtis, _A1: Double;
+  Masaustu: PMasaustu;
+  Pencere: PPencere;
+  Resim: PResim;
+  Renk, _Renk: ^TRenk;
+  Alan: TAlan;
+  Yukseklik, Genislik, SatirdakiByteSayisi,
+  TuvalA1, TuvalB1: TISayi4;
+  YatayArtis, DikeyArtis, Sol: Double;
 begin
 
-  if(AGorselNesneTipi = gntMasaustu) then
+  if(AGNTip = gntMasaustu) then
   begin
 
-    _Masaustu := PMasaustu(_Masaustu^.NesneTipiniKontrolEt(AKimlik, AGorselNesneTipi));
-    if(_Masaustu = nil) then Exit;
+    Masaustu := PMasaustu(AGorselNesne);
+    if(Masaustu = nil) then Exit;
 
-    _Alan := _Masaustu^.CizimGorselNesneBoyutlariniAl(AKimlik);
+    Alan := Masaustu^.FCizimAlan;
 
-    _Genislik := AGoruntuYapi.Genislik;
-    _SatirdakiByteSayisi := _Genislik * 4;
-    if(_Genislik > _Alan.Genislik2) then _Genislik := _Alan.Genislik2;
-    _Yukseklik := AGoruntuYapi.Yukseklik;
-    if(_Yukseklik > _Alan.Yukseklik2) then _Yukseklik := _Alan.Yukseklik2;
+    Genislik := AGoruntuYapi.Genislik;
+    SatirdakiByteSayisi := Genislik * 4;
+    if(Genislik > Alan.Sag) then Genislik := Alan.Sag;
+    Yukseklik := AGoruntuYapi.Yukseklik;
+    if(Yukseklik > Alan.Alt) then Yukseklik := Alan.Alt;
 
-    for _TuvalB1 := 0 to _Yukseklik - 1 do
+    for TuvalB1 := 0 to Yukseklik - 1 do
     begin
 
-      _Renk := (_TuvalB1 * _SatirdakiByteSayisi) + AGoruntuYapi.BellekAdresi;
+      Renk := (TuvalB1 * SatirdakiByteSayisi) + AGoruntuYapi.BellekAdresi;
 
-      for _TuvalA1 := 0 to _Genislik - 1 do
+      for TuvalA1 := 0 to Genislik - 1 do
       begin
 
-        GEkranKartSurucusu.NoktaYaz(_Masaustu, _Alan.Sol + _TuvalA1, _Alan.Ust + _TuvalB1,
-          _Renk^, True);
-        Inc(_Renk);
+        GEkranKartSurucusu.NoktaYaz(Masaustu, Alan.Sol + TuvalA1, Alan.Ust + TuvalB1,
+          Renk^, True);
+        Inc(Renk);
       end;
     end;
   end
-  else if(AGorselNesneTipi = gntResim) then
+  else if(AGNTip = gntResim) then
   begin
 
-    _Resim := PResim(_Resim^.NesneTipiniKontrolEt(AKimlik, AGorselNesneTipi));
-    if(_Resim = nil) then Exit;
+    Resim := PResim(AGorselNesne);
+    if(Resim = nil) then Exit;
 
     // ata nesne kontrolü. ata nesne pencere değilse çık
-    _Pencere := PencereAtaNesnesiniAl(_Resim);
-    if(_Pencere = nil) then Exit;
+    Pencere := EnUstPencereNesnesiniAl(Resim);
+    if(Pencere = nil) then Exit;
 
-    _Alan := _Resim^.CizimGorselNesneBoyutlariniAl(AKimlik);
+    Alan := Resim^.FCizimAlan;
 
-    if(_Resim^.FTuvaleSigdir) then
+    if(Resim^.FTuvaleSigdir) then
     begin
 
-      _Genislik := AGoruntuYapi.Genislik;
-      _SatirdakiByteSayisi := _Genislik * 4;
-      _Yukseklik := AGoruntuYapi.Yukseklik;
-      _YatayArtis := _Genislik / (_Alan.Sag - _Alan.Sol);
-      _DikeyArtis := _Yukseklik / (_Alan.Alt - _Alan.Ust);
+      Genislik := AGoruntuYapi.Genislik;
+      SatirdakiByteSayisi := Genislik * 4;
+      Yukseklik := AGoruntuYapi.Yukseklik;
+      YatayArtis := Genislik / (Alan.Sag - Alan.Sol);
+      DikeyArtis := Yukseklik / (Alan.Alt - Alan.Ust);
     end
     else
     begin
 
-      _Genislik := AGoruntuYapi.Genislik;
-      _SatirdakiByteSayisi := _Genislik * 4;
-      if(_Genislik > _Alan.Genislik2) then _Genislik := _Alan.Genislik2;
-      _Yukseklik := AGoruntuYapi.Yukseklik;
-      if(_Yukseklik > _Alan.Yukseklik2) then _Yukseklik := _Alan.Yukseklik2;
-      _YatayArtis := 1.0;
-      _DikeyArtis := 1.0;
+      Genislik := AGoruntuYapi.Genislik;
+      SatirdakiByteSayisi := Genislik * 4;
+      if(Genislik > Alan.Sag) then Genislik := Alan.Sag;
+      Yukseklik := AGoruntuYapi.Yukseklik;
+      if(Yukseklik > Alan.Alt) then Yukseklik := Alan.Alt;
+      YatayArtis := 1.0;
+      DikeyArtis := 1.0;
     end;
 
-    for _TuvalB1 := 0 to _Yukseklik - 1 do
+    for TuvalB1 := 0 to Yukseklik - 1 do
     begin
 
-      _Renk := (Round((_TuvalB1 * _DikeyArtis)) * _SatirdakiByteSayisi) + AGoruntuYapi.BellekAdresi;
+      Renk := (Round((TuvalB1 * DikeyArtis)) * SatirdakiByteSayisi) + AGoruntuYapi.BellekAdresi;
 
-      _A1 := 0.0;
-      for _TuvalA1 := 0 to _Genislik - 1 do
+      Sol := 0.0;
+      for TuvalA1 := 0 to Genislik - 1 do
       begin
 
-        _A1 := _A1 + _YatayArtis;
-        __Renk := _Renk;
-        Inc(__Renk, Round(_A1));
+        Sol := Sol + YatayArtis;
+        _Renk := Renk;
+        Inc(_Renk, Round(Sol));
 
-        GEkranKartSurucusu.NoktaYaz(_Pencere, _Alan.Sol + _TuvalA1, _Alan.Ust + _TuvalB1,
-          __Renk^, True);
+        GEkranKartSurucusu.NoktaYaz(Resim, Alan.Sol + TuvalA1, Alan.Ust + TuvalB1,
+          _Renk^, True);
       end;
     end;
   end;

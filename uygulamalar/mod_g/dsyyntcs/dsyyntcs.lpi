@@ -38,8 +38,6 @@
         <Filename Value="dsyyntcs.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="82"/>
-        <CursorPos X="65" Y="95"/>
         <UsageCount Value="43"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -287,7 +285,7 @@
         <UsageCount Value="11"/>
       </Unit46>
     </Units>
-    <JumpHistory Count="8" HistoryIndex="7">
+    <JumpHistory Count="19" HistoryIndex="18">
       <Position1>
         <Filename Value="dsyyntcs.lpr"/>
         <Caret Line="148" Column="55" TopLine="129"/>
@@ -319,6 +317,50 @@
         <Filename Value="dsyyntcs.lpr"/>
         <Caret Line="87" Column="35" TopLine="74"/>
       </Position8>
+      <Position9>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="50" Column="13" TopLine="31"/>
+      </Position9>
+      <Position10>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="51" Column="13" TopLine="31"/>
+      </Position10>
+      <Position11>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="52" Column="36" TopLine="31"/>
+      </Position11>
+      <Position12>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="53" Column="12" TopLine="31"/>
+      </Position12>
+      <Position13>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="54" Column="11" TopLine="31"/>
+      </Position13>
+      <Position14>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="55" Column="16" TopLine="31"/>
+      </Position14>
+      <Position15>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="29" Column="44" TopLine="10"/>
+      </Position15>
+      <Position16>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="127" Column="28" TopLine="104"/>
+      </Position16>
+      <Position17>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="29" Column="44" TopLine="10"/>
+      </Position17>
+      <Position18>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="24" Column="80"/>
+      </Position18>
+      <Position19>
+        <Filename Value="dsyyntcs.lpr"/>
+        <Caret Line="103" Column="29" TopLine="89"/>
+      </Position19>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

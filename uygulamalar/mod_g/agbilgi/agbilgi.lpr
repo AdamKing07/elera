@@ -6,7 +6,7 @@
   Program Adý: agbilgi.lpr
   Program Ýþlevi: að yapýlandýrmasý hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 25/10/2019
+  Güncelleme Tarihi: 07/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -26,7 +26,7 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 300, 200, 330, 230, ptIletisim, ProgramAdi, $FAE6FF);
+  Pencere0.Olustur(-1, 300, 200, 330, 200, ptIletisim, ProgramAdi, $FAE6FF);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   dugYenile.Olustur(Pencere0.Kimlik, 240, 170, 70, 20, 'Yenile');
@@ -35,7 +35,8 @@ begin
 
   AgBilgisiAl(@AgBilgisi);
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
@@ -71,6 +72,5 @@ begin
       Pencere0.Tuval.YaziYaz(2, 130, 'DHCP sunucundan yeni IP adresi almak');
       Pencere0.Tuval.YaziYaz(2, 146, 'için Ctrl+2 tuþuna basýnýz.');
     end;
-
-  until (1 = 2);
+  end;
 end.

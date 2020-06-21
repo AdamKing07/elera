@@ -6,7 +6,7 @@
   Dosya Adı: gn_durumcubugu.pas
   Dosya İşlevi: durum çubuğu yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 06/11/2019
+  Güncelleme Tarihi: 06/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,77 +14,66 @@ unit gn_durumcubugu;
 
 interface
 
-uses gorselnesne, paylasim;
-
-const
-  // 1 = $FFFFFF
-  // 2 = $808080
-  DurumCubuguResim: array[1..12, 1..12] of Byte = (
-    (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-    (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2),
-    (0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2),
-    (0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 0),
-    (0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 0, 1),
-    (0, 0, 0, 0, 0, 0, 1, 2, 2, 0, 1, 2),
-    (0, 0, 0, 0, 0, 1, 2, 2, 0, 1, 2, 2),
-    (0, 0, 0, 0, 1, 2, 2, 0, 1, 2, 2, 0),
-    (0, 0, 0, 1, 2, 2, 0, 1, 2, 2, 0, 1),
-    (0, 0, 1, 2, 2, 0, 1, 2, 2, 0, 1, 2),
-    (0, 1, 2, 2, 0, 1, 2, 2, 0, 1, 2, 2),
-    (1, 2, 2, 0, 1, 2, 2, 0, 1, 2, 2, 0));
+uses gorselnesne, paylasim, gn_panel;
 
 type
   PDurumCubugu = ^TDurumCubugu;
-  TDurumCubugu = object(TGorselNesne)
-  private
+  TDurumCubugu = object(TPanel)
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-      ADurumYazisi: string): PDurumCubugu;
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+      ASol, AUst, AGenislik, AYukseklik: TISayi4; ADurumYazi: string): PDurumCubugu;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
 
-function DurumCubuguCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-  ADurumYazisi: string): TKimlik;
+function DurumCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
+  ADurumYazi: string): TKimlik;
 
 implementation
 
-uses genel, gn_pencere, gn_islevler, temelgorselnesne;
+uses genel, gn_pencere, gn_islevler, temelgorselnesne, hamresim;
 
 {==============================================================================
   durum çubuğu kesme çağrılarını yönetir
  ==============================================================================}
-function DurumCubuguCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function DurumCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _DurumCubugu: PDurumCubugu;
-  p1: PShortString;
+  GorselNesne: PGorselNesne;
+  DurumCubugu: PDurumCubugu;
+  p1: PKarakterKatari;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^, PISayi4(Degiskenler + 16)^,
-        PShortString(PSayi4(Degiskenler + 20)^ + AktifGorevBellekAdresi)^);
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+      PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^,
+        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + AktifGorevBellekAdresi)^);
+    end;
 
     ISLEV_GOSTER:
     begin
 
-      _DurumCubugu := PDurumCubugu(_DurumCubugu^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _DurumCubugu^.Goster;
+      DurumCubugu := PDurumCubugu(DurumCubugu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      DurumCubugu^.Goster;
     end;
 
     // durum çubuğundaki veriyi değiştir
     $0104:
     begin
 
-      _DurumCubugu := PDurumCubugu(_DurumCubugu^.NesneAl(PKimlik(Degiskenler + 00)^));
-      p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      _DurumCubugu^.FBaslik := p1^;
-      _DurumCubugu^.Ciz;
+      DurumCubugu := PDurumCubugu(DurumCubugu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      p1 := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      DurumCubugu^.Baslik := p1^;
+      DurumCubugu^.Ciz;
     end
 
     else Result := HATA_ISLEV;
@@ -94,122 +83,87 @@ end;
 {==============================================================================
   durum çubuğu nesnesini oluşturur
  ==============================================================================}
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-  ADurumYazisi: string): TKimlik;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
+  ADurumYazi: string): TKimlik;
 var
-  _DurumCubugu: PDurumCubugu;
+  DurumCubugu: PDurumCubugu;
 begin
 
-  _DurumCubugu := _DurumCubugu^.Olustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik,
-    ADurumYazisi);
+  DurumCubugu := DurumCubugu^.Olustur(ktNesne, AAtaNesne, ASol, AUst,
+    AGenislik, AYukseklik, ADurumYazi);
 
-  if(_DurumCubugu = nil) then
+  if(DurumCubugu = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _DurumCubugu^.Kimlik;
+
+  else Result := DurumCubugu^.Kimlik;
 end;
 
 {==============================================================================
   durum çubuğu nesnesini oluşturur
  ==============================================================================}
-function TDurumCubugu.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
-  ADurumYazisi: string): PDurumCubugu;
+function TDurumCubugu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst, AGenislik, AYukseklik: TISayi4; ADurumYazi: string): PDurumCubugu;
 var
-  _AtaNesne: PGorselNesne;
-  _DurumCubugu: PDurumCubugu;
+  DurumCubugu: PDurumCubugu;
 begin
 
-  // nesnenin bağlanacağı ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  DurumCubugu := PDurumCubugu(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
+    AGenislik, AYukseklik, 2, $D4D0C8, $D4D0C8, 0, ''));
 
-  // durum çubuğu için bellekte yer ayır
-  _DurumCubugu := PDurumCubugu(Olustur0(gntDurumCubugu));
-  if(_DurumCubugu = nil) then
-  begin
+  DurumCubugu^.NesneTipi := gntDurumCubugu;
 
-    Result := nil;
-    Exit;
-  end;
+  DurumCubugu^.Baslik := ADurumYazi;
 
-  // durum çubuğu nesnesini üst nesneye ekle
-  if(_DurumCubugu^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
+  DurumCubugu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-    // hata olması durumunda nesneyi yok et ve hata koduyla işlevden çık
-    _DurumCubugu^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
+  DurumCubugu^.AnaOlayCagriAdresi := @OlaylariIsle;
 
-  // nesne değerlerini ata
-  _DurumCubugu^.GorevKimlik := CalisanGorev;
-  _DurumCubugu^.AtaNesne := _AtaNesne;
-  _DurumCubugu^.Hiza := hzAlt;                        // alta hizala
-  _DurumCubugu^.FBoyutlar.Sol2 := A1;
-  _DurumCubugu^.FBoyutlar.Ust2 := B1;
-  _DurumCubugu^.FBoyutlar.Genislik2 := AGenislik;
-  _DurumCubugu^.FBoyutlar.Yukseklik2 := AYukseklik;
-
-  // kenar kalınlıkları
-  _DurumCubugu^.FKalinlik.Sol := 0;
-  _DurumCubugu^.FKalinlik.Ust := 0;
-  _DurumCubugu^.FKalinlik.Sag := 0;
-  _DurumCubugu^.FKalinlik.Alt := 0;
-
-  // kenar boşlukları
-  _DurumCubugu^.FKenarBosluklari.Sol := 0;
-  _DurumCubugu^.FKenarBosluklari.Ust := 0;
-  _DurumCubugu^.FKenarBosluklari.Sag := 0;
-  _DurumCubugu^.FKenarBosluklari.Alt := 0;
-
-  _DurumCubugu^.FAtaNesneMi := False;
-  _DurumCubugu^.FareGostergeTipi := fitOK;
-  _DurumCubugu^.FGorunum := False;
-
-  // nesnenin ad ve başlık değeri
-  _DurumCubugu^.NesneAdi := NesneAdiAl(gntDurumCubugu);
-  _DurumCubugu^.FBaslik := ADurumYazisi;
-
-  // uygulamaya mesaj gönder
-  GorevListesi[_DurumCubugu^.GorevKimlik]^.OlayEkle1(_DurumCubugu^.GorevKimlik,
-    _DurumCubugu, CO_OLUSTUR, 0, 0);
+  DurumCubugu^.FHiza := hzAlt;                        // alta hizala
 
   // nesne adresini geri döndür
-  Result := _DurumCubugu;
+  Result := DurumCubugu;
+end;
+
+{==============================================================================
+  durum çubuğu nesnesini yok eder
+ ==============================================================================}
+procedure TDurumCubugu.YokEt;
+begin
+
+  inherited YokEt;
 end;
 
 {==============================================================================
   durum çubuğu nesnesini görüntüler
  ==============================================================================}
 procedure TDurumCubugu.Goster;
-var
-  _Pencere: PPencere;
-  _DurumCubugu: PDurumCubugu;
 begin
 
-  // nesnenin kimlik, tip değerlerini denetle.
-  _DurumCubugu := PDurumCubugu(_DurumCubugu^.NesneTipiniKontrolEt(Kimlik, gntDurumCubugu));
-  if(_DurumCubugu = nil) then Exit;
+  inherited Goster;
+end;
 
-  // nesne görünür durumda mı ?
-  if(_DurumCubugu^.FGorunum = False) then
-  begin
+{==============================================================================
+  durum çubuğu nesnesini gizler
+ ==============================================================================}
+procedure TDurumCubugu.Gizle;
+begin
 
-    // durum çubuğu nesnesinin görünürlüğünü aktifleştir
-    _DurumCubugu^.FGorunum := True;
+  inherited Gizle;
+end;
 
-    // durum çubuğu nesnesi ve üst nesneler görünür durumda mı ?
-    if(_DurumCubugu^.AtaNesneGorunurMu) then
-    begin
+{==============================================================================
+  durum çubuğu nesnesini boyutlandırır
+ ==============================================================================}
+procedure TDurumCubugu.Boyutlandir;
+var
+  DurumCubugu: PDurumCubugu;
+begin
 
-      // görünür ise durum çubuğu nesnesinin üst nesnesi olan pencere nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_DurumCubugu);
+  DurumCubugu := PDurumCubugu(DurumCubugu^.NesneAl(Kimlik));
+  if(DurumCubugu = nil) then Exit;
 
-      // pencere nesnesini yenile
-      _Pencere^.Guncelle;
-    end;
-  end;
+  DurumCubugu^.Hizala;
 end;
 
 {==============================================================================
@@ -217,104 +171,87 @@ end;
  ==============================================================================}
 procedure TDurumCubugu.Ciz;
 var
-  _Pencere: PPencere;
-  _DurumCubugu: PDurumCubugu;
-  _Alan: TAlan;
-  p1: PSayi1;
-  X, Y, XX, YY: TISayi4;
+  DurumCubugu: PDurumCubugu;
+  Alan: TAlan;
+  Renk: PRenk;
+  Sol, Ust, Yatay, Dikey: TISayi4;
 begin
 
-  // nesnenin kimlik, tip değerlerini denetle.
-  _DurumCubugu := PDurumCubugu(_DurumCubugu^.NesneTipiniKontrolEt(Kimlik, gntDurumCubugu));
-  if(_DurumCubugu = nil) then Exit;
+  DurumCubugu := PDurumCubugu(DurumCubugu^.NesneAl(Kimlik));
+  if(DurumCubugu = nil) then Exit;
 
-  // ata nesne bir pencere mi?
-  _Pencere := PencereAtaNesnesiniAl(_DurumCubugu);
-  if(_Pencere = nil) then Exit;
+  inherited Ciz;
 
-  // durum çubuğunun üst nesneye bağlı olarak koordinatlarını al
-  _Alan := _DurumCubugu^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  // durum çubuğunun çizim alan koordinatlarını al
+  Alan := DurumCubugu^.FCizimAlan;
 
-  // kenarlık çizgisini çiz
-  KenarlikCiz(_Pencere, _Alan, 1);
+  Yatay := Alan.Sag - 12 - 1;
+  Dikey := Alan.Alt - 12 - 1;
 
-  // iç dolgu rengi
-  DikdortgenDoldur(_Pencere, _Alan.Sol + 1, _Alan.Ust + 1, _Alan.Sag - 1, _Alan.Alt - 1,
-    $D4D0C8, $D4D0C8);
-
-  XX := _Alan.Sag - 12 - 1;
-  YY := _Alan.Alt - 12 - 1;
-
-  p1 := PByte(@DurumCubuguResim);
-  for Y := 1 to 12 do
+  Renk := PRenk(@DurumCubuguResim);
+  for Ust := 1 to 12 do
   begin
 
-    for X := 1 to 12 do
+    for Sol := 1 to 12 do
     begin
 
-      if(p1^ = 1) then
-        PixelYaz(_Pencere, XX + X, YY + Y, RENK_BEYAZ)
-      else if(p1^ = 2) then
-        PixelYaz(_Pencere, XX + X, YY + Y, $808080);
-
-      Inc(p1);
+      if not(Renk^ = $FFFFFFFF) then PixelYaz(DurumCubugu, Yatay + Sol, Dikey + Ust, Renk^);
+      Inc(Renk);
     end;
   end;
 
   // durum çubuğu başlığı
-  YaziYaz(_Pencere, _Alan.Sol + 3, _Alan.Ust + 2, _DurumCubugu^.FBaslik, RENK_SIYAH);
-
-  // uygulamaya mesaj gönder
-  {GorevListesi[_DurumCubugu^.GorevKimlik]^.EventAdd1(_DurumCubugu^.GorevKimlik,
-    _DurumCubugu, CO_CIZIM, 0, 0);}
+  YaziYaz(DurumCubugu, Alan.Sol + 3, Alan.Ust + 2, DurumCubugu^.Baslik, RENK_SIYAH);
 end;
 
 {==============================================================================
   durum çubuğu olaylarını işler
  ==============================================================================}
-procedure TDurumCubugu.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TDurumCubugu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _DurumCubugu: PDurumCubugu;
+  Pencere: PPencere;
+  DurumCubugu: PDurumCubugu;
 begin
 
-  _DurumCubugu := PDurumCubugu(_DurumCubugu^.NesneTipiniKontrolEt(AKimlik, gntDurumCubugu));
-  if(_DurumCubugu = nil) then Exit;
+  DurumCubugu := PDurumCubugu(AGonderici);
 
   // farenin sol tuşuna basım işlemi
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // durum çubuğunun sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_DurumCubugu);
+    Pencere := EnUstPencereNesnesiniAl(DurumCubugu);
 
     // en üstte olmaması durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
 
-    if(FareNesneOlayAlanindaMi(AKimlik)) then
+    if(FareNesneOlayAlanindaMi(DurumCubugu)) then
     begin
 
       // fare olaylarını yakala
-      OlayYakalamayaBasla(_DurumCubugu);
+      OlayYakalamayaBasla(DurumCubugu);
     end;
- end
+  end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
     // farenin tuş bırakma işlemi nesnenin olay alanında mı gerçekleşti ?
-    if(_DurumCubugu^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(DurumCubugu^.FareNesneOlayAlanindaMi(DurumCubugu)) then
     begin
 
-      GorevListesi[_DurumCubugu^.GorevKimlik]^.OlayEkle1(_DurumCubugu^.GorevKimlik,
-        _DurumCubugu, FO_TIKLAMA, 0, 0)
+      // uygulamaya veya efendi nesneye mesaj gönder
+      AOlay.Olay := FO_TIKLAMA;
+      if not(DurumCubugu^.OlayCagriAdresi = nil) then
+        DurumCubugu^.OlayCagriAdresi(DurumCubugu, AOlay)
+      else GorevListesi[DurumCubugu^.GorevKimlik]^.OlayEkle(DurumCubugu^.GorevKimlik, AOlay);
     end;
 
     // fare olaylarını almayı bırak
-    OlayYakalamayiBirak(_DurumCubugu);
+    OlayYakalamayiBirak(DurumCubugu);
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := DurumCubugu^.FFareImlecTipi;
 end;
 
 end.

@@ -1,21 +1,21 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Dosya AdÄ±: gn_pencere.pas
-  Dosya Ä°ÅŸlevi: pencere yÃ¶netim iÅŸlevlerini iÃ§erir
+  Dosya Adý: gn_pencere.pas
+  Dosya Ýþlevi: pencere yönetim iþlevlerini içerir
 
-  GÃ¼ncelleme Tarihi: 09/04/2020
+  Güncelleme Tarihi: 20/06/2020
 
-  Ã–nemli Bilgiler:
+  Önemli Bilgiler:
 
-    2. TPencere'nin alt nesnelerinden biri yeniden kÄ±smi olarak (TEtiket nesnesi gibi)
-      Ã§izilmek istendiÄŸinde mutlaka Ã¼st nesne olan TPencere.Guncelle iÅŸlevini Ã§aÄŸÄ±rmalÄ±dÄ±r.
-      BÃ¶ylece pencere Ã§izim tasarÄ±m gereÄŸi pencere Ã¶ncelikle kendini Ã§izecek daha
-      sonra ise alt nesnelerinin Ã§izilmesi iÃ§in alt nesnenin Ciz iÅŸlevini Ã§aÄŸÄ±racaktÄ±r.
-      Bu durum en son geliÅŸtirilen, pencerelerin bellekten belleÄŸe aktarÄ±lmasÄ± ve
-      eÄŸimli dolgu (gradient) Ã§izim iÅŸlevleri iÃ§in gereklidir
+    2. TPencere'nin alt nesnelerinden biri yeniden kýsmi olarak (TEtiket nesnesi gibi)
+      çizilmek istendiðinde mutlaka üst nesne olan TPencere.Guncelle iþlevini çaðýrmalýdýr.
+      Böylece pencere çizim tasarým gereði pencere öncelikle kendini çizecek daha
+      sonra ise alt nesnelerinin çizilmesi için alt nesnenin Ciz iþlevini çaðýracaktýr.
+      Bu durum en son geliþtirilen, pencerelerin bellekten belleðe aktarýlmasý ve
+      eðimli dolgu (gradient) çizim iþlevleri için gereklidir
 
  ==============================================================================}
 {$mode objfpc}
@@ -23,53 +23,46 @@ unit gn_pencere;
 
 interface
 
-uses gorselnesne, paylasim, gn_dugme;
+uses gorselnesne, paylasim, gn_panel, gn_dugme, gn_resimdugmesi;
 
 type
-  TKontrolDugmesi = (kdKucultme, kdBuyutme, kdKapatma);
-  TKontrolDugmeleri = set of TKontrolDugmesi;
   PPencereTipi = ^TPencereTipi;
-  TPencereTipi = (ptBoyutlandirilabilir, ptBasliksiz, ptIletisim);
+  TPencereTipi = (ptBoyutlanabilir, ptBasliksiz, ptIletisim);
 
 type
   PPencere = ^TPencere;
-  TPencere = object(TGorselNesne)
-  protected
-    FSistemDugmesi: PDugme;
-    FPencereTipi: TPencereTipi;
-    FGovdeRenk: TRenk;
-    FKontrolDugmeleri: TKontrolDugmeleri;
-    FKapatmaDugmeBoyut, FBuyutmeDugmeBoyut,
-    FKucultmeDugmeBoyut: TAlan;
-    procedure BoyutlandirilabilirPencereOlaylariniIsle(AKimlik: TKimlik; Olay: TOlayKayit);
-    procedure BasliksizPencereOlaylariniIsle(AKimlik: TKimlik; Olay: TOlayKayit);
-    procedure IletisimPencereOlaylariniIsle(AKimlik: TKimlik; Olay: TOlayKayit);
-    property PencereTipi: TPencereTipi read FPencereTipi write FPencereTipi;
-    property KontrolDugmeleri: TKontrolDugmeleri read FKontrolDugmeleri write FKontrolDugmeleri;
+  TPencere = object(TPanel)
   private
-    function FarePencereCizimAlanindaMi(AKimlik: TKimlik): Boolean;
-    procedure KontrolDugmeleriniCiz(APencere: PPencere; APencereCizimAlani: TAlan;
-      APencereAktif: Boolean);
+    procedure BasliksizPencereOlaylariniIsle(APencere: PPencere; AOlay: TOlay);
+    procedure IletisimPencereOlaylariniIsle(APencere: PPencere; AOlay: TOlay);
+    procedure BoyutlanabilirPencereOlaylariniIsle(APencere: PPencere; AOlay: TOlay);
+    function FarePencereCizimAlanindaMi(APencere: PPencere): Boolean;
+    procedure IcBilesenleriKonumlandir(var APencere: PPencere);
+    procedure KontrolDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   public
-    function Olustur(AtaKimlik: TKimlik; A1, B1, Genislik, Yukseklik: TISayi4;
+    FPencereTipi: TPencereTipi;
+    FKucultmeDugmesi, FBuyutmeDugmesi, FKapatmaDugmesi: PResimDugmesi;
+    function Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
       APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): PPencere;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure Guncelle;
-    procedure EnUsteGetir;
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+    procedure EnUsteGetir(APencere: PPencere);
   end;
 
-function PencereCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function PencereCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): TKimlik;
 
 implementation
 
-uses genel, gorev, gn_islevler, gn_masaustu, gn_gucdugme, gn_listekutusu,
+uses genel, gorev, gn_islevler, gn_masaustu, gn_gucdugmesi, gn_listekutusu,
   gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
-  gn_etiket, gn_durumcubugu, gn_secimdugme, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_panel, gn_resimdugme, gn_kaydirmacubugu, gn_karmaliste, temelgorselnesne, giysi;
+  gn_etiket, gn_durumcubugu, gn_secimdugmesi, gn_baglanti, gn_resim, gn_listegorunum,
+  gn_kaydirmacubugu, gn_karmaliste, temelgorselnesne, giysi, sistemmesaj;
 
 const
   PENCERE_ALTLIMIT_GENISLIK = 110;
@@ -77,46 +70,52 @@ const
 
 type
   TFareKonumu = (fkSolAlt, fkSol, fkSolUst, fkUst, fkSagUst, fkSag, fkSagAlt, fkAlt,
-    fkGovde, fkKontrolCubugu, fkKapatmaDugmesi);
+    fkGovde, fkKontrolCubugu);
 
 var
   FareKonumu: TFareKonumu = fkGovde;
   SonFareYatayKoordinat, SonFareDikeyKoordinat: TISayi4;
 
 {==============================================================================
-    pencere kesme Ã§aÄŸrÄ±larÄ±nÄ± yÃ¶netir
+    pencere kesme çaðrýlarýný yönetir
  ==============================================================================}
-function PencereCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function PencereCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PPencere;
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  AtaNesneKimlik: TISayi4;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
-    ISLEV_OLUSTUR: Result := NesneOlustur(PKimlik(Degiskenler + 00)^,
-      PISayi4(Degiskenler + 04)^, PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^,
-      PISayi4(Degiskenler + 16)^, PPencereTipi(Degiskenler + 20)^,
-      PShortString(PSayi4(Degiskenler + 24)^ + AktifGorevBellekAdresi)^,
-      PRenk(Degiskenler + 28)^);
+    ISLEV_OLUSTUR:
+    begin
+
+      AtaNesneKimlik := PKimlik(ADegiskenler + 00)^;
+      if(AtaNesneKimlik = -1) then
+        GorselNesne := nil
+      else GorselNesne := GorselNesne^.NesneAl(AtaNesneKimlik);
+
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+      PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^,
+      PISayi4(ADegiskenler + 16)^, PPencereTipi(ADegiskenler + 20)^,
+      PKarakterKatari(PSayi4(ADegiskenler + 24)^ + AktifGorevBellekAdresi)^,
+      PRenk(ADegiskenler + 28)^);
+    end;
 
     ISLEV_GOSTER:
     begin
 
-      _Pencere := PPencere(_Pencere^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Pencere^.Goster;
+      Pencere := PPencere(Pencere^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Pencere^.Goster;
     end;
 
     ISLEV_CIZ:
     begin
 
-      if(YakalananGorselNesne = nil) then
-      begin
-
-        // nesnenin kimlik, tip deÄŸerlerini denetle.
-        _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler + 00)^,
-          gntPencere));
-        if(_Pencere <> nil) then _Pencere^.Guncelle;
-      end else Result := -1;
+      // nesnenin kimlik, tip deðerlerini denetle.
+      Pencere := PPencere(Pencere^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      if(Pencere <> nil) then Pencere^.Guncelle;
     end
 
     else Result := HATA_ISLEV;
@@ -124,1048 +123,865 @@ begin
 end;
 
 {==============================================================================
-  pencere nesnesini oluÅŸturur
+  pencere nesnesini oluþturur
  ==============================================================================}
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): TKimlik;
 var
-  _Pencere: PPencere;
+  Pencere: PPencere;
 begin
 
-  _Pencere := _Pencere^.Olustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik, APencereTipi,
-    ABaslik, AGovdeRenk);
+  Pencere := Pencere^.Olustur(AAtaNesne, ASol, AUst, AGenislik, AYukseklik,
+    APencereTipi, ABaslik, AGovdeRenk);
 
-  if(_Pencere = nil) then
+  if(Pencere = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _Pencere^.Kimlik;
+
+  else Result := Pencere^.Kimlik;
 end;
 
 {==============================================================================
-  pencere nesnesini oluÅŸturur
+  pencere nesnesini oluþturur
  ==============================================================================}
-function TPencere.Olustur(AtaKimlik: TKimlik; A1, B1, Genislik, Yukseklik: TISayi4;
+function TPencere.Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): PPencere;
 var
-  _Masaustu: PMasaustu;
-  _Pencere: PPencere;
+  Masaustu: PMasaustu;
+  Pencere: PPencere;
+  Genislik, Yukseklik: TSayi4;
 begin
 
-  // ata nesne -1 (HATA_KIMLIK) ise Ã¼st nesne geÃ§erli masaÃ¼stÃ¼dÃ¼r
-  if(AtaKimlik = HATA_KIMLIK) then
+  // ata nesne nil ise üst nesne geçerli masaüstüdür
+  if(AAtaNesne = nil) then
 
-    _Masaustu := GAktifMasaustu
-  else _Masaustu := PMasaustu(_Masaustu^.NesneTipiniKontrolEt(AtaKimlik, gntMasaustu));
+    Masaustu := GAktifMasaustu
+  else Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(AAtaNesne^.Kimlik, gntMasaustu));
 
-  // geÃ§erli masaÃ¼stÃ¼ yok ise hata kodunu ver ve Ã§Ä±k
-  if(_Masaustu = nil) then
+  // geçerli masaüstü yok ise hata kodunu ver ve çýk
+  if(Masaustu = nil) then Exit(nil);
+
+  // pencere limit kontrolleri
+  if not(APencereTipi = ptBasliksiz) then
   begin
 
-    Result := nil;
-    Exit;
-  end;
+    // pencere geniþliðinin en alt sýnýr deðerinin altýnda olup olmadýðýný kontrol et
+    if(AGenislik < PENCERE_ALTLIMIT_GENISLIK) then
+      Genislik := PENCERE_ALTLIMIT_GENISLIK
+    else Genislik := AGenislik + ((KENAR_DOLGU_KENARLIGI + 2) * 2);
 
-  // pencere nesnesi oluÅŸtur
-  _Pencere := PPencere(Olustur0(gntPencere));
-  if(_Pencere = nil) then
-  begin
-
-    Result := nil;
-    Exit;
-  end;
-
-  // pencere nesnesini ata nesneye ekle
-  if(_Pencere^.AtaNesneyeEkle(_Masaustu) = False) then
-  begin
-
-    // hata olmasÄ± durumunda nesneyi yok et ve iÅŸlevden Ã§Ä±k
-    _Pencere^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
-
-  // nesne deÄŸerlerini ata
-  _Pencere^.GorevKimlik := CalisanGorev;
-  _Pencere^.AtaNesne := _Masaustu;
-  _Pencere^.Hiza := hzYok;
-
-  _Pencere^.FBoyutlar.Sol2 := A1;
-  _Pencere^.FBoyutlar.Ust2 := B1;
-
-  // pencere geniÅŸliÄŸinin en alt sÄ±nÄ±r deÄŸerin altÄ±nda olup olmadÄ±ÄŸÄ±nÄ± kontrol et
-  if(Genislik < PENCERE_ALTLIMIT_GENISLIK) then
-
-    _Pencere^.FBoyutlar.Genislik2 := PENCERE_ALTLIMIT_GENISLIK
-  else _Pencere^.FBoyutlar.Genislik2 := Genislik;
-
-  // pencere yÃ¼ksekliÄŸinin en alt sÄ±nÄ±r deÄŸerin altÄ±nda olup olmadÄ±ÄŸÄ±nÄ± kontrol et
-  if(Yukseklik < PENCERE_ALTLIMIT_YUKSEKLIK) then
-
-    _Pencere^.FBoyutlar.Yukseklik2 := PENCERE_ALTLIMIT_YUKSEKLIK
-  else _Pencere^.FBoyutlar.Yukseklik2 := Yukseklik;
-
-  // kenar kalÄ±nlÄ±klarÄ±
-  if(APencereTipi = ptBoyutlandirilabilir) or (APencereTipi = ptIletisim) then
-  begin
-
-    _Pencere^.FKalinlik.Sol := KENAR_DOLGU_KENARLIGI + 2;
-    _Pencere^.FKalinlik.Ust := GIYSI_BASLIK_YUKSEKLIK;
-    _Pencere^.FKalinlik.Sag := KENAR_DOLGU_KENARLIGI + 2;
-    _Pencere^.FKalinlik.Alt := KENAR_DOLGU_KENARLIGI + 2;
+    // pencere yüksekliðinin en alt sýnýr deðerinin altýnda olup olmadýðýný kontrol et
+    if(AYukseklik < PENCERE_ALTLIMIT_YUKSEKLIK) then
+      Yukseklik := PENCERE_ALTLIMIT_YUKSEKLIK
+    else Yukseklik := AYukseklik + (GIYSI_BASLIK_YUKSEKLIK + (KENAR_DOLGU_KENARLIGI + 2));
   end
-  else //if(APencereTipi = ptBasliksiz) then
+  else
   begin
-    _Pencere^.FKalinlik.Sol := 4;
-    _Pencere^.FKalinlik.Ust := 4;
-    _Pencere^.FKalinlik.Sag := 4;
-    _Pencere^.FKalinlik.Alt := 4;
+
+    Genislik := AGenislik;
+    Yukseklik := AYukseklik;
   end;
 
-  // kenar boÅŸluklarÄ±
-  _Pencere^.FKenarBosluklari.Sol := 0;
-  _Pencere^.FKenarBosluklari.Ust := 0;
-  _Pencere^.FKenarBosluklari.Sag := 0;
-  _Pencere^.FKenarBosluklari.Alt := 0;
+  // pencere nesnesi oluþtur
+  Pencere := PPencere(inherited Olustur(ktTuvalNesne, Masaustu, ASol, AUst, Genislik,
+    Yukseklik, 0, AGovdeRenk, AGovdeRenk, 0, ABaslik));
 
-  // pencere Ã§izimi iÃ§in gereken bellek uzunluÄŸu
-  _Pencere^.FCizimBellekUzunlugu := (_Pencere^.FBoyutlar.Genislik2 *
-    _Pencere^.FBoyutlar.Yukseklik2 * 4);
+  Pencere^.NesneTipi := gntPencere;
 
-  // pencere Ã§izimi iÃ§in bellekte yer ayÄ±r
-  _Pencere^.FCizimBellekAdresi := GGercekBellek.Ayir(_Pencere^.FCizimBellekUzunlugu);
-  if(_Pencere^.FCizimBellekAdresi = nil) then
+  Pencere^.Baslik := ABaslik;
+
+  Pencere^.FTuvalNesne := Pencere;
+
+  Pencere^.AnaOlayCagriAdresi := @OlaylariIsle;
+
+  Pencere^.FPencereTipi := APencereTipi;
+
+  Pencere^.FKucultmeDugmesi := nil;
+  Pencere^.FBuyutmeDugmesi := nil;
+  Pencere^.FKapatmaDugmesi := nil;
+
+  if(APencereTipi = ptBasliksiz) then
   begin
 
-    // hata olmasÄ± durumunda nesneyi yok et ve iÅŸlevden Ã§Ä±k
-    _Pencere^.YokEt0;
+    // pencere kalýnlýklarý
+    Pencere^.FKalinlik.Sol := 0;
+    Pencere^.FKalinlik.Ust := 0;
+    Pencere^.FKalinlik.Sag := 0;
+    Pencere^.FKalinlik.Alt := 0;
+
+    // pencere çizim alaný
+    Pencere^.FCizimAlan.Sol := 0;
+    Pencere^.FCizimAlan.Ust := 0;
+    Pencere^.FCizimAlan.Sag := Pencere^.FBoyut.Genislik - 1;
+    Pencere^.FCizimAlan.Alt := Pencere^.FBoyut.Yukseklik - 1;
+  end
+  else
+  begin
+
+    // pencere kalýnlýklarý
+    Pencere^.FKalinlik.Sol := KENAR_DOLGU_KENARLIGI + 2;
+    Pencere^.FKalinlik.Ust := GIYSI_BASLIK_YUKSEKLIK;
+    Pencere^.FKalinlik.Sag := KENAR_DOLGU_KENARLIGI + 2;
+    Pencere^.FKalinlik.Alt := KENAR_DOLGU_KENARLIGI + 2;
+
+    // pencere çizim alaný
+    Pencere^.FCizimAlan.Sol := 0;
+    Pencere^.FCizimAlan.Ust := 0;
+    Pencere^.FCizimAlan.Sag := Pencere^.FBoyut.Genislik -
+      (Pencere^.FKalinlik.Sol + Pencere^.FKalinlik.Sag) - 1;
+    Pencere^.FCizimAlan.Alt := Pencere^.FBoyut.Yukseklik -
+      (Pencere^.FKalinlik.Ust + Pencere^.FKalinlik.Alt) - 1;
+
+    // pencere kontrol düðmeleri
+    if(Pencere^.FPencereTipi = ptBoyutlanabilir) then
+    begin
+
+      // küçültme düðmesi
+      Pencere^.FKucultmeDugmesi := FKucultmeDugmesi^.Olustur(ktBilesen, Pencere,
+        AGenislik - 65, 3, 16, 16, $20000000 + 4, False);
+      Pencere^.FKucultmeDugmesi^.FRDOlayGeriDonusumAdresi := @KontrolDugmesiOlaylariniIsle;
+      Pencere^.FKucultmeDugmesi^.Goster;
+
+      // büyütme düðmesi
+      Pencere^.FBuyutmeDugmesi := FBuyutmeDugmesi^.Olustur(ktBilesen, Pencere,
+        AGenislik - 45, 3, 16, 16, $20000000 + 2, False);
+      Pencere^.FBuyutmeDugmesi^.FRDOlayGeriDonusumAdresi := @KontrolDugmesiOlaylariniIsle;
+      Pencere^.FBuyutmeDugmesi^.Goster;
+    end;
+
+    // kapatma düðmesi
+    Pencere^.FKapatmaDugmesi := FKapatmaDugmesi^.Olustur(ktBilesen, Pencere,
+      AGenislik - 25, 3, 16, 16, $20000000 + 0, False);
+    Pencere^.FKapatmaDugmesi^.FRDOlayGeriDonusumAdresi := @KontrolDugmesiOlaylariniIsle;
+    Pencere^.FKapatmaDugmesi^.Goster;
+  end;
+
+  // pencere'ye ait özel çizim alaný mevcut olduðundan dolayý çizim baþlangýç
+  // sol ve üst deðerlerini sýfýr olarak ayarla
+  Pencere^.FCizimBaslangic.Sol := 0;
+  Pencere^.FCizimBaslangic.Ust := 0;
+
+  // pencere çizimi için gereken bellek uzunluðu
+  Pencere^.FCizimBellekUzunlugu := (Pencere^.FBoyut.Genislik *
+    Pencere^.FBoyut.Yukseklik * 4);
+
+  // pencere çizimi için bellekte yer ayýr
+  Pencere^.FCizimBellekAdresi := GGercekBellek.Ayir(Pencere^.FCizimBellekUzunlugu);
+  if(Pencere^.FCizimBellekAdresi = nil) then
+  begin
+
+    // hata olmasý durumunda nesneyi yok et ve iþlevden çýk
+    Pencere^.YokEt;
     Result := nil;
     Exit;
   end;
 
-  // pencerenin Ã¶zelliÄŸine gÃ¶re deÄŸer atamalarÄ± yap
-
-  // pencere tipi - boyutlandÄ±rÄ±labilir pencere
-  if(APencereTipi = ptBoyutlandirilabilir) then
-  begin
-
-    _Pencere^.PencereTipi := ptBoyutlandirilabilir;
-    _Pencere^.KontrolDugmeleri := [kdKucultme, kdBuyutme, kdKapatma];
-
-    // kapatma dÃ¼ÄŸmesi
-    _Pencere^.FKapatmaDugmeBoyut.Sol3 := - 6 - 16;
-    _Pencere^.FKapatmaDugmeBoyut.Ust3 := 4;
-    _Pencere^.FKapatmaDugmeBoyut.Genislik3 := 16 - 1;
-    _Pencere^.FKapatmaDugmeBoyut.Yukseklik3 := 16 - 1;
-
-    // bÃ¼yÃ¼tme dÃ¼ÄŸmesi
-    _Pencere^.FBuyutmeDugmeBoyut.Sol3 := - 6 - 16 - 2 - 16;
-    _Pencere^.FBuyutmeDugmeBoyut.Ust3 := 4;
-    _Pencere^.FBuyutmeDugmeBoyut.Genislik3 := 16 - 1;
-    _Pencere^.FBuyutmeDugmeBoyut.Yukseklik3 := 16 - 1;
-
-    // kÃ¼Ã§Ã¼ltme dÃ¼ÄŸmesi
-    _Pencere^.FKucultmeDugmeBoyut.Sol3 := - 6 - 16 - 2 - 16 - 2 - 16;
-    _Pencere^.FKucultmeDugmeBoyut.Ust3 := 4;
-    _Pencere^.FKucultmeDugmeBoyut.Genislik3 := 16 - 1;
-    _Pencere^.FKucultmeDugmeBoyut.Yukseklik3 := 16 - 1;
-
-    _Pencere^.FSistemDugmesi := _Pencere^.FSistemDugmesi^.Olustur(_Pencere^.Kimlik,
-      5, 5, 20, 20, '#');
-    _Pencere^.FSistemDugmesi^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
-    _Pencere^.FSistemDugmesi^.FEfendiNesne := _Pencere;
-  end
-
-  // pencere tipi - boyutlandÄ±rÄ±lamaz & baÅŸlÄ±ksÄ±z
-  else if(APencereTipi = ptBasliksiz) then
-  begin
-
-    _Pencere^.PencereTipi := ptBasliksiz;
-    _Pencere^.KontrolDugmeleri := [];
-
-    _Pencere^.FSistemDugmesi := nil;
-  end
-
-  // pencere tipi - iletiÅŸim kutusu (Ã¶ndeÄŸer)
-  else if(APencereTipi = ptIletisim) then
-  begin
-
-    _Pencere^.PencereTipi := ptIletisim;
-    _Pencere^.KontrolDugmeleri := [kdKapatma];
-
-    // kapatma dÃ¼ÄŸmesi
-    _Pencere^.FKapatmaDugmeBoyut.Sol3 := - 6 - 16;
-    _Pencere^.FKapatmaDugmeBoyut.Ust3 := 4;
-    _Pencere^.FKapatmaDugmeBoyut.Genislik3 := 16 - 1;
-    _Pencere^.FKapatmaDugmeBoyut.Yukseklik3 := 16 - 1;
-
-    _Pencere^.FSistemDugmesi := _Pencere^.FSistemDugmesi^.Olustur(_Pencere^.Kimlik,
-      5, 5, 20, 20, '#');
-    _Pencere^.FSistemDugmesi^.FEfendiNesneOlayCagriAdresi := @OlaylariIsle;
-    _Pencere^.FSistemDugmesi^.FEfendiNesne := _Pencere;
-  end;
-
-  // nesne, alt nesne alabilecek yapÄ±da bir ata nesne
-  _Pencere^.FAtaNesneMi := True;
-
-  // alt nesnelerin bellek adresi (nil = bellek oluÅŸturulmadÄ±)
-  _Pencere^.FAltNesneBellekAdresi := nil;
-
-  // nesnenin alt nesne sayÄ±sÄ±
-  _Pencere^.AltNesneSayisi := 0;
-
-  // nesnenin Ã¼zerine gelindiÄŸinde gÃ¶rÃ¼ntÃ¼lenecek fare gÃ¶stergesi
-  _Pencere^.FareGostergeTipi := fitOK;
-
-  // nesnenin gÃ¶rÃ¼nÃ¼m durumu
-  _Pencere^.FGorunum := False;
-
-  // nesnenin baÅŸlÄ±k deÄŸeri
-  _Pencere^.FBaslik := ABaslik;
-
-  // nesnenin gÃ¶vde renk deÄŸeri
-  _Pencere^.FGovdeRenk := AGovdeRenk;
-
-  // nesnenin ad deÄŸeri
-  _Pencere^.NesneAdi := NesneAdiAl(gntPencere);
-
-  // uygulamaya mesaj gÃ¶nder
-  GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-    _Pencere, CO_OLUSTUR, 0, 0);
-
-  // nesne adresini geri dÃ¶ndÃ¼r
-  Result := _Pencere;
+  // nesne adresini geri döndür
+  Result := Pencere;
 end;
 
 {==============================================================================
-  pencere nesnesini gÃ¶rÃ¼ntÃ¼ler
+  pencere nesnesini görüntüler
  ==============================================================================}
 procedure TPencere.Goster;
 var
-  _Pencere: PPencere;
+  Pencere: PPencere;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(Kimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
+  Pencere := PPencere(Pencere^.NesneAl(Kimlik));
+  if(Pencere = nil) then Exit;
 
-  // nesne gÃ¶rÃ¼nÃ¼r durumda mÄ± ?
-  if(_Pencere^.FGorunum = False) then
+  inherited Goster;
+
+  // pencere nesnesinin üst nesnesi olan masaüstü görünür ise masaüstü nesnesini
+  // en üste getir ve yeniden çiz
+  if(Pencere^.AtaNesne^.Gorunum) then Pencere^.EnUsteGetir(Pencere);
+end;
+
+{==============================================================================
+  pencere nesnesini gizler
+ ==============================================================================}
+procedure TPencere.Gizle;
+begin
+
+  inherited Gizle;
+end;
+
+{==============================================================================
+  pencere nesnesini boyutlandýrýr
+ ==============================================================================}
+procedure TPencere.Boyutlandir;
+var
+  Pencere: PPencere;
+  GorunurNesne: PGorselNesne;
+  AltNesneler: PPGorselNesne;
+  i: TSayi4;
+begin
+
+  Pencere := PPencere(Pencere^.NesneAl(Kimlik));
+  if(Pencere = nil) then Exit;
+
+  // kontrol düðmesine sahip olan pencerelerin iç bileþenlerini konumlandýr
+  if not(Pencere^.FPencereTipi = ptBasliksiz) then
+    IcBilesenleriKonumlandir(Pencere);
+
+  // pencere alt nesnelerini yeniden boyutlandýr
+  if(Pencere^.FAltNesneSayisi > 0) then
   begin
 
-    // pencere nesnesinin gÃ¶rÃ¼nÃ¼rlÃ¼ÄŸÃ¼nÃ¼ aktifleÅŸtir
-    _Pencere^.FGorunum := True;
+    AltNesneler := Pencere^.FAltNesneBellekAdresi;
 
-    if not(_Pencere^.FSistemDugmesi = nil) then
-      if(_Pencere^.PencereTipi = ptIletisim) or (_Pencere^.PencereTipi = ptBoyutlandirilabilir) then
-        _Pencere^.FSistemDugmesi^.Gorunum := True;
+    // ilk oluþturulan alt nesneden son oluþturulan alt nesneye doðru
+    // pencerenin alt nesnelerini yeniden boyutlandýr
+    for i := 0 to Pencere^.FAltNesneSayisi - 1 do
+    begin
 
-    // pencere nesnesini en Ã¼ste getir ve yeniden Ã§iz
-    _Pencere^.EnUsteGetir;
+      GorunurNesne := AltNesneler[i];
+      if(GorunurNesne^.Gorunum) then
+      begin
 
-    _Pencere^.Guncelle;
+        case GorunurNesne^.NesneTipi of
+          gntBaglanti       : PBaglanti(GorunurNesne)^.Boyutlandir;
+          gntDefter         : PDefter(GorunurNesne)^.Boyutlandir;
+          gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Boyutlandir;
+          gntDugme          : PDugme(GorunurNesne)^.Boyutlandir;
+          gntDurumCubugu    : PDurumCubugu(GorunurNesne)^.Boyutlandir;
+          gntEtiket         : PEtiket(GorunurNesne)^.Boyutlandir;
+          gntGirisKutusu    : PGirisKutusu(GorunurNesne)^.Boyutlandir;
+          gntGucDugmesi     : PGucDugmesi(GorunurNesne)^.Boyutlandir;
+          gntIslemGostergesi: PIslemGostergesi(GorunurNesne)^.Boyutlandir;
+          gntKarmaListe     : PKarmaListe(GorunurNesne)^.Boyutlandir;
+          gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Boyutlandir;
+          gntListeGorunum   : PListeGorunum(GorunurNesne)^.Boyutlandir;
+          gntListeKutusu    : PListeKutusu(GorunurNesne)^.Boyutlandir;
+          gntOnayKutusu     : POnayKutusu(GorunurNesne)^.Boyutlandir;
+          gntPanel          : PPanel(GorunurNesne)^.Boyutlandir;
+          gntResim          : PResim(GorunurNesne)^.Boyutlandir;
+          gntResimDugmesi   : PResimDugmesi(GorunurNesne)^.Boyutlandir;
+          gntSecimDugmesi   : PSecimDugmesi(GorunurNesne)^.Boyutlandir;
+        end;
+      end;
+    end;
   end;
 end;
 
 {==============================================================================
-  pencere nesnesini Ã§izer
-  Ã¶nemli: tÃ¼m alt nesneler Ã§izim istekleri iÃ§in TPencere.Guncelle iÅŸlevini Ã§aÄŸÄ±rmalÄ±dÄ±r
+  pencere nesnesini çizer
+
+  önemli: pencere nesnesi çizilmeden önce içsel bileþenler (kapatma, büyütme düðmesi)
+    ve diðer alt görsel bileþenler yeniden boyutlandýrýlmalýdýr. Bu sebepten dolayý
+    boyutlandýrmalara baðlý çizim istekleri için TPencere.Guncelle iþlevi çaðrýlmalýdýr
  ==============================================================================}
 procedure TPencere.Ciz;
 var
-  _Pencere: PPencere;
-  _GiysiSol: PAktifGiysiBaslikSol;
-  _GiysiOrta: PAktifGiysiBaslikOrta;
-  _GiysiSag: PAktifGiysiBaslikSag;
-  _Alan: TAlan;
-  _A1, _A2, _B1, i: TISayi4;
-  _Renk, _KenarDolguRengi, _BaslikRengi: TRenk;
-  _PencereAktif: Boolean;
+  Pencere: PPencere;
+  GiysiSol: PAktifGiysiBaslikSol;
+  GiysiOrta: PAktifGiysiBaslikOrta;
+  GiysiSag: PAktifGiysiBaslikSag;
+  Olay: TOlay;
+  Alan: TAlan;
+  Sol, Genislik, Ust, i: TISayi4;
+  Renk, KenarDolguRengi, BaslikRengi: TRenk;
+  PencereAktif: Boolean;
+  AltNesneler: PPGorselNesne;
+  GorunurNesne: PGorselNesne;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(Kimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
+  Pencere := PPencere(Pencere^.NesneAl(Kimlik));
+  if(Pencere = nil) then Exit;
 
-  // pencerenin kendi deÄŸerlerine baÄŸlÄ± (0, 0) koordinatlarÄ±nÄ± al
-  _Alan := _Pencere^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  Pencere^.FCiziliyor := True;
 
-  // pencere tipi baÅŸlÄ±ksÄ±z ise
-  if(_Pencere^.PencereTipi = ptBasliksiz) then
-  begin
+  Pencere^.Boyutlandir;
 
-    // artan _Renk ile (eÄŸimli) doldur
-    EgimliDoldur3(_Pencere, _Alan, GOREVCUBUGU_ILKRENK, GOREVCUBUGU_SONRENK);
+  // pencerenin kendi deðerlerine baðlý (0, 0) koordinatlarýný al
+  Alan := Pencere^.FCizimAlan;
 
-    // uygulamaya mesaj gÃ¶nder ve Ã§Ä±k
-    GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-      _Pencere, CO_CIZIM, 0, 0);
+  Alan.Sag += (Pencere^.FKalinlik.Sol + Pencere^.FKalinlik.Sag);
+  Alan.Alt += (Pencere^.FKalinlik.Ust + Pencere^.FKalinlik.Alt);
 
-    Exit;
-  end;
+  // pencere tipi baþlýksýz ise, artan renk ile (eðimli) doldur
+  if(Pencere^.FPencereTipi = ptBasliksiz) then
 
-  // baÅŸlÄ±klÄ± pencere nesnesinin Ã§izimi
-
-  // aktif veya pasif Ã§izimin belirlenmesi
-  _PencereAktif := (_Pencere = AktifPencere);
-
-  if(_PencereAktif) then
-  begin
-
-    _GiysiSol := @AktifGiysiBaslikSol;
-    _GiysiOrta := @AktifGiysiBaslikOrta;
-    _GiysiSag := @AktifGiysiBaslikSag;
-    _KenarDolguRengi := AKTIF_KENAR_DOLGU_RENGI;
-    _BaslikRengi := AKTIF_BASLIK_RENGI;
-  end
+    EgimliDoldur3(Pencere, Alan, $D0DBFB, $B9C9F9)
   else
+  // baþlýklý pencere nesnesinin çizimi
   begin
 
-    _GiysiSol := @PasifGiysiBaslikSol;
-    _GiysiOrta := @PasifGiysiBaslikOrta;
-    _GiysiSag := @PasifGiysiBaslikSag;
-    _KenarDolguRengi := PASIF_KENAR_DOLGU_RENGI;
-    _BaslikRengi := PASIF_BASLIK_RENGI;
-  end;
+    // aktif veya pasif çizimin belirlenmesi
+    PencereAktif := (Pencere = AktifPencere);
 
-  // pencerenin 3 aÅŸamada giydirilmesi
-
-  // 1. sol baÅŸlÄ±k kÄ±smÄ±nÄ±n Ã§izilmesi
-  for _B1 := 0 to GIYSI_BASLIK_YUKSEKLIK - 1 do
-  begin
-
-    for _A1 := 0 to GIYSI_BASLIK_SOL_GENISLIK - 1 do
+    if(PencereAktif) then
     begin
 
-      _Renk := _GiysiSol^[_B1, _A1];
-      PixelYaz(_Pencere, _A1, _B1, _Renk);
+      GiysiSol := @AktifGiysiBaslikSol;
+      GiysiOrta := @AktifGiysiBaslikOrta;
+      GiysiSag := @AktifGiysiBaslikSag;
+      KenarDolguRengi := AKTIF_KENAR_DOLGU_RENGI;
+      BaslikRengi := AKTIF_BASLIK_RENGI;
+
+      // kontrol düðmelerini aktifleþtir
+      if not(Pencere^.FKucultmeDugmesi = nil) then
+        Pencere^.FKucultmeDugmesi^.Deger := $20000000 + 4;
+      if not(Pencere^.FBuyutmeDugmesi = nil) then
+        Pencere^.FBuyutmeDugmesi^.Deger := $20000000 + 2;
+      if not(Pencere^.FKapatmaDugmesi = nil) then
+        Pencere^.FKapatmaDugmesi^.Deger := $20000000 + 0;
+    end
+    else
+    begin
+
+      GiysiSol := @PasifGiysiBaslikSol;
+      GiysiOrta := @PasifGiysiBaslikOrta;
+      GiysiSag := @PasifGiysiBaslikSag;
+      KenarDolguRengi := PASIF_KENAR_DOLGU_RENGI;
+      BaslikRengi := PASIF_BASLIK_RENGI;
+
+      // kontrol düðmelerini pasifleþtir
+      if not(Pencere^.FKucultmeDugmesi = nil) then
+        Pencere^.FKucultmeDugmesi^.Deger := $20000000 + 5;
+      if not(Pencere^.FBuyutmeDugmesi = nil) then
+        Pencere^.FBuyutmeDugmesi^.Deger := $20000000 + 3;
+      if not(Pencere^.FKapatmaDugmesi = nil) then
+        Pencere^.FKapatmaDugmesi^.Deger := $20000000 + 1;
     end;
-  end;
 
-  // 2. orta baÅŸlÄ±k kÄ±smÄ±nÄ±n Ã§izilmesi
-  _A1 := GIYSI_BASLIK_SOL_GENISLIK;
-  _A2 := _Alan.Sag - GIYSI_BASLIK_SAG_GENISLIK + 1;
-  while _A1 < _A2 do
-  begin
+    // pencerenin 3 aþamada giydirilmesi
 
-    for _B1 := 0 to GIYSI_BASLIK_YUKSEKLIK - 1 do
+    // 1. sol baþlýk kýsmýnýn çizilmesi
+    for Ust := 0 to GIYSI_BASLIK_YUKSEKLIK - 1 do
     begin
 
-      _Renk := _GiysiOrta^[_B1, 0];
-      PixelYaz(_Pencere, _A1, _B1, _Renk);
-    end;
-
-    Inc(_A1);
-  end;
-
-  // 3. saÄŸ baÅŸlÄ±k kÄ±smÄ±nÄ±n Ã§izilmesi
-  i := _Alan.Sag - GIYSI_BASLIK_SAG_GENISLIK;
-  for _B1 := 0 to GIYSI_BASLIK_YUKSEKLIK - 1 do
-  begin
-
-    for _A1 := 0 to GIYSI_BASLIK_SAG_GENISLIK - 1 do
-    begin
-
-      _Renk := _GiysiSag^[_B1, _A1];
-      PixelYaz(_Pencere, i + _A1, _B1, _Renk);
-    end;
-  end;
-
-  // pencere baÅŸlÄ±ÄŸÄ±nÄ± yaz
-  YaziYaz(_Pencere, 7, 5, _Pencere^.FBaslik, _BaslikRengi);
-
-  // pencere sol kenar Ã§izgisi
-  Cizgi(_Pencere, 0, GIYSI_BASLIK_YUKSEKLIK, 0, _Alan.Alt, DIS_KENAR_CIZGI_RENGI);
-  if(KENAR_DOLGU_KENARLIGI > 0) then
-  begin
-
-    for i := 1 to KENAR_DOLGU_KENARLIGI do
-    begin
-
-      Cizgi(_Pencere, i, GIYSI_BASLIK_YUKSEKLIK, i, _Alan.Alt - i, _KenarDolguRengi);
-    end;
-  end;
-  i := KENAR_DOLGU_KENARLIGI + 1;
-  Cizgi(_Pencere, i, GIYSI_BASLIK_YUKSEKLIK, i, _Alan.Alt - i, IC_KENAR_CIZGI_RENGI);
-
-  // pencere saÄŸ kenar Ã§izgisi
-  Cizgi(_Pencere, _Alan.Sag, GIYSI_BASLIK_YUKSEKLIK, _Alan.Sag, _Alan.Alt, DIS_KENAR_CIZGI_RENGI);
-  if(KENAR_DOLGU_KENARLIGI > 0) then
-  begin
-
-    for i := 1 to KENAR_DOLGU_KENARLIGI do
-    begin
-
-      Cizgi(_Pencere, _Alan.Sag - i, GIYSI_BASLIK_YUKSEKLIK, _Alan.Sag - i,
-        _Alan.Alt - i, _KenarDolguRengi);
-    end;
-  end;
-  i := KENAR_DOLGU_KENARLIGI + 1;
-  Cizgi(_Pencere, _Alan.Sag - i, GIYSI_BASLIK_YUKSEKLIK, _Alan.Sag - i, _Alan.Alt - i,
-    IC_KENAR_CIZGI_RENGI);
-
-  // pencere alt kenar Ã§izgisi
-  Cizgi(_Pencere, 0, _Alan.Alt, _Alan.Sag, _Alan.Alt, DIS_KENAR_CIZGI_RENGI);
-  if(KENAR_DOLGU_KENARLIGI > 0) then
-  begin
-
-    for i := 1 to KENAR_DOLGU_KENARLIGI do
-    begin
-
-      Cizgi(_Pencere, i, _Alan.Alt - i, _Alan.Sag - i, _Alan.Alt - i, _KenarDolguRengi);
-    end;
-  end;
-  i := KENAR_DOLGU_KENARLIGI + 1;
-  Cizgi(_Pencere, i, _Alan.Alt - i, _Alan.Sag - i, _Alan.Alt - i, IC_KENAR_CIZGI_RENGI);
-
-  // pencere iÃ§ bÃ¶lÃ¼m boyama
-  DikdortgenDoldur(_Pencere, KENAR_DOLGU_KENARLIGI + 2, GIYSI_BASLIK_YUKSEKLIK,
-    _Alan.Sag - (KENAR_DOLGU_KENARLIGI + 2), _Alan.Alt - (KENAR_DOLGU_KENARLIGI + 2),
-    _Pencere^.FGovdeRenk, _Pencere^.FGovdeRenk);
-
-  // pencere kontrol dÃ¼ÄŸmelerini Ã§iz
-  KontrolDugmeleriniCiz(_Pencere, _Alan, _PencereAktif);
-
-  // uygulamaya mesaj gÃ¶nder
-  GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-    _Pencere, CO_CIZIM, 0, 0);
-end;
-
-{==============================================================================
-  pencere nesnesi ve alt nesnelerini gÃ¼nceller
-  Ã¶nemli: tÃ¼m alt nesneler Ã§izim istekleri iÃ§in TPencere.Guncelle iÅŸlevini Ã§aÄŸÄ±rmalÄ±dÄ±r
- ==============================================================================}
-procedure TPencere.Guncelle;
-var
-  _Pencere: PPencere;
-  _AltNesneler, _PanelAltNesneler: PPGorselNesne;
-  _GorunurNesne: PGorselNesne;
-  i: TISayi4;
-  _Panel: PPanel;
-  j: Integer;
-begin
-
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(Kimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
-
-  // Ã¶ncelikle pencerenin kendisini, daha sonra alt nesneleri Ã§iz
-  _Pencere^.IcVeDisBoyutlariYenidenHesapla;
-
-  _Pencere^.Ciz;
-
-  {if not(_Pencere^.FSistemDugmesi = nil) then
-  begin
-  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.A1 := _Pencere^.FDisGercekBoyutlar.A1;
-  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.B1 := _Pencere^.FDisGercekBoyutlar.B1;
-  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.A2 := _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.A1 + 19;
-  _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.B2 := _Pencere^.FSistemDugmesi^.FDisGercekBoyutlar.B1 + 19;
-
-  _Pencere^.FSistemDugmesi^.Ciz;
-  end;}
-
-  // pencere nesnesinin alt nesnelerinin bellek bÃ¶lgesine konumlan
-  _AltNesneler := _Pencere^.FAltNesneBellekAdresi;
-  if(_Pencere^.AltNesneSayisi > 0) then
-  begin
-
-    // ilk oluÅŸturulan alt nesneden son oluÅŸturulan alt nesneye doÄŸru
-    // pencerenin alt nesnelerini Ã§iz
-    for i := 0 to _Pencere^.AltNesneSayisi - 1 do
-    begin
-
-      _GorunurNesne := _AltNesneler[i];
-      if(_GorunurNesne^.FGorunum) then
+      for Sol := 0 to GIYSI_BASLIK_SOL_GENISLIK - 1 do
       begin
 
-        // pencere nesnesinin altÄ±nda Ã§izilecek nesneler
-        case _GorunurNesne^.GorselNesneTipi of
-          gntDugme          : PDugme(_GorunurNesne)^.Ciz;
-          gntGucDugme       : PGucDugme(_GorunurNesne)^.Ciz;
-          gntListeKutusu    : PListeKutusu(_GorunurNesne)^.Ciz;
-          gntDefter         : PDefter(_GorunurNesne)^.Ciz;
-          gntIslemGostergesi: PIslemGostergesi(_GorunurNesne)^.Ciz;
-          gntIsaretKutusu   : POnayKutusu(_GorunurNesne)^.Ciz;
-          gntGirisKutusu    : PGirisKutusu(_GorunurNesne)^.Ciz;
-          gntDegerDugmesi   : PDegerDugmesi(_GorunurNesne)^.Ciz;
-          gntEtiket         : PEtiket(_GorunurNesne)^.Ciz;
-          gntDurumCubugu    : PDurumCubugu(_GorunurNesne)^.Ciz;
-          gntSecimDugmesi   : PSecimDugme(_GorunurNesne)^.Ciz;
-          gntBaglanti       : PBaglanti(_GorunurNesne)^.Ciz;
-          gntResim          : PResim(_GorunurNesne)^.Ciz;
-          gntListeGorunum   : PListeGorunum(_GorunurNesne)^.Ciz;
-          gntPanel          :
-          begin
+        Renk := GiysiSol^[Ust, Sol];
+        PixelYaz(Pencere, Sol, Ust, Renk);
+      end;
+    end;
 
-            // panel ve alt nesneleri Ã§iz
-            _Panel := PPanel(_GorunurNesne);
-            _Panel^.Ciz;
+    // 2. orta baþlýk kýsmýnýn çizilmesi
+    Sol := GIYSI_BASLIK_SOL_GENISLIK;
+    Genislik := Alan.Sag - GIYSI_BASLIK_SAG_GENISLIK + 1;
+    while Sol < Genislik do
+    begin
 
-            if(_Panel^.AltNesneSayisi > 0) then
-            begin
+      for Ust := 0 to GIYSI_BASLIK_YUKSEKLIK - 1 do
+      begin
 
-              _PanelAltNesneler := _Panel^.FAltNesneBellekAdresi;
-              for j := 0 to _Panel^.AltNesneSayisi - 1 do
-              begin
+        Renk := GiysiOrta^[Ust, 0];
+        PixelYaz(Pencere, Sol, Ust, Renk);
+      end;
 
-                _GorunurNesne := _PanelAltNesneler[j];
-                if(_GorunurNesne^.FGorunum) then
-                begin
+      Inc(Sol);
+    end;
 
-                  // panelin altÄ±nda olabilecek tÃ¼m nesneler
-                  case _GorunurNesne^.GorselNesneTipi of
-                    gntDugme          : PDugme(_GorunurNesne)^.Ciz;
-                    gntGucDugme       : PGucDugme(_GorunurNesne)^.Ciz;
-                    gntListeKutusu    : PListeKutusu(_GorunurNesne)^.Ciz;
-                    gntDefter         : PDefter(_GorunurNesne)^.Ciz;
-                    gntIslemGostergesi: PIslemGostergesi(_GorunurNesne)^.Ciz;
-                    gntIsaretKutusu   : POnayKutusu(_GorunurNesne)^.Ciz;
-                    gntGirisKutusu    : PGirisKutusu(_GorunurNesne)^.Ciz;
-                    gntDegerDugmesi   : PDegerDugmesi(_GorunurNesne)^.Ciz;
-                    gntEtiket         : PEtiket(_GorunurNesne)^.Ciz;
-                    gntDurumCubugu    : PDurumCubugu(_GorunurNesne)^.Ciz;
-                    gntSecimDugmesi   : PSecimDugme(_GorunurNesne)^.Ciz;
-                    gntBaglanti       : PBaglanti(_GorunurNesne)^.Ciz;
-                    gntResim          : PResim(_GorunurNesne)^.Ciz;
-                    gntListeGorunum   : PListeGorunum(_GorunurNesne)^.Ciz;
-                    gntPanel          : PPanel(_GorunurNesne)^.Ciz;
-                    gntKarmaListe     : PKarmaListe(_GorunurNesne)^.Ciz;
-                  end;
-                end;
-              end;
-            end;
-          end;
-          gntResimDugme     : PResimDugme(_GorunurNesne)^.Ciz;
-          gntKaydirmaCubugu : PKaydirmaCubugu(_GorunurNesne)^.Ciz;
-          gntKarmaListe     : PKarmaListe(_GorunurNesne)^.Ciz;
+    // 3. sað baþlýk kýsmýnýn çizilmesi
+    i := Alan.Sag - GIYSI_BASLIK_SAG_GENISLIK + 1;
+    for Ust := 0 to GIYSI_BASLIK_YUKSEKLIK - 1 do
+    begin
+
+      for Sol := 0 to GIYSI_BASLIK_SAG_GENISLIK - 1 do
+      begin
+
+        Renk := GiysiSag^[Ust, Sol];
+        PixelYaz(Pencere, i + Sol, Ust, Renk);
+      end;
+    end;
+
+    // pencere sol kenar çizgisi
+    Cizgi(Pencere, 0, GIYSI_BASLIK_YUKSEKLIK, 0, Alan.Alt - 1, DIS_KENAR_CIZGI_RENGI);
+    if(KENAR_DOLGU_KENARLIGI > 0) then
+    begin
+
+      for i := 1 to KENAR_DOLGU_KENARLIGI do
+      begin
+
+        Cizgi(Pencere, i, GIYSI_BASLIK_YUKSEKLIK, i, Alan.Alt - 1, KenarDolguRengi);
+      end;
+    end;
+    i := KENAR_DOLGU_KENARLIGI + 1;
+    Cizgi(Pencere, i, GIYSI_BASLIK_YUKSEKLIK, i, Alan.Alt - 1, IC_KENAR_CIZGI_RENGI);
+
+    // pencere sað kenar çizgisi
+    Cizgi(Pencere, Alan.Sag, GIYSI_BASLIK_YUKSEKLIK, Alan.Sag, Alan.Alt - 1, DIS_KENAR_CIZGI_RENGI);
+    if(KENAR_DOLGU_KENARLIGI > 0) then
+    begin
+
+      for i := 1 to KENAR_DOLGU_KENARLIGI do
+      begin
+
+        Cizgi(Pencere, Alan.Sag - i, GIYSI_BASLIK_YUKSEKLIK, Alan.Sag - i,
+          Alan.Alt - 1, KenarDolguRengi);
+      end;
+    end;
+    i := KENAR_DOLGU_KENARLIGI + 1;
+    Cizgi(Pencere, Alan.Sag - i, GIYSI_BASLIK_YUKSEKLIK, Alan.Sag - i, Alan.Alt - 1,
+      IC_KENAR_CIZGI_RENGI);
+
+    // pencere alt kenar çizgisi
+    Cizgi(Pencere, KENAR_DOLGU_KENARLIGI + 1, Alan.Alt, Alan.Sag - KENAR_DOLGU_KENARLIGI - 1,
+      Alan.Alt, DIS_KENAR_CIZGI_RENGI);
+    if(KENAR_DOLGU_KENARLIGI > 0) then
+    begin
+
+      for i := 1 to KENAR_DOLGU_KENARLIGI do
+      begin
+
+        Cizgi(Pencere, KENAR_DOLGU_KENARLIGI + 1, Alan.Alt - i, Alan.Sag - KENAR_DOLGU_KENARLIGI - 1,
+          Alan.Alt - i, KenarDolguRengi);
+      end;
+    end;
+    i := KENAR_DOLGU_KENARLIGI + 1;
+    Cizgi(Pencere, KENAR_DOLGU_KENARLIGI + i, Alan.Alt - i, Alan.Sag - KENAR_DOLGU_KENARLIGI - 1,
+      Alan.Alt - i, IC_KENAR_CIZGI_RENGI);
+
+    // pencere iç bölüm boyama
+    DikdortgenDoldur(Pencere, KENAR_DOLGU_KENARLIGI + 2, GIYSI_BASLIK_YUKSEKLIK,
+      Alan.Sag - (KENAR_DOLGU_KENARLIGI + 2), Alan.Alt - (KENAR_DOLGU_KENARLIGI + 2),
+      Pencere^.FGovdeRenk1, Pencere^.FGovdeRenk1);
+
+    // pencere baþlýðýný yaz
+    YaziYaz(Pencere, 7, 5, Pencere^.Baslik, BaslikRengi);
+
+    if not(Pencere^.FPencereTipi = ptBasliksiz) then
+    begin
+
+      if(Pencere^.FPencereTipi = ptBoyutlanabilir) then
+      begin
+
+        Pencere^.FKucultmeDugmesi^.Ciz;
+        Pencere^.FBuyutmeDugmesi^.Ciz;
+      end;
+
+      Pencere^.FKapatmaDugmesi^.Ciz;
+    end;
+  end;
+
+  AltNesneler := Pencere^.FAltNesneBellekAdresi;
+  if(Pencere^.FAltNesneSayisi > 0) then
+  begin
+
+    // ilk oluþturulan alt nesneden son oluþturulan alt nesneye doðru
+    // pencerenin alt nesnelerini çiz
+    for i := 0 to Pencere^.FAltNesneSayisi - 1 do
+    begin
+
+      GorunurNesne := AltNesneler[i];
+      if(GorunurNesne^.Gorunum) and not(GorunurNesne^.Kimlik = HATA_KIMLIK) then
+      begin
+
+        // pencere nesnesinin altýnda çizilecek nesneler
+        case GorunurNesne^.NesneTipi of
+          gntBaglanti       : PBaglanti(GorunurNesne)^.Ciz;
+          gntDefter         : PDefter(GorunurNesne)^.Ciz;
+          gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Ciz;
+          gntDugme          : PDugme(GorunurNesne)^.Ciz;
+          gntDurumCubugu    : PDurumCubugu(GorunurNesne)^.Ciz;
+          gntEtiket         : PEtiket(GorunurNesne)^.Ciz;
+          gntGirisKutusu    : PGirisKutusu(GorunurNesne)^.Ciz;
+          gntGucDugmesi     : PGucDugmesi(GorunurNesne)^.Ciz;
+          gntIslemGostergesi: PIslemGostergesi(GorunurNesne)^.Ciz;
+          gntKarmaListe     : PKarmaListe(GorunurNesne)^.Ciz;
+          gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Ciz;
+          gntListeGorunum   : PListeGorunum(GorunurNesne)^.Ciz;
+          gntListeKutusu    : PListeKutusu(GorunurNesne)^.Ciz;
+          gntOnayKutusu     : POnayKutusu(GorunurNesne)^.Ciz;
+          gntPanel          : PPanel(GorunurNesne)^.Ciz;
+          gntResim          : PResim(GorunurNesne)^.Ciz;
+          gntResimDugmesi   : PResimDugmesi(GorunurNesne)^.Ciz;
+          gntSecimDugmesi   : PSecimDugmesi(GorunurNesne)^.Ciz;
         end;
       end;
     end;
   end;
+
+  // uygulamaya veya efendi nesneye mesaj gönder
+  Olay.Kimlik := Pencere^.Kimlik;
+  Olay.Olay := CO_CIZIM;
+  Olay.Deger1 := 0;
+  Olay.Deger2 := 0;
+  if not(Pencere^.OlayCagriAdresi = nil) then
+    Pencere^.OlayCagriAdresi(Pencere, Olay)
+  else GorevListesi[Pencere^.GorevKimlik]^.OlayEkle(Pencere^.GorevKimlik, Olay);
+
+  Pencere^.FCiziliyor := False;
 end;
 
 {==============================================================================
-  belirtilen pencere nesnesini en Ã¼ste getirir ve yeniden Ã§izer
+  pencere nesne olaylarýný iþler
  ==============================================================================}
-procedure TPencere.EnUsteGetir;
+procedure TPencere.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Masaustu: PMasaustu;
-  _BirOncekiPencere, _Pencere: PPencere;
-  _AltNesneler: PPGorselNesne;
-  _GorselNesne: PGorselNesne;
-  i, j: TISayi4;
+  Pencere: PPencere;
 begin
 
-{------------------------------------------------------------------------------
-  SÄ±ralama            0   1   2
-                    +---+---+---+
-  Nesne Kimlikleri  | 1 | 2 | 3 |
-                    +-+-+---+-+-+
-                      |       +----- en Ã¼st nesne
-                      +------------- en alt nesne
--------------------------------------------------------------------------------}
+  Pencere := PPencere(AGonderici);
+  if(Pencere = nil) then Exit;
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(Kimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
-
-  // aktif masaÃ¼stÃ¼nÃ¼ al
-  _Masaustu := GAktifMasaustu;
-
-  // masaÃ¼stÃ¼nÃ¼n alt nesne bellek deÄŸerini al
-  _AltNesneler := _Masaustu^.FAltNesneBellekAdresi;
-
-  // nesnenin alt nesne sayÄ±sÄ± var ise
-  if(_Masaustu^.AltNesneSayisi > 1) then
-  begin
-
-    _BirOncekiPencere := PPencere(_AltNesneler[_Masaustu^.AltNesneSayisi - 1]);
-
-    // alt nesneler iÃ§erisinde pencere nesnesini ara
-    for i := (_Masaustu^.AltNesneSayisi - 1) downto 0 do
-    begin
-
-      if(PPencere(_AltNesneler[i]) = _Pencere) then Break;
-    end;
-
-    // eÄŸer pencere nesnesi en Ã¼stte deÄŸil ise
-    if(i <> _Masaustu^.AltNesneSayisi - 1) then
-    begin
-
-      // pencere nesnesini masaÃ¼stÃ¼ nesne belleÄŸinde en Ã¼ste getir
-      for j := i to _Masaustu^.AltNesneSayisi - 2 do
-      begin
-
-        _GorselNesne := _AltNesneler[j + 0];
-        _AltNesneler[j + 0] := _AltNesneler[j + 1];
-        _AltNesneler[j + 1] := _GorselNesne;
-      end;
-    end;
-
-    // pencere en Ã¼stte olsa da olmasa da aktif pencere olarak tanÄ±mla
-    // not: pencere en Ã¼stte olup gÃ¶rÃ¼ntÃ¼lenmiÅŸ olmayabilir
-    AktifPencere := _Pencere;
-
-    // bir Ã¶nceki pencereyi yeniden Ã§iz
-    _BirOncekiPencere^.Guncelle;
-
-    // aktif pencereyi yeniden Ã§iz
-    AktifPencere^.Guncelle;
+  // olaylarý ilgili iþlevlere yönlendir
+  case Pencere^.FPencereTipi of
+    ptBasliksiz       : BasliksizPencereOlaylariniIsle(Pencere, AOlay);
+    ptIletisim        : IletisimPencereOlaylariniIsle(Pencere, AOlay);
+    ptBoyutlanabilir  : BoyutlanabilirPencereOlaylariniIsle(Pencere, AOlay);
   end;
 end;
 
 {==============================================================================
-  pencere nesne olaylarÄ±nÄ± iÅŸler
+  baþlýksýz pencere nesne olaylarýný iþler
  ==============================================================================}
-procedure TPencere.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
-var
-  _Pencere: PPencere;
+procedure TPencere.BasliksizPencereOlaylariniIsle(APencere: PPencere; AOlay: TOlay);
 begin
 
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(AKimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
-
-  // sol tuÅŸa basÄ±m iÅŸlemi
+  // sol tuþa basým iþlemi
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
-    // olaylarÄ± ilgili iÅŸlevlere yÃ¶nlendir
-    case _Pencere^.PencereTipi of
-      ptBoyutlandirilabilir : BoyutlandirilabilirPencereOlaylariniIsle(AKimlik, AOlay);
-      ptBasliksiz           : BasliksizPencereOlaylariniIsle(AKimlik, AOlay);
-      ptIletisim            : IletisimPencereOlaylariniIsle(AKimlik, AOlay);
+    // APencere nesnesi aktif deðilse aktifleþtir
+    if(APencere <> AktifPencere) then EnUsteGetir(APencere);
+
+    // sol tuþ basým iþlemi olay alanýnda gerçekleþtiyse
+    if(APencere^.FareNesneOlayAlanindaMi(APencere)) then
+    begin
+
+      // fare mesajlarýný APencere nesnesine yönlendir
+      OlayYakalamayaBasla(APencere);
+
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(APencere^.OlayCagriAdresi = nil) then
+        APencere^.OlayCagriAdresi(APencere, AOlay)
+      else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
     end;
   end
 
-  // sol tuÅŸ bÄ±rakÄ±m iÅŸlemi
+  // sol tuþ býrakým iþlemi
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
-    // olaylarÄ± ilgili iÅŸlevlere yÃ¶nlendir
-    case _Pencere^.PencereTipi of
-      ptBoyutlandirilabilir : BoyutlandirilabilirPencereOlaylariniIsle(AKimlik, AOlay);
-      ptBasliksiz           : BasliksizPencereOlaylariniIsle(AKimlik, AOlay);
-      ptIletisim            : IletisimPencereOlaylariniIsle(AKimlik, AOlay);
-    end;
-  end
+    // fare mesajlarýný yakalamayý býrak
+    OlayYakalamayiBirak(APencere);
 
-  // diÄŸer olaylar
+    // sol tuþ býrakým iþlemi olay alanýnda gerçekleþtiyse
+    if(APencere^.FarePencereCizimAlanindaMi(APencere)) then
+    begin
+
+      // uygulamaya veya efendi nesneye mesaj gönder
+      AOlay.Olay := FO_TIKLAMA;
+      if not(APencere^.OlayCagriAdresi = nil) then
+        APencere^.OlayCagriAdresi(APencere, AOlay)
+      else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+    end;
+
+    // uygulamaya veya efendi nesneye mesaj gönder
+    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+    if not(APencere^.OlayCagriAdresi = nil) then
+      APencere^.OlayCagriAdresi(APencere, AOlay)
+    else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+  end
+  else if(AOlay.Olay = FO_HAREKET) then
+  begin
+
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(APencere^.OlayCagriAdresi = nil) then
+      APencere^.OlayCagriAdresi(APencere, AOlay)
+    else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+  end
+  // diðer olaylar
   else
   begin
 
-    // olaylarÄ± ilgili iÅŸlevlere yÃ¶nlendir
-    case _Pencere^.PencereTipi of
-      ptBoyutlandirilabilir : BoyutlandirilabilirPencereOlaylariniIsle(AKimlik, AOlay);
-      ptBasliksiz           : BasliksizPencereOlaylariniIsle(AKimlik, AOlay);
-      ptIletisim            : IletisimPencereOlaylariniIsle(AKimlik, AOlay);
-    end;
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(APencere^.OlayCagriAdresi = nil) then
+      APencere^.OlayCagriAdresi(APencere, AOlay)
+    else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
   end;
+
+  // geçerli fare göstergesini güncelle
+  GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
 end;
 
 {==============================================================================
-  baÅŸlÄ±ksÄ±z pencere nesne olaylarÄ±nÄ± iÅŸler
+  iletiþim pencere nesne olaylarýný iþler
  ==============================================================================}
-procedure TPencere.BasliksizPencereOlaylariniIsle(AKimlik: TKimlik; Olay: TOlayKayit);
+procedure TPencere.IletisimPencereOlaylariniIsle(APencere: PPencere; AOlay: TOlay);
 var
-  _Pencere: PPencere;
+  Alan: TAlan;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(AKimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
-
-  // sol tuÅŸa basÄ±m iÅŸlemi
-  if(Olay.Olay = FO_SOLTUS_BASILDI) then
+  // sol tuþa basým iþlemi
+  if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
-    // pencere nesnesi aktif deÄŸilse aktifleÅŸtir
-    if(_Pencere <> AktifPencere) then EnUsteGetir;
+    // APencere nesnesi aktif deðilse aktifleþtir
+    if(APencere <> AktifPencere) then EnUsteGetir(APencere);
 
-    // sol tuÅŸ basÄ±m iÅŸlemi olay alanÄ±nda gerÃ§ekleÅŸtiyse
-    if(_Pencere^.FareNesneOlayAlanindaMi(AKimlik)) then
+    // sol tuþ basým iþlemi olay alanýnda gerçekleþtiyse
+    if(APencere^.FareNesneOlayAlanindaMi(APencere)) then
     begin
 
-      // fare mesajlarÄ±nÄ± pencere nesnesine yÃ¶nlendir
-      OlayYakalamayaBasla(_Pencere);
+      // fare mesajlarýný APencere nesnesine yönlendir
+      OlayYakalamayaBasla(APencere);
 
-      // uygulamaya mesaj gÃ¶nder
-      GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-        _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-    end;
-  end
-
-  // sol tuÅŸ bÄ±rakÄ±m iÅŸlemi
-  else if(Olay.Olay = FO_SOLTUS_BIRAKILDI) then
-  begin
-
-    // mouse mesajlarÄ±nÄ± yakalamayÄ± bÄ±rak
-    OlayYakalamayiBirak(_Pencere);
-
-    // sol tuÅŸ bÄ±rakÄ±m iÅŸlemi olay alanÄ±nda gerÃ§ekleÅŸtiyse
-    if(_Pencere^.FarePencereCizimAlanindaMi(AKimlik)) then
-      GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-        _Pencere, FO_TIKLAMA, Olay.Deger1, Olay.Deger2);
-
-    GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-      _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-  end
-  else if(Olay.Olay = FO_HAREKET) then
-  begin
-
-    GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-      _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-  end
-  // diÄŸer olaylar
-  else
-  begin
-
-    GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-      _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-  end;
-
-  // geÃ§erli fare gÃ¶stergesini gÃ¼ncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
-end;
-
-{==============================================================================
-  iletiÅŸim pencere nesne olaylarÄ±nÄ± iÅŸler
- ==============================================================================}
-procedure TPencere.IletisimPencereOlaylariniIsle(AKimlik: TKimlik; Olay: TOlayKayit);
-var
-  _Pencere: PPencere;
-  _Gorev: PGorev;
-  _EskiBoyut, _YeniBoyut: TAlan;
-  _Nokta: TNokta;
-begin
-
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(AKimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
-
-  // sol tuÅŸa basÄ±m iÅŸlemi
-  if(Olay.Olay = FO_SOLTUS_BASILDI) then
-  begin
-
-    // program kapatma iÅŸlevi
-    if(FareKonumu = fkKapatmaDugmesi) then
-    begin
-
-      _Gorev^.Sonlandir(_Pencere^.GorevKimlik);
-      Exit;
-    end;
-
-    // pencere nesnesi aktif deÄŸilse aktifleÅŸtir
-    if(_Pencere <> AktifPencere) then EnUsteGetir;
-
-    // sol tuÅŸ basÄ±m iÅŸlemi olay alanÄ±nda gerÃ§ekleÅŸtiyse
-    if(_Pencere^.FareNesneOlayAlanindaMi(AKimlik)) then
-    begin
-
-      // fare mesajlarÄ±nÄ± pencere nesnesine yÃ¶nlendir
-      OlayYakalamayaBasla(_Pencere);
-
-      // eÄŸer tÄ±klama pencerenin gÃ¶vdesinde gerÃ§ekleÅŸmiÅŸse
+      // eðer týklama pencerenin gövdesinde gerçekleþmiþse
       if(FareKonumu = fkGovde) then
       begin
 
-        GecerliFareGostegeTipi := FareGostergeTipi;
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-          _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
+        GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
+
+        // uygulamaya veya efendi nesneye mesaj gönder
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
       end
       else
 
-      // aksi durumda tÄ±klama iÅŸlemi yakalama Ã§ubuÄŸunda gerÃ§ekleÅŸmiÅŸtir
-      // o zaman pencerenin kenarlÄ±klarÄ±nÄ± sakla
+      // aksi durumda týklama iþlemi yakalama çubuðunda gerçekleþmiþtir
+      // o zaman pencerenin kenarlýklarýný sakla
       begin
 
         GecerliFareGostegeTipi := fitBoyutTum;
-        SonFareYatayKoordinat := Olay.Deger1;
-        SonFareDikeyKoordinat := Olay.Deger2;
+        SonFareYatayKoordinat := GFareSurucusu.YatayKonum;
+        SonFareDikeyKoordinat := GFareSurucusu.DikeyKonum;
       end;
-    end else GecerliFareGostegeTipi := FareGostergeTipi;
-
-    Exit;
+    end else GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
   end
 
-  // sol tuÅŸ bÄ±rakÄ±m iÅŸlemi
-  else if(Olay.Olay = FO_SOLTUS_BIRAKILDI) then
+  // sol tuþ býrakým iþlemi
+  else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
-    // fare olaylarÄ±nÄ± almayÄ± bÄ±rak
-    OlayYakalamayiBirak(_Pencere);
+    // fare olaylarýný almayý býrak
+    OlayYakalamayiBirak(APencere);
 
-    // taÅŸÄ±ma iÅŸlemi kontrol Ã§ubuÄŸu dÄ±ÅŸÄ±nda gerÃ§ekleÅŸmiÅŸse
+    // taþýma iþlemi pencere çizim alanýnda gerçekleþmiþse
     if not(FareKonumu = fkKontrolCubugu) then
     begin
 
-      // bÄ±rakma iÅŸlemi pencere iÃ§erinde gerÃ§ekleÅŸtiyse
-      if(_Pencere^.FarePencereCizimAlanindaMi(AKimlik)) then
+      // býrakma iþlemi APencere içerinde gerçekleþtiyse
+      if(APencere^.FarePencereCizimAlanindaMi(APencere)) then
       begin
 
-        GecerliFareGostegeTipi := FareGostergeTipi;
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik, _Pencere,
-          FO_TIKLAMA, Olay.Deger1, Olay.Deger2);
+        GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
 
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik, _Pencere,
-          Olay.Olay, Olay.Deger1, Olay.Deger2);
+        // uygulamaya veya efendi nesneye mesaj gönder
+        AOlay.Olay := FO_TIKLAMA;
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+
+        // uygulamaya veya efendi nesneye mesaj gönder
+        AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
       end
       else
 
-      // bÄ±rakma iÅŸlemi pencere dÄ±ÅŸÄ±nda gerÃ§ekleÅŸtiyse
+      // býrakma iþlemi APencere dýþýnda gerçekleþtiyse
       begin
 
-        { TODO : bÄ±rakma iÅŸlemi pencere dÄ±ÅŸÄ±nda olursa normalde kursor de ilgili
-          nesnenin kursÃ¶rÃ¼ olur }
-        GecerliFareGostegeTipi := FareGostergeTipi;
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-          _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-      end;
+        { TODO : býrakma iþlemi APencere dýþýnda olursa normalde kursor de ilgili
+          nesnenin kursörü olur }
+        GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
 
-      Exit;
+        // uygulamaya veya efendi nesneye mesaj gönder
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+      end;
     end;
   end
 
-  else if(Olay.Olay = FO_HAREKET) then
+  else if(AOlay.Olay = FO_HAREKET) then
   begin
 
-    // fare yakalanmamÄ±ÅŸsa sadece fare gÃ¶stergesini gÃ¼ncelle
+    // fare yakalanmamýþsa sadece fare göstergesini güncelle
     if(YakalananGorselNesne = nil) then
     begin
 
-      if not(_Pencere^.FareNesneOlayAlanindaMi(AKimlik)) then
+      if(APencere^.FarePencereCizimAlanindaMi(APencere)) then
       begin
 
-        GecerliFareGostegeTipi := FareGostergeTipi;
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-          _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
+        FareKonumu := fkGovde;
+        GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
+
+        // uygulamaya veya efendi nesneye mesaj gönder
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
       end
       else
       begin
 
-        if(_Pencere^.FarePencereCizimAlanindaMi(AKimlik)) then
-        begin
+        FareKonumu := fkKontrolCubugu;
+        GecerliFareGostegeTipi := fitBoyutTum;
 
-          FareKonumu := fkGovde;
-          GecerliFareGostegeTipi := FareGostergeTipi;
-          GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-            _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-        end
-        else
-        begin
-
-          // fare pencere kapatma dÃ¼ÄŸmesinin Ã¼zerinde mi ?
-          _YeniBoyut.Sol := _Pencere^.FBoyutlar.Sag + _Pencere^.FKapatmaDugmeBoyut.Sol3;
-          _YeniBoyut.Ust := _Pencere^.FKapatmaDugmeBoyut.Ust3;
-          _YeniBoyut.Sag := _YeniBoyut.Sol + _Pencere^.FKapatmaDugmeBoyut.Genislik3;
-          _YeniBoyut.Alt := _YeniBoyut.Ust + _Pencere^.FKapatmaDugmeBoyut.Yukseklik3;
-          _Nokta.A1 := Olay.Deger1;
-          _Nokta.B1 := Olay.Deger2;
-
-          if(NoktaAlanIcindeMi(_Nokta, _YeniBoyut)) then
-          begin
-
-            FareKonumu := fkKapatmaDugmesi;
-            GecerliFareGostegeTipi := fitOK;
-          end
-          else
-          begin
-
-            FareKonumu := fkKontrolCubugu;
-            GecerliFareGostegeTipi := fitBoyutTum;
-            GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-              _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-          end;
-        end;
+        // uygulamaya veya efendi nesneye mesaj gönder
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
       end;
-
-      Exit;
     end
     else
 
-    // fare yakalanmÄ±ÅŸ olduÄŸu iÃ§in taÅŸÄ±ma iÅŸlemlerini gerÃ§ekleÅŸtir
+    // fare yakalanmýþ olduðu için taþýma iþlemlerini gerçekleþtir
     begin
 
       if(FareKonumu = fkKontrolCubugu) then
       begin
 
-        _EskiBoyut.Sol := Olay.Deger1 - SonFareYatayKoordinat;
-        _EskiBoyut.Ust := Olay.Deger2 - SonFareDikeyKoordinat;
-        _EskiBoyut.Sag := 0;
-        _EskiBoyut.Alt := 0;
+        Alan.Sol := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+        Alan.Ust := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
+        Alan.Sag := 0;
+        Alan.Alt := 0;
 
-        FBoyutlar.Sol += _EskiBoyut.Sol;
-        FBoyutlar.Sag += _EskiBoyut.Sag;
-        FBoyutlar.Ust += _EskiBoyut.Ust;
-        FBoyutlar.Alt += _EskiBoyut.Alt;
+        SonFareYatayKoordinat := GFareSurucusu.YatayKonum;
+        SonFareDikeyKoordinat := GFareSurucusu.DikeyKonum;
+
+        APencere^.FKonum.Sol += Alan.Sol;
+        APencere^.FBoyut.Genislik += Alan.Sag;
+        APencere^.FKonum.Ust += Alan.Ust;
+        APencere^.FBoyut.Yukseklik += Alan.Alt;
 
         GecerliFareGostegeTipi := fitBoyutTum;
 
-        _Pencere^.Guncelle;
+        APencere^.Guncelle;
       end
       else
       begin
 
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-          _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-        GecerliFareGostegeTipi := FareGostergeTipi;
+        // uygulamaya veya efendi nesneye mesaj gönder
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+
+        GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
       end;
     end;
   end
-  // diÄŸer olaylar
+  // diðer olaylar
   else
   begin
 
-    GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-      _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(APencere^.OlayCagriAdresi = nil) then
+      APencere^.OlayCagriAdresi(APencere, AOlay)
+    else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
   end;
 end;
 
 {==============================================================================
-  boyutlandÄ±rÄ±labilir pencere nesne olaylarÄ±nÄ± iÅŸler
+  boyutlandýrýlabilir pencere nesne olaylarýný iþler
  ==============================================================================}
-procedure TPencere.BoyutlandirilabilirPencereOlaylariniIsle(AKimlik: TKimlik; Olay: TOlayKayit);
+procedure TPencere.BoyutlanabilirPencereOlaylariniIsle(APencere: PPencere; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _Gorev: PGorev;
-  _EskiBoyut, _YeniBoyut: TAlan;
-  _Nokta: TNokta;
+  Alan: TAlan;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(AKimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
-
-  // sol tuÅŸa basÄ±m iÅŸlemi
-  if(Olay.Olay = FO_SOLTUS_BASILDI) then
+  // sol tuþa basým iþlemi
+  if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
-    // program kapatma iÅŸlevi
-    if(FareKonumu = fkKapatmaDugmesi) then
-    begin
+    // APencere nesnesi aktif deðilse aktifleþtir
+    if(APencere <> AktifPencere) then EnUsteGetir(APencere);
 
-      _Gorev^.Sonlandir(_Pencere^.GorevKimlik);
-      Exit;
-    end;
+    // fare olaylarýný APencere nesnesine yönlendir
+    OlayYakalamayaBasla(APencere);
 
-    // pencere nesnesi aktif deÄŸilse aktifleÅŸtir
-    if(_Pencere <> AktifPencere) then EnUsteGetir;
-
-    // fare olaylarÄ±nÄ± pencere nesnesine yÃ¶nlendir
-    OlayYakalamayaBasla(_Pencere);
-
-    // eÄŸer farenin sol tuÅŸu pencere nesnesinin gÃ¶vdesine tÄ±klanmÄ±ÅŸsa ...
+    // eðer farenin sol tuþu APencere nesnesinin gövdesine týklanmýþsa ...
     if(FareKonumu = fkGovde) then
     begin
 
-      GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-        _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
+      GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik,
+        AOlay);
     end
     else
     begin
 
-      // aksi durumda taÅŸÄ±ma iÅŸlemi gerÃ§ekleÅŸtirilecektir.
-      // deÄŸiÅŸken iÃ§eriklerini gÃ¼ncelle
-      SonFareYatayKoordinat := Olay.Deger1;
-      SonFareDikeyKoordinat := Olay.Deger2;
+      // aksi durumda taþýma / boyutlandýrma iþlemi gerçekleþtirilecektir.
+      // deðiþken içeriklerini güncelle
+      SonFareYatayKoordinat := GFareSurucusu.YatayKonum;
+      SonFareDikeyKoordinat := GFareSurucusu.DikeyKonum;
     end;
-
-    Exit;
   end
 
-  // sol tuÅŸ bÄ±rakma iÅŸlemi
-  else if(Olay.Olay = FO_SOLTUS_BIRAKILDI) then
+  // sol tuþ býrakma iþlemi
+  else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
-    // fare mesajlarÄ±nÄ± yakalamayÄ± bÄ±rak
-    OlayYakalamayiBirak(_Pencere);
+    // fare mesajlarýný yakalamayý býrak
+    OlayYakalamayiBirak(APencere);
 
-    // fare bÄ±rakma iÅŸlemi nesnenin iÃ§erisinde mi gerÃ§ekleÅŸti ?
+    // fare býrakma iþlemi nesnenin içerisinde mi gerçekleþti ?
     if(FareKonumu = fkGovde) then
     begin
 
-      if(_Pencere^.FarePencereCizimAlanindaMi(AKimlik)) then
+      if(APencere^.FarePencereCizimAlanindaMi(APencere)) then
+      begin
+        // yakalama & býrakma iþlemi bu nesnede olduðu için
+        // nesneye FO_TIKLAMA mesajý gönder
+        AOlay.Olay := FO_TIKLAMA;
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+      end;
 
-        // yakalama & bÄ±rakma iÅŸlemi bu nesnede olduÄŸu iÃ§in
-        // nesneye FO_TIKLAMA mesajÄ± gÃ¶nder
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-          _Pencere, FO_TIKLAMA, Olay.Deger1, Olay.Deger2);
-
-      // nesneye sadece FO_SOLTUS_BIRAKILDI mesajÄ± gÃ¶nder
-      GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-        _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-
-      Exit;
+      // nesneye sadece FO_SOLTUS_BIRAKILDI mesajý gönder
+      AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+      if not(APencere^.OlayCagriAdresi = nil) then
+        APencere^.OlayCagriAdresi(APencere, AOlay)
+      else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
     end;
   end
 
-  // fare hareket iÅŸlemleri
-  else if(Olay.Olay = FO_HAREKET) then
+  // fare hareket iþlemleri
+  else if(AOlay.Olay = FO_HAREKET) then
   begin
 
-    // FO_HAREKET - nesne yakalanmamÄ±ÅŸ
+    // FO_HAREKET - nesne yakalanmamýþ
     if(YakalananGorselNesne = nil) then
     begin
 
-      // fare > sol Ã§izgi kalÄ±nlÄ±k
-      if(Olay.Deger1 > _Pencere^.FKalinlik.Sol) then
+      // fare > sol çizgi kalýnlýk
+      if(AOlay.Deger1 > APencere^.FKalinlik.Sol) then
       begin
 
-        // fare < saÄŸ Ã§izgi kalÄ±nlÄ±k
-        if(Olay.Deger1 < _Pencere^.FBoyutlar.Sag - _Pencere^.FKalinlik.Sag) then
+        // fare < sað çizgi kalýnlýk
+        if(AOlay.Deger1 < (APencere^.FBoyut.Genislik - APencere^.FKalinlik.Sag)) then
         begin
 
-          // fare < alt Ã§izgi kalÄ±nlÄ±k
-          if(Olay.Deger2 < _Pencere^.FBoyutlar.Alt - _Pencere^.FKalinlik.Alt) then
+          // fare < alt çizgi kalýnlýk
+          if(AOlay.Deger2 < (APencere^.FBoyut.Yukseklik - APencere^.FKalinlik.Alt)) then
           begin
 
-            // fare > alt Ã§izgi kalÄ±nlÄ±k
-            // bilgi: Ã¼st Ã§izgi kalÄ±nlÄ±k deÄŸeri baÅŸlÄ±k Ã§ubuÄŸu deÄŸeri olduÄŸundan dolayÄ±
-            // Ã¼st Ã§izgi kalÄ±nlÄ±k deÄŸeri olarak alt Ã§izgi kalÄ±nlÄ±k deÄŸeri kullanÄ±lmaktadÄ±r
-            if(Olay.Deger2 > _Pencere^.FKalinlik.Alt) then
+            // fare > alt çizgi kalýnlýk
+            // bilgi: üst çizgi kalýnlýk deðeri baþlýk çubuðu deðeri olduðundan dolayý
+            // üst çizgi kalýnlýk deðeri olarak alt çizgi kalýnlýk deðeri kullanýlmaktadýr
+            if(AOlay.Deger2 > APencere^.FKalinlik.Alt) then
             begin
 
-              // fare > yakalama Ã§ubuÄŸu
-              // bu deÄŸer yakalama Ã§ubuÄŸu iÃ§in kullanÄ±lÄ±yor. hata yok
-              if(Olay.Deger2 > _Pencere^.FKalinlik.Ust) then
+              // fare > yakalama çubuðu
+              // bu deðer yakalama çubuðu için kullanýlýyor. hata yok
+              if(AOlay.Deger2 > APencere^.FKalinlik.Ust) then
               begin
 
-                // fare gÃ¶stergesi pencere gÃ¶vdesinde
+                // fare göstergesi APencere gövdesinde
                 FareKonumu := fkGovde;
-                GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-                  _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-                GecerliFareGostegeTipi := FareGostergeTipi;
+                GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+                GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
               end
               else
               begin
 
-                // fare, pencere kapatma dÃ¼ÄŸmesinin Ã¼zerinde mi ?
-                _EskiBoyut.Sol := _Pencere^.FBoyutlar.Sag + _Pencere^.FKapatmaDugmeBoyut.Sol3;
-                _EskiBoyut.Ust := _Pencere^.FKapatmaDugmeBoyut.Ust3;
-                _EskiBoyut.Sag := _EskiBoyut.Sol + _Pencere^.FKapatmaDugmeBoyut.Genislik3;
-                _EskiBoyut.Alt := _EskiBoyut.Ust + _Pencere^.FKapatmaDugmeBoyut.Yukseklik3;
-                _Nokta.A1 := Olay.Deger1;
-                _Nokta.B1 := Olay.Deger2;
-
-                if(NoktaAlanIcindeMi(_Nokta, _EskiBoyut)) then
-                begin
-
-                  FareKonumu := fkKapatmaDugmesi;
-                  GecerliFareGostegeTipi := fitOK;
-                end
-
-                // diÄŸer kontrol dÃ¼ÄŸmeleri (bÃ¼yÃ¼tme, kÃ¼Ã§Ã¼ltme) de buraya eklenecek
-                else
-                begin
-
-                  // fare gÃ¶stergesi yakalama Ã§ubuÄŸunda
-                  FareKonumu := fkKontrolCubugu;
-                  GecerliFareGostegeTipi := fitBoyutTum;
-                end;
+                // fare göstergesi yakalama çubuðunda
+                FareKonumu := fkKontrolCubugu;
+                GecerliFareGostegeTipi := fitBoyutTum;
               end;
             end
             else
             begin
 
-              // fare gÃ¶stergesi Ã¼st boyutlandÄ±rmada
+              // fare göstergesi üst boyutlandýrmada
               FareKonumu := fkUst;
               GecerliFareGostegeTipi := fitBoyutKG;
             end;
@@ -1173,83 +989,76 @@ begin
           else
           begin
 
-            // fare gÃ¶stergesi alt boyutlandÄ±rmada
+            // fare göstergesi alt boyutlandýrmada
             FareKonumu := fkAlt;
             GecerliFareGostegeTipi := fitBoyutKG;
           end;
         end
         else
-        // saÄŸ - alt / Ã¼st / orta (saÄŸ) kontrolÃ¼
+        // sað - alt / üst / orta (sað) kontrolü
         begin
 
-          // bilgi: _Pencere^.FKalinlik.Alt deÄŸeri aslÄ±nda _Pencere^.FKalinlik.Ust deÄŸeri olmalÄ±dÄ±r
-          // fakat _Pencere^.FKalinlik.Ust deÄŸeri baÅŸlÄ±k kalÄ±nlÄ±ÄŸÄ± olarak kullanÄ±lmaktadÄ±r
-          if(Olay.Deger2 < _Pencere^.FKalinlik.Alt) then
+          // bilgi: APencere^.FKalinlik.Alt deðeri aslýnda APencere^.FKalinlik.Ust deðeri olmalýdýr
+          // fakat APencere^.FKalinlik.Ust deðeri baþlýk kalýnlýðý olarak kullanýlmaktadýr
+          if(AOlay.Deger2 < APencere^.FKalinlik.Alt) then
           begin
 
-            // fare gÃ¶stergesi saÄŸ & Ã¼st boyutlandÄ±rmada
+            // fare göstergesi sað & üst boyutlandýrmada
             FareKonumu := fkSagUst;
             GecerliFareGostegeTipi := fitBoyutKDGB;
           end
-          else if(Olay.Deger2 > _Pencere^.FBoyutlar.Alt - _Pencere^.FKalinlik.Alt) then
+          else if(AOlay.Deger2 > (APencere^.FBoyut.Yukseklik - APencere^.FKalinlik.Alt)) then
           begin
 
-            // fare gÃ¶stergesi saÄŸ & alt boyutlandÄ±rmada
+            // fare göstergesi sað & alt boyutlandýrmada
             FareKonumu := fkSagAlt;
             GecerliFareGostegeTipi := fitBoyutKBGD;
           end
           else
           begin
 
-            // fare gÃ¶stergesi saÄŸ kÄ±sÄ±m boyutlandÄ±rmada
+            // fare göstergesi sað kýsým boyutlandýrmada
             FareKonumu := fkSag;
             GecerliFareGostegeTipi := fitBoyutBD;
           end;
         end;
-
-        Exit;
       end
       else
-      // sol - alt / Ã¼st / orta (sol) kontrolÃ¼
+      // sol - alt / üst / orta (sol) kontrolü
       begin
 
-        if(Olay.Deger2 < _Pencere^.FKalinlik.Alt) then
+        if(AOlay.Deger2 < APencere^.FKalinlik.Alt) then
         begin
 
-          // fare gÃ¶stergesi Ã¼st & sol kÄ±sÄ±m boyutlandÄ±rmada
+          // fare göstergesi üst & sol kýsým boyutlandýrmada
           FareKonumu := fkSolUst;
           GecerliFareGostegeTipi := fitBoyutKBGD;
         end
-        else if(Olay.Deger2 > _Pencere^.FBoyutlar.Alt - _Pencere^.FKalinlik.Alt) then
+        else if(AOlay.Deger2 > (APencere^.FBoyut.Yukseklik - APencere^.FKalinlik.Alt)) then
         begin
 
-          // fare gÃ¶stergesi alt & sol kÄ±sÄ±m boyutlandÄ±rmada
+          // fare göstergesi alt & sol kýsým boyutlandýrmada
           FareKonumu := fkSolAlt;
           GecerliFareGostegeTipi := fitBoyutKDGB;
         end
         else
         begin
 
-          // fare gÃ¶stergesi sol kÄ±sÄ±m boyutlandÄ±rmada
+          // fare göstergesi sol kýsým boyutlandýrmada
           FareKonumu := fkSol;
           GecerliFareGostegeTipi := fitBoyutBD;
         end;
       end;
-
-      Exit;
     end
     else
 
-    // FO_HAREKET - nesne yakalanmÄ±ÅŸ - taÅŸÄ±ma, boyutlandÄ±rma
+    // FO_HAREKET - nesne yakalanmýþ - taþýma, boyutlandýrma
     begin
 
       if(FareKonumu = fkGovde) then
       begin
 
-        GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik,
-          _Pencere, Olay.Olay, Olay.Deger1, Olay.Deger2);
-
-        Exit;
+        GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
       end
       else
       begin
@@ -1257,217 +1066,288 @@ begin
         if(FareKonumu = fkSolUst) then
         begin
 
-          _YeniBoyut.Sol := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Ust := Olay.Deger2 - SonFareDikeyKoordinat;
-          _YeniBoyut.Sag := -_YeniBoyut.Sol;
-          _YeniBoyut.Alt := -_YeniBoyut.Ust;
+          Alan.Sol := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Ust := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
+          Alan.Sag := -Alan.Sol;
+          Alan.Alt := -Alan.Ust;
         end
         else if(FareKonumu = fkSol) then
         begin
 
-          _YeniBoyut.Sol := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Ust := 0;
-          _YeniBoyut.Sag := -_YeniBoyut.Sol;
-          _YeniBoyut.Alt := 0;
+          Alan.Sol := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Ust := 0;
+          Alan.Sag := -GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Alt := 0;
         end
         else if(FareKonumu = fkSolAlt) then
         begin
 
-          _YeniBoyut.Sol := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Ust := 0;
-          _YeniBoyut.Sag := -_YeniBoyut.Sol;
-          _YeniBoyut.Alt := Olay.Deger2 - SonFareDikeyKoordinat;
-          SonFareDikeyKoordinat := Olay.Deger2;
+          Alan.Sol := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Ust := 0;
+          Alan.Sag := -Alan.Sol;
+          Alan.Alt := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
         end
         else if(FareKonumu = fkAlt) then
         begin
 
-          _YeniBoyut.Sol := 0;
-          _YeniBoyut.Ust := 0;
-          _YeniBoyut.Sag := 0;
-          _YeniBoyut.Alt := Olay.Deger2 - SonFareDikeyKoordinat;
-          SonFareDikeyKoordinat := Olay.Deger2;
+          Alan.Sol := 0;
+          Alan.Ust := 0;
+          Alan.Sag := 0;
+          Alan.Alt := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
         end
         else if(FareKonumu = fkSagAlt) then
         begin
 
-          _YeniBoyut.Sol := 0;
-          _YeniBoyut.Ust := 0;
-          _YeniBoyut.Sag := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Alt := Olay.Deger2 - SonFareDikeyKoordinat;
-          SonFareYatayKoordinat := Olay.Deger1;
-          SonFareDikeyKoordinat := Olay.Deger2;
+          Alan.Sol := 0;
+          Alan.Ust := 0;
+          Alan.Sag := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Alt := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
         end
         else if(FareKonumu = fkSag) then
         begin
 
-          _YeniBoyut.Sol := 0;
-          _YeniBoyut.Ust := 0;
-          _YeniBoyut.Sag := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Alt := 0;
-          SonFareYatayKoordinat := Olay.Deger1;
+          Alan.Sol := 0;
+          Alan.Ust := 0;
+          Alan.Sag := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Alt := 0;
         end
         else if(FareKonumu = fkSagUst) then
         begin
 
-          _YeniBoyut.Sol := 0;
-          _YeniBoyut.Ust := Olay.Deger2 - SonFareDikeyKoordinat;
-          _YeniBoyut.Sag := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Alt := -_YeniBoyut.Ust;
-          SonFareYatayKoordinat := Olay.Deger1;
+          Alan.Sol := 0;
+          Alan.Ust := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
+          Alan.Sag := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Alt := -Alan.Ust;
         end
         else if(FareKonumu = fkUst) then
         begin
 
-          _YeniBoyut.Sol := 0;
-          _YeniBoyut.Ust := Olay.Deger2 - SonFareDikeyKoordinat;
-          _YeniBoyut.Sag := 0;
-          _YeniBoyut.Alt := -_YeniBoyut.Ust;
+          Alan.Sol := 0;
+          Alan.Ust := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
+          Alan.Sag := 0;
+          Alan.Alt := -Alan.Ust;
         end
         else if(FareKonumu = fkKontrolCubugu) then
         begin
 
-          _YeniBoyut.Sol := Olay.Deger1 - SonFareYatayKoordinat;
-          _YeniBoyut.Ust := Olay.Deger2 - SonFareDikeyKoordinat;
-          _YeniBoyut.Sag := 0;
-          _YeniBoyut.Alt := 0;
+          Alan.Sol := GFareSurucusu.YatayKonum - SonFareYatayKoordinat;
+          Alan.Ust := GFareSurucusu.DikeyKonum - SonFareDikeyKoordinat;
+          Alan.Sag := 0;
+          Alan.Alt := 0;
         end;
 
-        FBoyutlar.Sol += _YeniBoyut.Sol;
-        FBoyutlar.Sag += _YeniBoyut.Sag;
-        FBoyutlar.Ust += _YeniBoyut.Ust;
-        FBoyutlar.Alt += _YeniBoyut.Alt;
+        SonFareYatayKoordinat := GFareSurucusu.YatayKonum;
+        SonFareDikeyKoordinat := GFareSurucusu.DikeyKonum;
 
-        // Ã§izim iÃ§in ayrÄ±lan belleÄŸi yok et ve yeni bellek ayÄ±r
-        { TODO : ileride Ã§izimlerin daha hÄ±zlÄ± olmasÄ± iÃ§in pencere kÃ¼Ã§Ã¼lmesi iÃ§in bellek ayrÄ±lmayabilir }
-        GGercekBellek.YokEt(_Pencere^.FCizimBellekAdresi, _Pencere^.FCizimBellekUzunlugu);
+        APencere^.FKonum.Sol += Alan.Sol;
+        APencere^.FBoyut.Genislik += Alan.Sag;
+        APencere^.FKonum.Ust += Alan.Ust;
+        APencere^.FBoyut.Yukseklik += Alan.Alt;
 
-        _Pencere^.FCizimBellekUzunlugu := (FBoyutlar.Sag * FBoyutlar.Alt * 4);
-        _Pencere^.FCizimBellekAdresi := GGercekBellek.Ayir(_Pencere^.FCizimBellekUzunlugu);
+        APencere^.FCizimAlan.Sol := 0;
+        APencere^.FCizimAlan.Ust := 0;
+        APencere^.FCizimAlan.Sag := APencere^.FBoyut.Genislik - 1;
+        APencere^.FCizimAlan.Alt := APencere^.FBoyut.Yukseklik - 1;
 
-        _Pencere^.Guncelle;
+        //if(APencere^.FCiziliyor) then Exit;
+
+        APencere^.Boyutlandir;
+
+        // çizim için ayrýlan belleði yok et ve yeni bellek ayýr
+        { TODO : ileride çizimlerin daha hýzlý olmasý için APencere küçülmesi için bellek ayrýlmayabilir }
+        GGercekBellek.YokEt(APencere^.FCizimBellekAdresi, APencere^.FCizimBellekUzunlugu);
+
+        APencere^.FCizimBellekUzunlugu := (APencere^.FBoyut.Genislik * APencere^.FBoyut.Yukseklik * 4);
+        APencere^.FCizimBellekAdresi := GGercekBellek.Ayir(APencere^.FCizimBellekUzunlugu);
+
+        APencere^.Ciz;
       end;
     end;
   end
-  // diÄŸer olaylar
+  // diðer olaylar
   else
   begin
 
-    GorevListesi[_Pencere^.GorevKimlik]^.OlayEkle1(_Pencere^.GorevKimlik, _Pencere,
-      Olay.Olay, Olay.Deger1, Olay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    if not(APencere^.OlayCagriAdresi = nil) then
+      APencere^.OlayCagriAdresi(APencere, AOlay)
+    else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
   end;
 end;
 
 {==============================================================================
-  pencere kontrol dÃ¼ÄŸmelerini Ã§izer
+  pencere nesnesi ve alt nesnelerini günceller
+  önemli: tüm alt nesneler çizim istekleri için bu iþlevi (TPencere.Guncelle) çaðýrmalýdýr
  ==============================================================================}
-procedure TPencere.KontrolDugmeleriniCiz(APencere: PPencere; APencereCizimAlani: TAlan;
-  APencereAktif: Boolean);
+procedure TPencere.Guncelle;
 var
-  _KapatmaDugmesi, _BuyutmeDugmesi,
-  _KucultmeDugmesi: PPencereDugme;
-  B1, A1, i, j: TISayi4;
-  Renk: TRenk;
+  Pencere: PPencere;
 begin
 
-  // pencere dÃ¼ÄŸmelerinin aktif / pasif olmasÄ±
-  if(APencereAktif) then
+  // nesnenin kimlik, tip deðerlerini denetle.
+  Pencere := PPencere(Pencere^.NesneAl(Kimlik));
+  if(Pencere = nil) then Exit;
+
+  Pencere^.Boyutlandir;
+
+  Pencere^.Ciz;
+end;
+
+{==============================================================================
+  belirtilen pencere nesnesini en üste getirir ve yeniden çizer
+ ==============================================================================}
+procedure TPencere.EnUsteGetir(APencere: PPencere);
+var
+  Masaustu: PMasaustu;
+  BirOncekiPencere: PPencere;
+  AltNesneBellekAdresi: PPGorselNesne;
+  GorselNesne: PGorselNesne;
+  i, j: TISayi4;
+begin
+
+{------------------------------------------------------------------------------
+  Sýralama            0   1   2
+                    +---+---+---+
+  Nesne Kimlikleri  | 1 | 2 | 3 |
+                    +-+-+---+-+-+
+                      |       +----- en üst nesne
+                      +------------- en alt nesne
+-------------------------------------------------------------------------------}
+
+  // aktif masaüstünü al
+  Masaustu := GAktifMasaustu;
+
+  // masaüstünün alt nesne bellek deðerini al
+  AltNesneBellekAdresi := Masaustu^.FAltNesneBellekAdresi;
+
+  // nesnenin alt nesne sayýsý var ise
+  if(Masaustu^.FAltNesneSayisi > 1) then
   begin
 
-    _KapatmaDugmesi := @AktifKapatmaDugmesi;
-    _BuyutmeDugmesi := @AktifBuyutmeDugmesi;
-    _KucultmeDugmesi := @AktifKucultmeDugmesi;
+    BirOncekiPencere := PPencere(AltNesneBellekAdresi[Masaustu^.FAltNesneSayisi - 1]);
+
+    // alt nesneler içerisinde pencere nesnesini ara
+    for i := (Masaustu^.FAltNesneSayisi - 1) downto 0 do
+    begin
+
+      if(PPencere(AltNesneBellekAdresi[i]) = APencere) then Break;
+    end;
+
+    // eðer pencere nesnesi en üstte deðil ise
+    if(i <> Masaustu^.FAltNesneSayisi - 1) then
+    begin
+
+      // pencere nesnesini masaüstü nesne belleðinde en üste getir
+      for j := i to Masaustu^.FAltNesneSayisi - 2 do
+      begin
+
+        GorselNesne := AltNesneBellekAdresi[j + 0];
+        AltNesneBellekAdresi[j + 0] := AltNesneBellekAdresi[j + 1];
+        AltNesneBellekAdresi[j + 1] := GorselNesne;
+      end;
+    end;
+
+    // pencere en üstte olsa da olmasa da aktif pencere olarak tanýmla
+    // not: pencere en üstte olup görüntülenmiþ olmayabilir
+    AktifPencere := APencere;
+
+    // bir önceki pencereyi yeniden çiz
+    if(BirOncekiPencere^.Gorunum) then BirOncekiPencere^.Guncelle;
+
+    // aktif pencereyi yeniden çiz
+    AktifPencere^.Guncelle;
+  end;
+end;
+
+{==============================================================================
+  fare göstergesinin pencere nesnesinin gövde (çizim alaný) içerisinde
+  olup olmadýðýný kontrol eder
+ ==============================================================================}
+function TPencere.FarePencereCizimAlanindaMi(APencere: PPencere): Boolean;
+var
+  Alan: TAlan;
+begin
+
+  Alan.Sol := APencere^.FKonum.Sol + APencere^.FKalinlik.Sol;
+  Alan.Ust := APencere^.FKonum.Ust + APencere^.FKalinlik.Ust;
+  Alan.Sag := Alan.Sol + (APencere^.FBoyut.Genislik + APencere^.FKalinlik.Sag);
+  Alan.Alt := Alan.Ust + (APencere^.FBoyut.Yukseklik + APencere^.FKalinlik.Alt);
+
+  // öndeðer dönüþ deðeri
+  Result := False;
+
+  // fare belirtilen koordinatlar içerisinde mi ?
+  if(GFareSurucusu.YatayKonum < Alan.Sol) then Exit;
+  if(GFareSurucusu.YatayKonum > Alan.Sag) then Exit;
+  if(GFareSurucusu.DikeyKonum < Alan.Ust) then Exit;
+  if(GFareSurucusu.DikeyKonum > Alan.Alt) then Exit;
+
+  Result := True;
+end;
+
+{==============================================================================
+  pencere nesnesini yeniden boyutlandýrýr iç bileþenlerini konumlandýrýr
+ ==============================================================================}
+procedure TPencere.IcBilesenleriKonumlandir(var APencere: PPencere);
+begin
+
+  APencere^.FCizimAlan.Sag := APencere^.FBoyut.Genislik -
+    (APencere^.FKalinlik.Sol + APencere^.FKalinlik.Sag) - 1;
+  APencere^.FCizimAlan.Alt := APencere^.FBoyut.Yukseklik -
+    (APencere^.FKalinlik.Ust + APencere^.FKalinlik.Alt) - 1;
+
+  // alt nesnelerin sýnýrlanacaðý hiza alanýný sýfýrla
+  APencere^.HizaAlaniniSifirla;
+
+  if(APencere^.FPencereTipi = ptBoyutlanabilir) then
+  begin
+
+    APencere^.FKucultmeDugmesi^.FKonum.Sol := APencere^.FBoyut.Genislik - 65;
+    APencere^.FBuyutmeDugmesi^.FKonum.Sol := APencere^.FBoyut.Genislik - 45;
+    APencere^.FKapatmaDugmesi^.FKonum.Sol := APencere^.FBoyut.Genislik - 25;
+
+    APencere^.FKucultmeDugmesi^.FCizimBaslangic.Sol := APencere^.FCizimBaslangic.Sol + APencere^.FKucultmeDugmesi^.FKonum.Sol;
+    APencere^.FKucultmeDugmesi^.FCizimBaslangic.Ust := APencere^.FCizimBaslangic.Ust + APencere^.FKucultmeDugmesi^.FKonum.Ust;
+    APencere^.FBuyutmeDugmesi^.FCizimBaslangic.Sol := APencere^.FCizimBaslangic.Sol + APencere^.FBuyutmeDugmesi^.FKonum.Sol;
+    APencere^.FBuyutmeDugmesi^.FCizimBaslangic.Ust := APencere^.FCizimBaslangic.Ust + APencere^.FBuyutmeDugmesi^.FKonum.Ust;
+    APencere^.FKapatmaDugmesi^.FCizimBaslangic.Sol := APencere^.FCizimBaslangic.Sol + APencere^.FKapatmaDugmesi^.FKonum.Sol;
+    APencere^.FKapatmaDugmesi^.FCizimBaslangic.Ust := APencere^.FCizimBaslangic.Ust + APencere^.FKapatmaDugmesi^.FKonum.Ust;
   end
   else
   begin
 
-    _KapatmaDugmesi := @PasifKapatmaDugmesi;
-    _BuyutmeDugmesi := @PasifBuyutmeDugmesi;
-    _KucultmeDugmesi := @PasifKucultmeDugmesi;
-  end;
+    APencere^.FKapatmaDugmesi^.FKonum.Sol := APencere^.FBoyut.Genislik - 25;
 
-  // kapatma dÃ¼ÄŸmesinin Ã§izimi
-  A1 := APencereCizimAlani.Sag + APencere^.FKapatmaDugmeBoyut.Sol3;
-  B1 := APencereCizimAlani.Ust + APencere^.FKapatmaDugmeBoyut.Ust3;
-
-  for j := 0 to APencere^.FKapatmaDugmeBoyut.Alt do
-  begin
-
-    for i := 0 to APencere^.FKapatmaDugmeBoyut.Sag do
-    begin
-
-      Renk := _KapatmaDugmesi^[j, i];
-      PixelYaz(APencere, A1 + i, B1 + j, Renk);
-    end;
-  end;
-
-  // pencere bir iletiÅŸim penceresi ise, Ã§Ä±k
-  if(APencere^.PencereTipi = ptIletisim) then Exit;
-
-  // bÃ¼yÃ¼tme dÃ¼ÄŸmesinin Ã§izimi
-  A1 := APencereCizimAlani.Sag + APencere^.FBuyutmeDugmeBoyut.Sol3;
-  B1 := APencereCizimAlani.Ust + APencere^.FBuyutmeDugmeBoyut.Ust3;
-
-  for j := 0 to APencere^.FBuyutmeDugmeBoyut.Alt do
-  begin
-
-    for i := 0 to APencere^.FBuyutmeDugmeBoyut.Sag do
-    begin
-
-      Renk := _BuyutmeDugmesi^[j, i];
-      PixelYaz(APencere, A1 + i, B1 + j, Renk);
-    end;
-  end;
-
-  // kÃ¼Ã§Ã¼ltme dÃ¼ÄŸmesinin Ã§izimi
-  A1 := APencereCizimAlani.Sag + APencere^.FKucultmeDugmeBoyut.Sol3;
-  B1 := APencereCizimAlani.Ust + APencere^.FKucultmeDugmeBoyut.Ust3;
-
-  for j := 0 to APencere^.FKucultmeDugmeBoyut.Alt do
-  begin
-
-    for i := 0 to APencere^.FKucultmeDugmeBoyut.Sag do
-    begin
-
-      Renk := _KucultmeDugmesi^[j, i];
-      PixelYaz(APencere, A1 + i, B1 + j, Renk);
-    end;
+    APencere^.FKapatmaDugmesi^.FCizimBaslangic.Sol := APencere^.FCizimBaslangic.Sol + APencere^.FKapatmaDugmesi^.FKonum.Sol;
+    APencere^.FKapatmaDugmesi^.FCizimBaslangic.Ust := APencere^.FCizimBaslangic.Ust + APencere^.FKapatmaDugmesi^.FKonum.Ust;
   end;
 end;
 
-{==============================================================================
-  fare gÃ¶stergesinin pencere nesnesinin gÃ¶vde (Ã§izim alanÄ±) iÃ§erisinde
-  olup olmadÄ±ÄŸÄ±nÄ± kontrol eder
- ==============================================================================}
-function TPencere.FarePencereCizimAlanindaMi(AKimlik: TKimlik): Boolean;
+procedure TPencere.KontrolDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _Alan: TAlan;
+  ResimDugmesi: PResimDugmesi;
+  Pencere: PPencere;
+  Gorev: PGorev;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
-  _Pencere := PPencere(_Pencere^.NesneTipiniKontrolEt(AKimlik, gntPencere));
-  if(_Pencere = nil) then Exit;
+  if(AOlay.Olay = FO_TIKLAMA) then
+  begin
 
-  // nesnenin Ã¼st nesneye baÄŸlÄ± gerÃ§ek koordinatlarÄ±nÄ± al
-  _Alan.Sol2 := _Pencere^.FDisGercekBoyutlar.Sol2;
-  _Alan.Ust2 := _Pencere^.FDisGercekBoyutlar.Ust2;
-  _Alan.Genislik2 := _Pencere^.FDisGercekBoyutlar.Genislik2;
-  _Alan.Yukseklik2 := _Pencere^.FDisGercekBoyutlar.Yukseklik2;
+    ResimDugmesi := PResimDugmesi(AGonderici);
+    if(ResimDugmesi = nil) then Exit;
 
-  _Alan.Sol2 += _Pencere^.FKalinlik.Sol;
-  _Alan.Ust2 += _Pencere^.FKalinlik.Ust;
-  _Alan.Genislik2 -= _Pencere^.FKalinlik.Sag;
-  _Alan.Yukseklik2 -= _Pencere^.FKalinlik.Alt;
+    Pencere := PPencere(ResimDugmesi^.AtaNesne);
 
-  Result := False;
+    if(ResimDugmesi^.Kimlik = Pencere^.FKucultmeDugmesi^.Kimlik) then
+      SISTEM_MESAJ('Bilgi: küçültme düðmesi iþlevi yapýlandýrýlacak', [])
+    else if(ResimDugmesi^.Kimlik = Pencere^.FBuyutmeDugmesi^.Kimlik) then
+      SISTEM_MESAJ('Bilgi: büyütme düðmesi iþlevi yapýlandýrýlacak', [])
+    else if(ResimDugmesi^.Kimlik = Pencere^.FKapatmaDugmesi^.Kimlik) then
+    begin
 
-  if(_Alan.Sol > GFareSurucusu.YatayKonum) then Exit;
-  if(_Alan.Sag < GFareSurucusu.YatayKonum) then Exit;
-  if(_Alan.Ust > GFareSurucusu.DikeyKonum) then Exit;
-  if(_Alan.Alt < GFareSurucusu.DikeyKonum) then Exit;
-
-  Result := True;
+      Gorev^.Sonlandir(Pencere^.GorevKimlik);
+    end;
+  end;
 end;
 
 end.

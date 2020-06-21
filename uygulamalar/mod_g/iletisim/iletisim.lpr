@@ -7,12 +7,12 @@ program iletisim;
   Program Adý: udptest.lpr
   Program Ýþlevi: udp test programý
 
-  Güncelleme Tarihi: 13/04/2020
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, gn_karmaliste,
-  zamanlayici, n_iletisim, gn_defter;
+uses n_gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, gn_karmaliste,
+  n_zamanlayici, n_iletisim, gn_defter;
 
 const
   ProgramAdi: string = 'Ýletiþim - TCP/UDP';
@@ -33,7 +33,7 @@ var
   VeriUzunlugu: Integer;
 begin
 
-  Pencere0.Olustur(-1, 50, 50, 444, 270, ptIletisim, ProgramAdi, $DAF7A6);
+  Pencere0.Olustur(-1, 50, 50, 434, 260, ptIletisim, ProgramAdi, $D9F2E6);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Tuval.KalemRengi := $000000;
@@ -42,6 +42,7 @@ begin
   klBaglanti.Olustur(Pencere0.Kimlik, 338, 30, 84, 22);
   klBaglanti.ElemanEkle('TCP');
   klBaglanti.ElemanEkle('UDP');
+  klBaglanti.Goster;
 
   Pencere0.Tuval.YaziYaz(10, 10, 'IP Adres: 193.1.1.11, Port: 365');
 
@@ -64,7 +65,7 @@ begin
   DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Baðlantý yok!');
   DurumCubugu0.Goster;
 
-  Defter0.Olustur(Pencere0.Kimlik, 10, 84, 410, 122, RENK_BEYAZ, RENK_SIYAH);
+  Defter0.Olustur(Pencere0.Kimlik, 10, 85, 410, 150, RENK_BEYAZ, RENK_SIYAH);
   //Defter0.Hizala(hzTum);
   Defter0.Goster;
 
@@ -75,7 +76,8 @@ begin
 
   IPAdres := '193.1.1.11';
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
 
@@ -143,7 +145,6 @@ begin
         gkMesaj.IcerikYaz('');
       end;
     end
-
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
@@ -154,8 +155,7 @@ begin
 
       Pencere0.Tuval.YaziYaz(10, 66, 'Haberleþme:');
     end;
-
-  until (1 = 2);
+  end;
 
   //Iletisim0.Close;
 end.

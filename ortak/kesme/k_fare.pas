@@ -27,7 +27,7 @@ uses genel;
  ==============================================================================}
 function FareCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
 var
-  _Nokta: PNokta;
+  _Nokta: PKonum;
   _Islev: TSayi4;
 begin
 
@@ -39,10 +39,10 @@ begin
   begin
 
     // fare konum değerini belirtilen bellek adreslerine kopyala
-    _Nokta := PNokta(PSayi4(Degiskenler)^ + AktifGorevBellekAdresi);
+    _Nokta := PKonum(PSayi4(Degiskenler)^ + AktifGorevBellekAdresi);
 
-    _Nokta^.A1 := GFareSurucusu.YatayKonum;
-    _Nokta^.B1 := GFareSurucusu.DikeyKonum;
+    _Nokta^.Sol := GFareSurucusu.YatayKonum;
+    _Nokta^.Ust := GFareSurucusu.DikeyKonum;
   end
 
   // işlev belirtilen aralıkta değilse hata kodunu geri döndür

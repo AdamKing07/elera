@@ -6,7 +6,7 @@
   Dosya Adý: paylasim.pas
   Dosya Ýþlevi: tüm birimler için ortak paylaþýlan iþlevleri içerir
 
-  Güncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 21/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -199,7 +199,7 @@ var
 
 const
   // GN_UZUNLUK uzunluðunda tanýmlanacak toplam görsel nesne sayýsý
-  USTSINIR_GORSELNESNE  = 255;
+  USTSINIR_GORSELNESNE  = 128; //255;
   USTSINIR_MASAUSTU     = 4;
 
 var
@@ -226,9 +226,9 @@ type
   end;
 
 type
-  PPOlayKayit = ^POlayKayit;
-  POlayKayit = ^TOlayKayit;
-  TOlayKayit = record
+  PPOlay = ^POlay;
+  POlay = ^TOlay;
+  TOlay = record
     Kimlik: TKimlik;
     Olay, Deger1, Deger2: TISayi4;
   end;
@@ -639,10 +639,7 @@ var
 type
   PAlan = ^TAlan;
   TAlan = record
-  case TISayi4 of
-    1: (Sol, Ust, Sag, Alt: TISayi4);
-    2: (Sol2, Ust2, Genislik2, Yukseklik2: TISayi4);
-    3: (Sol3, Ust3, Genislik3, Yukseklik3: TISayi4);    // saða dayalý deðerler (pencere için kullanýlan kapatma, büyütme ve küçültme düðmeleri için kullanýlmýþtýr)
+    Sol, Ust, Sag, Alt: TISayi4;
   end;
 
 type
@@ -664,16 +661,35 @@ type
   TIRQIslevi = procedure;
 
 type
-  PNokta = ^TNokta;
-  TNokta = record
-    A1, B1: TISayi4;
+  PKonum = ^TKonum;
+  TKonum = record
+    Sol, Ust: TISayi4;
   end;
 
 type
-  TGorselNesneTipi = (gntTanimsiz, gntMasaustu, gntPencere, gntDugme, gntGucDugme, gntListeKutusu,
-    gntMenu, gntDefter, gntIslemGostergesi, gntIsaretKutusu, gntGirisKutusu, gntDegerDugmesi,
+  PBoyut = ^TBoyut;
+  TBoyut = record
+    Genislik, Yukseklik: TISayi4;
+  end;
+
+type
+  // görsel nesnelerin kullaným tipleri
+  // ktTuvalNesne = kendisine ait çizim alaný mevcuttur
+  // ktNesne      = tuval nesnenin altýndaki nesnedir
+  // ktBilesen    = nesnenin alt nesnesi olan ktNesne özelliðindeki nesnedir
+  TKullanimTipi = (ktTuvalNesne, ktNesne, ktBilesen);
+
+type { Görsel Nesne Tipi }
+  TGNTip = (gntTanimsiz, gntMasaustu, gntPencere, gntDugme, gntGucDugmesi, gntListeKutusu,
+    gntMenu, gntDefter, gntIslemGostergesi, gntOnayKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
-    gntPanel, gntResimDugme, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu);
+    gntPanel, gntResimDugmesi, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu);
+
+type
+  THamResim = record
+    Genislik, Yukseklik: TSayi4;
+    BellekAdresi: Isaretci;
+  end;
 
 const
   ISLEV_OLUSTUR   = $01;
@@ -703,6 +719,7 @@ const
   CO_TUSBASILDI           = CO_ILKDEGER + 6;
   // açýk / kapalý durumda olabilen görsel nesnelere (örn: TGucDugme) kapalý ol mesajý
   CO_NORMALDURUMAGEC      = CO_ILKDEGER + 7;
+  // CO_BOYUTLANDIR          = CO_ILKDEGER + 8;   daha sonra aktifleþtirilecek
 
   // fare aygýtýnýn ürettiði olaylar - fare olaylarý (FO)
   FO_ILKDEGER             = $200;
@@ -874,7 +891,7 @@ procedure Tasi2(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4);
 function Karsilastir(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4): TSayi4;
 function IPKarsilastir(IP1, IP2: TIPAdres): Boolean;
 function IPKarsilastir2(AGonderenIP, ABenimIP: TIPAdres): Boolean;
-function NoktaAlanIcindeMi(ANokta: TNokta; AAlan: TAlan): Boolean;
+function NoktaAlanIcindeMi(ANokta: TKonum; AAlan: TAlan): Boolean;
 
 implementation
 
@@ -957,13 +974,13 @@ begin
   Result := True;
 end;
 
-function NoktaAlanIcindeMi(ANokta: TNokta; AAlan: TAlan): Boolean;
+function NoktaAlanIcindeMi(ANokta: TKonum; AAlan: TAlan): Boolean;
 begin
 
   Result := False;
 
-  if(ANokta.A1 >= AAlan.Sol) and (ANokta.A1 <= AAlan.Sag) and
-    (ANokta.B1 >= AAlan.Ust) and (ANokta.B1 <= AAlan.Alt) then
+  if(ANokta.Sol >= AAlan.Sol) and (ANokta.Sol <= AAlan.Sag) and
+    (ANokta.Ust >= AAlan.Ust) and (ANokta.Ust <= AAlan.Alt) then
 
   Result := True;
 end;

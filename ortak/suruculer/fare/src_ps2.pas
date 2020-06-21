@@ -6,7 +6,7 @@
   Dosya Adı: src_ps2.pas
   Dosya İşlevi: ps / 2 fare sürücüsü
 
-  Güncelleme Tarihi: 07/10/2019
+  Güncelleme Tarihi: 11/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -19,7 +19,7 @@ uses paylasim;
 type
   PFareOlay = ^TFareOlay;
   TFareOlay = record
-    A1, B1: TISayi4;
+    Yatay, Dikey: TISayi4;
     Dugme: TSayi1;
     Tekerlek: TISayi1;
   end;
@@ -27,7 +27,7 @@ type
 type
   TFareSurucusu = object
   private
-    FYatayKonum, FDikeyKonum: Integer;
+    FYatayKonum, FDikeyKonum: TISayi4;
     FFareDugmeleri: TSayi1;
     FKaydirmaDegeri: TISayi1;
     FAygitPaketUzunlugu: TSayi4;
@@ -70,7 +70,7 @@ var
  ==============================================================================}
 procedure TFareSurucusu.Yukle;
 var
-  _Komut: TSayi1;
+  Komut: TSayi1;
 begin
 
   // kesmeleri durdur
@@ -84,14 +84,14 @@ begin
   FFareDugmeleri := 0;
   FKaydirmaDegeri := 0;
 
-  // klavye kontrolcüsüne "mouse port'unu aktifleştir" komutu gönder
+  // klavye kontrolcüsüne "fare port'unu aktifleştir" komutu gönder
   KlavyeKontrolcuyeYaz($A8);
 
   // klavye kontrolcüsüne "kontrolcü komut byte'ını oku" komutu gönder
   KlavyeKontrolcuyeYaz($20);
 
   // komut byte içeriğini al
-  if(VeriAl(_Komut)) then
+  if(VeriAl(Komut)) then
   begin
 
     // klavye kontrolcüsüne "kontrolcü komut byte'ını yaz" komutu gönder
@@ -100,7 +100,7 @@ begin
 
       // alınan verinin fare kesmesini aktifleştir bitini (1. bit)
       // aktifleştir ve veriyi port'a gönder
-      PortYaz1(KLAVYE_VERI_PORT, _Komut or 2);
+      PortYaz1(KLAVYE_VERI_PORT, Komut or 2);
 
       // fare öndeğerlerini yükle
       // Sampling rate = 100, resolution = 4 counts/mm,
@@ -116,10 +116,10 @@ begin
       if(KomutGonder($F2)) then
       begin
 
-        if(VeriAl(_Komut)) then
+        if(VeriAl(Komut)) then
         begin
 
-          if(_Komut = 4) then FAygitPaketUzunlugu := 4;
+          if(Komut = 4) then FAygitPaketUzunlugu := 4;
         end;
       end;
 
@@ -139,8 +139,8 @@ end;
  ==============================================================================}
 function TFareSurucusu.OlaylariAl(AFareOlay: PFareOlay): Boolean;
 var
-  Deger8: TISayi1;
-  Deger16: TISayi2;
+  B1: TISayi1;
+  B2: TISayi2;
   i: TISayi4;
 begin
 
@@ -168,27 +168,27 @@ begin
     FKaydirmaDegeri := 0;
     FFareDugmeleri := 0;
 
-    Deger8 := FareVeriBellegi[0];
+    B1 := FareVeriBellegi[0];
 
     // eğer değer taşması yoksa paketi işle
-    if((Deger8 and $C0) = 0) then
+    if((B1 and $C0) = 0) then
     begin
 
-      Deger8 := Deger8 and (4 + 2 + 1);
-      FFareDugmeleri := Deger8;
+      B1 := B1 and (4 + 2 + 1);
+      FFareDugmeleri := B1;
 
       // NOT: fare x hareketi. X SGN + 8 bit = toplam 9 bit
       // eğer hareket sağ tarafa ise gelen değer pozitif
       // eğer hareket sol tarafa ise gelen değer negatif
 
       // fare x değeri
-      Deger8 := FareVeriBellegi[0];
-      Deger16 := (((Deger8 shr 4) and 1) shl 8) or FareVeriBellegi[1];
+      B1 := FareVeriBellegi[0];
+      B2 := (((B1 shr 4) and 1) shl 8) or FareVeriBellegi[1];
 
       // yazılımsal hızlandırma. Bir adımdan fazla ise Değer * 2
-      if(Deger16 > 1) then Deger16 := Deger16 shl 1;
+      if(B2 > 1) then B2 := B2 shl 1;
 
-      FYatayKonum += Deger16;
+      FYatayKonum += B2;
 
       // x limit denetimi
       if(FYatayKonum < 0) then
@@ -201,17 +201,17 @@ begin
       // eğer hareket yukarıya doğru ise gelen değer pozitif
 
       // fare y değeri
-      Deger8 := FareVeriBellegi[0];
+      B1 := FareVeriBellegi[0];
 
-      Deger16 := (((Deger8 shr 5) and 1) shl 8) or FareVeriBellegi[2];
-      if(Deger16 < 0) then
-        Deger16 := Abs(Deger16)
-      else Deger16 := -Deger16;
+      B2 := (((B1 shr 5) and 1) shl 8) or FareVeriBellegi[2];
+      if(B2 < 0) then
+        B2 := Abs(B2)
+      else B2 := -B2;
 
       // yazılımsal hızlandırma. Bir adımdan fazla ise Değer * 2
-      if(Deger16 > 1) then Deger16 := Deger16 shl 1;
+      if(B2 > 1) then B2 := B2 shl 1;
 
-      FDikeyKonum += Deger16;
+      FDikeyKonum += B2;
 
       // x limit denetimi
       if(FDikeyKonum < 0) then
@@ -242,8 +242,8 @@ begin
     // sayacı güncelle
     Dec(ToplamVeriUzunlugu, FAygitPaketUzunlugu);
 
-    AFareOlay^.A1 := FYatayKonum;
-    AFareOlay^.B1 := FDikeyKonum;
+    AFareOlay^.Yatay := FYatayKonum;
+    AFareOlay^.Dikey := FDikeyKonum;
     AFareOlay^.Dugme := FFareDugmeleri;
     AFareOlay^.Tekerlek := FKaydirmaDegeri;
 
@@ -365,7 +365,7 @@ end;
  ==============================================================================}
 procedure FareKesmeCagrisi;
 var
-  _Deger: TSayi1;
+  B1: TSayi1;
 begin
 
   // durum port içeriğini oku. veri mevcut mu ?
@@ -373,10 +373,10 @@ begin
   begin
 
     // veriyi port'tan oku
-    _Deger := PortAl1(KLAVYE_VERI_PORT);
+    B1 := PortAl1(KLAVYE_VERI_PORT);
 
     // veriyi belleğe kaydet
-    FareVeriBellegi[ToplamVeriUzunlugu] := _Deger;
+    FareVeriBellegi[ToplamVeriUzunlugu] := B1;
 
     // sayacı güncelleştir.
     Inc(ToplamVeriUzunlugu);

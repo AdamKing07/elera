@@ -7,7 +7,7 @@ program grafik2;
   Program Adı: grafik2.lpr
   Program İşlevi: grafik test programı
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,14 +21,15 @@ var
   Pencere0: TPencere;
   Zamanlayici0: TZamanlayici;
   OlayKayit: TOlayKayit;
-  Renkler: array[0..7] of TRenk = ($000000, $4D001F,
-    $99003D, $E6005C, $FF1A75, $FF66A3, $FFB3D1, $FFE6f0);
+  Renkler: array[0..7] of TRenk = (
+    $000000, $4D001F, $99003D, $E6005C,
+    $FF1A75, $FF66A3, $FFB3D1, $FFE6f0);
   Renk: TRenk;
   RenkSiraNo, i: TSayi4;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 200 + 8, 200 + 30, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Goster;
@@ -40,14 +41,15 @@ begin
   RenkSiraNo := 0;
   Renk := Renkler[RenkSiraNo];
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
       Inc(i);
-      if(i > 100) then
+      if(i > 99) then
       begin
 
         i := 20;
@@ -58,6 +60,5 @@ begin
 
       Pencere0.Tuval.Daire(100, 100, i, Renk, False);
     end;
-
-  until (1 = 2);
+  end;
 end.

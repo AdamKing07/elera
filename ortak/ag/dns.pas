@@ -85,7 +85,7 @@ begin
 
     i := PISayi4(ADegiskenler + 00)^;
     _DNS := DNSListesi[i];
-    _DNS^.Sorgula(i, PShortString(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+    _DNS^.Sorgula(i, PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
   end
   // dns sorgu durumunu al
   else if(AIslevNo = 3) then

@@ -11,7 +11,7 @@ program resimgor;
 
  ==============================================================================}
 {$mode objfpc}
-uses gn_masaustu, gorev, gn_pencere, gn_dugme, gn_etiket, gn_secimdugme,
+uses gn_masaustu, gorev, gn_pencere, gn_dugme, gn_etiket,
   gn_listekutusu, gn_resim, gn_durumcubugu;
 
 const
@@ -73,6 +73,7 @@ begin
   // liste kutusu oluþtur
   lkDosyaListesi.Olustur(Pencere0.Kimlik, 0, 0, 100, 52);
   lkDosyaListesi.Hizala(hzSol);
+  lkDosyaListesi.Goster;
 
   Resim0.Olustur(Pencere0.Kimlik, 0, 60, 490, 420, '');
   Resim0.Hizala(hzTum);

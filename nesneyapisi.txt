@@ -1,0 +1,57 @@
+TTemelGorselNesne = object(TNesne)
++ FGorevKimlik: TKimlik;                        // nesnenin sahibi olan görev / program
++ FKimlik: TKimlik;
++ FNesneTipi: TGorselNesneTipi;                 // nesnenin tipi
++ FNesneAdi: string;                            // nesnenin adı
++ FBaslik: string;                              // nesnenin başlık değeri
++ FGorunum: Boolean;                            // görünür / görünmez özelliği
++ FHiza: THiza;                                 // nesnenin hizalanacağı (çizgi üstünde tutulacağı) yön
++ FBoyutlar: TAlan;                             // nesnenin dikdörtgensel koordinatları
++ FYaziHiza: TYaziHiza;                         // nesneye yazılacak yazının hizalanması
++ FDisGercekBoyutlar, FIcGercekBoyutlar: TAlan;
++ FKalinlik: TAlan;                             // alt nesne içeren nesnenin dikdörtgensel kalınlığı (1)
++ FKenarBosluklari: TAlan;                      // nesnenin bir üst için kenar boşlukları (2)
++ FAltNesneSayisi: TISayi4;                     // nesnenin alt nesne sayısı
++ FFareGostergeTipi: TFareImlecTipi;  
+
+TGorselNesne = object(TTemelGorselNesne)
++ FCizimModel: TSayi4;
++ FGovdeRenk1, FGovdeRenk2,
++ FYaziRenk: TRenk;  
+
++ FAtaNesneMi: Boolean;                       // nesne alt nesne içerebilecek bir ata nesne mi
++ FAtaNesne: PGorselNesne;                    // nesnenin atası
++ FAltNesneBellekAdresi: PPGorselNesne;       // ata nesnenin alt nesneleri yerleştireceği bellek adresi
++ FCizimBellekAdresi: Isaretci;
++ FCizimBellekUzunlugu: TSayi4;
++ FEfendiNesne: PGorselNesne;                 // ortak çalışan nesneler için nesnenin sahibi olan efendi nesne
++ FEfendiNesneOlayCagriAdresi: TOlaylariIsle;
++ FEtiket: TSayi4; 
+
+TPanel = object(TGorselNesne)
+
+TResimDugme = object(TPanel)
++ FDurum: TDugmeDurumu;   
++ FDeger: TSayi4;  
+
+
+- tüm görsel nesneler panel'den türeyecek
+- PGorselNesne'ler PGorselAnaYapi olarak değişecek
+
+01.06.2020 tarihi itibariyle tüm dosyalar günceldir
+
+
+iletisim'den devam
+
+
+her nesnenin barındıracağı;
+
+işlevler:
+Olustur
+YokEt
+Goster
+Gizle
+Boyutlandir
+Ciz - işlev sonrası pencere olay üretecek
+OlaylariIsle
+

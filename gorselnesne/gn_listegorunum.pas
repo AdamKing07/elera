@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_listegorunum.pas
-  Dosya Ýþlevi: liste görünüm yönetim iþlevlerini içerir
+  Dosya Ýþlevi: liste görünüm (listview) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 07/11/2019
+  Güncelleme Tarihi: 11/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,13 +14,13 @@ unit gn_listegorunum;
 
 interface
 
-uses gorselnesne, paylasim, n_yazilistesi, n_sayilistesi;
+uses gorselnesne, paylasim, n_yazilistesi, n_sayilistesi, gn_panel;
 
 type
   PListeGorunum = ^TListeGorunum;
-  TListeGorunum = object(TGorselNesne)
+  TListeGorunum = object(TPanel)
   private
-    FSeciliSiraNo: TISayi4;               // seçili sira deðeri
+    FSeciliSiraNo: TISayi4;               // seçili sýra deðeri
     FGorunenIlkSiraNo: TISayi4;           // liste görünümde en üstte görüntülenen elemanýn sýra deðeri
     FGorunenElemanSayisi: TISayi4;        // kullanýcýya nesne içerisinde gösterilen eleman sayýsý
     FKolonAdlari: PYaziListesi;           // kolon ad listesi
@@ -28,18 +28,21 @@ type
     FDegerler,                            // kolon içerik deðerleri
     FDegerDizisi: PYaziListesi;           // FDegerler içeriðini bölümlemek için kullanýlacak
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): PListeGorunum;
-    procedure YokEt(AKimlik: TKimlik);
-    function SeciliSatirDegeriniAl: string;
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+      ASol, AUst, AGenislik, AYukseklik: TISayi4): PListeGorunum;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    function SeciliSatirDegeriniAl: string;
     procedure Bolumle(ABicimlenmisDeger: string; AAyiracDeger: Char;
       DegerDizisi: PYaziListesi);
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
   end;
 
-function ListeGorunumCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function ListeGorunumCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 
 implementation
 
@@ -48,30 +51,34 @@ uses genel, gn_islevler, gn_pencere, temelgorselnesne;
 {==============================================================================
   liste görünüm kesme çaðrýlarýný yönetir
  ==============================================================================}
-function ListeGorunumCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function ListeGorunumCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PPencere;
-  _ListeGorunum: PListeGorunum;
-  p1: PShortString;
-  _Hiza: THiza;
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  ListeGorunum: PListeGorunum;
+  Hiza: THiza;
+  p: PKarakterKatari;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     // nesne oluþtur
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^, PISayi4(Degiskenler + 16)^);
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+        PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^);
+    end;
 
     // eleman ekle
     $0100:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeGorunum));
-      if(_ListeGorunum <> nil) then _ListeGorunum^.FDegerler^.Ekle(
-        PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi)^);
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeGorunum));
+      if(ListeGorunum <> nil) then ListeGorunum^.FDegerler^.Ekle(
+        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
       Result := 1;
     end;
 
@@ -79,25 +86,25 @@ begin
     $0200:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeGorunum));
-      if(_ListeGorunum <> nil) then Result := _ListeGorunum^.FSeciliSiraNo;
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeGorunum));
+      if(ListeGorunum <> nil) then Result := ListeGorunum^.FSeciliSiraNo;
     end;
 
     // liste içeriðini temizle
     $0300:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeGorunum));
-      if(_ListeGorunum <> nil) then
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeGorunum));
+      if(ListeGorunum <> nil) then
       begin
 
         // içeriði temizle, deðerleri ön deðerlere çek
-        _ListeGorunum^.FDegerler^.Temizle;
-        _ListeGorunum^.FGorunenIlkSiraNo := 0;
-        _ListeGorunum^.FSeciliSiraNo := -1;
-        _ListeGorunum^.Ciz;
+        ListeGorunum^.FDegerler^.Temizle;
+        ListeGorunum^.FGorunenIlkSiraNo := 0;
+        ListeGorunum^.FSeciliSiraNo := -1;
+        ListeGorunum^.Ciz;
       end;
     end;
 
@@ -105,24 +112,24 @@ begin
     $0400:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeGorunum));
-      if(_ListeGorunum <> nil) then Result := _ListeGorunum^.FSeciliSiraNo;
-      p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      p1^ := _ListeGorunum^.SeciliSatirDegeriniAl;
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeGorunum));
+      if(ListeGorunum <> nil) then Result := ListeGorunum^.FSeciliSiraNo;
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p^ := ListeGorunum^.SeciliSatirDegeriniAl;
     end;
 
     // liste görüntüleyicisinin baþlýklarýný sil
     $0500:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeGorunum));
-      if(_ListeGorunum <> nil) then
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeGorunum));
+      if(ListeGorunum <> nil) then
       begin
 
-        _ListeGorunum^.FKolonUzunluklari^.Temizle;
-        _ListeGorunum^.FKolonAdlari^.Temizle;
+        ListeGorunum^.FKolonUzunluklari^.Temizle;
+        ListeGorunum^.FKolonAdlari^.Temizle;
         Result := 1;
       end;
     end;
@@ -131,27 +138,28 @@ begin
     $0600:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntListeGorunum));
-      if(_ListeGorunum <> nil) then
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntListeGorunum));
+      if(ListeGorunum <> nil) then
       begin
 
-        _ListeGorunum^.FKolonAdlari^.Ekle(
-          PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi)^);
-        _ListeGorunum^.FKolonUzunluklari^.Ekle(PISayi4(Degiskenler + 08)^);
+        ListeGorunum^.FKolonAdlari^.Ekle(
+          PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+        ListeGorunum^.FKolonUzunluklari^.Ekle(PISayi4(ADegiskenler + 08)^);
         Result := 1;
       end;
     end;
 
+    // liste görünüm nesnesini hizala
     $0104:
     begin
 
-      _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Hiza := PHiza(Degiskenler + 04)^;
-      _ListeGorunum^.Hiza := _Hiza;
+      ListeGorunum := PListeGorunum(ListeGorunum^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Hiza := PHiza(ADegiskenler + 04)^;
+      ListeGorunum^.FHiza := Hiza;
 
-      _Pencere := PPencere(_ListeGorunum^.FAtaNesne);
-      _Pencere^.Guncelle;
+      Pencere := PPencere(ListeGorunum^.FAtaNesne);
+      Pencere^.Guncelle;
     end
 
     else Result := HATA_ISLEV;
@@ -161,183 +169,120 @@ end;
 {==============================================================================
   liste görünüm nesnesini oluþturur
  ==============================================================================}
-function NesneOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 var
-  _ListeGorunum: PListeGorunum;
+  ListeGorunum: PListeGorunum;
 begin
 
-  _ListeGorunum := _ListeGorunum^.Olustur(AtaKimlik, A1, B1, AGenislik, AYukseklik);
-  if(_ListeGorunum = nil) then
+  ListeGorunum := ListeGorunum^.Olustur(ktNesne, AAtaNesne, ASol, AUst, AGenislik, AYukseklik);
+  if(ListeGorunum = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _ListeGorunum^.Kimlik;
+
+  else Result := ListeGorunum^.Kimlik;
 end;
 
 {==============================================================================
   liste görünüm nesnesini oluþturur
  ==============================================================================}
-function TListeGorunum.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): PListeGorunum;
+function TListeGorunum.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst, AGenislik, AYukseklik: TISayi4): PListeGorunum;
 var
-  _AtaNesne: PGorselNesne;
-  _ListeGorunum: PListeGorunum;
-  _KolonAdlari, _Degerler, _DegerDizisi: PYaziListesi;
-  _KolonUzunluklari: PSayiListesi;
+  ListeGorunum: PListeGorunum;
+  KolonAdlari, Degerler, DegerDizisi: PYaziListesi;
+  KolonUzunluklari: PSayiListesi;
 begin
 
-  // nesnenin baðlanacaðý ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  ListeGorunum := PListeGorunum(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
+    AGenislik, AYukseklik, 3, $828790, RENK_BEYAZ, 0, ''));
 
-  // liste görünüm nesnesini oluþtur
-  _ListeGorunum := PListeGorunum(Olustur0(gntListeGorunum));
-  if(_ListeGorunum = nil) then
-  begin
+  ListeGorunum^.NesneTipi := gntListeGorunum;
 
-    Result := nil;
-    Exit;
-  end;
+  ListeGorunum^.Baslik := '';
 
-  // nesneyi ata nesneye ekle
-  if(_ListeGorunum^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
+  ListeGorunum^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-    // hata olmasý durumunda nesneyi yok et ve hata koduyla iþlevden çýk
-    _ListeGorunum^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
+  ListeGorunum^.AnaOlayCagriAdresi := @OlaylariIsle;
 
-  // nesne deðerlerini ata
-  _ListeGorunum^.GorevKimlik := CalisanGorev;
-  _ListeGorunum^.AtaNesne := _AtaNesne;
-  _ListeGorunum^.Hiza := hzYok;
-  _ListeGorunum^.FBoyutlar.Sol2 := A1;
-  _ListeGorunum^.FBoyutlar.Ust2 := B1;
-  _ListeGorunum^.FBoyutlar.Genislik2 := AGenislik;
-  _ListeGorunum^.FBoyutlar.Yukseklik2 := AYukseklik;
+  ListeGorunum^.FKolonAdlari := nil;
+  KolonAdlari := KolonAdlari^.Olustur;
+  if(KolonAdlari <> nil) then ListeGorunum^.FKolonAdlari := KolonAdlari;
 
-  // kenar kalýnlýklarý
-  _ListeGorunum^.FKalinlik.Sol := 0;
-  _ListeGorunum^.FKalinlik.Ust := 0;
-  _ListeGorunum^.FKalinlik.Sag := 0;
-  _ListeGorunum^.FKalinlik.Alt := 0;
+  ListeGorunum^.FKolonUzunluklari := nil;
+  KolonUzunluklari := KolonUzunluklari^.Olustur;
+  if(KolonUzunluklari <> nil) then ListeGorunum^.FKolonUzunluklari := KolonUzunluklari;
 
-  // kenar boþluklarý
-  _ListeGorunum^.FKenarBosluklari.Sol := 0;
-  _ListeGorunum^.FKenarBosluklari.Ust := 0;
-  _ListeGorunum^.FKenarBosluklari.Sag := 0;
-  _ListeGorunum^.FKenarBosluklari.Alt := 0;
+  ListeGorunum^.FDegerler := nil;
+  Degerler := Degerler^.Olustur;
+  if(Degerler <> nil) then ListeGorunum^.FDegerler := Degerler;
 
-  _ListeGorunum^.FAtaNesneMi := False;
-  _ListeGorunum^.FareGostergeTipi := fitOK;
-  _ListeGorunum^.FGorunum := False;
-
-  _ListeGorunum^.FKolonAdlari := nil;
-  _KolonAdlari := _KolonAdlari^.Olustur;
-  if(_KolonAdlari <> nil) then _ListeGorunum^.FKolonAdlari := _KolonAdlari;
-
-  _ListeGorunum^.FKolonUzunluklari := nil;
-  _KolonUzunluklari := _KolonUzunluklari^.Olustur;
-  if(_KolonUzunluklari <> nil) then _ListeGorunum^.FKolonUzunluklari := _KolonUzunluklari;
-
-  _ListeGorunum^.FDegerler := nil;
-  _Degerler := _Degerler^.Olustur;
-  if(_Degerler <> nil) then _ListeGorunum^.FDegerler := _Degerler;
-
-  _ListeGorunum^.FDegerDizisi := nil;
-  _DegerDizisi := _DegerDizisi^.Olustur;
-  if(_DegerDizisi <> nil) then _ListeGorunum^.FDegerDizisi := _DegerDizisi;
+  ListeGorunum^.FDegerDizisi := nil;
+  DegerDizisi := DegerDizisi^.Olustur;
+  if(DegerDizisi <> nil) then ListeGorunum^.FDegerDizisi := DegerDizisi;
 
   // nesnenin kullanacaðý diðer deðerler
-  _ListeGorunum^.FGorunenIlkSiraNo := 0;
-  _ListeGorunum^.FSeciliSiraNo := -1;
+  ListeGorunum^.FGorunenIlkSiraNo := 0;
+  ListeGorunum^.FSeciliSiraNo := -1;
 
   // liste görünüm nesnesinde görüntülenecek eleman sayýsý
-  _ListeGorunum^.FGorunenElemanSayisi := (AYukseklik - 24) div 21;
-
-  // nesnenin ad ve baþlýk deðeri
-  _ListeGorunum^.NesneAdi := NesneAdiAl(gntListeGorunum);
-  _ListeGorunum^.FBaslik := '';
-
-  // uygulamaya mesaj gönder
-  GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
-    _ListeGorunum, CO_OLUSTUR, 0, 0);
+  ListeGorunum^.FGorunenElemanSayisi := (AYukseklik - 24) div 21;
 
   // nesneyi görüntüle
-  _ListeGorunum^.Goster;
+  ListeGorunum^.Goster;
 
   // nesne adresini geri döndür
-  Result := _ListeGorunum;
+  Result := ListeGorunum;
 end;
 
 {==============================================================================
-  nesneye ayrýlan kaynaklarý ve nesneyi yok eder
+  liste görünüm nesnesini yok eder
  ==============================================================================}
-procedure TListeGorunum.YokEt(AKimlik: TKimlik);
+procedure TListeGorunum.YokEt;
 var
-  _ListeGorunum: PListeGorunum;
+  ListeGorunum: PListeGorunum;
 begin
 
-  // nesnenin Kimlik, tip deðerlerini denetle.
-  _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(AKimlik, gntListeGorunum));
-  if(_ListeGorunum = nil) then Exit;
+  ListeGorunum := PListeGorunum(ListeGorunum^.NesneAl(Kimlik));
+  if(ListeGorunum = nil) then Exit;
 
-  if(_ListeGorunum^.FDegerler <> nil) then _ListeGorunum^.FDegerler^.YokEt;
-  if(_ListeGorunum^.FDegerDizisi <> nil) then _ListeGorunum^.FDegerDizisi^.YokEt;
-  if(_ListeGorunum^.FKolonAdlari <> nil) then _ListeGorunum^.FKolonAdlari^.YokEt;
-  if(_ListeGorunum^.FKolonUzunluklari <> nil) then _ListeGorunum^.FKolonUzunluklari^.YokEt;
+  if(ListeGorunum^.FDegerler <> nil) then ListeGorunum^.FDegerler^.YokEt;
+  if(ListeGorunum^.FDegerDizisi <> nil) then ListeGorunum^.FDegerDizisi^.YokEt;
+  if(ListeGorunum^.FKolonAdlari <> nil) then ListeGorunum^.FKolonAdlari^.YokEt;
+  if(ListeGorunum^.FKolonUzunluklari <> nil) then ListeGorunum^.FKolonUzunluklari^.YokEt;
 
-  YokEt0;
-end;
-
-{==============================================================================
-  seçili elemanýn yazý (text) deðerini geri döndürür
- ==============================================================================}
-function TListeGorunum.SeciliSatirDegeriniAl: string;
-var
-  _ListeGorunum: PListeGorunum;
-begin
-
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(Kimlik, gntListeGorunum));
-  if(_ListeGorunum = nil) then Exit;
-
-  if(FSeciliSiraNo = -1) or (FSeciliSiraNo > FDegerler^.ElemanSayisi) then Exit('');
-
-  Result := _ListeGorunum^.FDegerler^.Eleman[FSeciliSiraNo];
+  inherited YokEt;
 end;
 
 {==============================================================================
   liste görünüm nesnesini görüntüler
  ==============================================================================}
 procedure TListeGorunum.Goster;
-var
-  _Pencere: PPencere;
-  _ListeGorunum: PListeGorunum;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(Kimlik, gntListeGorunum));
-  if(_ListeGorunum = nil) then Exit;
+  inherited Goster;
+end;
 
-  // eðer nesne görünür deðilse
-  if(_ListeGorunum^.FGorunum = False) then
-  begin
+{==============================================================================
+  liste görünüm nesnesini gizler
+ ==============================================================================}
+procedure TListeGorunum.Gizle;
+begin
 
-    // nesnenin görünürlüðünü aktifleþtir
-    _ListeGorunum^.FGorunum := True;
+  inherited Gizle;
+end;
 
-    // nesne ve üst nesneler görünür ise
-    if(_ListeGorunum^.AtaNesneGorunurMu) then
-    begin
+{==============================================================================
+  liste görünüm nesnesini boyutlandýrýr
+ ==============================================================================}
+procedure TListeGorunum.Boyutlandir;
+var
+  ListeGorunum: PListeGorunum;
+begin
 
-      // nesnenin sahibi olan pencere nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_ListeGorunum);
+  ListeGorunum := PListeGorunum(ListeGorunum^.NesneAl(Kimlik));
+  if(ListeGorunum = nil) then Exit;
 
-      // pencereyi güncelleþtir
-      _Pencere^.Guncelle;
-    end;
-  end;
+  ListeGorunum^.Hizala;
 end;
 
 {==============================================================================
@@ -345,91 +290,89 @@ end;
  ==============================================================================}
 procedure TListeGorunum.Ciz;
 var
-  _Pencere: PPencere;
-  _ListeGorunum: PListeGorunum;
-  _KolonAdlari: PYaziListesi;
-  _KolonUzunluklari: PSayiListesi;
-  _Alan1, _Alan2: TAlan;
-  _ElemanSayisi, _SatirNo, i, j,
-  XX, YY: TISayi4;
+  Pencere: PPencere;
+  ListeGorunum: PListeGorunum;
+  KolonAdlari: PYaziListesi;
+  KolonUzunluklari: PSayiListesi;
+  Alan1, Alan2: TAlan;
+  ElemanSayisi, SatirNo, i, j,
+  Sol, Ust: TISayi4;
   s: string;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(Kimlik, gntListeGorunum));
-  if(_ListeGorunum = nil) then Exit;
+  ListeGorunum := PListeGorunum(ListeGorunum^.NesneAl(Kimlik));
+  if(ListeGorunum = nil) then Exit;
 
-  // liste görünümün üst nesneye baðlý olarak koordinatlarýný al
-  _Alan1 := _ListeGorunum^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  inherited Ciz;
+
+  // liste kutusunun üst nesneye baðlý olarak koordinatlarýný al
+  Alan1 := ListeGorunum^.FCizimAlan;
 
   // ata nesne bir pencere mi?
-  _Pencere := PencereAtaNesnesiniAl(_ListeGorunum);
-  if(_Pencere = nil) then Exit;
+  Pencere := EnUstPencereNesnesiniAl(ListeGorunum);
+  if(Pencere = nil) then Exit;
 
-  // dýþ kenarlýk
-  DikdortgenDoldur(_Pencere, _Alan1.Sol, _Alan1.Ust, _Alan1.Sag, _Alan1.Alt, $828790, RENK_BEYAZ);
-
-  _KolonUzunluklari := _ListeGorunum^.FKolonUzunluklari;
-  _KolonAdlari := _ListeGorunum^.FKolonAdlari;
+  KolonUzunluklari := ListeGorunum^.FKolonUzunluklari;
+  KolonAdlari := ListeGorunum^.FKolonAdlari;
 
   // tanýmlanmýþ hiçbir kolon yok ise, çýk
-  if(_KolonAdlari^.ElemanSayisi = 0) then Exit;
+  if(KolonAdlari^.ElemanSayisi = 0) then Exit;
 
   // kolon baþlýk ve deðerleri
-  XX := _Alan1.Sol + 1;
-  for i := 0 to _KolonUzunluklari^.ElemanSayisi - 1 do
+  Sol := Alan1.Sol + 1;
+  for i := 0 to KolonUzunluklari^.ElemanSayisi - 1 do
   begin
 
-    XX += _KolonUzunluklari^.Eleman[i];
+    Sol += KolonUzunluklari^.Eleman[i];
 
     // dikey kýlavuz çizgisi
-    Cizgi(_Pencere, XX, _Alan1.Ust + 1, XX, _Alan1.Alt - 1, $F0F0F0);
+    ListeGorunum^.Cizgi(ListeGorunum, Sol, Alan1.Ust + 1, Sol, Alan1.Alt - 1, $F0F0F0);
 
     // baþlýk dolgusu
-    _Alan2.Sol := XX - _KolonUzunluklari^.Eleman[i];
-    _Alan2.Ust := _Alan1.Ust + 1;
-    _Alan2.Sag := XX - 1;
-    _Alan2.Alt := _Alan1.Ust + 1 + 22;
-    EgimliDoldur3(_Pencere, _Alan2, $EAECEE, $ABB2B9);
+    Alan2.Sol := Sol - KolonUzunluklari^.Eleman[i];
+    Alan2.Ust := Alan1.Ust + 1;
+    Alan2.Sag := Sol - 1;
+    Alan2.Alt := Alan1.Ust + 1 + 22;
+    ListeGorunum^.EgimliDoldur3(ListeGorunum, Alan2, $EAECEE, $ABB2B9);
 
     // baþlýk
-    AlanaYaziYaz(_Pencere, _Alan2, 4, 3, _KolonAdlari^.Eleman[i], RENK_LACIVERT);
+    ListeGorunum^.AlanaYaziYaz(ListeGorunum, Alan2, 4, 3, KolonAdlari^.Eleman[i], RENK_LACIVERT);
 
-    Inc(XX);    // 1 px çizgi kalýnlýðý
+    Inc(Sol);    // 1 px çizgi kalýnlýðý
   end;
 
   // yatay kýlavuz çizgileri
-  YY := _Alan1.Ust + 1 + 22;
-  YY += 20;
-  while YY < _Alan1.Alt do
+  Ust := Alan1.Ust + 1 + 22;
+  Ust += 20;
+  while Ust < Alan1.Alt do
   begin
 
-    Cizgi(_Pencere, _Alan1.Sol + 1, YY, _Alan1.Sag - 1, YY, $F0F0F0);
-    YY += 1 + 20;
+    ListeGorunum^.Cizgi(ListeGorunum, Alan1.Sol + 1, Ust, Alan1.Sag - 1, Ust, $F0F0F0);
+    Ust += 1 + 20;
   end;
 
   // liste görünüm nesnesinde görüntülenecek eleman sayýsý
-  _ListeGorunum^.FGorunenElemanSayisi := ((_ListeGorunum^.FDisGercekBoyutlar.Alt -
-    _ListeGorunum^.FDisGercekBoyutlar.Ust) - 24) div 21;
+  ListeGorunum^.FGorunenElemanSayisi := ((ListeGorunum^.FCizimAlan.Alt -
+    ListeGorunum^.FCizimAlan.Ust) - 24) div 21;
 
   // liste görünüm kutusunda görüntülenecek eleman sayýsýnýn belirlenmesi
-  if(FDegerler^.ElemanSayisi > _ListeGorunum^.FGorunenElemanSayisi) then
-    _ElemanSayisi := _ListeGorunum^.FGorunenElemanSayisi + _ListeGorunum^.FGorunenIlkSiraNo
-  else _ElemanSayisi := FDegerler^.ElemanSayisi + _ListeGorunum^.FGorunenIlkSiraNo;
+  if(FDegerler^.ElemanSayisi > ListeGorunum^.FGorunenElemanSayisi) then
+    ElemanSayisi := ListeGorunum^.FGorunenElemanSayisi + ListeGorunum^.FGorunenIlkSiraNo
+  else ElemanSayisi := FDegerler^.ElemanSayisi + ListeGorunum^.FGorunenIlkSiraNo;
 
-  YY := _Alan1.Ust + 1 + 22;
-  YY += 20;
-  _SatirNo := 0;
-  _KolonUzunluklari := _ListeGorunum^.FKolonUzunluklari;
+  Ust := Alan1.Ust + 1 + 22;
+  Ust += 20;
+  SatirNo := 0;
+  KolonUzunluklari := ListeGorunum^.FKolonUzunluklari;
 
   // liste görünüm deðerlerini yerleþtir
-  for _SatirNo := _ListeGorunum^.FGorunenIlkSiraNo to _ElemanSayisi - 1 do
+  for SatirNo := ListeGorunum^.FGorunenIlkSiraNo to ElemanSayisi - 1 do
   begin
 
     // deðeri belirtilen karakter ile bölümle
-    Bolumle(FDegerler^.Eleman[_SatirNo], '|', FDegerDizisi);
+    Bolumle(FDegerler^.Eleman[SatirNo], '|', FDegerDizisi);
 
-    XX := _Alan1.Sol + 1;
+    Sol := Alan1.Sol + 1;
     if(FDegerDizisi^.ElemanSayisi > 0) then
     begin
 
@@ -437,116 +380,77 @@ begin
       begin
 
         s := FDegerDizisi^.Eleman[j];
-        _Alan2.Sol := XX + 1;
-        _Alan2.Ust := YY - 20 + 1;
-        _Alan2.Sag := XX + _KolonUzunluklari^.Eleman[j] - 1;
-        _Alan2.Alt := YY - 1;
+        Alan2.Sol := Sol + 1;
+        Alan2.Ust := Ust - 20 + 1;
+        Alan2.Sag := Sol + KolonUzunluklari^.Eleman[j] - 1;
+        Alan2.Alt := Ust - 1;
 
         // satýr verisini boyama ve yazma iþlemi
-        if(_SatirNo = _ListeGorunum^.FSeciliSiraNo) then
+        if(SatirNo = ListeGorunum^.FSeciliSiraNo) then
         begin
 
-          DikdortgenDoldur(_Pencere, _Alan2.Sol - 1, _Alan2.Ust - 1, _Alan2.Sag, _Alan2.Alt,
-            $3EC5FF, $3EC5FF);
+          ListeGorunum^.DikdortgenDoldur(ListeGorunum, Alan2.Sol - 1, Alan2.Ust - 1,
+            Alan2.Sag, Alan2.Alt, $3EC5FF, $3EC5FF);
         end
         else
         begin
 
-          DikdortgenDoldur(_Pencere, _Alan2.Sol - 1, _Alan2.Ust - 1, _Alan2.Sag, _Alan2.Alt,
-            RENK_BEYAZ, RENK_BEYAZ);
+          ListeGorunum^.DikdortgenDoldur(ListeGorunum, Alan2.Sol - 1, Alan2.Ust - 1,
+            Alan2.Sag, Alan2.Alt, RENK_BEYAZ, RENK_BEYAZ);
         end;
-        AlanaYaziYaz(_Pencere, _Alan2, 2, 2, s, RENK_SIYAH);
 
-        XX += 1 + _KolonUzunluklari^.Eleman[j];
+        ListeGorunum^.AlanaYaziYaz(ListeGorunum, Alan2, 2, 2, s, RENK_SIYAH);
+
+        Sol += 1 + KolonUzunluklari^.Eleman[j];
       end;
     end;
 
-    YY += 1 + 20;
-  end;
-end;
-
-{==============================================================================
-  | ayýracýyla gelen karakter katarýný bölümler
- ==============================================================================}
-procedure TListeGorunum.Bolumle(ABicimlenmisDeger: string; AAyiracDeger: Char;
-  DegerDizisi: PYaziListesi);
-var
-  _Uzunluk, i: TISayi4;
-  s: string;
-begin
-
-  DegerDizisi^.Temizle;
-
-  _Uzunluk := Length(ABicimlenmisDeger);
-  if(_Uzunluk > 0) then
-  begin
-
-    i := 1;
-    s := '';
-    while i <= _Uzunluk do
-    begin
-
-      if(ABicimlenmisDeger[i] = AAyiracDeger) or (i = _Uzunluk) then
-      begin
-
-        if(i = _Uzunluk) then s += ABicimlenmisDeger[i];
-
-        if(Length(s) > 0) then
-        begin
-
-          DegerDizisi^.Ekle(s);
-          s := '';
-        end;
-      end else s += ABicimlenmisDeger[i];
-
-      Inc(i);
-    end;
+    Ust += 1 + 20;
   end;
 end;
 
 {==============================================================================
   liste görünüm nesne olaylarýný iþler
  ==============================================================================}
-procedure TListeGorunum.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TListeGorunum.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _ListeGorunum: PListeGorunum;
+  Pencere: PPencere;
+  ListeGorunum: PListeGorunum;
   i, j: TISayi4;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _ListeGorunum := PListeGorunum(_ListeGorunum^.NesneTipiniKontrolEt(AKimlik, gntListeGorunum));
-  if(_ListeGorunum = nil) then Exit;
+  ListeGorunum := PListeGorunum(AGonderici);
 
   // sol fare tuþ basýmý
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // liste görünümün sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_ListeGorunum);
+    Pencere := EnUstPencereNesnesiniAl(ListeGorunum);
 
     // en üstte olmamasý durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
 
     // sol tuþa basým iþlemi nesnenin olay alanýnda mý gerçekleþti ?
-    if(_ListeGorunum^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(ListeGorunum^.FareNesneOlayAlanindaMi(ListeGorunum)) then
     begin
 
       // fare olaylarýný yakala
-      OlayYakalamayaBasla(_ListeGorunum);
+      OlayYakalamayaBasla(ListeGorunum);
 
       // seçilen sýrayý yeniden belirle
       j := (AOlay.Deger2 - 24) div 21;
 
       // bu deðere kaydýrýlan deðeri de ekle
-      _ListeGorunum^.FSeciliSiraNo := (j + _ListeGorunum^.FGorunenIlkSiraNo);
+      ListeGorunum^.FSeciliSiraNo := (j + ListeGorunum^.FGorunenIlkSiraNo);
 
       // liste görünüm nesnesini yeniden çiz
-      _ListeGorunum^.Ciz;
+      ListeGorunum^.Ciz;
 
-      // uygulamaya mesaj gönder
-      GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
-        _ListeGorunum, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(ListeGorunum^.OlayCagriAdresi = nil) then
+        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end;
   end
 
@@ -555,21 +459,25 @@ begin
   begin
 
     // fare olaylarýný almayý býrak
-    OlayYakalamayiBirak(_ListeGorunum);
+    OlayYakalamayiBirak(ListeGorunum);
 
     // fare býrakma iþlemi nesnenin olay alanýnda mý gerçekleþti ?
-    if(_ListeGorunum^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(ListeGorunum^.FareNesneOlayAlanindaMi(ListeGorunum)) then
     begin
 
       // yakalama & býrakma iþlemi bu nesnede olduðu için
       // nesneye FO_TIKLAMA mesajý gönder
-      GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
-        _ListeGorunum, FO_TIKLAMA, AOlay.Deger1, AOlay.Deger2);
+      AOlay.Olay := FO_TIKLAMA;
+      if not(ListeGorunum^.OlayCagriAdresi = nil) then
+        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end;
 
-    // uygulamaya mesaj gönder
-    GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
-      _ListeGorunum, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    // uygulamaya veya efendi nesneye mesaj gönder
+    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
+    if not(ListeGorunum^.OlayCagriAdresi = nil) then
+      ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+    else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
   end
 
   // fare hakeret iþlemi
@@ -584,32 +492,32 @@ begin
       if(AOlay.Deger2 < 0) then
       begin
 
-        j := _ListeGorunum^.FGorunenIlkSiraNo;
+        j := ListeGorunum^.FGorunenIlkSiraNo;
         Dec(j);
         if(j >= 0) then
         begin
 
-          _ListeGorunum^.FGorunenIlkSiraNo := j;
-          _ListeGorunum^.FSeciliSiraNo := j;
+          ListeGorunum^.FGorunenIlkSiraNo := j;
+          ListeGorunum^.FSeciliSiraNo := j;
         end;
       end
 
       // fare liste görünüm nesnesinin aþaðýsýnda ise
-      else if(AOlay.Deger2 > _ListeGorunum^.FBoyutlar.Alt) then
+      else if(AOlay.Deger2 > ListeGorunum^.FBoyut.Yukseklik) then
       begin
 
         // azami kaydýrma deðeri
-        i := _ListeGorunum^.FKolonAdlari^.ElemanSayisi - _ListeGorunum^.FGorunenElemanSayisi;
+        i := ListeGorunum^.FKolonAdlari^.ElemanSayisi - ListeGorunum^.FGorunenElemanSayisi;
         if(i < 0) then i := 0;
 
-        j := _ListeGorunum^.FGorunenIlkSiraNo;
+        j := ListeGorunum^.FGorunenIlkSiraNo;
         Inc(j);
         if(j < i) then
         begin
 
-          _ListeGorunum^.FGorunenIlkSiraNo := j;
+          ListeGorunum^.FGorunenIlkSiraNo := j;
           i := (AOlay.Deger2 - 24) div 21;
-          _ListeGorunum^.FSeciliSiraNo := i + _ListeGorunum^.FGorunenIlkSiraNo;
+          ListeGorunum^.FSeciliSiraNo := i + ListeGorunum^.FGorunenIlkSiraNo;
         end
       end
 
@@ -618,20 +526,27 @@ begin
       begin
 
         i := (AOlay.Deger2 - 24) div 21;
-        _ListeGorunum^.FSeciliSiraNo := i + _ListeGorunum^.FGorunenIlkSiraNo;
+        ListeGorunum^.FSeciliSiraNo := i + ListeGorunum^.FGorunenIlkSiraNo;
       end;
 
       // liste görünüm nesnesini yeniden çiz
-      _ListeGorunum^.Ciz;
+      ListeGorunum^.Ciz;
 
-      // uygulamaya mesaj gönder
-      GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
-        _ListeGorunum, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(ListeGorunum^.OlayCagriAdresi = nil) then
+        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end
 
     // nesne yakalanmamýþ ise uygulamaya sadece mesaj gönder
-    else GorevListesi[_ListeGorunum^.GorevKimlik]^.OlayEkle1(_ListeGorunum^.GorevKimlik,
-      _ListeGorunum, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
+    else
+    begin
+
+      // uygulamaya veya efendi nesneye mesaj gönder
+      if not(ListeGorunum^.OlayCagriAdresi = nil) then
+        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
+    end;
   end
 
   else if(AOlay.Olay = FO_KAYDIRMA) then
@@ -641,9 +556,9 @@ begin
     if(AOlay.Deger1 < 0) then
     begin
 
-      j := _ListeGorunum^.FGorunenIlkSiraNo;
+      j := ListeGorunum^.FGorunenIlkSiraNo;
       Dec(j);
-      if(j >= 0) then _ListeGorunum^.FGorunenIlkSiraNo := j;
+      if(j >= 0) then ListeGorunum^.FGorunenIlkSiraNo := j;
     end
 
     // listeyi aþaðýya kaydýrma iþlemi. son elemana doðru
@@ -651,19 +566,75 @@ begin
     begin
 
       // azami kaydýrma deðeri
-      i := _ListeGorunum^.FDegerler^.ElemanSayisi - _ListeGorunum^.FGorunenElemanSayisi;
+      i := ListeGorunum^.FDegerler^.ElemanSayisi - ListeGorunum^.FGorunenElemanSayisi;
       if(i < 0) then i := 0;
 
-      j := _ListeGorunum^.FGorunenIlkSiraNo;
+      j := ListeGorunum^.FGorunenIlkSiraNo;
       Inc(j);
-      if(j < i) then _ListeGorunum^.FGorunenIlkSiraNo := j;
+      if(j < i) then ListeGorunum^.FGorunenIlkSiraNo := j;
     end;
 
-    _ListeGorunum^.Ciz;
+    ListeGorunum^.Ciz;
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := ListeGorunum^.FFareImlecTipi;
+end;
+
+{==============================================================================
+  seçili elemanýn yazý (text) deðerini geri döndürür
+ ==============================================================================}
+function TListeGorunum.SeciliSatirDegeriniAl: string;
+var
+  ListeGorunum: PListeGorunum;
+begin
+
+  // nesnenin kimlik, tip deðerlerini denetle.
+  ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(Kimlik, gntListeGorunum));
+  if(ListeGorunum = nil) then Exit;
+
+  if(FSeciliSiraNo = -1) or (FSeciliSiraNo > FDegerler^.ElemanSayisi) then Exit('');
+
+  Result := ListeGorunum^.FDegerler^.Eleman[FSeciliSiraNo];
+end;
+
+{==============================================================================
+  | ayýracýyla gelen karakter katarýný bölümler
+ ==============================================================================}
+procedure TListeGorunum.Bolumle(ABicimlenmisDeger: string; AAyiracDeger: Char;
+  DegerDizisi: PYaziListesi);
+var
+  Uzunluk, i: TISayi4;
+  s: string;
+begin
+
+  DegerDizisi^.Temizle;
+
+  Uzunluk := Length(ABicimlenmisDeger);
+  if(Uzunluk > 0) then
+  begin
+
+    i := 1;
+    s := '';
+    while i <= Uzunluk do
+    begin
+
+      if(ABicimlenmisDeger[i] = AAyiracDeger) or (i = Uzunluk) then
+      begin
+
+        if(i = Uzunluk) then s += ABicimlenmisDeger[i];
+
+        if(Length(s) > 0) then
+        begin
+
+          DegerDizisi^.Ekle(s);
+          s := '';
+        end;
+      end else s += ABicimlenmisDeger[i];
+
+      Inc(i);
+    end;
+  end;
 end;
 
 end.

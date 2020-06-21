@@ -6,28 +6,23 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-05-15T14:12:02Z">
+  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-06-21T12:51:45Z">
     <Description>ELERA &#x130;&#x15F;letim Sistemi (32 Bit)</Description>
     <MediaRegistry>
       <HardDisks>
         <HardDisk uuid="{1e27e64c-a296-4134-8007-e857d0218c69}" location="disk32MB.vhd" format="VHD" type="Normal"/>
         <HardDisk uuid="{52d14bec-1e52-417e-a356-bd4401a3b7ec}" location="C:/Users/elera/Documents/bitbucket/elerais-araclar/elerais-araclar/resimler.vhd" format="VHD" type="Normal"/>
       </HardDisks>
-      <DVDImages>
-        <Image uuid="{b7a1b9a4-a948-4126-92b1-f7614c41f90c}" location="C:/Users/fatih/Downloads/cd.iso"/>
-      </DVDImages>
       <FloppyImages>
         <Image uuid="{cefa122d-813d-44b5-9fba-613b866e45cb}" location="disket144.img"/>
-        <Image uuid="{9b86e5d6-f99b-4812-892d-1f60388870c8}" location="C:/Users/fatih/Documents/bitbucket/eleraos-tools/tatOS-master/tatOS.img"/>
-        <Image uuid="{23ed8157-a314-46ff-9e9a-7a807f68d12a}" location="C:/Users/fatih/Downloads/M32-086B/M32-086B.IMG"/>
       </FloppyImages>
     </MediaRegistry>
     <ExtraData>
       <ExtraDataItem name="GUI/InformationWindowGeometry" value="507,249,598,332"/>
       <ExtraDataItem name="GUI/LastCloseAction" value="PowerOff"/>
       <ExtraDataItem name="GUI/LastGuestSizeHint" value="800,600"/>
-      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="501,53,800,642"/>
-      <ExtraDataItem name="GUI/LastScaleWindowPosition" value="83,66,1096,595"/>
+      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="383,48,800,642"/>
+      <ExtraDataItem name="GUI/LastScaleWindowPosition" value="189,230,1096,595"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeDevicesMenuActions" value="HardDrives"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeMachineMenuActions" value="SaveState,PowerOff"/>
       <ExtraDataItem name="GUI/SaveMountedAtRuntime" value="yes"/>
@@ -116,7 +111,7 @@
       <AudioAdapter controller="SB16" driver="DirectSound" enabled="false"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1589526707246868400" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1592727878195667300" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>

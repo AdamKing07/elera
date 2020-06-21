@@ -7,7 +7,7 @@ program grvyntcs;
   Program Adý: grvyntcs.lpr
   Program Ýþlevi: görev yöneticisi
 
-  Güncelleme Tarihi: 05/04/2020
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -33,8 +33,6 @@ var
   SeciliYazi, s: string;
 
 begin
-
-  SeciliGorevNo := 0;
 
   Pencere0.Olustur(-1, 100, 150, 600, 300, ptBoyutlandirilabilir, ProgramAdi, $E3DBC8);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
@@ -65,10 +63,13 @@ begin
 
   Pencere0.Goster;
 
+  SeciliGorevNo := 0;
+
   Zamanlayici0.Olustur(300);
   Zamanlayici0.Baslat;
 
-  repeat
+  while True do
+  begin
 
     Gorev0.OlayBekle(OlayKayit);
 
@@ -130,6 +131,5 @@ begin
 
       Pencere0.Ciz;
     end;
-
-  until (1 = 2);
+  end;
 end.

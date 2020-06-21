@@ -28,7 +28,7 @@ uses genel;
 function EkranCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
 var
   _Islev: TSayi4;
-  _Nokta: PNokta;
+  _Nokta: PKonum;
 begin
 
   // işlev no
@@ -45,11 +45,11 @@ begin
     begin
 
       // çözünürlük değerlerini belirtilen bellek adreslerine kopyala
-      _Nokta := PNokta(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+      _Nokta := PKonum(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
 
 
-      _Nokta^.A1 := GEkranKartSurucusu.KartBilgisi.YatayCozunurluk;
-      _Nokta^.B1 := GEkranKartSurucusu.KartBilgisi.DikeyCozunurluk;
+      _Nokta^.Sol := GEkranKartSurucusu.KartBilgisi.YatayCozunurluk;
+      _Nokta^.Ust := GEkranKartSurucusu.KartBilgisi.DikeyCozunurluk;
 
       // işlev başarı kodunu geri döndür
       Result := 1;

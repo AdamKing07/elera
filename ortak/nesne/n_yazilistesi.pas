@@ -150,7 +150,7 @@ end;
 function TYaziListesi.Ekle(ADeger: string): Integer;
 var
   Uzunluk: TSayi1;
-  p: PShortString;
+  p: PKarakterKatari;
 begin
 
   // verinin uzunluğunu al
@@ -209,7 +209,7 @@ begin
   end;
 
   // geri dönüş değeri
-  Result := PShortString(p)^;
+  Result := PKarakterKatari(p)^;
 end;
 
 end.

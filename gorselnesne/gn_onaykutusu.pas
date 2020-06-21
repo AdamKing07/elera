@@ -6,7 +6,7 @@
   Dosya Adı: gn_onaykutusu.pas
   Dosya İşlevi: onay kutusu (checkbox) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 06/11/2019
+  Güncelleme Tarihi: 01/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,33 +14,40 @@ unit gn_onaykutusu;
 
 interface
 
-uses gorselnesne, paylasim;
+uses gorselnesne, paylasim, gn_panel;
 
 const
-  TamamResimDizi: array[1..7, 1..7] of TSayi1 = (
-    (0, 0, 0, 0, 0, 0, 1),
-    (0, 0, 0, 0, 0, 1, 1),
-    (1, 0, 0, 0, 1, 1, 1),
-    (1, 1, 0, 1, 1, 1, 0),
-    (1, 1, 1, 1, 1, 0, 0),
-    (0, 1, 1, 1, 0, 0, 0),
-    (0, 0, 1, 0, 0, 0, 0));
+  ResimOnay: array[1..10, 1..10] of TSayi1 = (
+    (0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+    (0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+    (0, 0, 0, 0, 0, 0, 0, 0, 1, 0),
+    (0, 0, 0, 0, 0, 0, 0, 1, 1, 1),
+    (0, 0, 0, 0, 0, 0, 1, 1, 1, 0),
+    (0, 1, 0, 0, 0, 1, 1, 1, 0, 0),
+    (1, 1, 1, 0, 1, 1, 1, 0, 0, 0),
+    (0, 1, 1, 1, 1, 1, 0, 0, 0, 0),
+    (0, 0, 1, 1, 1, 0, 0, 0, 0, 0),
+    (0, 0, 0, 1, 0, 0, 0, 0, 0, 0));
 
 type
   POnayKutusu = ^TOnayKutusu;
-  TOnayKutusu = object(TGorselNesne)
+  TOnayKutusu = object(TPanel)
   private
     FOncekiSecimDurumu,
     FSecimDurumu: TSecimDurumu;
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ABaslik: string): POnayKutusu;
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+      ASol, AUst: TISayi4; ABaslik: string): POnayKutusu;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
 
-function IsaretKutusuCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AAtaNesne: TKimlik; A1, B1: TISayi4; ABaslik: string): TKimlik;
+function IsaretKutusuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst: TISayi4; ABaslik: string): TKimlik;
 
 implementation
 
@@ -49,24 +56,28 @@ uses genel, gn_pencere, gn_islevler, temelgorselnesne;
 {==============================================================================
   onay kutusu çağrılarını yönetir
  ==============================================================================}
-function IsaretKutusuCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function IsaretKutusuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _OnayKutusu: POnayKutusu;
+  GorselNesne: PGorselNesne;
+  OnayKutusu: POnayKutusu;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PShortString(PSayi4(Degiskenler + 12)^ +
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+        PISayi4(ADegiskenler + 08)^, PKarakterKatari(PSayi4(ADegiskenler + 12)^ +
         AktifGorevBellekAdresi)^);
+    end;
 
     ISLEV_GOSTER:
     begin
 
-      _OnayKutusu := POnayKutusu(_OnayKutusu^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _OnayKutusu^.Goster;
+      OnayKutusu := POnayKutusu(OnayKutusu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      OnayKutusu^.Goster;
     end
 
     else Result := HATA_ISLEV;
@@ -76,120 +87,82 @@ end;
 {==============================================================================
   onay kutusu nesnesini oluşturur
  ==============================================================================}
-function NesneOlustur(AAtaNesne: TKimlik; A1, B1: TISayi4; ABaslik: string): TKimlik;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst: TISayi4; ABaslik: string): TKimlik;
 var
-  _OnayKutusu: POnayKutusu;
+  OnayKutusu: POnayKutusu;
 begin
 
-  _OnayKutusu := _OnayKutusu^.Olustur(AAtaNesne, A1, B1, ABaslik);
+  OnayKutusu := OnayKutusu^.Olustur(ktNesne, AAtaNesne, ASol, AUst, ABaslik);
 
-  if(_OnayKutusu = nil) then
+  if(OnayKutusu = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _OnayKutusu^.Kimlik;
+
+  else Result := OnayKutusu^.Kimlik;
 end;
 
 {==============================================================================
   onay kutusu nesnesini oluşturur
  ==============================================================================}
-function TOnayKutusu.Olustur(AAtaKimlik: TKimlik; A1, B1: TISayi4; ABaslik: string): POnayKutusu;
+function TOnayKutusu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst: TISayi4; ABaslik: string): POnayKutusu;
 var
-  _AtaNesne: PGorselNesne;
-  _OnayKutusu: POnayKutusu;
+  OnayKutusu: POnayKutusu;
+  Genislik: TSayi4;
 begin
 
-  // nesnenin bağlanacağı ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  Genislik := 16 + 3 + (Length(ABaslik) * 8);
 
-  // onay kutusu için bellekte yer ayır
-  _OnayKutusu := POnayKutusu(Olustur0(gntIsaretKutusu));
-  if(_OnayKutusu = nil) then
-  begin
+  OnayKutusu := POnayKutusu(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
+    Genislik, 16, 0, 0, 0, 0, ABaslik));
 
-    Result := nil;
-    Exit;
-  end;
+  OnayKutusu^.NesneTipi := gntOnayKutusu;
 
-  // onay kutusu nesnesini üst nesneye ekle
-  if(_OnayKutusu^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
+  OnayKutusu^.Baslik := ABaslik;
 
-    // hata olması durumunda nesneyi yok et ve hata koduyla işlevden çık
-    _OnayKutusu^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
+  OnayKutusu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  // nesne değerlerini ata
-  _OnayKutusu^.GorevKimlik := CalisanGorev;
-  _OnayKutusu^.AtaNesne := _AtaNesne;
-  _OnayKutusu^.Hiza := hzYok;
-  _OnayKutusu^.FBoyutlar.Sol2 := A1;
-  _OnayKutusu^.FBoyutlar.Ust2 := B1;
-  _OnayKutusu^.FBoyutlar.Genislik2 := 16 + 6 + (Length(ABaslik) * 8);
-  _OnayKutusu^.FBoyutlar.Yukseklik2 := 16;
+  OnayKutusu^.AnaOlayCagriAdresi := @OlaylariIsle;
 
-  // kenar kalınlıkları
-  _OnayKutusu^.FKalinlik.Sol := 0;
-  _OnayKutusu^.FKalinlik.Ust := 0;
-  _OnayKutusu^.FKalinlik.Sag := 0;
-  _OnayKutusu^.FKalinlik.Alt := 0;
-
-  // kenar boşlukları
-  _OnayKutusu^.FKenarBosluklari.Sol := 0;
-  _OnayKutusu^.FKenarBosluklari.Ust := 0;
-  _OnayKutusu^.FKenarBosluklari.Sag := 0;
-  _OnayKutusu^.FKenarBosluklari.Alt := 0;
-
-  _OnayKutusu^.FAtaNesneMi := False;
-  _OnayKutusu^.FareGostergeTipi := fitOK;
-  _OnayKutusu^.FGorunum := False;
-  _OnayKutusu^.FSecimDurumu := sdSecili;
-
-  // nesnenin ad ve başlık değeri
-  _OnayKutusu^.NesneAdi := NesneAdiAl(gntIsaretKutusu);
-  _OnayKutusu^.FBaslik := ABaslik;
-
-  // uygulamaya mesaj gönder
-  GorevListesi[_OnayKutusu^.GorevKimlik]^.OlayEkle1(_OnayKutusu^.GorevKimlik,
-    _OnayKutusu, CO_OLUSTUR, 0, 0);
+  OnayKutusu^.FSecimDurumu := sdNormal;
 
   // nesne adresini geri döndür
-  Result := _OnayKutusu;
+  Result := OnayKutusu;
+end;
+
+{==============================================================================
+  onay kutusu nesnesini yok eder
+ ==============================================================================}
+procedure TOnayKutusu.YokEt;
+begin
+
+  inherited YokEt;
 end;
 
 {==============================================================================
   onay kutusu nesnesini görüntüler
  ==============================================================================}
 procedure TOnayKutusu.Goster;
-var
-  _Pencere: PPencere;
-  _OnayKutusu: POnayKutusu;
 begin
 
-  // nesnenin kimlik, tip değerlerini denetle.
-  _OnayKutusu := POnayKutusu(_OnayKutusu^.NesneTipiniKontrolEt(Kimlik, gntIsaretKutusu));
-  if(_OnayKutusu = nil) then Exit;
+  inherited Goster;
+end;
 
-  // nesne görünür durumda mı ?
-  if(_OnayKutusu^.FGorunum = False) then
-  begin
+{==============================================================================
+  onay kutusu nesnesini gizler
+ ==============================================================================}
+procedure TOnayKutusu.Gizle;
+begin
 
-    // onay kutusu nesnesinin görünürlüğünü aktifleştir
-    _OnayKutusu^.FGorunum := True;
+  inherited Gizle;
+end;
 
-    // onay kutusu nesnesi ve üst nesneler görünür durumda mı ?
-    if(_OnayKutusu^.AtaNesneGorunurMu) then
-    begin
+{==============================================================================
+  onay kutusu nesnesini boyutlandırır
+ ==============================================================================}
+procedure TOnayKutusu.Boyutlandir;
+begin
 
-      // görünür ise onay kutusu nesnesinin üst nesnesi olan pencere nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_OnayKutusu);
-
-      // pencere nesnesini yenile
-      _Pencere^.Guncelle;
-    end;
-  end;
 end;
 
 {==============================================================================
@@ -197,140 +170,121 @@ end;
  ==============================================================================}
 procedure TOnayKutusu.Ciz;
 var
-  _Pencere: PPencere;
-  _OnayKutusu: POnayKutusu;
-  _Alan: TAlan;
-  X, Y: TISayi4;
+  OnayKutusu: POnayKutusu;
+  Alan: TAlan;
+  Y, D: TISayi4;      // Yatay / Dikey
   p1: PSayi1;
 begin
 
-  _OnayKutusu := POnayKutusu(_OnayKutusu^.NesneTipiniKontrolEt(Kimlik, gntIsaretKutusu));
-  if(_OnayKutusu = nil) then Exit;
+  OnayKutusu := POnayKutusu(OnayKutusu^.NesneAl(Kimlik));
+  if(OnayKutusu = nil) then Exit;
 
-  // ata nesne bir pencere mi?
-  _Pencere := PencereAtaNesnesiniAl(_OnayKutusu);
-  if(_Pencere = nil) then Exit;
+  // nesne çizim alanı
+  Alan := OnayKutusu^.FCizimAlan;
 
-  // onay kutusu üst nesneye bağlı olarak koordinatlarını al
-  _Alan := _OnayKutusu^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  Alan.Sag := Alan.Sol + 15;
+  Alan.Alt := Alan.Ust + 15;
 
-  _Alan.Sag := _Alan.Sol + 15;
-  _Alan.Alt := _Alan.Ust + 15;
+  // onay kutusu normal durum çizimi
+  if(OnayKutusu^.FSecimDurumu = sdNormal) then
 
-  // onay kutusu normal çizimi
-  if(_OnayKutusu^.FSecimDurumu = sdNormal) then
+    DikdortgenDoldur(OnayKutusu, Alan, RENK_GUMUS, RENK_BEYAZ)
+
+  else if(OnayKutusu^.FSecimDurumu = sdSecili) then
+  // onay kutusu seçilmiş durum çizimi
   begin
 
-    // dış kenarlığı çiz
-    KenarlikCiz(_Pencere, _Alan, 2);
+    DikdortgenDoldur(OnayKutusu, Alan, RENK_GUMUS, $6485B5);
 
-    // pencere içeriğini boya
-    DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt -2,
-      RENK_BEYAZ, RENK_BEYAZ);
-
-    p1 := PByte(@TamamResimDizi);
-    for Y := 1 to 7 do
+    p1 := PByte(@ResimOnay);
+    for D := 1 to 10 do
     begin
 
-      for X := 1 to 7 do
+      for Y := 1 to 10 do
       begin
 
-        if(p1^ = 1) then PixelYaz(_Pencere, _Alan.Sol + 4 + X, _Alan.Ust + 4 + Y, RENK_SIYAH);
+        if(p1^ = 1) then PixelYaz(OnayKutusu, Alan.Sol + 2 + Y, Alan.Ust + 1 + D, RENK_BEYAZ);
         Inc(p1);
       end;
     end;
-
-    // onay kutusu başlığı
-    YaziYaz(_Pencere, _Alan.Sag + 6, _Alan.Ust, _OnayKutusu^.FBaslik, RENK_SIYAH);
-  end
-  else if(_OnayKutusu^.FSecimDurumu = sdSecili) then
-  begin
-
-    // dış kenarlığı çiz
-    KenarlikCiz(_Pencere, _Alan, 2);
-
-    // pencere içeriğini boya
-    DikdortgenDoldur(_Pencere, _Alan.Sol + 2, _Alan.Ust + 2, _Alan.Sag - 2, _Alan.Alt -2,
-      RENK_BEYAZ, RENK_BEYAZ);
-
-    // onay kutusu başlığı
-    YaziYaz(_Pencere, _Alan.Sag + 6, _Alan.Ust, _OnayKutusu^.FBaslik, RENK_SIYAH);
   end;
 
-  // uygulamaya mesaj gönder
-  GorevListesi[_OnayKutusu^.GorevKimlik]^.OlayEkle1(_OnayKutusu^.GorevKimlik,
-    _OnayKutusu, CO_CIZIM, 0, 0);
+  // onay kutusu başlığı
+  if(Length(OnayKutusu^.Baslik) > 0) then
+    YaziYaz(OnayKutusu, Alan.Sag + 3, Alan.Ust + 1, OnayKutusu^.Baslik, RENK_SIYAH);
 end;
 
 {==============================================================================
   onay kutusu nesne olaylarını işler
  ==============================================================================}
-procedure TOnayKutusu.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TOnayKutusu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _OnayKutusu: POnayKutusu;
+  Pencere: PPencere;
+  OnayKutusu: POnayKutusu;
 begin
 
-  _OnayKutusu := POnayKutusu(_OnayKutusu^.NesneTipiniKontrolEt(AKimlik, gntIsaretKutusu));
-  if(_OnayKutusu = nil) then Exit;
+  OnayKutusu := POnayKutusu(AGonderici);
+  if(OnayKutusu = nil) then Exit;
 
   // farenin sol tuşuna basım işlemi
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
     // onay kutusu'nun sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_OnayKutusu);
+    Pencere := EnUstPencereNesnesiniAl(OnayKutusu);
 
     // en üstte olmaması durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
+    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
 
     // sol tuşa basım işlemi nesnenin olay alanında mı gerçekleşti ?
-    if(_OnayKutusu^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(OnayKutusu^.FareNesneOlayAlanindaMi(OnayKutusu)) then
     begin
 
       // fare olaylarını yakala
-      OlayYakalamayaBasla(_OnayKutusu);
+      OlayYakalamayaBasla(OnayKutusu);
 
       // mevcut durum değerini sakla
-      FOncekiSecimDurumu := _OnayKutusu^.FSecimDurumu;
+      FOncekiSecimDurumu := OnayKutusu^.FSecimDurumu;
 
-      if(FSecimDurumu = sdNormal) then
-
-        _OnayKutusu^.FSecimDurumu := sdSecili
-      else _OnayKutusu^.FSecimDurumu := sdNormal;
+      if(OnayKutusu^.FSecimDurumu = sdNormal) then
+        OnayKutusu^.FSecimDurumu := sdSecili
+      else OnayKutusu^.FSecimDurumu := sdNormal;
 
       // onay kutusu nesnesini yeniden çiz
-      _OnayKutusu^.Ciz;
+      OnayKutusu^.Ciz;
     end;
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
     // fare olaylarını almayı bırak
-    OlayYakalamayiBirak(_OnayKutusu);
+    OlayYakalamayiBirak(OnayKutusu);
 
     // farenin tuş bırakma işlemi nesnenin olay alanında mı gerçekleşti ?
-    if(_OnayKutusu^.FareNesneOlayAlanindaMi(AKimlik)) then
+    if(OnayKutusu^.FareNesneOlayAlanindaMi(OnayKutusu)) then
     begin
 
       // yakalama & bırakma işlemi bu nesnede olduğu için
-      // nesneye FO_TIKLAMA mesajı gönder
-      if(_OnayKutusu^.FSecimDurumu = sdNormal) then
+      // nesneye durum değişiklik mesajı gönder
+      AOlay.Olay := CO_DURUMDEGISTI;
+      if(OnayKutusu^.FSecimDurumu = sdNormal) then
+        AOlay.Deger1 := 0
+      else AOlay.Deger1 := 1;
 
-        GorevListesi[_OnayKutusu^.GorevKimlik]^.OlayEkle1(_OnayKutusu^.GorevKimlik,
-          _OnayKutusu, CO_DURUMDEGISTI, 1, 0)
-      else GorevListesi[_OnayKutusu^.GorevKimlik]^.OlayEkle1(_OnayKutusu^.GorevKimlik,
-        _OnayKutusu, CO_DURUMDEGISTI, 0, 0);
+      // nesnenin olay çağrı adresini çağır veya uygulamaya mesaj gönder
+      if not(OnayKutusu^.OlayCagriAdresi = nil) then
+        OnayKutusu^.OlayCagriAdresi(OnayKutusu, AOlay)
+      else GorevListesi[OnayKutusu^.GorevKimlik]^.OlayEkle(OnayKutusu^.GorevKimlik, AOlay);
 
     // aksi durumda onay kutusu durumunu bir önceki duruma getir
-    end else _OnayKutusu^.FSecimDurumu := _OnayKutusu^.FOncekiSecimDurumu;
+    end else OnayKutusu^.FSecimDurumu := OnayKutusu^.FOncekiSecimDurumu;
 
     // onay kutusu nesnesini yeniden çiz
-    _OnayKutusu^.Ciz;
+    OnayKutusu^.Ciz;
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := OnayKutusu^.FFareImlecTipi;
 end;
 
 end.

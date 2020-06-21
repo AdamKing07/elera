@@ -6,7 +6,7 @@ Kullanılan Yazılım Araçları:
 * Windows 7 Professional - 64 / 32 bit
 * Lazarus 2.0.8 - FPC 3.0.4
 * ImDisk
-* Virtualbox 6.1.4
+* Virtualbox 6.1.6
 
 ---
 Ekran Görüntüleri

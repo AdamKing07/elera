@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_karmaliste.pas
-  Dosya Ýþlevi: açýlýr / kapanýr liste kutusu yönetim iþlevlerini içerir
+  Dosya Ýþlevi: karma liste (açýlýr / kapanýr liste kutusu) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 09/04/2020
+  Güncelleme Tarihi: 20/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,60 +14,73 @@ unit gn_karmaliste;
 
 interface
 
-uses gorselnesne, paylasim, gn_pencere, n_yazilistesi;
+uses gorselnesne, paylasim, gn_pencere, n_yazilistesi, gn_panel, gn_acilirmenu;
 
 type
   PKarmaListe = ^TKarmaListe;
-  TKarmaListe = object(TGorselNesne)
+  TKarmaListe = object(TPanel)
   private
-    FListeKutusuAcik: Boolean;
-    FGorunenIlkSiraNo: TISayi4;           // görünen ilk elemanýn sýra numarasý
-    FGorunenElemanSayisi: TISayi4;        // nesne içindeki görünen eleman sayýsý
-    FYaziListesi: PYaziListesi;
-    procedure OkResminiCiz(APencere: PPencere; AAlan: TAlan);
+    FAcilirMenu: PAcilirMenu;
+    procedure OkResminiCiz(AGorselNesne: PGorselNesne; AAlan: TAlan);
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): PKarmaListe;
-    procedure YokEt(AKimlik: TKimlik);
+    function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+      ASol, AUst, AGenislik, AYukseklik: TISayi4): PKarmaListe;
+    procedure YokEt;
     procedure Goster;
+    procedure Gizle;
+    procedure Boyutlandir;
     procedure Ciz;
-    procedure OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+    procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure AcilirMenuOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure ListeyeEkle(ADeger: string);
   end;
 
-function KarmaListeCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
-procedure ListeyeEkle(AKarmaListe: PKarmaListe; ADeger: string);
+function KarmaListeCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 
 implementation
 
-uses genel, gn_islevler, temelgorselnesne, hamresim2, sistemmesaj;
+uses genel, gn_islevler, temelgorselnesne, hamresim, sistemmesaj;
 
 {==============================================================================
   karma liste kesme çaðrýlarýný yönetir
  ==============================================================================}
-function KarmaListeCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function KarmaListeCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PPencere;
-  _KarmaListe: PKarmaListe;
-  _Hiza: THiza;
-  p1: PShortString;
+  GorselNesne: PGorselNesne;
+  Pencere: PPencere;
+  KarmaListe: PKarmaListe;
+  Hiza: THiza;
+  p: PKarakterKatari;
 begin
 
-  case IslevNo of
+  case AIslevNo of
 
     // nesne oluþtur
     ISLEV_OLUSTUR:
+    begin
 
-      Result := NesneOlustur(PKimlik(Degiskenler + 00)^, PISayi4(Degiskenler + 04)^,
-        PISayi4(Degiskenler + 08)^, PISayi4(Degiskenler + 12)^, PISayi4(Degiskenler + 16)^);
+      GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
+      Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
+        PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^);
+    end;
+
+    ISLEV_GOSTER:
+    begin
+
+      KarmaListe := PKarmaListe(KarmaListe^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      KarmaListe^.Goster;
+    end;
 
     // eleman ekle
     $0100:
     begin
 
-      _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntKarmaListe));
-      if(_KarmaListe <> nil) then
-        ListeyeEkle(_KarmaListe, PShortString(PSayi4(Degiskenler + 04)^ +
+      { TODO : nesneye her eleman eklendikçe nesnenin yüksekliði otomatik artýrýlacak }
+      KarmaListe := PKarmaListe(KarmaListe^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntKarmaListe));
+      if(KarmaListe <> nil) then
+        KarmaListe^.ListeyeEkle(PKarakterKatari(PSayi4(ADegiskenler + 04)^ +
           AktifGorevBellekAdresi)^);
 
       Result := 1;
@@ -77,19 +90,16 @@ begin
     $0300:
     begin
 
-      _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntKarmaListe));
-      if(_KarmaListe <> nil) then
+      KarmaListe := PKarmaListe(KarmaListe^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntKarmaListe));
+      if(KarmaListe <> nil) then
       begin
 
         // eðer daha önce bellek ayrýldýysa
-        _KarmaListe^.FGorunenElemanSayisi := 0;
-        _KarmaListe^.FGorunenIlkSiraNo := 0;
-        _KarmaListe^.FBaslik := '';
-        _KarmaListe^.FBoyutlar.Yukseklik2 := 22;
+        KarmaListe^.Baslik := '';
 
-        _KarmaListe^.FYaziListesi^.Temizle;
-        _KarmaListe^.Ciz;
+        KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Temizle;
+        KarmaListe^.Ciz;
       end;
     end;
 
@@ -97,25 +107,25 @@ begin
     $0400:
     begin
 
-      _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(
-        PKimlik(Degiskenler + 00)^, gntKarmaListe));
-      if(_KarmaListe <> nil) then
+      KarmaListe := PKarmaListe(KarmaListe^.NesneTipiniKontrolEt(
+        PKimlik(ADegiskenler + 00)^, gntKarmaListe));
+      if(KarmaListe <> nil) then
       begin
 
-        p1 := PShortString(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-        p1^ := _KarmaListe^.FBaslik;
+        p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+        p^ := KarmaListe^.Baslik;
       end;
     end;
 
     $0104:
     begin
 
-      _KarmaListe := PKarmaListe(_KarmaListe^.NesneAl(PKimlik(Degiskenler + 00)^));
-      _Hiza := PHiza(Degiskenler + 04)^;
-      _KarmaListe^.Hiza := _Hiza;
+      KarmaListe := PKarmaListe(KarmaListe^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Hiza := PHiza(ADegiskenler + 04)^;
+      KarmaListe^.FHiza := Hiza;
 
-      _Pencere := PPencere(_KarmaListe^.FAtaNesne);
-      _Pencere^.Guncelle;
+      Pencere := PPencere(KarmaListe^.FAtaNesne);
+      Pencere^.Guncelle;
     end;
 
     else Result := HATA_ISLEV;
@@ -125,150 +135,87 @@ end;
 {==============================================================================
   karma liste nesnesini oluþturur
  ==============================================================================}
-function NesneOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 var
-  _KarmaListe: PKarmaListe;
+  KarmaListe: PKarmaListe;
 begin
 
-  _KarmaListe := _KarmaListe^.Olustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik);
-  if(_KarmaListe = nil) then
+  KarmaListe := KarmaListe^.Olustur(ktNesne, AAtaNesne, ASol, AUst, AGenislik, AYukseklik);
+  if(KarmaListe = nil) then
 
     Result := HATA_NESNEOLUSTURMA
-  else Result := _KarmaListe^.Kimlik;
+
+  else Result := KarmaListe^.Kimlik;
 end;
 
 {==============================================================================
   karma liste nesnesini oluþturur
  ==============================================================================}
-function TKarmaListe.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): PKarmaListe;
+function TKarmaListe.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
+  ASol, AUst, AGenislik, AYukseklik: TISayi4): PKarmaListe;
 var
-  _AtaNesne: PGorselNesne;
-  _KarmaListe: PKarmaListe;
-  YL: PYaziListesi;
+  KarmaListe: PKarmaListe;
 begin
 
-  // nesnenin baðlanacaðý ata nesneyi al
-  _AtaNesne := PGorselNesne(_AtaNesne^.AtaNesneyiAl(AAtaKimlik));
-  if(_AtaNesne = nil) then Exit;
+  KarmaListe := PKarmaListe(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
+    AGenislik, 22 {AYukseklik}, 2, RENK_GRI, RENK_BEYAZ, 0, ''));
 
-  // karma liste nesnesi için yer ayýr
-  _KarmaListe := PKarmaListe(Olustur0(gntKarmaListe));
-  if(_KarmaListe = nil) then
-  begin
+  KarmaListe^.NesneTipi := gntKarmaListe;
 
-    Result := nil;
-    Exit;
-  end;
+  KarmaListe^.Baslik := '';
 
-  // karma liste nesnesini ata nesnesine ekle
-  if(_KarmaListe^.AtaNesneyeEkle(_AtaNesne) = False) then
-  begin
+  KarmaListe^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-    // hata olmasý durumunda nesneyi yok et ve hata koduyla iþlevden çýk
-    _KarmaListe^.YokEt0;
-    Result := nil;
-    Exit;
-  end;
+  KarmaListe^.AnaOlayCagriAdresi := @OlaylariIsle;
 
-  // nesne deðerlerini ata
-  _KarmaListe^.GorevKimlik := CalisanGorev;
-  _KarmaListe^.AtaNesne := _AtaNesne;
-  _KarmaListe^.Hiza := hzYok;
-  _KarmaListe^.FBoyutlar.Sol2 := A1;
-  _KarmaListe^.FBoyutlar.Ust2 := B1;
-  _KarmaListe^.FBoyutlar.Genislik2 := AGenislik;
-  _KarmaListe^.FBoyutlar.Yukseklik2 := 22; //AYukseklik;
-
-  // kenar kalýnlýklarý
-  _KarmaListe^.FKalinlik.Sol := 0;
-  _KarmaListe^.FKalinlik.Ust := 0;
-  _KarmaListe^.FKalinlik.Sag := 0;
-  _KarmaListe^.FKalinlik.Alt := 0;
-
-  // kenar boþluklarý
-  _KarmaListe^.FKenarBosluklari.Sol := 0;
-  _KarmaListe^.FKenarBosluklari.Ust := 0;
-  _KarmaListe^.FKenarBosluklari.Sag := 0;
-  _KarmaListe^.FKenarBosluklari.Alt := 0;
-
-  _KarmaListe^.FAtaNesneMi := False;
-  _KarmaListe^.FareGostergeTipi := fitOK;
-  _KarmaListe^.FGorunum := False;
-
-  _KarmaListe^.FYaziListesi := nil;
-  YL := YL^.Olustur;
-  if(YL <> nil) then _KarmaListe^.FYaziListesi := YL;
-
-  // nesnenin kullanacaðý diðer deðerler
-  _KarmaListe^.FListeKutusuAcik := False;
-  _KarmaListe^.FGorunenIlkSiraNo := 0;
-
-  // karma listesinde görüntülenecek eleman sayýsý
-  _KarmaListe^.FGorunenElemanSayisi := 0;
-
-  // nesnenin ad ve baþlýk deðeri
-  _KarmaListe^.NesneAdi := NesneAdiAl(gntKarmaListe);
-  _KarmaListe^.FBaslik := '';
-
-  // uygulamaya mesaj gönder
-  GorevListesi[_KarmaListe^.GorevKimlik]^.OlayEkle1(_KarmaListe^.GorevKimlik,
-    _KarmaListe, CO_OLUSTUR, 0, 0);
-
-  // karma listeni görüntüle
-  _KarmaListe^.Goster;
+  KarmaListe^.FAcilirMenu := KarmaListe^.FAcilirMenu^.Olustur(KarmaListe, 0, 0,
+    AGenislik, (24 * 2) + 2, 24, RENK_GRI, RENK_BEYAZ, RENK_SARI, RENK_SIYAH, RENK_LACIVERT);
+  KarmaListe^.FAcilirMenu^.FAcilirMenuOlayGeriDonusAdresi := @AcilirMenuOlaylariniIsle;
 
   // nesne adresini geri döndür
-  Result := _KarmaListe;
+  Result := KarmaListe;
 end;
 
 {==============================================================================
-  nesne ve nesneye ayrýlan kaynaklarý yok eder
+  karma liste nesnesini yok eder
  ==============================================================================}
-procedure TKarmaListe.YokEt(AKimlik: TKimlik);
+procedure TKarmaListe.YokEt;
 var
-  _KarmaListe: PKarmaListe;
+  KarmaListe: PKarmaListe;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(AKimlik, gntKarmaListe));
-  if(_KarmaListe = nil) then Exit;
+  KarmaListe := PKarmaListe(KarmaListe^.NesneAl(Kimlik));
+  if(KarmaListe = nil) then Exit;
 
-  if(_KarmaListe^.FYaziListesi <> nil) then _KarmaListe^.FYaziListesi^.YokEt;
+  KarmaListe^.FAcilirMenu^.YokEt;
 
-  YokEt0;
+  inherited YokEt;
 end;
 
 {==============================================================================
   karma liste nesnesini görüntüler
  ==============================================================================}
 procedure TKarmaListe.Goster;
-var
-  _Pencere: PPencere;
-  _KarmaListe: PKarmaListe;
 begin
 
-  // nesnenin kimlik, tip deðerlerini denetle.
-  _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(Kimlik, gntKarmaListe));
-  if(_KarmaListe = nil) then Exit;
+  inherited Goster;
+end;
 
-  // eðer nesne görünür deðilse
-  if(_KarmaListe^.FGorunum = False) then
-  begin
+{==============================================================================
+  karma liste nesnesini gizler
+ ==============================================================================}
+procedure TKarmaListe.Gizle;
+begin
 
-    // nesnenin görünürlüðünü aktifleþtir
-    _KarmaListe^.FGorunum := True;
+  inherited Gizle;
+end;
 
-    // nesne ve üst nesneler görünür ise
-    if(_KarmaListe^.AtaNesneGorunurMu) then
-    begin
+{==============================================================================
+  karma liste nesnesini boyutlandýrýr
+ ==============================================================================}
+procedure TKarmaListe.Boyutlandir;
+begin
 
-      // nesnenin sahibi olan pencere nesnesini al
-      _Pencere := PencereAtaNesnesiniAl(_KarmaListe);
-
-      // pencereyi güncelleþtir
-      _Pencere^.Guncelle;
-    end;
-  end;
 end;
 
 {==============================================================================
@@ -276,230 +223,129 @@ end;
  ==============================================================================}
 procedure TKarmaListe.Ciz;
 var
-  _Pencere: PPencere;
-  _KarmaListe: PKarmaListe;
-  YL: PYaziListesi;
-  _Alan: TAlan;
-  _SiraNo, X, Y,
-  _GorunenElemanSayisi: TISayi4;
-  s: string;
+  KarmaListe: PKarmaListe;
+  Alan: TAlan;
 begin
 
+  inherited Ciz;
+
   // nesnenin kimlik, tip deðerlerini denetle.
-  _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(Kimlik, gntKarmaListe));
-  if(_KarmaListe = nil) then Exit;
+  KarmaListe := PKarmaListe(KarmaListe^.NesneAl(Kimlik));
+  if(KarmaListe = nil) then Exit;
 
-  // ata nesne bir pencere mi?
-  _Pencere := PencereAtaNesnesiniAl(_KarmaListe);
-  if(_Pencere = nil) then Exit;
+  // karma listenin çizim alan koordinatlarýný al
+  Alan := KarmaListe^.FCizimAlan;
 
-  // karma listenin üst nesneye baðlý olarak koordinatlarýný al
-  _Alan := _KarmaListe^.CizimGorselNesneBoyutlariniAl(Kimlik);
+  OkResminiCiz(KarmaListe, Alan);
 
-  // karma liste kutusunun açýk olmasý durumunda
-  if(_KarmaListe^.FListeKutusuAcik) then
-  begin
-
-    YL := _KarmaListe^.FYaziListesi;
-
-    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag - 15, _Alan.Alt,
-      $7F7F7F, RENK_BEYAZ);
-
-    DikdortgenDoldur(_Pencere, _Alan.Sag - 15, _Alan.Ust, _Alan.Alt, _Alan.Ust + 22,
-      $7F7F7F, $C3C3C3);
-    OkResminiCiz(_Pencere, _Alan);
-
-    YaziYaz(_Pencere, _Alan.Sol + 4, _Alan.Ust + 4, _KarmaListe^.FBaslik, RENK_LACIVERT);
-
-    // nesnenin elemaný var mý ?
-    if(YL^.ElemanSayisi > 0) then
-    begin
-
-      // çizim / yazým için kullanýlacak x & y koordinatlarý
-      X := _Alan.Sol + 4;
-      Y := _Alan.Ust + 22 + 5;
-
-      // karma listende görüntülenecek eleman sayýsý
-      if(YL^.ElemanSayisi > _KarmaListe^.FGorunenElemanSayisi) then
-        _GorunenElemanSayisi := _KarmaListe^.FGorunenElemanSayisi + _KarmaListe^.FGorunenIlkSiraNo
-      else _GorunenElemanSayisi := YL^.ElemanSayisi + _KarmaListe^.FGorunenIlkSiraNo;
-
-      // listenin ilk elemanýn sýra numarasý
-      for _SiraNo := _KarmaListe^.FGorunenIlkSiraNo to _GorunenElemanSayisi - 1 do
-      begin
-
-        // belirtilen elemanýn karakter katar deðerini al
-        s := YL^.Eleman[_SiraNo];
-        YaziYaz(_Pencere, X, Y, s, RENK_SIYAH);
-        y += 22;
-      end;
-    end;
-  end
-  else
-  // karma liste kutusunun kapalý olmasý durumunda
-  begin
-
-    DikdortgenDoldur(_Pencere, _Alan.Sol, _Alan.Ust, _Alan.Sag - 15, _Alan.Ust + 22,
-      $7F7F7F, RENK_BEYAZ);
-
-    DikdortgenDoldur(_Pencere, _Alan.Sag - 15, _Alan.Ust, _Alan.Sag, _Alan.Ust + 22,
-      $7F7F7F, $C3C3C3);
-    OkResminiCiz(_Pencere, _Alan);
-
-    YaziYaz(_Pencere, _Alan.Sol + 4, _Alan.Ust + 4, _KarmaListe^.FBaslik, RENK_LACIVERT);
-  end;
+  KarmaListe^.YaziYaz(KarmaListe, Alan.Sol + 4, Alan.Ust + 4, KarmaListe^.Baslik,
+    RENK_SIYAH);
 end;
 
 {==============================================================================
   karma liste nesne olaylarýný iþler
  ==============================================================================}
-procedure TKarmaListe.OlaylariIsle(AKimlik: TKimlik; AOlay: TOlayKayit);
+procedure TKarmaListe.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  _Pencere: PPencere;
-  _KarmaListe: PKarmaListe;
-  _Alan: TAlan;
-  i, _SeciliSiraNo: TISayi4;
+  KarmaListe: PKarmaListe;
 begin
 
   // nesnenin kimlik, tip deðerlerini denetle.
-  _KarmaListe := PKarmaListe(_KarmaListe^.NesneTipiniKontrolEt(AKimlik, gntKarmaListe));
-  if(_KarmaListe = nil) then Exit;
+  KarmaListe := PKarmaListe(AGonderici);
+  if(KarmaListe = nil) then Exit;
 
   // sol fare tuþ basýmý
   if(AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
-    // karma listenin sahibi olan pencere en üstte mi ? kontrol et
-    _Pencere := PencereAtaNesnesiniAl(_KarmaListe);
-
-    // en üstte olmamasý durumunda en üste getir
-    if(_Pencere <> AktifPencere) then _Pencere^.EnUsteGetir;
-
-    // sol tuþa basým iþlemi nesnenin olay alanýnda mý gerçekleþti ?
-    if(_KarmaListe^.FareNesneOlayAlanindaMi(AKimlik)) then
-    begin
-
-      // fare olaylarýný yakala
-      OlayYakalamayaBasla(_KarmaListe);
-
-      _Alan.Sag := _KarmaListe^.FBoyutlar.Genislik2 - 1;
-      _Alan.Alt := 22;
-      _Alan.Sol := _Alan.Sag - 15;
-      _Alan.Ust := 1;
-
-      if(NoktaAlanIcerisindeMi(AOlay.Deger1, AOlay.Deger2, _Alan)) then
-      begin
-
-        _KarmaListe^.FListeKutusuAcik := not _KarmaListe^.FListeKutusuAcik;
-
-        // karma listeni yeniden çiz
-        _Pencere^.Guncelle;
-      end
-      else
-      begin
-
-        if(AOlay.Deger1 < _Alan.Sag - 22) then
-        begin
-
-          // seçilen sýra numarasýný belirle
-          _SeciliSiraNo := AOlay.Deger2 div 22;
-
-          if(_SeciliSiraNo > 0) then
-          begin
-
-            _KarmaListe^.FBaslik := FYaziListesi^.Eleman[_KarmaListe^.FGorunenIlkSiraNo + _SeciliSiraNo - 1];
-          end;
-
-          _KarmaListe^.FListeKutusuAcik := False;
-
-          // karma listeni yeniden çiz
-          _Pencere^.Guncelle;
-
-          _KarmaListe^.FGorunenIlkSiraNo := 0;
-
-          // uygulamaya mesaj gönder
-          //GorevListesi[_KarmaListe^.GorevKimlik]^.OlayEkle1(_KarmaListe^.GorevKimlik,
-            //_KarmaListe, AOlay.Olay, AOlay.Deger1, AOlay.Deger2);
-        end;
-      end;
-    end;
+    // hiç bir þey yapma
   end
 
   // sol fare tuþ býrakým iþlemi
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
-    // fare olaylarýný almayý býrak
-    OlayYakalamayiBirak(_KarmaListe);
-  end
-  else if(AOlay.Olay = FO_KAYDIRMA) then
-  begin
+    // bilgi: olay yönetimindeki tuþ basým iþlemindeki bir tasarýmdan dolayý
+    // basým olay sonrasýnda menü hemen kapatýlmaktadýr. bu sebepten dolayý
+    // menünün açýlmasý býrakýlma iþlemine alýnmýþtýr
 
-    // listeyi yukarý kaydýrma. ilk elemana doðru
-    if(AOlay.Deger1 < 0) then
-    begin
+    // açýlýr menünün görünürlüðünü aktifleþtir
+    KarmaListe^.FAcilirMenu^.Goster;
 
-      _SeciliSiraNo := _KarmaListe^.FGorunenIlkSiraNo;
-      Dec(_SeciliSiraNo);
-      if(_SeciliSiraNo >= 0) then _KarmaListe^.FGorunenIlkSiraNo := _SeciliSiraNo;
-    end
+    // aktif menüyü belirle
+    GAktifMenu := KarmaListe^.FAcilirMenu;
 
-    // listeyi aþaðýya kaydýrma. son elemana doðru
-    else if(AOlay.Deger1 > 0) then
-    begin
-
-      // azami kaydýrma deðeri
-      i := _KarmaListe^.FYaziListesi^.ElemanSayisi - _KarmaListe^.FGorunenElemanSayisi;
-      if(i < 0) then i := 0;
-
-      _SeciliSiraNo := _KarmaListe^.FGorunenIlkSiraNo;
-      Inc(_SeciliSiraNo);
-      if(_SeciliSiraNo <= i) then _KarmaListe^.FGorunenIlkSiraNo := _SeciliSiraNo;
-    end;
-
-    _KarmaListe^.Ciz;
+    // menüyü farenin bulunduðu konumda görüntüle
+    KarmaListe^.FAcilirMenu^.FKonum.Sol := KarmaListe^.AtaNesne^.FKonum.Sol +
+      KarmaListe^.FCizimBaslangic.Sol;
+    KarmaListe^.FAcilirMenu^.FKonum.Ust := KarmaListe^.AtaNesne^.FKonum.Ust +
+      KarmaListe^.FCizimBaslangic.Ust + 21;
   end;
 
   // geçerli fare göstergesini güncelle
-  GecerliFareGostegeTipi := FareGostergeTipi;
+  GecerliFareGostegeTipi := KarmaListe^.FFareImlecTipi;
 end;
 
-procedure TKarmaListe.OkResminiCiz(APencere: PPencere; AAlan: TAlan);
+{==============================================================================
+  karma listeye baðlý açýlýr menü nesne olaylarýný iþler
+ ==============================================================================}
+procedure TKarmaListe.AcilirMenuOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  p1: PByte;
-  B1, A1: Integer;
+  KarmaListe: PKarmaListe;
+  AcilirMenu: PAcilirMenu;
+  SeciliEleman: String;
 begin
 
-  p1 := PByte(@OKAlt);
-  for B1 := 1 to 4 do
+  // nesnenin kimlik, tip deðerlerini denetle.
+  AcilirMenu := PAcilirMenu(AGonderici);
+  if(AcilirMenu = nil) then Exit;
+
+  // menüye týklanmasý durumunda baþlýk deðerini deðiþtir
+  if(AOlay.Olay = FO_TIKLAMA) then
   begin
 
-    for A1 := 1 to 7 do
+    KarmaListe := PKarmaListe(AcilirMenu^.AtaNesne);
+
+    SeciliEleman := AcilirMenu^.FMenuBaslikListesi^.Eleman[AcilirMenu^.FSeciliSiraNo];
+    KarmaListe^.Baslik := SeciliEleman;
+    KarmaListe^.Ciz;
+  end;
+end;
+
+procedure TKarmaListe.OkResminiCiz(AGorselNesne: PGorselNesne; AAlan: TAlan);
+var
+  Renk: PSayi4;
+  Yatay, Dikey: TSayi4;
+begin
+
+  Renk := PSayi4(@ResimOKAlt);
+  for Dikey := 1 to 4 do
+  begin
+
+    for Yatay := 1 to 7 do
     begin
 
-      if(p1^ = 1) then
-        PixelYaz(APencere, (AAlan.Sag - 12) + A1, (AAlan.Ust + 9) + B1, RENK_SIYAH);
+      if(Renk^ = $00000000) then
+        PixelYaz(AGorselNesne, (AAlan.Sag - 12) + Yatay, (AAlan.Ust + 9) + Dikey, RENK_SIYAH);
 
-      Inc(p1);
+      Inc(Renk);
     end;
   end;
 end;
 
-procedure ListeyeEkle(AKarmaListe: PKarmaListe; ADeger: string);
+procedure TKarmaListe.ListeyeEkle(ADeger: string);
+var
+  KarmaListe: PKarmaListe;
 begin
 
-  AKarmaListe^.FYaziListesi^.Ekle(ADeger);
+  // nesnenin kimlik, tip deðerlerini denetle.
+  KarmaListe := PKarmaListe(KarmaListe^.NesneAl(Kimlik));
+  if(KarmaListe = nil) then Exit;
 
-  // görünen azami eleman sayýsý = 2
-  if(AKarmaListe^.FYaziListesi^.ElemanSayisi = 1) then
-    AKarmaListe^.FGorunenElemanSayisi := 1
-  else if(AKarmaListe^.FYaziListesi^.ElemanSayisi >= 2) then
-    AKarmaListe^.FGorunenElemanSayisi := 2;
+  KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Ekle(ADeger);
 
-  if(AKarmaListe^.FYaziListesi^.ElemanSayisi > 0) then
-    AKarmaListe^.FBaslik := AKarmaListe^.FYaziListesi^.Eleman[0];
-
-  AKarmaListe^.FBoyutlar.Yukseklik2 := 22 + (AKarmaListe^.FGorunenElemanSayisi * 22);
+  if(KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.ElemanSayisi > 0) then
+    KarmaListe^.Baslik := KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Eleman[0];
 end;
 
 end.

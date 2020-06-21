@@ -6,7 +6,7 @@
   Dosya Adı: genel.pas
   Dosya İşlevi: sistem genelinde kullanılan sabit, değişken ve yapıları içerir
 
-  Güncelleme Tarihi: 18/04/2020
+  Güncelleme Tarihi: 10/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,7 +14,7 @@ unit genel;
 
 interface
 
-uses gercekbellek, src_vesa20, src_ps2, gorev, zamanlayici, paylasim, olay, gorselnesne,
+uses gercekbellek, src_vesa20, src_ps2, gorev, zamanlayici, paylasim, olayyonetim, gorselnesne,
   sistemmesaj, gn_masaustu, iletisim, n_yazilistesi, n_sayilistesi, dns;
 
 const
@@ -27,10 +27,12 @@ var
   GFareSurucusu: TFareSurucusu;
   GZamanlayici: TZamanlayici;
   GSistemMesaj: TSistemMesaj;
-  GOlay: TOlay;
+  GOlayYonetim: TOlayYonetim;
   GIslemciBilgisi: TIslemciBilgisi;
   GAktifMasaustu: PMasaustu;
+  GAktifMenu: PGorselNesne;             // PMenu veya PAcilirMenu
   GBaglanti: PBaglanti;                 // dhcp.pas dosyası tarafından kullanılmaktadır. (iptal edilecek)
+
   // 24 x 24 sistemler. yukleyici.pas dosyasından yükleme işlemi yapılır
   GSistemResimler: TGoruntuYapi;
 
@@ -57,41 +59,41 @@ implementation
  ==============================================================================}
 procedure ListeleriIlkDegerlerleYukle;
 var
-  _YaziListesi: PYaziListesi;
-  _SayiListesi: PSayiListesi;
+  YL: PYaziListesi;
+  SL: PSayiListesi;
   i: TISayi4;
 begin
 
   // 1. görsel olmayan yazı listesi için bellekte yer ayır
-  _YaziListesi := GGercekBellek.Ayir(Align(SizeOf(TYaziListesi), 16) * USTSINIR_YAZILISTESI);
+  YL := GGercekBellek.Ayir(Align(SizeOf(TYaziListesi), 16) * USTSINIR_YAZILISTESI);
 
   // bellek girişlerini nesne yapı girişleriyle eşleştir
   for i := 1 to USTSINIR_YAZILISTESI do
   begin
 
-    GYaziListesi[i] := _YaziListesi;
+    GYaziListesi[i] := YL;
 
     // nesneyi kullanılabilir olarak işaretle
-    _YaziListesi^.NesneKullanilabilir := True;
-    _YaziListesi^.Tanimlayici := i;
+    YL^.NesneKullanilabilir := True;
+    YL^.Tanimlayici := i;
 
-    Inc(_YaziListesi);
+    Inc(YL);
   end;
 
   // 2. görsel olmayan sayı listesi için bellekte yer ayır
-  _SayiListesi := GGercekBellek.Ayir(Align(SizeOf(TSayiListesi), 16) * USTSINIR_SAYILISTESI);
+  SL := GGercekBellek.Ayir(Align(SizeOf(TSayiListesi), 16) * USTSINIR_SAYILISTESI);
 
   // bellek girişlerini nesne yapı girişleriyle eşleştir
   for i := 1 to USTSINIR_SAYILISTESI do
   begin
 
-    GSayiListesi[i] := _SayiListesi;
+    GSayiListesi[i] := SL;
 
     // nesneyi kullanılabilir olarak işaretle
-    _SayiListesi^.NesneKullanilabilir := True;
-    _SayiListesi^.Tanimlayici := i;
+    SL^.NesneKullanilabilir := True;
+    SL^.Tanimlayici := i;
 
-    Inc(_SayiListesi);
+    Inc(SL);
   end;
 end;
 

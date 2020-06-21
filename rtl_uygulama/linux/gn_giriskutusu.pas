@@ -10,6 +10,7 @@
 
  ==============================================================================}
 {$mode objfpc}
+{$asmmode intel}
 unit gn_giriskutusu;
 
 interface
@@ -34,6 +35,14 @@ type
     property Yazilamaz: LongBool read FYazilamaz write Yazilamaz0;
     property SadeceRakam: LongBool read FSadeceRakam write SadeceRakam0;
   end;
+
+function _GirisKutusuOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4; AIcerikDeger: string): TKimlik; assembler;
+procedure _GirisKutusuGoster(AKimlik: TKimlik); assembler;
+procedure _GirisKutusuIcerikAl(AKimlik: TKimlik; AHedefBellek: Isaretci); assembler;
+procedure _GirisKutusuIcerikYaz(AKimlik: TKimlik; AIcerikDeger: string); assembler;
+procedure _GirisKutusuYazilamaz0(AKimlik: TKimlik; AYazilamaz: LongBool); assembler;
+procedure _GirisKutusuSadeceRakam0(AKimlik: TKimlik; ASadeceSayi: LongBool); assembler;
 
 implementation
 
@@ -86,6 +95,64 @@ begin
 
   FSadeceRakam := ADeger;
   _GirisKutusuSadeceRakam0(FKimlik, FSadeceRakam);
+end;
+
+function _GirisKutusuOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4; AIcerikDeger: string): TKimlik;
+asm
+  push  AIcerikDeger
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AtaKimlik
+  mov   eax,GIRISKUTUSU_OLUSTUR
+  int   $34
+  add   esp,24
+end;
+
+procedure _GirisKutusuGoster(AKimlik: TKimlik);
+asm
+  push  AKimlik
+  mov   eax,GIRISKUTUSU_GOSTER
+  int   $34
+  add   esp,4
+end;
+
+procedure _GirisKutusuIcerikAl(AKimlik: TKimlik; AHedefBellek: Isaretci);
+asm
+  push  AHedefBellek
+  push  AKimlik
+  mov   eax,GIRISKUTUSU_ICERIKAL
+  int   $34
+  add   esp,8
+end;
+
+procedure _GirisKutusuIcerikYaz(AKimlik: TKimlik; AIcerikDeger: string);
+asm
+  push  AIcerikDeger
+  push  AKimlik
+  mov   eax,GIRISKUTUSU_ICERIKYAZ
+  int   $34
+  add   esp,8
+end;
+
+procedure _GirisKutusuYazilamaz0(AKimlik: TKimlik; AYazilamaz: LongBool);
+asm
+  push  AYazilamaz
+  push  AKimlik
+  mov   eax,GIRISKUTUSU_YAZILAMAZ0
+  int   $34
+  add   esp,8
+end;
+
+procedure _GirisKutusuSadeceRakam0(AKimlik: TKimlik; ASadeceSayi: LongBool);
+asm
+  push  ASadeceSayi
+  push  AKimlik
+  mov   eax,GIRISKUTUSU_SADECESAYI0
+  int   $34
+  add   esp,8
 end;
 
 end.

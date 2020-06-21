@@ -70,41 +70,15 @@ function ParamStr1(Index: LongInt): string;
 
 { program çaðrý baþlýk bilgileri }
 
-  {$i inc/paylasim.inc}
+  {$i paylasim.inc}
 
-  {$i inc/ekranb.inc}
-  {$i inc/gorselnesneb.inc}
-  {$i inc/masaustub.inc}
-  {$i inc/gn_pencereb.inc}
-  {$i inc/gn_panelb.inc}
-  {$i inc/gn_resimdugmeb.inc}
-  {$i inc/gn_gucdugmeb.inc}
-  {$i inc/gn_defterb.inc}
-  {$i inc/gn_listekutusub.inc}
-  {$i inc/listegorunumh.inc}
-  {$i inc/gn_menub.inc}
-  {$i inc/gn_islemgostergesib.inc}
-  {$i inc/gn_onaykutusub.inc}
-  {$i inc/gn_giriskutusub.inc}
-  {$i inc/gn_degerdugmesib.inc}
-  {$i inc/gn_etiketb.inc}
-  {$i inc/gn_durumcubugub.inc}
-  {$i inc/gn_secimdugmeb.inc}
-  {$i inc/gn_baglantib.inc}
-  {$i inc/gn_kaydirmacubugub.inc}
-  {$i inc/gn_karmalisteb.inc}
-  {$i inc/gn_acilirmenub.inc}
-  {$i inc/olayb.inc}
-  {$i inc/dosyab.inc}
-  {$i inc/yazimb.inc}
-  {$i inc/sayacb.inc}
-  {$i inc/sistemb.inc}
-  {$i inc/cizimb.inc}
-  {$i inc/sistemmesajb.inc}
-//  {$i inc/memoryh.inc}
-  {$i inc/gorevb.inc}
-  {$i inc/pcib.inc}
-  {$i inc/fareb.inc}
+  {$i gorselnesneb.inc}
+  {$i olayb.inc}
+  {$i dosyab.inc}
+  {$i sayacb.inc}
+  {$i sistemb.inc}
+  {$i pcib.inc}
+  {$i fareb.inc}
   
 {*****************************************************************************}
                                  implementation
@@ -403,41 +377,14 @@ end;
 { program çaðrý kod bilgileri }
 
 				 {$asmmode intel}
-				 {$I elera.inc}
 
-				 {$i inc/ekran.inc}
-         {$i inc/gorselnesne.inc}
-				 {$i inc/masaustu.inc}
-				 {$i inc/gn_pencere.inc}
-         {$i inc/gn_panel.inc}
-         {$i inc/gn_resimdugme.inc}
-				 {$i inc/gn_gucdugme.inc}
-         {$i inc/gn_defter.inc}
-				 {$i inc/gn_listekutusu.inc}
-         {$i inc/listegorunum.inc}
-				 {$i inc/gn_menu.inc}
-				 {$i inc/gn_islemgostergesi.inc}
-				 {$i inc/gn_onaykutusu.inc}
-         {$i inc/gn_giriskutusu.inc}
-         {$i inc/gn_degerdugmesi.inc}
-         {$i inc/gn_etiket.inc}
-         {$i inc/gn_durumcubugu.inc}
-         {$i inc/gn_secimdugme.inc}
-         {$i inc/gn_baglanti.inc}
-         {$i inc/gn_kaydirmacubugu.inc}
-         {$i inc/gn_karmaliste.inc}
-         {$i inc/gn_acilirmenu.inc}
-				 {$i inc/olay.inc}
-				 {$i inc/dosya.inc}
-				 {$i inc/yazim.inc}
-				 {$i inc/sayac.inc}
-         {$i inc/sistem.inc}
-				 {$i inc/cizim.inc}
-				 {$i inc/sistemmesaj.inc}
-//				 {$i inc/memory.inc}
-				 {$i inc/gorev.inc}
-				 {$i inc/pci.inc}
-				 {$i inc/fare.inc}
+         {$i gorselnesne.inc}
+				 {$i olay.inc}
+				 {$i dosya.inc}
+				 {$i sayac.inc}
+         {$i sistem.inc}
+				 {$i pci.inc}
+				 {$i fare.inc}
 
 				 {$asmmode att}
 				 

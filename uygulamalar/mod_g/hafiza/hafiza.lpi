@@ -36,21 +36,21 @@
         <Filename Value="hafiza.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="temizle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit1>
       <Unit2>
         <Filename Value="derle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit2>
       <Unit3>
@@ -60,7 +60,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit3>
     </Units>

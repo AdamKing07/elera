@@ -7,14 +7,14 @@ program grafik3;
   Program Adı: grafik3.lpr
   Program İşlevi: çoklu yönlendirilmiş nokta (pixel) işaretleme programı
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 08/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 uses gorev, gn_pencere, zamanlayici;
 
 const
-  ProgramAdi: string = 'Grafik - 3';
+  ProgramAdi: string = 'Grafik-3';
   RenkListesi: array[0..15] of TRenk = (
       $FFFFFF, $C0C0C0, $808080, $000000,
       $FF0000, $800000, $FFFF00, $808000,
@@ -24,7 +24,7 @@ const
 
 type
   TNoktaKayit = record
-    A1, B1,
+    Sol, Ust,
     YatayDeger, DikeyDeger,
     Renk: TISayi4;
   end;
@@ -33,11 +33,11 @@ var
   Gorev0: TGorev;
   Pencere0: TPencere;
   Noktalar: array[0..USTDEGER_NOKTASAYISI - 1] of TNoktaKayit;
-  i, _YatayDeger, _DikeyDeger, Renk: TISayi4;
+  YatayDeger, DikeyDeger, i, Renk: TISayi4;
 
 begin
 
-  Pencere0.Olustur(-1, 50, 50, 400 + 8, 300 + 30, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere0.Olustur(-1, 50, 50, 400, 300, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
 
   Pencere0.Goster;
@@ -46,64 +46,64 @@ begin
   begin
 
     Randomize;
-    _YatayDeger := Random(500);
-    _DikeyDeger := Random(500);
+    YatayDeger := Random(500);
+    DikeyDeger := Random(500);
     Renk := RenkListesi[Random(15)];
 
-    Noktalar[i].A1 := _YatayDeger;
-    if(_YatayDeger > 255) then
+    Noktalar[i].Sol := YatayDeger;
+    if(YatayDeger > 255) then
       Noktalar[i].YatayDeger := 1
     else Noktalar[i].YatayDeger := -1;
 
-    Noktalar[i].B1 := _DikeyDeger;
-    if(_DikeyDeger > 255) then
+    Noktalar[i].Ust := DikeyDeger;
+    if(DikeyDeger > 255) then
       Noktalar[i].DikeyDeger := 1
     else Noktalar[i].DikeyDeger := -1;
 
     Noktalar[i].Renk := Renk;
   end;
 
-  repeat
+  while True do
+  begin
 
     for i := 0 to USTDEGER_NOKTASAYISI - 1 do
     begin
 
-      _YatayDeger := Noktalar[i].A1;
-      _YatayDeger := _YatayDeger + Noktalar[i].YatayDeger;
-      if(_YatayDeger < 0) then
+      YatayDeger := Noktalar[i].Sol;
+      YatayDeger := YatayDeger + Noktalar[i].YatayDeger;
+      if(YatayDeger < 0) then
       begin
 
-        _YatayDeger := 0;
+        YatayDeger := 0;
         Noktalar[i].YatayDeger := 1;
       end
-      else if(_YatayDeger > 400) then
+      else if(YatayDeger > 400) then
       begin
 
-        _YatayDeger := 400;
+        YatayDeger := 400;
         Noktalar[i].YatayDeger := -1;
       end;
-      Noktalar[i].A1 := _YatayDeger;
+      Noktalar[i].Sol := YatayDeger;
 
-      _DikeyDeger := Noktalar[i].B1;
-      _DikeyDeger := _DikeyDeger + Noktalar[i].DikeyDeger;
-      if(_DikeyDeger < 0) then
+      DikeyDeger := Noktalar[i].Ust;
+      DikeyDeger := DikeyDeger + Noktalar[i].DikeyDeger;
+      if(DikeyDeger < 0) then
       begin
 
-        _DikeyDeger := 0;
+        DikeyDeger := 0;
         Noktalar[i].DikeyDeger := 1;
       end
-      else if(_DikeyDeger > 300) then
+      else if(DikeyDeger > 300) then
       begin
 
-        _DikeyDeger := 300;
+        DikeyDeger := 300;
         Noktalar[i].DikeyDeger := -1;
       end;
-      Noktalar[i].B1 := _DikeyDeger;
+      Noktalar[i].Ust := DikeyDeger;
 
       Renk := Noktalar[i].Renk;
 
-      Pencere0.Tuval.PixelYaz(_YatayDeger, _DikeyDeger, Renk);
+      Pencere0.Tuval.PixelYaz(YatayDeger, DikeyDeger, Renk);
     end;
-
-  until (1 = 2);
+  end;
 end.
