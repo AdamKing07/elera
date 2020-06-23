@@ -7,16 +7,16 @@ program saat;
   Program Adý: saat.lpr
   Program Ýþlevi: dijital tarih / saat programý
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, zamanlayici;
+uses n_gorev, gn_pencere, n_zamanlayici;
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   SaatDizi: array[0..2] of TSayi1;      // saat / dakika / saniye
   TarihDizi: array[0..3] of TSayi2;     // gün / ay / yýl / haftanýn günü
@@ -24,35 +24,35 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 200, 200, 160, 52, ptIletisim, 'Tarih / Saat', $E3F5AB);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 200, 200, 160, 52, ptIletisim, 'Tarih / Saat', $E3F5AB);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(100);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(100);
+  Zamanlayici.Baslat;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      Pencere0.Tuval.KalemRengi := $041F2F;
+      Pencere.Tuval.KalemRengi := $041F2F;
 
       SaatAl(@SaatDizi);
       s := TimeToStr(SaatDizi);
-      Pencere0.Tuval.YaziYaz(46, 8, s);
+      Pencere.Tuval.YaziYaz(46, 8, s);
 
       TarihAl(@TarihDizi);
       s := DateToStr(TarihDizi, True);
-      Pencere0.Tuval.YaziYaz(22, 28, s);
+      Pencere.Tuval.YaziYaz(22, 28, s);
     end;
-
-  until (1 = 2);
+  end;
 end.

@@ -101,7 +101,7 @@ begin
     begin
 
       GorselNesne := GorselNesneListesi[Kimlik];
-      BellekAdresi := Isaretci(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      BellekAdresi := Isaretci(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       Tasi2(GorselNesne, BellekAdresi, SizeOf(TGorselNesne));
 
       Result := 1;
@@ -115,7 +115,7 @@ begin
     Konum.Sol := PISayi4(ADegiskenler + 00)^;
     Konum.Ust := PISayi4(ADegiskenler + 04)^;
     GorselNesne := GorselNesneBul(Konum);
-    BellekAdresi := Isaretci(PSayi4(ADegiskenler + 08)^ + AktifGorevBellekAdresi);
+    BellekAdresi := Isaretci(PSayi4(ADegiskenler + 08)^ + CalisanGorevBellekAdresi);
     Tasi2(@GorselNesne^.NesneAdi[0], BellekAdresi, Length(GorselNesne^.NesneAdi) + 1);
   end;
 end;
@@ -324,7 +324,39 @@ begin
                 Exit(SorgulananGN);
               end;
 
-              { TODO : bu kısımda ise küçültme ve büyütme düğmesi sorgulanacaktır }
+              if(PencereTipi = ptBoyutlanabilir) then
+              begin
+
+                // küçültme düğmesinin sorgulanması
+                SorgulananGN := PPencere(PencereGN)^.FKucultmeDugmesi;
+                NesneA.Sol := SonNesneA.Sol + SorgulananGN^.FKonum.Sol;
+                NesneA.Ust := SonNesneA.Ust + SorgulananGN^.FKonum.Ust;
+                NesneA.Sag := NesneA.Sol + SorgulananGN^.FBoyut.Genislik;
+                NesneA.Alt := NesneA.Ust + SorgulananGN^.FBoyut.Yukseklik;
+
+                if(AlanIcindeMi(NesneA)) then
+                begin
+
+                  AKonum.Sol := (AKonum.Sol - NesneA.Sol);
+                  AKonum.Ust := (AKonum.Ust - NesneA.Ust);
+                  Exit(SorgulananGN);
+                end;
+
+                // büyütme düğmesinin sorgulanması
+                SorgulananGN := PPencere(PencereGN)^.FBuyutmeDugmesi;
+                NesneA.Sol := SonNesneA.Sol + SorgulananGN^.FKonum.Sol;
+                NesneA.Ust := SonNesneA.Ust + SorgulananGN^.FKonum.Ust;
+                NesneA.Sag := NesneA.Sol + SorgulananGN^.FBoyut.Genislik;
+                NesneA.Alt := NesneA.Ust + SorgulananGN^.FBoyut.Yukseklik;
+
+                if(AlanIcindeMi(NesneA)) then
+                begin
+
+                  AKonum.Sol := (AKonum.Sol - NesneA.Sol);
+                  AKonum.Ust := (AKonum.Ust - NesneA.Ust);
+                  Exit(SorgulananGN);
+                end;
+              end;
             end;
 
             // pencere nesnesinin kalınlığını da son koordinata ekle

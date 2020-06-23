@@ -40,6 +40,7 @@
       <Unit0>
         <Filename Value="cekirdek.lpr"/>
         <IsPartOfProject Value="True"/>
+        <CursorPos X="43" Y="24"/>
         <UsageCount Value="260"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -386,8 +387,8 @@
         <Filename Value="yonetim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="232"/>
-        <CursorPos X="43" Y="245"/>
+        <TopLine Value="495"/>
+        <CursorPos X="47" Y="509"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit52>
@@ -765,8 +766,8 @@
         <Filename Value="..\ortak\cekirdek\genel.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="49"/>
-        <CursorPos X="66" Y="51"/>
+        <TopLine Value="25"/>
+        <CursorPos X="3" Y="43"/>
         <UsageCount Value="224"/>
       </Unit109>
       <Unit110>
@@ -812,6 +813,8 @@
         <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
+        <TopLine Value="619"/>
+        <CursorPos X="43" Y="637"/>
         <UsageCount Value="224"/>
         <Loaded Value="True"/>
       </Unit116>
@@ -1058,7 +1061,6 @@
         <Filename Value="..\ortak\kesme\k_zamanlayici.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="55" Y="17"/>
         <UsageCount Value="224"/>
       </Unit155>
       <Unit156>
@@ -1105,8 +1107,6 @@
         <Filename Value="..\ortak\kesme\k_sistemmesaj.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="43"/>
-        <CursorPos X="37" Y="64"/>
         <UsageCount Value="224"/>
       </Unit162>
       <Unit163>
@@ -1131,7 +1131,6 @@
         <Filename Value="..\ortak\kesme\k_ekran.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="34"/>
         <UsageCount Value="224"/>
       </Unit166>
       <Unit167>
@@ -1392,7 +1391,7 @@
         <Filename Value="..\notlar.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="6"/>
-        <CursorPos Y="3"/>
+        <CursorPos X="40" Y="8"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -1404,127 +1403,23 @@
         <UsageCount Value="70"/>
       </Unit210>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="4" HistoryIndex="3">
       <Position1>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="32" Column="18" TopLine="10"/>
+        <Filename Value="..\surumbil.txt"/>
+        <Caret Line="11" Column="58"/>
       </Position1>
       <Position2>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="54" Column="20" TopLine="32"/>
+        <Caret Line="482" Column="15" TopLine="463"/>
       </Position2>
       <Position3>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="76" Column="31" TopLine="54"/>
+        <Caret Line="149" Column="7" TopLine="128"/>
       </Position3>
       <Position4>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="107" Column="52" TopLine="85"/>
-      </Position4>
-      <Position5>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="146" Column="58" TopLine="125"/>
-      </Position5>
-      <Position6>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="207" Column="23" TopLine="185"/>
-      </Position6>
-      <Position7>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="208" Column="15" TopLine="187"/>
-      </Position7>
-      <Position8>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="69" Column="3" TopLine="55"/>
-      </Position8>
-      <Position9>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="49" Column="13" TopLine="36"/>
-      </Position9>
-      <Position10>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="69" Column="12" TopLine="47"/>
-      </Position10>
-      <Position11>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="54" Column="20" TopLine="47"/>
-      </Position11>
-      <Position12>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="76" Column="31" TopLine="54"/>
-      </Position12>
-      <Position13>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="107" Column="52" TopLine="85"/>
-      </Position13>
-      <Position14>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="146" Column="58" TopLine="125"/>
-      </Position14>
-      <Position15>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="208" Column="3" TopLine="192"/>
-      </Position15>
-      <Position16>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="209" Column="18" TopLine="182"/>
-      </Position16>
-      <Position17>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="322" Column="31" TopLine="310"/>
-      </Position17>
-      <Position18>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="364" Column="31" TopLine="354"/>
-      </Position18>
-      <Position19>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="439" Column="27" TopLine="438"/>
-      </Position19>
-      <Position20>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="68" Column="17" TopLine="54"/>
-      </Position20>
-      <Position21>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="439" Column="17" TopLine="425"/>
-      </Position21>
-      <Position22>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="68" Column="17" TopLine="50"/>
-      </Position22>
-      <Position23>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="445" Column="19" TopLine="426"/>
-      </Position23>
-      <Position24>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="68" Column="17" TopLine="55"/>
-      </Position24>
-      <Position25>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="439" Column="38" TopLine="417"/>
-      </Position25>
-      <Position26>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="441" Column="17" TopLine="419"/>
-      </Position26>
-      <Position27>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="443" Column="38" TopLine="421"/>
-      </Position27>
-      <Position28>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="478" Column="7" TopLine="455"/>
-      </Position28>
-      <Position29>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="323" Column="53" TopLine="307"/>
-      </Position29>
-      <Position30>
         <Filename Value="..\surumbil.txt"/>
-        <Caret Line="9" Column="41"/>
-      </Position30>
+        <Caret Line="2" Column="43"/>
+      </Position4>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

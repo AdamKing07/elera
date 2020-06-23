@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 17/06/2020
+  Güncelleme Tarihi: 23/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit gorev;
 
 interface
 
-uses paylasim;
+uses paylasim, gn_pencere;
 
 const
   // bir görev için tanýmlanan üst sýnýr olay sayýsý
@@ -49,6 +49,7 @@ type
     function BosGorevBul: PGorev;
     procedure SecicileriOlustur;
   public
+    FAnaPencere: PPencere;
     FOlayBellekAdresi: POlay;        // olaylarýn yerleþtirileceði bellek bölgesi
     FOlaySayisi: TSayi4;                  // olay sayacý
 
@@ -64,6 +65,7 @@ type
     function OlayAl(var AOlay: TOlay): Boolean;
     function Sonlandir(AGorevKimlik: TGorevKimlik;
       const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
+    function GorevBul(AGorevKimlik: TKimlik): PGorev;
     property OlayBellekAdresi: POlay read FOlayBellekAdresi write FOlayBellekAdresi;
   published
     property GorevKimlik: TGorevKimlik read FGorevKimlik;
@@ -136,6 +138,7 @@ begin
     Gorev^.FGorevDurum := gdBos;
     Gorev^.FGorevKimlik := i;
     Gorev^.FOlayBellekBosta := True;
+    Gorev^.FAnaPencere := nil;
 
     Inc(Gorev);
   end;
@@ -674,6 +677,29 @@ begin
 
     // görev sýra no aranan görev ise iþlem bellek bölgesini geri döndür
     if(AGorevSiraNo = j) then Exit(GorevListesi[i]);
+  end;
+
+  Result := nil;
+end;
+
+{==============================================================================
+  görev kimlik numarasýna göre görev aramasý yapar
+ ==============================================================================}
+function TGorev.GorevBul(AGorevKimlik: TKimlik): PGorev;
+var
+  Gorev: PGorev;
+  i: TSayi4;
+begin
+
+  // tüm görev giriþlerini incele
+  for i := 1 to USTSINIR_GOREVSAYISI do
+  begin
+
+    Gorev := GorevListesi[i];
+
+    // eðer görev giriþi boþ ise
+    if(Gorev^.FGorevDurum = gdCalisiyor) and (Gorev^.GorevKimlik = AGorevKimlik) then
+      Exit(Gorev);
   end;
 
   Result := nil;

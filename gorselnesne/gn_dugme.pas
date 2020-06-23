@@ -64,7 +64,7 @@ begin
       GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
       Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
         PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^,
-        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + CalisanGorevBellekAdresi)^);
     end;
 
     ISLEV_YOKET:
@@ -111,7 +111,7 @@ begin
 
       Dugme := PDugme(Dugme^.NesneAl(PKimlik(ADegiskenler + 00)^));
       if not(Dugme = nil) then
-        Dugme^.Baslik := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^;
+        Dugme^.Baslik := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^;
 
       Dugme^.Ciz;
     end

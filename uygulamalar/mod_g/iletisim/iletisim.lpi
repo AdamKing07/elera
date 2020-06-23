@@ -40,8 +40,8 @@
         <Filename Value="iletisim.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="37"/>
-        <CursorPos Y="47"/>
+        <TopLine Value="12"/>
+        <CursorPos X="19" Y="32"/>
         <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -430,122 +430,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="146" Column="37" TopLine="121"/>
+        <Caret Line="85" Column="19" TopLine="62"/>
       </Position1>
       <Position2>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="83" Column="46" TopLine="71"/>
+        <Caret Line="90" Column="34" TopLine="67"/>
       </Position2>
       <Position3>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="114" Column="42" TopLine="100"/>
+        <Caret Line="94" Column="36" TopLine="71"/>
       </Position3>
       <Position4>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="31" Column="10" TopLine="17"/>
+        <Caret Line="111" Column="20" TopLine="88"/>
       </Position4>
       <Position5>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="125" Column="18" TopLine="110"/>
+        <Caret Line="112" Column="23" TopLine="89"/>
       </Position5>
       <Position6>
         <Filename Value="iletisim.lpr"/>
+        <Caret Line="117" Column="18" TopLine="94"/>
       </Position6>
       <Position7>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="30" Column="12" TopLine="7"/>
+        <Caret Line="125" Column="18" TopLine="102"/>
       </Position7>
       <Position8>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="85" Column="19" TopLine="62"/>
+        <Caret Line="139" Column="18" TopLine="116"/>
       </Position8>
       <Position9>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="90" Column="34" TopLine="67"/>
+        <Caret Line="76" Column="67" TopLine="61"/>
       </Position9>
       <Position10>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="94" Column="36" TopLine="71"/>
+        <Caret Line="27" Column="13" TopLine="13"/>
       </Position10>
       <Position11>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="111" Column="20" TopLine="88"/>
+        <Caret Line="42" Column="13" TopLine="24"/>
       </Position11>
       <Position12>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="112" Column="23" TopLine="89"/>
+        <Caret Line="27" Column="3" TopLine="24"/>
       </Position12>
       <Position13>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="117" Column="18" TopLine="94"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="29" Column="22" TopLine="12"/>
       </Position13>
       <Position14>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="125" Column="18" TopLine="102"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="63" Column="3" TopLine="41"/>
       </Position14>
       <Position15>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="139" Column="18" TopLine="116"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="39" Column="45" TopLine="11"/>
       </Position15>
       <Position16>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="76" Column="67" TopLine="61"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="101" Column="58" TopLine="83"/>
       </Position16>
       <Position17>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="27" Column="13" TopLine="13"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="39" Column="11" TopLine="20"/>
       </Position17>
       <Position18>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="42" Column="13" TopLine="24"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="102" Column="48" TopLine="85"/>
       </Position18>
       <Position19>
-        <Filename Value="iletisim.lpr"/>
-        <Caret Line="27" Column="3" TopLine="24"/>
+        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
+        <Caret Line="29" Column="11" TopLine="20"/>
       </Position19>
       <Position20>
         <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="29" Column="22" TopLine="12"/>
+        <Caret Line="58" Column="9" TopLine="30"/>
       </Position20>
       <Position21>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="63" Column="3" TopLine="41"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="43" Column="38" TopLine="24"/>
       </Position21>
       <Position22>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="39" Column="45" TopLine="11"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="14" Column="8"/>
       </Position22>
       <Position23>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="101" Column="58" TopLine="83"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="15" Column="5"/>
       </Position23>
       <Position24>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="39" Column="11" TopLine="20"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="54" Column="36" TopLine="37"/>
       </Position24>
       <Position25>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="102" Column="48" TopLine="85"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="21" Column="8"/>
       </Position25>
       <Position26>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="29" Column="11" TopLine="20"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="22" Column="10"/>
       </Position26>
       <Position27>
-        <Filename Value="../../../rtl_uygulama/linux/gn_karmaliste.pas"/>
-        <Caret Line="58" Column="9" TopLine="30"/>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="23" Column="9"/>
       </Position27>
       <Position28>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="43" Column="38" TopLine="24"/>
+        <Caret Line="24" Column="14"/>
       </Position28>
       <Position29>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="14" Column="8"/>
+        <Caret Line="25" Column="14"/>
       </Position29>
       <Position30>
         <Filename Value="iletisim.lpr"/>
-        <Caret Line="15" Column="5"/>
+        <Caret Line="30" Column="9"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

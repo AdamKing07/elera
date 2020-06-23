@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-06-21T12:51:45Z">
+  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-06-23T17:04:28Z">
     <Description>ELERA &#x130;&#x15F;letim Sistemi (32 Bit)</Description>
     <MediaRegistry>
       <HardDisks>
@@ -21,7 +21,7 @@
       <ExtraDataItem name="GUI/InformationWindowGeometry" value="507,249,598,332"/>
       <ExtraDataItem name="GUI/LastCloseAction" value="PowerOff"/>
       <ExtraDataItem name="GUI/LastGuestSizeHint" value="800,600"/>
-      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="383,48,800,642"/>
+      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="307,240,800,642"/>
       <ExtraDataItem name="GUI/LastScaleWindowPosition" value="189,230,1096,595"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeDevicesMenuActions" value="HardDrives"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeMachineMenuActions" value="SaveState,PowerOff"/>
@@ -64,7 +64,7 @@
             <InternalNetwork name="intnet"/>
             <NATNetwork name="NatNetwork"/>
           </DisabledModes>
-          <BridgedInterface name="Broadcom 802.11n A&#x11F; Ba&#x11F;da&#x15F;t&#x131;r&#x131;c&#x131;"/>
+          <BridgedInterface name="Realtek PCIe GBE Family Controller"/>
         </Adapter>
         <Adapter slot="1" MACAddress="0800278B3645" cable="true" type="Am79C973"/>
         <Adapter slot="2" MACAddress="080027B5080F" cable="true" type="Am79C973"/>
@@ -111,7 +111,7 @@
       <AudioAdapter controller="SB16" driver="DirectSound" enabled="false"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1592727878195667300" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1592931868804900000" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>

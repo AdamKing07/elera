@@ -6,7 +6,7 @@
   Dosya Adı: k_ekran.pas
   Dosya İşlevi: ekran (screen) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 08/10/2019
+  Güncelleme Tarihi: 23/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,7 +16,7 @@ interface
 
 uses paylasim;
 
-function EkranCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function EkranCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
@@ -25,31 +25,31 @@ uses genel;
 {==============================================================================
   ekran kesme çağrılarını yönetir
  ==============================================================================}
-function EkranCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function EkranCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Islev: TSayi4;
-  _Nokta: PKonum;
+  Islev: TSayi4;
+  Konum: PKonum;
 begin
 
   // işlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   // AL'ma işlevi
-  if(_Islev = ISLEV_AL) then
+  if(Islev = ISLEV_AL) then
   begin
 
-    _Islev := ((IslevNo shr 8) and $FF);
+    Islev := ((AIslevNo shr 8) and $FF);
 
     // ekran çözünürlüğünü al
-    if(_Islev = 1) then
+    if(Islev = 1) then
     begin
 
       // çözünürlük değerlerini belirtilen bellek adreslerine kopyala
-      _Nokta := PKonum(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+      Konum := PKonum(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi);
 
 
-      _Nokta^.Sol := GEkranKartSurucusu.KartBilgisi.YatayCozunurluk;
-      _Nokta^.Ust := GEkranKartSurucusu.KartBilgisi.DikeyCozunurluk;
+      Konum^.Sol := GEkranKartSurucusu.KartBilgisi.YatayCozunurluk;
+      Konum^.Ust := GEkranKartSurucusu.KartBilgisi.DikeyCozunurluk;
 
       // işlev başarı kodunu geri döndür
       Result := 1;

@@ -6,7 +6,7 @@
   Program Adý: anabirim.pas
   Program Ýþlevi: ana programýn ana birimi
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -19,8 +19,8 @@ uses gn_pencere, n_gorev;
 type
   TAnaBirim = object
   public
-    Gorev0: TGorev;
-    Pencere0: TPencere;
+    Gorev: TGorev;
+    Pencere: TPencere;
     OlayKayit: TOlayKayit;
     TiklamaSayisi: Integer;
     procedure OlusturVeCalistir;
@@ -37,32 +37,32 @@ const
 procedure TAnaBirim.OlusturVeCalistir;
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 200, 100, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 100, 200, 100, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   TiklamaSayisi := 0;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
       Inc(TiklamaSayisi);
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
 
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(8, 24, 'Týklama Sayýsý:');
-      Pencere0.Tuval.SayiYaz10(17 * 8, 24, TiklamaSayisi);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(8, 24, 'Týklama Sayýsý:');
+      Pencere.Tuval.SayiYaz10(17 * 8, 24, TiklamaSayisi);
     end;
-
-  until (1 = 2);
+  end;
 end;
 
 end.

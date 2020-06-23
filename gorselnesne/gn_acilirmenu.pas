@@ -83,7 +83,7 @@ begin
       AcilirMenu := PAcilirMenu(AcilirMenu^.NesneTipiniKontrolEt(PKimlik(ADegiskenler + 00)^,
         gntAcilirMenu));
 
-      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^;
+      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^;
       AResimSiraNo := PISayi4(ADegiskenler + 08)^;
 
       if(AcilirMenu <> nil) then

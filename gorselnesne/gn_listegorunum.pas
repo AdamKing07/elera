@@ -78,7 +78,7 @@ begin
       ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntListeGorunum));
       if(ListeGorunum <> nil) then ListeGorunum^.FDegerler^.Ekle(
-        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
       Result := 1;
     end;
 
@@ -115,7 +115,7 @@ begin
       ListeGorunum := PListeGorunum(ListeGorunum^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntListeGorunum));
       if(ListeGorunum <> nil) then Result := ListeGorunum^.FSeciliSiraNo;
-      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       p^ := ListeGorunum^.SeciliSatirDegeriniAl;
     end;
 
@@ -144,7 +144,7 @@ begin
       begin
 
         ListeGorunum^.FKolonAdlari^.Ekle(
-          PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+          PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
         ListeGorunum^.FKolonUzunluklari^.Ekle(PISayi4(ADegiskenler + 08)^);
         Result := 1;
       end;

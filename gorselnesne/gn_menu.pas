@@ -90,7 +90,7 @@ begin
 
       Menu := PMenu(Menu^.NesneTipiniKontrolEt(PKimlik(ADegiskenler + 00)^, gntMenu));
 
-      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^;
+      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^;
       AResimSiraNo := PISayi4(ADegiskenler + 08)^;
 
       if(Menu <> nil) then

@@ -56,7 +56,7 @@ begin
   case AIslevNo of
 
     ISLEV_OLUSTUR: Result := NesneOlustur(PKarakterKatari(PSayi4(ADegiskenler + 04)^ +
-      AktifGorevBellekAdresi)^);
+      CalisanGorevBellekAdresi)^);
 
     // oluşturulmuş toplam masaüstü sayısı
     $0102:
@@ -89,6 +89,8 @@ begin
           // masaüstünü aktif olarak işaretle
           GAktifMasaustu := MasaustuListesi[i];
 
+          GAktifMasaustu^.Aktiflestir;
+
           // masaüstünü çiz
           GAktifMasaustu^.Ciz;
 
@@ -116,7 +118,7 @@ begin
       Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntMasaustu));
       if(Masaustu <> nil) then Masaustu^.MasaustuResminiDegistir(
-        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
     end;
 
     // masaüstünü güncelleştir (yeniden çiz)

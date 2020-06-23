@@ -62,7 +62,7 @@ begin
       GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
       Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
         PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^,
-        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + CalisanGorevBellekAdresi)^);
     end;
 
     ISLEV_GOSTER:
@@ -88,7 +88,7 @@ begin
     begin
 
       Resim := PResim(Resim^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       Resim^.ResimYaz(p^);
     end;
 

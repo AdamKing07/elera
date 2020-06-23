@@ -7,12 +7,12 @@ program resimgor;
   Program Adý: resimgor.lpr
   Program Ýþlevi: resim görüntüleyici program
 
-  Güncelleme Tarihi: 08/11/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gn_masaustu, gorev, gn_pencere, gn_dugme, gn_etiket,
-  gn_listekutusu, gn_resim, gn_durumcubugu;
+uses gn_masaustu, n_gorev, gn_pencere, gn_dugme, gn_etiket, gn_listekutusu,
+  gn_resim, gn_durumcubugu;
 
 const
   ProgramAdi: string = 'Resim Görüntüleyici';
@@ -21,82 +21,83 @@ var
   DosyaAramaListesi: array[0..20] of TDosyaArama;
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
   lkDosyaListesi: TListeKutusu;
-  DurumCubugu0: TDurumCubugu;
-  Resim0: TResim;
+  DurumCubugu: TDurumCubugu;
+  Resim: TResim;
   OlayKayit: TOlayKayit;
-  i: LongInt;
+  i: TISayi4;
   GoruntulenecekDosya: string;
 
 procedure DosyalariListele;
 var
-  _DosyaArama: TDosyaArama;
-  _AramaSonuc, _i, _j: TSayi4;
+  DosyaArama: TDosyaArama;
+  AramaSonuc, i, j: TSayi4;
 begin
 
   lkDosyaListesi.Temizle;
 
-  _j := 0;
+  j := 0;
 
-  _AramaSonuc := _FindFirst('disk1:\*.*', 0, _DosyaArama);
+  AramaSonuc := _FindFirst('disk1:\*.*', 0, DosyaArama);
 
-  while (_AramaSonuc = 0) do
+  while (AramaSonuc = 0) do
   begin
 
-    _i := Length(_DosyaArama.DosyaAdi);
-    if(_i > 4) and (_DosyaArama.DosyaAdi[_i - 3] = '.') and (_DosyaArama.DosyaAdi[_i - 2] = 'b') and
-      (_DosyaArama.DosyaAdi[_i - 1] = 'm') and (_DosyaArama.DosyaAdi[_i] = 'p') then
+    i := Length(DosyaArama.DosyaAdi);
+    if(i > 4) and (DosyaArama.DosyaAdi[i - 3] = '.') and (DosyaArama.DosyaAdi[i - 2] = 'b') and
+      (DosyaArama.DosyaAdi[i - 1] = 'm') and (DosyaArama.DosyaAdi[i] = 'p') then
     begin
 
-      DosyaAramaListesi[_j] := _DosyaArama;
-      lkDosyaListesi.ElemanEkle(DosyaAramaListesi[_j].DosyaAdi);
+      DosyaAramaListesi[j] := DosyaArama;
+      lkDosyaListesi.ElemanEkle(DosyaAramaListesi[j].DosyaAdi);
 
-      Inc(_j);
+      Inc(j);
     end;
 
-    _AramaSonuc := _FindNext(_DosyaArama);
+    AramaSonuc := _FindNext(DosyaArama);
   end;
 
-  _FindClose(_DosyaArama);
+  _FindClose(DosyaArama);
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 50, 50, 400, 300, ptBoyutlandirilabilir, ProgramAdi, $C0C4C3);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 50, 50, 400, 300, ptBoyutlandirilabilir, ProgramAdi, $C0C4C3);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 10, 22, 'Dosya: -');
-  DurumCubugu0.Goster;
+  DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 10, 22, 'Dosya: -');
+  DurumCubugu.Goster;
 
   // liste kutusu oluþtur
-  lkDosyaListesi.Olustur(Pencere0.Kimlik, 0, 0, 100, 52);
+  lkDosyaListesi.Olustur(Pencere.Kimlik, 0, 0, 100, 52);
   lkDosyaListesi.Hizala(hzSol);
   lkDosyaListesi.Goster;
 
-  Resim0.Olustur(Pencere0.Kimlik, 0, 60, 490, 420, '');
-  Resim0.Hizala(hzTum);
-  Resim0.TuvaleSigdir(True);
-  Resim0.Goster;
+  Resim.Olustur(Pencere.Kimlik, 0, 60, 490, 420, '');
+  Resim.Hizala(hzTum);
+  Resim.TuvaleSigdir(True);
+  Resim.Goster;
 
   DosyalariListele;
 
   // pencereyi görüntüle
-  Pencere0.Goster;
+  Pencere.Goster;
 
   if(ParamCount > 0) then
   begin
 
     GoruntulenecekDosya := ParamStr1(1);
-    Resim0.Degistir(GoruntulenecekDosya);
-    DurumCubugu0.DurumYazisiDegistir('Dosya: ' + GoruntulenecekDosya);
+    Resim.Degistir(GoruntulenecekDosya);
+    DurumCubugu.DurumYazisiDegistir('Dosya: ' + GoruntulenecekDosya);
   end;
 
   // ana döngü
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
 
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
@@ -107,9 +108,9 @@ begin
 
         i := lkDosyaListesi.SeciliSiraNoAl;
         GoruntulenecekDosya := 'disk1:\' + DosyaAramaListesi[i].DosyaAdi;
-        Resim0.Degistir(GoruntulenecekDosya);
-        DurumCubugu0.DurumYazisiDegistir('Dosya: ' + GoruntulenecekDosya);
+        Resim.Degistir(GoruntulenecekDosya);
+        DurumCubugu.DurumYazisiDegistir('Dosya: ' + GoruntulenecekDosya);
       end
     end;
-  until (1 = 2);
+  end;
 end.

@@ -67,7 +67,7 @@ begin
     _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler)^);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
-    _Bellek := Isaretci((PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi));
+    _Bellek := Isaretci((PSayi4(Degiskenler + 16)^ + CalisanGorevBellekAdresi));
 
     _Pencere^.YaziYaz(_Pencere, _A1, _B1, PKarakterKatari(_Bellek)^, PRenk(Degiskenler + 12)^);
 
@@ -117,7 +117,7 @@ begin
     _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler)^);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
-    _Bellek := PMACAdres(PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi);
+    _Bellek := PMACAdres(PSayi4(Degiskenler + 16)^ + CalisanGorevBellekAdresi);
 
     _Pencere^.MACAdresiYaz(_Pencere, _A1, _B1, PMACAdres(_Bellek)^, PRenk(Degiskenler + 12)^);
 
@@ -134,7 +134,7 @@ begin
     _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler)^);
     _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
     _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
-    _Bellek := PIPAdres(PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi);
+    _Bellek := PIPAdres(PSayi4(Degiskenler + 16)^ + CalisanGorevBellekAdresi);
 
     _Pencere^.IPAdresiYaz(_Pencere, _A1, _B1, PIPAdres(_Bellek)^, PRenk(Degiskenler + 12)^);
 

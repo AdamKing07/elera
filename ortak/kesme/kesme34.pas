@@ -53,7 +53,7 @@ asm
   // uygulamanın yığına sürdüğü değişken adresine konumlan
   mov   edx,[esp + 12 + 04]             // sistem esp (ring0)
   mov   edx,[edx + 12]                  // program esp (ring3)
-  add   edx,AktifGorevBellekAdresi      // + program bellek başlangıç adresi
+  add   edx,CalisanGorevBellekAdresi      // + program bellek başlangıç adresi
   mov   UygulamaYiginAdresi,edx
 
   // eax = işlev çağrı numarası

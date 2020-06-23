@@ -7,14 +7,14 @@ program defter;
   Program Adý: defter.lpr
   Program Ýþlevi: metin düzenleme programý
 
-  Güncelleme Tarihi: 07/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
   Bilgi: çekirdek tarafýndan defter.c programýna bilgileri iþlemesi için
     Isaretci(4)^ adresinde 4096 * 10 byte yer tahsis edilmiþtir.
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_dugme,
+uses n_gorev, gn_pencere, gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_dugme,
   gn_defter, gn_panel;
 
 const
@@ -22,10 +22,10 @@ const
   DOSYA_BELLEK_KAPASITESI = Integer(4096 * 10);
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Panel0: TPanel;
-  DurumCubugu0: TDurumCubugu;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Panel: TPanel;
+  DurumCubugu: TDurumCubugu;
   Defter0: TDefter;
   etiDosyaAdi: TEtiket;
   gkDosyaAdi: TGirisKutusu;
@@ -80,7 +80,7 @@ begin
 
     s := 'Dosya: -';
 
-    DurumCubugu0.DurumYazisiDegistir(s);
+    DurumCubugu.DurumYazisiDegistir(s);
   end
   else if(DosyaAdi <> '') then
   begin
@@ -89,38 +89,38 @@ begin
 
     s := 'Dosya: ' + DosyaAdi + ', ' + IntToStr(DosyaUzunluk) + ' byte';
 
-    DurumCubugu0.DurumYazisiDegistir(s);
+    DurumCubugu.DurumYazisiDegistir(s);
   end;
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 10, 10, 400 + 10, 300 + 85, ptBoyutlandirilabilir, ProgramAdi,
+  Pencere.Olustur(-1, 10, 10, 400 + 10, 300 + 85, ptBoyutlandirilabilir, ProgramAdi,
     RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Panel0.Olustur(Pencere0.Kimlik, 0, 0, 100, 32, 2, RENK_GRI, $E0EEFA, 0, '');
-  Panel0.Hizala(hzUst);
-  Panel0.Goster;
+  Panel.Olustur(Pencere.Kimlik, 0, 0, 100, 32, 2, RENK_GRI, $E0EEFA, 0, '');
+  Panel.Hizala(hzUst);
+  Panel.Goster;
 
-  etiDosyaAdi.Olustur(Panel0.Kimlik, 2, 9, $000000, 'Dosya Adý:');
+  etiDosyaAdi.Olustur(Panel.Kimlik, 2, 9, $000000, 'Dosya Adý:');
   etiDosyaAdi.Goster;
 
-  gkDosyaAdi.Olustur(Panel0.Kimlik, 11 * 8, 6, 27 * 8, 22, '');
+  gkDosyaAdi.Olustur(Panel.Kimlik, 11 * 8, 6, 27 * 8, 22, '');
   gkDosyaAdi.IcerikYaz('disk1:\haklar.txt');
   gkDosyaAdi.Goster;
 
-  dugYukle.Olustur(Panel0.Kimlik, 39 * 8, 5, 60, 22, 'Yükle');
+  dugYukle.Olustur(Panel.Kimlik, 39 * 8, 5, 60, 22, 'Yükle');
   dugYukle.Goster;
 
-  DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 18, '');
-  DurumCubugu0.Goster;
+  DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 18, '');
+  DurumCubugu.Goster;
 
-  Defter0.Olustur(Pencere0.Kimlik, 0, 0, 10, 10, RENK_BEYAZ, RENK_SIYAH);
+  Defter0.Olustur(Pencere.Kimlik, 0, 0, 10, 10, RENK_BEYAZ, RENK_SIYAH);
   Defter0.Hizala(hzTum);
   Defter0.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   // programa tahsis edilmiþ bellek adresini al
   DosyaBellek := PChar(Isaretci(4)^);
@@ -140,7 +140,7 @@ begin
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_SOLTUS_BASILDI) then
     begin
 

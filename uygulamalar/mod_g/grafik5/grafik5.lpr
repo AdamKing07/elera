@@ -7,12 +7,12 @@ program grafik5;
   Program Adı: grafik5.lpr
   Program İşlevi: çoklu dikdörtgen / kare çizim programı - double değer testi
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses gorev, gn_pencere, zamanlayici;
+uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik-5';
@@ -26,9 +26,9 @@ type
   end;
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   i, j, Sol, Ust: TISayi4;
   SayacListesi: array[0..USTDEGER_NOKTASAYISI - 1] of TSayac;
@@ -53,12 +53,12 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 150, 150, 450, 300, ptIletisim, ProgramAdi, $F7EEF3);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 150, 150, 450, 300, ptIletisim, ProgramAdi, $F7EEF3);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Zamanlayici0.Olustur(30);
+  Zamanlayici.Olustur(30);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   // tüm nokta değişkenlerini ilk değerlerle Ustükle
   for i := 0 to USTDEGER_NOKTASAYISI - 1 do
@@ -72,12 +72,12 @@ begin
   end;
 
   // zamanlayıcıUstı başlat
-  Zamanlayici0.Baslat;
+  Zamanlayici.Baslat;
 
   while True do
   begin
 
-    Gorev0.OlayAl(OlayKayit);
+    Gorev.OlayAl(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
@@ -95,7 +95,7 @@ begin
         end;
       end;
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
@@ -106,7 +106,7 @@ begin
 
         Sol := i * 8;
         Ust := Round(SayacListesi[i].MevcutDeger);
-        Pencere0.Tuval.Dikdortgen(Sol, Ust, 7, 7, SayacListesi[i].Renk, True);
+        Pencere.Tuval.Dikdortgen(Sol, Ust, 7, 7, SayacListesi[i].Renk, True);
       end;
     end;
   end;

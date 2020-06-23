@@ -81,7 +81,7 @@ begin
         PKimlik(ADegiskenler + 00)^, gntKarmaListe));
       if(KarmaListe <> nil) then
         KarmaListe^.ListeyeEkle(PKarakterKatari(PSayi4(ADegiskenler + 04)^ +
-          AktifGorevBellekAdresi)^);
+          CalisanGorevBellekAdresi)^);
 
       Result := 1;
     end;
@@ -112,7 +112,7 @@ begin
       if(KarmaListe <> nil) then
       begin
 
-        p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+        p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
         p^ := KarmaListe^.Baslik;
       end;
     end;

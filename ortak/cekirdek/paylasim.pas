@@ -633,8 +633,8 @@ var
 
 var
   CalisanGorevSayisi,                     // oluþturulan / çalýþan program sayýsý
-  CalisanGorev: TISayi4;                    // o an çalýþan program
-  AktifGorevBellekAdresi: TSayi4;         // o an çalýþan programýn yüklendiði bellek adresi
+  CalisanGorev: TISayi4;                  // o an çalýþan program
+  CalisanGorevBellekAdresi: TSayi4;       // o an çalýþan programýn yüklendiði bellek adresi
 
 type
   PAlan = ^TAlan;

@@ -6,7 +6,7 @@
   Dosya Adý: k_zamanlayici.pas
   Dosya Ýþlevi: zamanlayýcý kesme iþlevlerini içerir
 
-  Güncelleme Tarihi: 14/09/2019
+  Güncelleme Tarihi: 23/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,7 +16,7 @@ interface
 
 uses paylasim;
 
-function ZamanlayiciCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function ZamanlayiciCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
@@ -25,41 +25,41 @@ uses zamanlayici;
 {==============================================================================
   zamanlayýcý kesme çaðrýlarýný yönetir
  ==============================================================================}
-function ZamanlayiciCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function ZamanlayiciCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Zamanlayici: PZamanlayici;
-  _Islev: TSayi4;
+  Zamanlayici: PZamanlayici;
+  Islev: TSayi4;
 begin
 
   // iþlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   // zamanlayýcý nesnesi oluþtur
-  if(_Islev = ISLEV_OLUSTUR) then
+  if(Islev = ISLEV_OLUSTUR) then
   begin
 
-    _Zamanlayici := _Zamanlayici^.Olustur(PISayi4(Degiskenler)^);
+    Zamanlayici := Zamanlayici^.Olustur(PISayi4(ADegiskenler)^);
 
-    if(_Zamanlayici <> nil) then
-      Result := _Zamanlayici^.Kimlik
+    if(Zamanlayici <> nil) then
+      Result := Zamanlayici^.Kimlik
     else Result := -1;
   end
 
   // zamanlayýcý nesnesini baþlatýr
-  else if(_Islev = 2) then
+  else if(Islev = 2) then
   begin
 
-    _Zamanlayici := ZamanlayiciListesi[PKimlik(Degiskenler)^];
-    if(_Zamanlayici <> nil) then _Zamanlayici^.Durum := zdCalisiyor;
+    Zamanlayici := ZamanlayiciListesi[PKimlik(ADegiskenler)^];
+    if(Zamanlayici <> nil) then Zamanlayici^.Durum := zdCalisiyor;
   end
 
   // zamanlayýcý nesnesini durdurur
-  else if(_Islev = 3) then
+  else if(Islev = 3) then
   begin
 
-    _Zamanlayici := ZamanlayiciListesi[PKimlik(Degiskenler)^];
+    Zamanlayici := ZamanlayiciListesi[PKimlik(ADegiskenler)^];
 
-    if(_Zamanlayici <> nil) then _Zamanlayici^.Durum := zdDurduruldu;
+    if(Zamanlayici <> nil) then Zamanlayici^.Durum := zdDurduruldu;
   end
 
   // iþlev belirtilen aralýkta deðilse hata kodunu geri döndür

@@ -85,7 +85,7 @@ begin
 
     i := PISayi4(ADegiskenler + 00)^;
     _DNS := DNSListesi[i];
-    _DNS^.Sorgula(i, PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+    _DNS^.Sorgula(i, PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
   end
   // dns sorgu durumunu al
   else if(AIslevNo = 3) then
@@ -100,7 +100,7 @@ begin
 
     _DNS := DNSListesi[PISayi4(ADegiskenler + 00)^];
 
-    Hedef := PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi;
+    Hedef := PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi;
 
     // dns yanıtını ve uzunluğunu (4 byte) hedef alana kopyala
     Tasi2(Isaretci(_DNS^.FBellekAdresi + 2048), Isaretci(Hedef), _DNS^.FYanitUzunluk + 4);

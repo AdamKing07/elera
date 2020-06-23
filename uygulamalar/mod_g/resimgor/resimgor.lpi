@@ -39,7 +39,6 @@
         <Filename Value="resimgor.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="59" Y="14"/>
         <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -289,10 +288,9 @@
       </Unit47>
       <Unit48>
         <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="17" Y="13"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit48>
       <Unit49>
         <Filename Value="../../../rtl_uygulama/linux/gn_dugme.pas"/>
@@ -355,7 +353,7 @@
         <UsageCount Value="10"/>
       </Unit58>
     </Units>
-    <JumpHistory Count="17" HistoryIndex="16">
+    <JumpHistory Count="20" HistoryIndex="19">
       <Position1>
         <Filename Value="resimgor.lpr"/>
         <Caret Line="105" Column="34" TopLine="84"/>
@@ -395,33 +393,45 @@
         <Caret Line="75" Column="20" TopLine="60"/>
       </Position10>
       <Position11>
-        <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="36" Column="33" TopLine="19"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="14" Column="59"/>
       </Position11>
       <Position12>
-        <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="92" Column="35" TopLine="72"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="10" Column="25"/>
       </Position12>
       <Position13>
-        <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="33" Column="59" TopLine="20"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="24" Column="8"/>
       </Position13>
       <Position14>
-        <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="23" Column="20" TopLine="13"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="25" Column="10"/>
       </Position14>
       <Position15>
-        <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="48" Column="31" TopLine="44"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="27" Column="14"/>
       </Position15>
       <Position16>
-        <Filename Value="../../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="25" Column="15" TopLine="10"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="28" Column="8"/>
       </Position16>
       <Position17>
         <Filename Value="resimgor.lpr"/>
-        <Caret Line="14" Column="59"/>
+        <Caret Line="35" Column="13" TopLine="12"/>
       </Position17>
+      <Position18>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="36" Column="19" TopLine="12"/>
+      </Position18>
+      <Position19>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="98" Column="8" TopLine="77"/>
+      </Position19>
+      <Position20>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="115" Column="7" TopLine="78"/>
+      </Position20>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

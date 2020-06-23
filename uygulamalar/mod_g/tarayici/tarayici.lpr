@@ -7,87 +7,88 @@ program tarayici;
   Program Adý: tarayici.lpr
   Program Ýþlevi: internet tarayýcý programý
 
-  Güncelleme Tarihi: 15/04/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, gn_karmaliste,
-  zamanlayici, n_iletisim, gn_defter, gn_etiket;
+uses n_gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, gn_karmaliste,
+  n_zamanlayici, n_iletisim, gn_defter, gn_etiket;
 
 const
   ProgramAdi: string = 'Ýnternet Tarayýcý';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Defter0: TDefter;
-  DurumCubugu0: TDurumCubugu;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Defter: TDefter;
+  DurumCubugu: TDurumCubugu;
   etAdres: TEtiket;
   gkAdres: TGirisKutusu;
-  Zamanlayici0: TZamanlayici;
+  Zamanlayici: TZamanlayici;
   dugBaglan, dugGonder, dugBKes: TDugme;
   OlayKayit: TOlayKayit;
-  Iletisim0: TIletisim;
+  Iletisim: TIletisim;
   IPAdres, s: string;
   VeriUzunlugu: Integer;
 begin
 
   IPAdres := '193.1.1.1';
 
-  Pencere0.Olustur(-1, 50, 50, 456, 274, ptIletisim, ProgramAdi, $F8F9F9);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 50, 50, 445, 275, ptIletisim, ProgramAdi, $FAF1E3);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  etAdres.Olustur(Pencere0.Kimlik, 10, 10, RENK_SIYAH, 'Adres');
+  etAdres.Olustur(Pencere.Kimlik, 5, 10, RENK_SIYAH, 'Adres');
   etAdres.Goster;
 
-  gkAdres.Olustur(Pencere0.Kimlik, 55, 6, 200, 22, IPAdres);
+  gkAdres.Olustur(Pencere.Kimlik, 50, 6, 205, 22, IPAdres);
   gkAdres.Goster;
 
-  dugBaglan.Olustur(Pencere0.Kimlik, 268, 6, 55, 22, 'Baðlan');
+  dugBaglan.Olustur(Pencere.Kimlik, 268, 5, 55, 22, 'Baðlan');
   dugBaglan.Goster;
 
-  dugGonder.Olustur(Pencere0.Kimlik, 325, 6, 55, 22, 'Gönder');
+  dugGonder.Olustur(Pencere.Kimlik, 325, 5, 55, 22, 'Gönder');
   dugGonder.Goster;
 
-  dugBKes.Olustur(Pencere0.Kimlik, 382, 6, 55, 22, 'B.Kes');
+  dugBKes.Olustur(Pencere.Kimlik, 382, 5, 55, 22, 'B.Kes');
   dugBKes.Goster;
 
-  DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Baðlantý yok!');
-  DurumCubugu0.Goster;
+  DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 20, 'Baðlantý yok!');
+  DurumCubugu.Goster;
 
-  Defter0.Olustur(Pencere0.Kimlik, 10, 34, 428, 178, RENK_BEYAZ, RENK_SIYAH);
-  //Defter0.Hizala(hzTum);
-  Defter0.Goster;
+  Defter.Olustur(Pencere.Kimlik, 5, 34, 428, 216, RENK_BEYAZ, RENK_SIYAH);
+  //Defter.Hizala(hzTum);
+  Defter.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(100);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(100);
+  Zamanlayici.Baslat;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
 
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      if(Iletisim0.BagliMi) then
+      if(Iletisim.BagliMi) then
       begin
 
-        DurumCubugu0.DurumYazisiDegistir('Baðlantý kuruldu.');
+        DurumCubugu.DurumYazisiDegistir('Baðlantý kuruldu.');
 
-        VeriUzunlugu := Iletisim0.VeriUzunluguAl;
+        VeriUzunlugu := Iletisim.VeriUzunluguAl;
         if(VeriUzunlugu > 0) then
         begin
 
-          VeriUzunlugu := Iletisim0.VeriOku(@s[1]);
+          VeriUzunlugu := Iletisim.VeriOku(@s[1]);
           SetLength(s, VeriUzunlugu);
 
-          Defter0.YaziEkle(s + #13#10);
+          Defter.YaziEkle(s + #13#10);
 
-          //Pencere0.Ciz;
+          //Pencere.Ciz;
         end;
-      end else DurumCubugu0.DurumYazisiDegistir('Baðlantý yok!');
+      end else DurumCubugu.DurumYazisiDegistir('Baðlantý yok!');
     end
     else if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
@@ -95,7 +96,7 @@ begin
       if(OlayKayit.Kimlik = dugBaglan.Kimlik) then
       begin
 
-        Iletisim0.Baglan(ptTCP, IPAdres, 80)
+        Iletisim.Baglan(ptTCP, IPAdres, 80)
       end
       else if(OlayKayit.Kimlik = dugGonder.Kimlik) then
       begin
@@ -105,18 +106,17 @@ begin
         s := 'GET / HTTP/1.1' + #13#10;
         s += 'Host: ' + IPAdres + #13#10#13#10;
 
-        Iletisim0.VeriYaz(@s[1], Length(s));
+        Iletisim.VeriYaz(@s[1], Length(s));
       end
       else if(OlayKayit.Kimlik = dugBKes.Kimlik) then
       begin
 
-        Iletisim0.BaglantiyiKes;
-        Defter0.Temizle;
-        Pencere0.Ciz;
+        Iletisim.BaglantiyiKes;
+        Defter.Temizle;
+        Pencere.Ciz;
       end;
     end;
+  end;
 
-  until (1 = 2);
-
-  //Iletisim0.Close;
+  //Iletisim.Close;
 end.

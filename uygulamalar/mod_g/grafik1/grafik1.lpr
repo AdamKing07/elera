@@ -7,19 +7,19 @@ program grafik1;
   Program Adı: grafik1.lpr
   Program İşlevi: grafik test programı
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme, zamanlayici;
+uses n_gorev, gn_pencere, gn_dugme, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik-1';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
 
 var
   OlayKayit: TOlayKayit;
@@ -28,10 +28,10 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 150, 50, ptIletisim, ProgramAdi, RENK_SIYAH);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 100, 150, 50, ptIletisim, ProgramAdi, RENK_SIYAH);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   for i := 0 to 149 do
   begin
@@ -39,13 +39,13 @@ begin
     Dizi[i] := 0;
   end;
 
-  Zamanlayici0.Olustur(30);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(30);
+  Zamanlayici.Baslat;
 
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
@@ -58,7 +58,7 @@ begin
       Randomize;
       Dizi[149] := Random(50);
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
@@ -66,7 +66,7 @@ begin
       for i := 1 to 149 do
       begin
 
-        Pencere0.Tuval.Cizgi(i - 1, 50 - Dizi[i - 1], i, 50 - Dizi[i], RENK_BEYAZ);
+        Pencere.Tuval.Cizgi(i - 1, 50 - Dizi[i - 1], i, 50 - Dizi[i], RENK_BEYAZ);
       end;
     end;
   end;

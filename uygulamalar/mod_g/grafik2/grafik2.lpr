@@ -7,19 +7,19 @@ program grafik2;
   Program Adı: grafik2.lpr
   Program İşlevi: grafik test programı
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme, zamanlayici;
+uses n_gorev, gn_pencere, gn_dugme, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik-2';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   Renkler: array[0..7] of TRenk = (
     $000000, $4D001F, $99003D, $E6005C,
@@ -29,13 +29,13 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(20);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(20);
+  Zamanlayici.Baslat;
 
   i := 20;
   RenkSiraNo := 0;
@@ -44,7 +44,7 @@ begin
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
@@ -58,7 +58,7 @@ begin
         Renk := Renkler[RenkSiraNo];
       end;
 
-      Pencere0.Tuval.Daire(100, 100, i, Renk, False);
+      Pencere.Tuval.Daire(100, 100, i, Renk, False);
     end;
   end;
 end.

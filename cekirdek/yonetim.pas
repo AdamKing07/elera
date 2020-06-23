@@ -16,7 +16,7 @@ unit yonetim;
 interface
 
 uses paylasim, gn_pencere, gn_etiket, zamanlayici, dns, gn_panel, gorselnesne,
-  gn_dugme, gn_resim, gn_karmaliste;
+  gn_gucdugmesi, gn_resim, gn_karmaliste;
 
 type
   // gerçek moddan gelen veri yapýsý
@@ -43,18 +43,22 @@ type
   end;
 
 type
-  TTestAlani = object
+  TGorevYonetici = object
+  private
+    dugGorevler: array[0..99] of PGucDugmesi;
+  public
     TestSinif: TTestSinif;
     Degerler: array[1..8] of TSayi4;
     BulunanCiftSayisi, TiklamaSayisi,
     SecilenEtiket, ToplamTiklamaSayisi: TSayi4;
-    procedure Basla;
+    procedure MasaustuBasla;
+    procedure ProgramBasla;
     procedure NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
 
 var
   SDPencere: PPencere;
-  SDZamanlayici: PZamanlayici;
+  SDZamanlayici, SDZamanlayici2: PZamanlayici;
 
   NTPencere: PPencere;
   GNEtiket: PEtiket;
@@ -62,8 +66,7 @@ var
   Resim: PResim;
   _DNS: PDNS = nil;
   DugmeSayisi: TSayi4;
-  GorselNesneler: array[0..1] of PDugme;
-  TestAlani: TTestAlani;
+  TestAlani: TGorevYonetici;
 
 procedure Yukle;
 procedure SistemAnaKontrol;
@@ -75,8 +78,8 @@ procedure SistemDegerleriOlayIsle;
 
 implementation
 
-uses gdt, gorev, src_klavye, genel, ag, dhcp, iletisim, arp,
-  sistemmesaj, src_vesa20, acpi, donusum, gn_masaustu;
+uses gdt, gorev, src_klavye, genel, ag, dhcp, sistemmesaj, src_vesa20,
+  gn_masaustu, donusum, gn_islevler;
 
 {==============================================================================
   sistem ilk yükleme iþlevlerini gerçekleþtirir
@@ -144,6 +147,7 @@ begin
   GorevListesi[1]^.BellekUzunlugu := CekirdekUzunlugu;
   GorevListesi[1]^.OlaySayisi := 0;
   GorevListesi[1]^.OlayBellekAdresi := nil;
+  GorevListesi[1]^.FAnaPencere := nil;
 
   GorevListesi[1]^.FProgramAdi := 'cekirdek.bin';
 
@@ -203,7 +207,7 @@ begin
   // sistem deðer görüntüleyicisini baþlat
   SistemDegerleriBasla;
 
-  TestAlani.Basla;
+  TestAlani.ProgramBasla;
 
   // sistem için DHCP sunucusundan IP adresi al
   if(AgYuklendi) then DHCPSunucuKesfet;
@@ -242,7 +246,7 @@ begin
           end;
           FindClose(AramaKaydi);}
           //Gorev^.Calistir('disk1:\6.bmp');
-          Gorev^.Calistir('disk1:\sisbilgi.c');
+          Gorev^.Calistir('disk1:\tasarim.c');
         end
         else if(Tus = 'd') then
         begin
@@ -270,7 +274,7 @@ begin
 
     if(AgYuklendi) then AgKartiVeriAlmaIslevi;
 
-    // mouse olaylarýný iþle
+    // fare olaylarýný iþle
     GOlayYonetim.FareOlaylariniIsle;
 
 //    GEkranKartSurucusu.EkranBelleginiGuncelle;
@@ -320,6 +324,7 @@ begin
   GorevListesi[2]^.BellekUzunlugu := $FFFFFFFF;
   GorevListesi[2]^.OlaySayisi := 0;
   GorevListesi[2]^.OlayBellekAdresi := nil;
+  GorevListesi[2]^.FAnaPencere := nil;
 
   // sistem görev adý (dosya adý)
   GorevListesi[2]^.FProgramAdi := 'denetci.???';
@@ -384,7 +389,9 @@ begin
     if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
-      SDPencere^.Ciz;
+      if(Olay.Kimlik = SDZamanlayici^.Kimlik) then
+        SDPencere^.Ciz
+      else TestAlani.NesneTestOlayIsle(nil, Olay);
     end
     else if(Olay.Olay = CO_CIZIM) then
     begin
@@ -418,57 +425,132 @@ begin
 end;
 
 // görsel nesne test çalýþma alaný
-procedure TTestAlani.Basla;
+procedure TGorevYonetici.MasaustuBasla;
 var
   Masaustu: PMasaustu;
 begin
 
-  Exit;
-
   Masaustu := Masaustu^.Olustur('giriþ');
   Masaustu^.MasaustuRenginiDegistir($9FB6BF);
-  Masaustu^.Aktiflestir;
+  //Masaustu^.Aktiflestir;
 
-  NTPencere := NTPencere^.Olustur(nil, 100, 100, 500, 400, ptBoyutlanabilir,
+  NTPencere := NTPencere^.Olustur(Masaustu, 100, 100, 500, 400, ptBoyutlanabilir,
     'Görsel Nesne Yönetim', RENK_BEYAZ);
   NTPencere^.OlayCagriAdresi := @NesneTestOlayIsle;
 
-  GorselNesneler[0] := GorselNesneler[0]^.Olustur(ktNesne, NTPencere,
+  dugGorevler[0] := dugGorevler[0]^.Olustur(ktNesne, NTPencere,
     10, 10, 100, 100, 'Artýr');
-  GorselNesneler[0]^.Goster;
+  dugGorevler[0]^.OlayCagriAdresi := @NesneTestOlayIsle;
+  dugGorevler[0]^.Goster;
 
-  GorselNesneler[1] := GorselNesneler[1]^.Olustur(ktNesne, NTPencere,
+  dugGorevler[1] := dugGorevler[1]^.Olustur(ktNesne, NTPencere,
     120, 10, 100, 100, 'Eksilt');
-  GorselNesneler[1]^.Goster;
+  dugGorevler[1]^.OlayCagriAdresi := @NesneTestOlayIsle;
+  dugGorevler[1]^.Goster;
 
 //  TestSinif := TTestSinif.Create;
 //  TestSinif.FDeger1 := 10;
 
   NTPencere^.Goster;
 
-  Masaustu^.Goster;
+  Masaustu^.Gorunum := True;
+end;
+
+// görsel nesne test çalýþma alaný
+procedure TGorevYonetici.ProgramBasla;
+var
+  i: Integer;
+begin
+
+  for i := 0 to 99 do dugGorevler[i] := nil;
+
+  NTPencere := NTPencere^.Olustur(nil, GAktifMasaustu^.FBoyut.Genislik - 220,
+    80, 200, 260, ptBoyutlanabilir, 'Görev Yönetim', RENK_BEYAZ);
+  NTPencere^.OlayCagriAdresi := @NesneTestOlayIsle;
+
+  SDZamanlayici2 := SDZamanlayici2^.Olustur(100);
+  SDZamanlayici2^.Durum := zdCalisiyor;
+
+//  TestSinif := TTestSinif.Create;
+//  TestSinif.FDeger1 := 10;
+
+  NTPencere^.Goster;
 end;
 
 // görsel nesne olay iþleme alaný
-procedure TTestAlani.NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+procedure TGorevYonetici.NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+var
+  i, j: TSayi4;
+  Gorev: PGorev;
+  Pencere: PPencere;
+  GucDugmesi: PGucDugmesi;
 begin
 
-  if(AOlay.Olay = FO_TIKLAMA) then
+  if(AOlay.Olay = CO_ZAMANLAYICI) then
   begin
 
-    if(AOlay.Kimlik = GorselNesneler[0]^.Kimlik) then
+    for i := 0 to 99 do
     begin
 
-      SISTEM_MESAJ('Artýrma Düðmesi Kimlik: %d', [AOlay.Kimlik]);
+      if not(dugGorevler[i] = nil) then dugGorevler[i]^.YokEt;
+    end;
 
-      //TestSinif.Artir;
-    end
-    else if(AOlay.Kimlik = GorselNesneler[1]^.Kimlik) then
+    j := 0;
+    for i := 0 to CalisanGorevSayisi - 1 do
     begin
 
-      SISTEM_MESAJ('Eksiltme Düðmesi Kimlik: %d', [AOlay.Kimlik]);
+      Gorev := GorevBilgisiAl(i + 1);
+      if not(Gorev^.FAnaPencere = nil) then
+      begin
 
-      //TestSinif.Eksilt;
+        if not(PPencere(Gorev^.FAnaPencere)^.FPencereTipi = ptBasliksiz) then
+        begin
+
+          dugGorevler[i] := dugGorevler[i]^.Olustur(ktNesne, NTPencere,
+            5, (j * 25) + 5, 190, 20, Gorev^.FProgramAdi);
+          dugGorevler[i]^.FEtiket := Gorev^.GorevKimlik;
+          dugGorevler[i]^.OlayCagriAdresi := @NesneTestOlayIsle;
+
+          if(Gorev^.FGorevKimlik = AktifPencere^.GorevKimlik) then
+            dugGorevler[i]^.DurumYaz(dugGorevler[i]^.Kimlik, 1);
+
+          Inc(j);
+        end;
+      end;
+    end;
+
+    for i := 0 to CalisanGorevSayisi - 1 do
+    begin
+
+      if not(dugGorevler[i] = nil) then dugGorevler[i]^.Goster;
+    end;
+  end
+  else if(AOlay.Olay = CO_DURUMDEGISTI) then
+  begin
+
+    if(AOlay.Deger1 = 1) then
+    begin
+
+      GucDugmesi := PGucDugmesi(GucDugmesi^.NesneAl(AOlay.Kimlik));
+      if not(GucDugmesi = nil) then
+      begin
+
+        Gorev := Gorev^.GorevBul(GucDugmesi^.FEtiket);
+        if not(Gorev = nil) then
+        begin
+
+          Pencere := PPencere(Gorev^.FAnaPencere);
+          if not(Pencere = nil) and (Pencere^.NesneTipi = gntPencere) then
+          begin
+
+            // pencere küçültülmüþ durumda ise normal duruma çevir
+            if(Pencere^.FPencereDurum = pdKucultuldu) then
+              Pencere^.FPencereDurum := pdNormal;
+
+            Pencere^.EnUsteGetir(Pencere);
+          end;
+        end;
+      end;
     end;
   end;
 end;

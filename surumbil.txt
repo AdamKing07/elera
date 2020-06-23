@@ -1,3 +1,5 @@
+  + tasarýmsal olarak her bir göreve tek bir ana pencere atamasý gerçekleþtirildi
+  + pencere küçültme iþlevi uygulandý
   + tüm görsel nesneler TPanel nesnesinden türetilecek þekilde yeniden yapýlandýrýldý
   + nesnelere yatay / dikey yazý hizalama iþlevi eklendi
   + hafýza programý kodlandý

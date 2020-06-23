@@ -7,185 +7,185 @@ program pcibil;
   Program Adý: pcibil.lpr
   Program Ýþlevi: pci aygýtlarý hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme, gn_degerdugmesi;
+uses n_gorev, gn_pencere, gn_dugme, gn_degerdugmesi;
 
 const
   ProgramAdi: string = 'PCI Aygýt Bilgileri';
 
 type
   TPCISinif = record
-    SinifKod: TSayi4;
-    SinifAdi: string;
+    Kod: TSayi4;
+    Ad: string;
   end;
 
 var
   PCISinifListesi: array[0..139] of TPCISinif = (
-    (SinifKod: $000000; SinifAdi: 'Old No-VGA combatible device'),
-    (SinifKod: $000100; SinifAdi: 'Old VGA combatible device'),
-    (SinifKod: $010000; SinifAdi: 'SCSI bus controller'),
-    (SinifKod: $01018a; SinifAdi: 'IDE controller'),
-    (SinifKod: $010185; SinifAdi: 'IDE Mass Storage'),
-    (SinifKod: $010200; SinifAdi: 'Floppy disk controller'),
-    (SinifKod: $010300; SinifAdi: 'IPI bus controller'),
-    (SinifKod: $010400; SinifAdi: 'RAID controller'),
-    (SinifKod: $010520; SinifAdi: 'ATA controller with single DMA'),
-    (SinifKod: $010530; SinifAdi: 'ATA controller with chained DMA'),
-    (SinifKod: $010600; SinifAdi: 'Serial ATA Direct Port Access (DPA)'),
-    (SinifKod: $010601; SinifAdi: 'SATA Mass Storage'),
-    (SinifKod: $018000; SinifAdi: 'Other mass storage controller'),
-    (SinifKod: $020000; SinifAdi: 'Ethernet controller'),
-    (SinifKod: $020100; SinifAdi: 'Token Ring controller'),
-    (SinifKod: $020200; SinifAdi: 'FDDI controller'),
-    (SinifKod: $020300; SinifAdi: 'ATM controller'),
-    (SinifKod: $020400; SinifAdi: 'ISDN controller'),
-    (SinifKod: $020500; SinifAdi: 'WorldFip controller'),
-    (SinifKod: $020600; SinifAdi: 'PICMG 2.14 Multi Computing'),
-    (SinifKod: $028000; SinifAdi: 'Other network controller'),
-    (SinifKod: $030000; SinifAdi: 'VGA-compatible controller'),
-    (SinifKod: $030001; SinifAdi: '8514-compatible controller'),
-    (SinifKod: $030100; SinifAdi: 'XGA controller'),
-    (SinifKod: $030200; SinifAdi: '3D controller'),
-    (SinifKod: $038000; SinifAdi: 'Other display controller'),
-    (SinifKod: $040000; SinifAdi: 'Video device'),
-    (SinifKod: $040100; SinifAdi: 'Audio device'),
-    (SinifKod: $040200; SinifAdi: 'Computer telephony device'),
-    (SinifKod: $040300; SinifAdi: 'Multimedia'),
-    (SinifKod: $048000; SinifAdi: 'Other multimedia device'),
-    (SinifKod: $050000; SinifAdi: 'RAM'),
-    (SinifKod: $050100; SinifAdi: 'Flash'),
-    (SinifKod: $058000; SinifAdi: 'Other memory controller'),
-    (SinifKod: $060000; SinifAdi: 'Host bridge'),
-    (SinifKod: $060100; SinifAdi: 'ISA bridge'),
-    (SinifKod: $060200; SinifAdi: 'EISA bridge'),
-    (SinifKod: $060300; SinifAdi: 'MCA bridge'),
-    (SinifKod: $060400; SinifAdi: 'PCI-to-PCI bridge'),
-    (SinifKod: $060401; SinifAdi: 'Subtractive Decode PCI-to-PCI bridge'),
-    (SinifKod: $060500; SinifAdi: 'PCMCIA bridge'),
-    (SinifKod: $060600; SinifAdi: 'NuBus bridge'),
-    (SinifKod: $060700; SinifAdi: 'CardBus bridge'),
-    (SinifKod: $060800; SinifAdi: 'RACEway bridge'),
-    (SinifKod: $060940; SinifAdi: 'Semi-transparent PCI-to-PCI bridge (pri)'),
-    (SinifKod: $060980; SinifAdi: 'Semi-transparent PCI-to-PCI bridge (sec)'),
-    (SinifKod: $060a00; SinifAdi: 'InfiniBand-to-PCI host bridge'),
-    (SinifKod: $068000; SinifAdi: 'Other bridge device'),
-    (SinifKod: $070000; SinifAdi: 'Generic XT-compatible serial controller'),
-    (SinifKod: $070001; SinifAdi: '16450-compatible serial controller'),
-    (SinifKod: $070002; SinifAdi: '16550-compatible serial controller'),
-    (SinifKod: $070003; SinifAdi: '16650-compatible serial controller'),
-    (SinifKod: $070004; SinifAdi: '16750-compatible serial controller'),
-    (SinifKod: $070005; SinifAdi: '16850-compatible serial controller'),
-    (SinifKod: $070006; SinifAdi: '16950-compatible serial controller'),
-    (SinifKod: $070100; SinifAdi: 'Parallel port'),
-    (SinifKod: $070101; SinifAdi: 'Bidirectional parallel port'),
-    (SinifKod: $070102; SinifAdi: 'ECP 1.X compliant parallel port'),
-    (SinifKod: $070103; SinifAdi: 'IEEE1284 controller'),
-    (SinifKod: $0701fe; SinifAdi: 'IEEE1284 target device (not a controller)'),
-    (SinifKod: $070200; SinifAdi: 'Multiport serial controller'),
-    (SinifKod: $070300; SinifAdi: 'Generic modem'),
-    (SinifKod: $070301; SinifAdi: 'Hayes compatible modem (16450)'),
-    (SinifKod: $070302; SinifAdi: 'GPIB (IEEE 488.1/2) controller'),
-    (SinifKod: $070303; SinifAdi: 'Smart Card'),
-    (SinifKod: $070304; SinifAdi: 'Hayes compatible modem (16550)'),
-    (SinifKod: $070400; SinifAdi: 'Hayes compatible modem (16650)'),
-    (SinifKod: $070500; SinifAdi: 'Hayes compatible modem (16750)'),
-    (SinifKod: $078000; SinifAdi: 'Other communications device'),
-    (SinifKod: $080000; SinifAdi: 'Generic 8259 PIC'),
-    (SinifKod: $080001; SinifAdi: 'ISA PIC'),
-    (SinifKod: $080002; SinifAdi: 'EISA PIC'),
-    (SinifKod: $080010; SinifAdi: 'I/O APIC interrupt controller'),
-    (SinifKod: $080020; SinifAdi: 'I/O(x) APIC interrupt controller'),
-    (SinifKod: $080100; SinifAdi: 'Generic 8237 DMA controller'),
-    (SinifKod: $080101; SinifAdi: 'ISA DMA controller'),
-    (SinifKod: $080102; SinifAdi: 'EISA DMA controller'),
-    (SinifKod: $080200; SinifAdi: 'Generic 8254 system timer'),
-    (SinifKod: $080201; SinifAdi: 'ISA system timer'),
-    (SinifKod: $080202; SinifAdi: 'EISA system timers'),
-    (SinifKod: $080300; SinifAdi: 'Generic RTC controller'),
-    (SinifKod: $080301; SinifAdi: 'ISA RTC controller'),
-    (SinifKod: $080400; SinifAdi: 'Generic PCI Hot-Plug controller'),
-    (SinifKod: $080501; SinifAdi: 'Base Peripheral'),
-    (SinifKod: $088000; SinifAdi: 'Other system peripheral'),
-    (SinifKod: $090000; SinifAdi: 'Keyboard controller'),
-    (SinifKod: $090100; SinifAdi: 'Digitizer (pen)'),
-    (SinifKod: $090200; SinifAdi: 'Mouse controller'),
-    (SinifKod: $090300; SinifAdi: 'Scanner controller'),
-    (SinifKod: $090400; SinifAdi: 'Gameport controller (generic)'),
-    (SinifKod: $090410; SinifAdi: 'Gameport controller (legacy)'),
-    (SinifKod: $098000; SinifAdi: 'Other input controller'),
-    (SinifKod: $0a0000; SinifAdi: 'Generic docking station'),
-    (SinifKod: $0a8000; SinifAdi: 'Other type of docking station'),
-    (SinifKod: $0b0000; SinifAdi: '386'),
-    (SinifKod: $0b0100; SinifAdi: '486'),
-    (SinifKod: $0b0200; SinifAdi: 'Pentium'),
-    (SinifKod: $0b1000; SinifAdi: 'Alpha'),
-    (SinifKod: $0b2000; SinifAdi: 'PowerPC'),
-    (SinifKod: $0b3000; SinifAdi: 'MIPS'),
-    (SinifKod: $0b4000; SinifAdi: 'Co-processor'),
-    (SinifKod: $0c0000; SinifAdi: 'IEEE 1394 (FireWire)'),
-    (SinifKod: $0c0010; SinifAdi: 'IEEE 1394 (FireWire) OHCI'),
-    (SinifKod: $0c0100; SinifAdi: 'ACCESS.bus'),
-    (SinifKod: $0c0200; SinifAdi: 'SSA'),
-    (SinifKod: $0c0300; SinifAdi: 'USB Controller (UHCI)'),
-    (SinifKod: $0c0310; SinifAdi: 'USB Controller (OHCI)'),
-    (SinifKod: $0c0320; SinifAdi: 'USB Controller (EHCI)'),
-    (SinifKod: $0c0380; SinifAdi: 'USB Controller'),
-    (SinifKod: $0c03fe; SinifAdi: 'USB Device'),
-    (SinifKod: $0c0400; SinifAdi: 'Fibre Channel'),
-    (SinifKod: $0c0500; SinifAdi: 'SMBus'),
-    (SinifKod: $0c0600; SinifAdi: 'InfiniBand'),
-    (SinifKod: $0c0700; SinifAdi: 'IPMI SMIC Interface'),
-    (SinifKod: $0c0701; SinifAdi: 'IPMI Kybd Controller Style Interface'),
-    (SinifKod: $0c0702; SinifAdi: 'IPMI Block Transfer Interfac'),
-    (SinifKod: $0c0800; SinifAdi: 'SERCOS Interface Standard (IEC 61491)'),
-    (SinifKod: $0c0900; SinifAdi: 'CANbus'),
-    (SinifKod: $0d0000; SinifAdi: 'iRDA compatible controller'),
-    (SinifKod: $0d0100; SinifAdi: 'Consumer IR controller'),
-    (SinifKod: $0d1000; SinifAdi: 'RF controller'),
-    (SinifKod: $0d1100; SinifAdi: 'Bluetooth'),
-    (SinifKod: $0d1200; SinifAdi: 'Broadband'),
-    (SinifKod: $0d2000; SinifAdi: 'Ethernet (802.11a - 5 GHz)'),
-    (SinifKod: $0d2100; SinifAdi: 'Ethernet (802.11b - 2.4 GHz)'),
-    (SinifKod: $0d8000; SinifAdi: 'Other type of wireless controller'),
-    (SinifKod: $0e0000; SinifAdi: 'Intelligent I/O (I2O) Architecture Spec 1.0'),
-    (SinifKod: $0e0000; SinifAdi: 'Message FIFO at offset $40'),
-    (SinifKod: $0f0100; SinifAdi: 'Satellite TV'),
-    (SinifKod: $0f0200; SinifAdi: 'Satellite Audio'),
-    (SinifKod: $0f0300; SinifAdi: 'Satellite Voice'),
-    (SinifKod: $0f0400; SinifAdi: 'Satellite Data'),
-    (SinifKod: $100000; SinifAdi: 'Network and computing en/decryption'),
-    (SinifKod: $101000; SinifAdi: 'Entertainment en/decryption'),
-    (SinifKod: $108000; SinifAdi: 'Other en/decryption'),
-    (SinifKod: $110000; SinifAdi: 'DPIO modules'),
-    (SinifKod: $110100; SinifAdi: 'Performance counters'),
-    (SinifKod: $111000; SinifAdi: 'Communications synchronization plus time and frequency test/measurement'),
-    (SinifKod: $112000; SinifAdi: 'Management card'),
-    (SinifKod: $118000; SinifAdi: 'Other data acquisition/signal processing controllers'));
+    (Kod: $000000; Ad: 'Old No-VGA combatible device'),
+    (Kod: $000100; Ad: 'Old VGA combatible device'),
+    (Kod: $010000; Ad: 'SCSI bus controller'),
+    (Kod: $01018a; Ad: 'IDE controller'),
+    (Kod: $010185; Ad: 'IDE Mass Storage'),
+    (Kod: $010200; Ad: 'Floppy disk controller'),
+    (Kod: $010300; Ad: 'IPI bus controller'),
+    (Kod: $010400; Ad: 'RAID controller'),
+    (Kod: $010520; Ad: 'ATA controller with single DMA'),
+    (Kod: $010530; Ad: 'ATA controller with chained DMA'),
+    (Kod: $010600; Ad: 'Serial ATA Direct Port Access (DPA)'),
+    (Kod: $010601; Ad: 'SATA Mass Storage'),
+    (Kod: $018000; Ad: 'Other mass storage controller'),
+    (Kod: $020000; Ad: 'Ethernet controller'),
+    (Kod: $020100; Ad: 'Token Ring controller'),
+    (Kod: $020200; Ad: 'FDDI controller'),
+    (Kod: $020300; Ad: 'ATM controller'),
+    (Kod: $020400; Ad: 'ISDN controller'),
+    (Kod: $020500; Ad: 'WorldFip controller'),
+    (Kod: $020600; Ad: 'PICMG 2.14 Multi Computing'),
+    (Kod: $028000; Ad: 'Other network controller'),
+    (Kod: $030000; Ad: 'VGA-compatible controller'),
+    (Kod: $030001; Ad: '8514-compatible controller'),
+    (Kod: $030100; Ad: 'XGA controller'),
+    (Kod: $030200; Ad: '3D controller'),
+    (Kod: $038000; Ad: 'Other display controller'),
+    (Kod: $040000; Ad: 'Video device'),
+    (Kod: $040100; Ad: 'Audio device'),
+    (Kod: $040200; Ad: 'Computer telephony device'),
+    (Kod: $040300; Ad: 'Multimedia'),
+    (Kod: $048000; Ad: 'Other multimedia device'),
+    (Kod: $050000; Ad: 'RAM'),
+    (Kod: $050100; Ad: 'Flash'),
+    (Kod: $058000; Ad: 'Other memory controller'),
+    (Kod: $060000; Ad: 'Host bridge'),
+    (Kod: $060100; Ad: 'ISA bridge'),
+    (Kod: $060200; Ad: 'EISA bridge'),
+    (Kod: $060300; Ad: 'MCA bridge'),
+    (Kod: $060400; Ad: 'PCI-to-PCI bridge'),
+    (Kod: $060401; Ad: 'Subtractive Decode PCI-to-PCI bridge'),
+    (Kod: $060500; Ad: 'PCMCIA bridge'),
+    (Kod: $060600; Ad: 'NuBus bridge'),
+    (Kod: $060700; Ad: 'CardBus bridge'),
+    (Kod: $060800; Ad: 'RACEway bridge'),
+    (Kod: $060940; Ad: 'Semi-transparent PCI-to-PCI bridge (pri)'),
+    (Kod: $060980; Ad: 'Semi-transparent PCI-to-PCI bridge (sec)'),
+    (Kod: $060a00; Ad: 'InfiniBand-to-PCI host bridge'),
+    (Kod: $068000; Ad: 'Other bridge device'),
+    (Kod: $070000; Ad: 'Generic XT-compatible serial controller'),
+    (Kod: $070001; Ad: '16450-compatible serial controller'),
+    (Kod: $070002; Ad: '16550-compatible serial controller'),
+    (Kod: $070003; Ad: '16650-compatible serial controller'),
+    (Kod: $070004; Ad: '16750-compatible serial controller'),
+    (Kod: $070005; Ad: '16850-compatible serial controller'),
+    (Kod: $070006; Ad: '16950-compatible serial controller'),
+    (Kod: $070100; Ad: 'Parallel port'),
+    (Kod: $070101; Ad: 'Bidirectional parallel port'),
+    (Kod: $070102; Ad: 'ECP 1.X compliant parallel port'),
+    (Kod: $070103; Ad: 'IEEE1284 controller'),
+    (Kod: $0701fe; Ad: 'IEEE1284 target device (not a controller)'),
+    (Kod: $070200; Ad: 'Multiport serial controller'),
+    (Kod: $070300; Ad: 'Generic modem'),
+    (Kod: $070301; Ad: 'Hayes compatible modem (16450)'),
+    (Kod: $070302; Ad: 'GPIB (IEEE 488.1/2) controller'),
+    (Kod: $070303; Ad: 'Smart Card'),
+    (Kod: $070304; Ad: 'Hayes compatible modem (16550)'),
+    (Kod: $070400; Ad: 'Hayes compatible modem (16650)'),
+    (Kod: $070500; Ad: 'Hayes compatible modem (16750)'),
+    (Kod: $078000; Ad: 'Other communications device'),
+    (Kod: $080000; Ad: 'Generic 8259 PIC'),
+    (Kod: $080001; Ad: 'ISA PIC'),
+    (Kod: $080002; Ad: 'EISA PIC'),
+    (Kod: $080010; Ad: 'I/O APIC interrupt controller'),
+    (Kod: $080020; Ad: 'I/O(x) APIC interrupt controller'),
+    (Kod: $080100; Ad: 'Generic 8237 DMA controller'),
+    (Kod: $080101; Ad: 'ISA DMA controller'),
+    (Kod: $080102; Ad: 'EISA DMA controller'),
+    (Kod: $080200; Ad: 'Generic 8254 system timer'),
+    (Kod: $080201; Ad: 'ISA system timer'),
+    (Kod: $080202; Ad: 'EISA system timers'),
+    (Kod: $080300; Ad: 'Generic RTC controller'),
+    (Kod: $080301; Ad: 'ISA RTC controller'),
+    (Kod: $080400; Ad: 'Generic PCI Hot-Plug controller'),
+    (Kod: $080501; Ad: 'Base Peripheral'),
+    (Kod: $088000; Ad: 'Other system peripheral'),
+    (Kod: $090000; Ad: 'Keyboard controller'),
+    (Kod: $090100; Ad: 'Digitizer (pen)'),
+    (Kod: $090200; Ad: 'Mouse controller'),
+    (Kod: $090300; Ad: 'Scanner controller'),
+    (Kod: $090400; Ad: 'Gameport controller (generic)'),
+    (Kod: $090410; Ad: 'Gameport controller (legacy)'),
+    (Kod: $098000; Ad: 'Other input controller'),
+    (Kod: $0a0000; Ad: 'Generic docking station'),
+    (Kod: $0a8000; Ad: 'Other type of docking station'),
+    (Kod: $0b0000; Ad: '386'),
+    (Kod: $0b0100; Ad: '486'),
+    (Kod: $0b0200; Ad: 'Pentium'),
+    (Kod: $0b1000; Ad: 'Alpha'),
+    (Kod: $0b2000; Ad: 'PowerPC'),
+    (Kod: $0b3000; Ad: 'MIPS'),
+    (Kod: $0b4000; Ad: 'Co-processor'),
+    (Kod: $0c0000; Ad: 'IEEE 1394 (FireWire)'),
+    (Kod: $0c0010; Ad: 'IEEE 1394 (FireWire) OHCI'),
+    (Kod: $0c0100; Ad: 'ACCESS.bus'),
+    (Kod: $0c0200; Ad: 'SSA'),
+    (Kod: $0c0300; Ad: 'USB Controller (UHCI)'),
+    (Kod: $0c0310; Ad: 'USB Controller (OHCI)'),
+    (Kod: $0c0320; Ad: 'USB Controller (EHCI)'),
+    (Kod: $0c0380; Ad: 'USB Controller'),
+    (Kod: $0c03fe; Ad: 'USB Device'),
+    (Kod: $0c0400; Ad: 'Fibre Channel'),
+    (Kod: $0c0500; Ad: 'SMBus'),
+    (Kod: $0c0600; Ad: 'InfiniBand'),
+    (Kod: $0c0700; Ad: 'IPMI SMIC Interface'),
+    (Kod: $0c0701; Ad: 'IPMI Kybd Controller Style Interface'),
+    (Kod: $0c0702; Ad: 'IPMI Block Transfer Interfac'),
+    (Kod: $0c0800; Ad: 'SERCOS Interface Standard (IEC 61491)'),
+    (Kod: $0c0900; Ad: 'CANbus'),
+    (Kod: $0d0000; Ad: 'iRDA compatible controller'),
+    (Kod: $0d0100; Ad: 'Consumer IR controller'),
+    (Kod: $0d1000; Ad: 'RF controller'),
+    (Kod: $0d1100; Ad: 'Bluetooth'),
+    (Kod: $0d1200; Ad: 'Broadband'),
+    (Kod: $0d2000; Ad: 'Ethernet (802.11a - 5 GHz)'),
+    (Kod: $0d2100; Ad: 'Ethernet (802.11b - 2.4 GHz)'),
+    (Kod: $0d8000; Ad: 'Other type of wireless controller'),
+    (Kod: $0e0000; Ad: 'Intelligent I/O (I2O) Architecture Spec 1.0'),
+    (Kod: $0e0000; Ad: 'Message FIFO at offset $40'),
+    (Kod: $0f0100; Ad: 'Satellite TV'),
+    (Kod: $0f0200; Ad: 'Satellite Audio'),
+    (Kod: $0f0300; Ad: 'Satellite Voice'),
+    (Kod: $0f0400; Ad: 'Satellite Data'),
+    (Kod: $100000; Ad: 'Network and computing en/decryption'),
+    (Kod: $101000; Ad: 'Entertainment en/decryption'),
+    (Kod: $108000; Ad: 'Other en/decryption'),
+    (Kod: $110000; Ad: 'DPIO modules'),
+    (Kod: $110100; Ad: 'Performance counters'),
+    (Kod: $111000; Ad: 'Communications synchronization plus time and frequency test/measurement'),
+    (Kod: $112000; Ad: 'Management card'),
+    (Kod: $118000; Ad: 'Other data acquisition/signal processing controllers'));
 
 type
   TSatici = record
-    SaticiKimlik: TSayi2;
-    SaticiAdi: string;
+    Kimlik: TSayi2;
+    Ad: string;
   end;
 
 var
   PCISaticiListesi: array[0..12] of TSatici = (
-    (SaticiKimlik: $1000; SaticiAdi: 'LSI Logic / Symbios Logic'),
-    (SaticiKimlik: $1022; SaticiAdi: 'Advanced Micro Devices'),
-    (SaticiKimlik: $104c; SaticiAdi: 'Texas Instruments'),
-    (SaticiKimlik: $106b; SaticiAdi: 'Apple Inc'),
-    (SaticiKimlik: $109e; SaticiAdi: 'Brooktree Corporation'),
-    (SaticiKimlik: $10de; SaticiAdi: 'nVidia Corporation'),
-    (SaticiKimlik: $10ec; SaticiAdi: 'Realtek Semiconductor Co.Ltd'),
-    (SaticiKimlik: $1217; SaticiAdi: 'O2 Micro, Inc'),
-    (SaticiKimlik: $1274; SaticiAdi: 'Ensoniq'),
-    (SaticiKimlik: $15ad; SaticiAdi: 'VMware'),
-    (SaticiKimlik: $168c; SaticiAdi: 'Atheros Communications Inc'),
-    (SaticiKimlik: $8086; SaticiAdi: 'Intel Corporation'),
-    (SaticiKimlik: $80ee; SaticiAdi: 'InnoTek Systemberatung GmbH'));
+    (Kimlik: $1000; Ad: 'LSI Logic / Symbios Logic'),
+    (Kimlik: $1022; Ad: 'Advanced Micro Devices'),
+    (Kimlik: $104c; Ad: 'Texas Instruments'),
+    (Kimlik: $106b; Ad: 'Apple Inc'),
+    (Kimlik: $109e; Ad: 'Brooktree Corporation'),
+    (Kimlik: $10de; Ad: 'nVidia Corporation'),
+    (Kimlik: $10ec; Ad: 'Realtek Semiconductor Co.Ltd'),
+    (Kimlik: $1217; Ad: 'O2 Micro, Inc'),
+    (Kimlik: $1274; Ad: 'Ensoniq'),
+    (Kimlik: $15ad; Ad: 'VMware'),
+    (Kimlik: $168c; Ad: 'Atheros Communications Inc'),
+    (Kimlik: $8086; Ad: 'Intel Corporation'),
+    (Kimlik: $80ee; Ad: 'InnoTek Systemberatung GmbH'));
 
 type
   TPCIAygit = record
@@ -264,31 +264,28 @@ var
     (SaticiKimlik: $80ee; AygitKimlik: $beef; AygitAdi: 'VirtualBox Graphics Adapter'));
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  DegerDugmesi0: TDegerDugmesi;
-  ToplamPCIAygitSayisi: Word;
-  AygitSiraNo: TSayi4;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  DegerDugmesi: TDegerDugmesi;
+  ToplamPCIAygitSayisi, AygitSiraNo,
+  TemelAdres, Deger32, i, k: TSayi4;
   PCIAygitBilgisi: TPCIAygitBilgisi;
   OlayKayit: TOlayKayit;
-  Deger32: TSayi4;
   Deger8: TSayi1;
-  i, k: TSayi4;
-  _TemelAdres: LongWord;
-  _SinifKod, _SaticiKimlik, _AygitAdi: string;
+  SinifKod, SaticiKimlik, AygitAdi: string;
 
 function PCISinifAdiAl(ASinifKodu: TSayi4): string;
 var
-  _SinifKod, i: TSayi4;
+  SinifKod, i: TSayi4;
 begin
 
-  _SinifKod := (ASinifKodu shr 8) and $FFFFFF;
+  SinifKod := (ASinifKodu shr 8) and $FFFFFF;
 
   for i := 0 to 139 do
   begin
 
-    if(_SinifKod = PCISinifListesi[i].SinifKod) then
-      Exit(PCISinifListesi[i].SinifAdi);
+    if(SinifKod = PCISinifListesi[i].Kod) then
+      Exit(PCISinifListesi[i].Ad);
   end;
 
   Result := 'Bilinmeyen Aygýt Tipi';
@@ -302,8 +299,8 @@ begin
   for i := 0 to 12 do
   begin
 
-    if(PCISaticiListesi[i].SaticiKimlik = ASaticiKimlik) then
-      Exit(PCISaticiListesi[i].SaticiAdi);
+    if(PCISaticiListesi[i].Kimlik = ASaticiKimlik) then
+      Exit(PCISaticiListesi[i].Ad);
   end;
 
   Result := 'Bilinmeyen Satýcý';
@@ -327,36 +324,37 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 50, 10, 500, 450, ptBoyutlandirilabilir, ProgramAdi, $FFE0CC);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 50, 10, 500, 450, ptBoyutlandirilabilir, ProgramAdi, $FFE0CC);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   AygitSiraNo := 0;
 
   ToplamPCIAygitSayisi := ToplamPCIAygitSayisiAl;
   if(ToplamPCIAygitSayisi > 0) then PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
 
-  Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-  Pencere0.Tuval.YaziYaz(8 * 8, 5, 'Toplam Aygýt:');
-  Pencere0.Tuval.KalemRengi := RENK_MAVI;
-  Pencere0.Tuval.SayiYaz10(22 * 8, 5, ToplamPCIAygitSayisi);
+  Pencere.Tuval.KalemRengi := RENK_SIYAH;
+  Pencere.Tuval.YaziYaz(8 * 8, 5, 'Toplam Aygýt:');
+  Pencere.Tuval.KalemRengi := RENK_MAVI;
+  Pencere.Tuval.SayiYaz10(22 * 8, 5, ToplamPCIAygitSayisi);
 
-  Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-  Pencere0.Tuval.YaziYaz(25 * 8, 5, 'Mevcut Aygýt:');
-  Pencere0.Tuval.KalemRengi := RENK_MAVI;
-  Pencere0.Tuval.SayiYaz10(39 * 8, 5, AygitSiraNo + 1);
+  Pencere.Tuval.KalemRengi := RENK_SIYAH;
+  Pencere.Tuval.YaziYaz(25 * 8, 5, 'Mevcut Aygýt:');
+  Pencere.Tuval.KalemRengi := RENK_MAVI;
+  Pencere.Tuval.SayiYaz10(39 * 8, 5, AygitSiraNo + 1);
 
-  DegerDugmesi0.Olustur(Pencere0.Kimlik, 335, 0, 17, 22);
-  DegerDugmesi0.Goster;
+  DegerDugmesi.Olustur(Pencere.Kimlik, 335, 0, 17, 22);
+  DegerDugmesi.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = DegerDugmesi0.Kimlik) then
+      if(OlayKayit.Kimlik = DegerDugmesi.Kimlik) then
       begin
 
         if(OlayKayit.Deger1 = 0) then
@@ -367,7 +365,7 @@ begin
 
             Inc(AygitSiraNo);
             PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
-            Pencere0.Ciz;
+            Pencere.Ciz;
           end;
         end
         else if(OlayKayit.Deger1 = 1) then
@@ -378,7 +376,7 @@ begin
 
             Dec(AygitSiraNo);
             PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
-            Pencere0.Ciz;
+            Pencere.Ciz;
           end;
         end;
       end;
@@ -387,30 +385,30 @@ begin
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(8 * 8, 5, 'Toplam Aygýt:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz10(22 * 8, 5, ToplamPCIAygitSayisi);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(8 * 8, 5, 'Toplam Aygýt:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz10(22 * 8, 5, ToplamPCIAygitSayisi);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(25 * 8, 5, 'Mevcut Aygýt:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz10(39 * 8, 5, AygitSiraNo + 1);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(25 * 8, 5, 'Mevcut Aygýt:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz10(39 * 8, 5, AygitSiraNo + 1);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 2 * 16, 'Yol  :');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(7 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Yol);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 2 * 16, 'Yol  :');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(7 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Yol);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(19 * 8, 2 * 16, 'Aygýt:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(26 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Aygit);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(19 * 8, 2 * 16, 'Aygýt:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(26 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Aygit);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(38 * 8, 2 * 16, 'Ýþlev :');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(46 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Islev);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(38 * 8, 2 * 16, 'Ýþlev :');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(46 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Islev);
 
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, 4);
       PCIAygitBilgisi.Komut := (Deger32 and $FFFF);
@@ -419,44 +417,44 @@ begin
       Deger8 := PCIOku1(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, 8);
       PCIAygitBilgisi.RevizyonKimlik := Deger8;
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 3 * 16, 'Komut:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(7 * 8, 3 * 16, True, 4, PCIAygitBilgisi.Komut);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 3 * 16, 'Komut:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(7 * 8, 3 * 16, True, 4, PCIAygitBilgisi.Komut);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(19 * 8, 3 * 16, 'Durum:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(26 * 8, 3 * 16, True, 4, PCIAygitBilgisi.Durum);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(19 * 8, 3 * 16, 'Durum:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(26 * 8, 3 * 16, True, 4, PCIAygitBilgisi.Durum);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(38 * 8, 3 * 16, 'Reviz.:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(46 * 8, 3 * 16, True, 2, PCIAygitBilgisi.RevizyonKimlik);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(38 * 8, 3 * 16, 'Reviz.:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(46 * 8, 3 * 16, True, 2, PCIAygitBilgisi.RevizyonKimlik);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 5 * 16, 'Sýnýf :');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(8 * 8, 5 * 16, True, 6, (PCIAygitBilgisi.SinifKod shr 8) and $FFFFFF);
-      Pencere0.Tuval.HarfYaz(16 * 8, 5 * 16, '-');
-      _SinifKod := PCISinifAdiAl(PCIAygitBilgisi.SinifKod);
-      Pencere0.Tuval.YaziYaz(18 * 8, 5 * 16, _SinifKod);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 5 * 16, 'Sýnýf :');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(8 * 8, 5 * 16, True, 6, (PCIAygitBilgisi.SinifKod shr 8) and $FFFFFF);
+      Pencere.Tuval.HarfYaz(16 * 8, 5 * 16, '-');
+      SinifKod := PCISinifAdiAl(PCIAygitBilgisi.SinifKod);
+      Pencere.Tuval.YaziYaz(18 * 8, 5 * 16, SinifKod);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 6 * 16, 'Satýcý:');
-      Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-      Pencere0.Tuval.SayiYaz16(8 * 8, 6 * 16, True, 4, PCIAygitBilgisi.SaticiKimlik);
-      Pencere0.Tuval.HarfYaz(15 * 8, 6 * 16, '-');
-      _SaticiKimlik := PCISaticiAdiAl(PCIAygitBilgisi.SaticiKimlik);
-      Pencere0.Tuval.YaziYaz(17 * 8, 6 * 16, _SaticiKimlik);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 6 * 16, 'Satýcý:');
+      Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+      Pencere.Tuval.SayiYaz16(8 * 8, 6 * 16, True, 4, PCIAygitBilgisi.SaticiKimlik);
+      Pencere.Tuval.HarfYaz(15 * 8, 6 * 16, '-');
+      SaticiKimlik := PCISaticiAdiAl(PCIAygitBilgisi.SaticiKimlik);
+      Pencere.Tuval.YaziYaz(17 * 8, 6 * 16, SaticiKimlik);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 7 * 16, 'Aygýt :');
-      Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-      Pencere0.Tuval.SayiYaz16(8 * 8, 7 * 16, True, 4, PCIAygitBilgisi.AygitKimlik);
-      Pencere0.Tuval.HarfYaz(15 * 8, 7 * 16, '-');
-      _AygitAdi := PCIAygitAdiAl(PCIAygitBilgisi.SaticiKimlik, PCIAygitBilgisi.AygitKimlik);
-      Pencere0.Tuval.YaziYaz(17 * 8, 7 * 16, _AygitAdi);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 7 * 16, 'Aygýt :');
+      Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+      Pencere.Tuval.SayiYaz16(8 * 8, 7 * 16, True, 4, PCIAygitBilgisi.AygitKimlik);
+      Pencere.Tuval.HarfYaz(15 * 8, 7 * 16, '-');
+      AygitAdi := PCIAygitAdiAl(PCIAygitBilgisi.SaticiKimlik, PCIAygitBilgisi.AygitKimlik);
+      Pencere.Tuval.YaziYaz(17 * 8, 7 * 16, AygitAdi);
 
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $C);
       PCIAygitBilgisi.OnbellekHatUzunluk := (Deger32 and $FF);
@@ -464,35 +462,35 @@ begin
       PCIAygitBilgisi.BaslikTip := ((Deger32 shr 16) and $FF);
       PCIAygitBilgisi.Bist := ((Deger32 shr 24) and $FF);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 9 * 16, 'Önbellek Hat Uz:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(17 * 8, 9 * 16, True, 2, PCIAygitBilgisi.OnbellekHatUzunluk);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(28 * 8, 9 * 16, 'Gecikme Süre.:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(43 * 8, 9 * 16, True, 2, PCIAygitBilgisi.GecikmeSuresi);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 10 * 16, 'Baþlýk Tipi    :');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(17 * 8, 10 * 16, True, 2, PCIAygitBilgisi.BaslikTip);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(28 * 8, 10 * 16, 'BIST         :');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(43 * 8, 10 * 16, True, 2, PCIAygitBilgisi.Bist);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 9 * 16, 'Önbellek Hat Uz:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(17 * 8, 9 * 16, True, 2, PCIAygitBilgisi.OnbellekHatUzunluk);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(28 * 8, 9 * 16, 'Gecikme Süre.:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(43 * 8, 9 * 16, True, 2, PCIAygitBilgisi.GecikmeSuresi);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 10 * 16, 'Baþlýk Tipi    :');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(17 * 8, 10 * 16, True, 2, PCIAygitBilgisi.BaslikTip);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(28 * 8, 10 * 16, 'BIST         :');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(43 * 8, 10 * 16, True, 2, PCIAygitBilgisi.Bist);
 
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $2C);
       PCIAygitBilgisi.AltSistemSaticiKimlik := (Deger32 and $FFFF);
       PCIAygitBilgisi.AltSistemKimlik := ((Deger32 shr 16) and $FFFF);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 11 * 16, 'AltSis.Sat.Kim.:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(17 * 8, 11 * 16, True, 4, PCIAygitBilgisi.AltSistemSaticiKimlik);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(28 * 8, 11 * 16, 'Alt.Sis.Kiml.:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(43 * 8, 11 * 16, True, 4, PCIAygitBilgisi.AltSistemKimlik);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 11 * 16, 'AltSis.Sat.Kim.:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(17 * 8, 11 * 16, True, 4, PCIAygitBilgisi.AltSistemSaticiKimlik);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(28 * 8, 11 * 16, 'Alt.Sis.Kiml.:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(43 * 8, 11 * 16, True, 4, PCIAygitBilgisi.AltSistemKimlik);
 
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $3C);
       PCIAygitBilgisi.KesmeNo := (Deger32 and $FF);
@@ -500,36 +498,36 @@ begin
       PCIAygitBilgisi.EnDusukImtiyaz := ((Deger32 shr 16) and $FF);
       PCIAygitBilgisi.AzamiGecikme := ((Deger32 shr 24) and $FF);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 13 * 16, 'Kesme No:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(10 * 8, 13 * 16, True, 2, PCIAygitBilgisi.KesmeNo);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(28 * 8, 13 * 16, 'Kesm.Pin');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(37 * 8, 13 * 16, True, 2, PCIAygitBilgisi.KesmePin);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 14 * 16, 'EnDüþ.Ýmt');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(10 * 8, 14 * 16, True, 2, PCIAygitBilgisi.EnDusukImtiyaz);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(28 * 8, 14 * 16, 'Azam.Gec');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(37 * 8, 14 * 16, True, 2, PCIAygitBilgisi.AzamiGecikme);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 13 * 16, 'Kesme No:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(10 * 8, 13 * 16, True, 2, PCIAygitBilgisi.KesmeNo);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(28 * 8, 13 * 16, 'Kesm.Pin');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(37 * 8, 13 * 16, True, 2, PCIAygitBilgisi.KesmePin);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 14 * 16, 'EnDüþ.Ýmt');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(10 * 8, 14 * 16, True, 2, PCIAygitBilgisi.EnDusukImtiyaz);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(28 * 8, 14 * 16, 'Azam.Gec');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(37 * 8, 14 * 16, True, 2, PCIAygitBilgisi.AzamiGecikme);
 
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $28);
       PCIAygitBilgisi.KartYolCISIsaretci := Deger32;
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $30);
       PCIAygitBilgisi.GenisletilmisROMTemelAdres := Deger32;
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 16 * 16, 'KartYol CIS Ýþaretçi:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(22 * 8, 16 * 16, True, 8, PCIAygitBilgisi.KartYolCISIsaretci);
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 17 * 16, 'Genþl.ROM Tml.Adres:');
-      Pencere0.Tuval.KalemRengi := RENK_MAVI;
-      Pencere0.Tuval.SayiYaz16(21 * 8, 17 * 16, True, 8, PCIAygitBilgisi.GenisletilmisROMTemelAdres);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 16 * 16, 'KartYol CIS Ýþaretçi:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(22 * 8, 16 * 16, True, 8, PCIAygitBilgisi.KartYolCISIsaretci);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 17 * 16, 'Genþl.ROM Tml.Adres:');
+      Pencere.Tuval.KalemRengi := RENK_MAVI;
+      Pencere.Tuval.SayiYaz16(21 * 8, 17 * 16, True, 8, PCIAygitBilgisi.GenisletilmisROMTemelAdres);
 
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $10);
       PCIAygitBilgisi.TemelAdres[0] := Deger32;
@@ -544,40 +542,39 @@ begin
       Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $24);
       PCIAygitBilgisi.TemelAdres[5] := Deger32;
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(0, 19 * 16, 'Kaynaklar:');
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.YaziYaz(0, 19 * 16, 'Kaynaklar:');
 
       k := 20;
       for i := 0 to 5 do
       begin
 
-        Pencere0.Tuval.KalemRengi := RENK_MAVI;
+        Pencere.Tuval.KalemRengi := RENK_MAVI;
         if((PCIAygitBilgisi.TemelAdres[i] and 1) = 1) then
         begin
 
-          _TemelAdres := (PCIAygitBilgisi.TemelAdres[i] and (not 3));
-          if(_TemelAdres > 0) then
+          TemelAdres := (PCIAygitBilgisi.TemelAdres[i] and (not 3));
+          if(TemelAdres > 0) then
           begin
 
-            Pencere0.Tuval.SayiYaz16(5 * 8, k * 16, True, 8, _TemelAdres);
-            Pencere0.Tuval.YaziYaz(16 * 8, k * 16, '- IO');
+            Pencere.Tuval.SayiYaz16(5 * 8, k * 16, True, 8, TemelAdres);
+            Pencere.Tuval.YaziYaz(16 * 8, k * 16, '- IO');
             Inc(k);
           end;
         end
         else
         begin
 
-          _TemelAdres := (PCIAygitBilgisi.TemelAdres[i] and (not 15));
-          if(_TemelAdres > 0) then
+          TemelAdres := (PCIAygitBilgisi.TemelAdres[i] and (not 15));
+          if(TemelAdres > 0) then
           begin
 
-            Pencere0.Tuval.SayiYaz16(5 * 8, k * 16, True, 8, _TemelAdres);
-            Pencere0.Tuval.YaziYaz(16 * 8, k * 16, '- MEM');
+            Pencere.Tuval.SayiYaz16(5 * 8, k * 16, True, 8, TemelAdres);
+            Pencere.Tuval.YaziYaz(16 * 8, k * 16, '- MEM');
             Inc(k);
           end;
         end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

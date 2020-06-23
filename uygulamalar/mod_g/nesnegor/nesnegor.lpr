@@ -7,20 +7,20 @@ program nesnegor;
   Program Adý: nesnegor.lpr
   Program Ýþlevi: Görsel nesneler hakkýnda bilgiler verir.
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses gorev, gn_pencere, zamanlayici;
+uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Nesne Görüntüleyici';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   FarePozisyonu: TNokta;
   GorselNesneKimlik: TKimlik;
@@ -28,17 +28,18 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 110, 110, 250, 130, ptBoyutlandirilabilir, ProgramAdi, $906AD1);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 110, 110, 250, 130, ptBoyutlandirilabilir, ProgramAdi, $906AD1);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(50);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(50);
+  Zamanlayici.Baslat;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
@@ -46,32 +47,31 @@ begin
     else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      Zamanlayici0.Durdur;
+      Zamanlayici.Durdur;
 
-      FarePozisyonu := Gorev0.FarePozisyonunuAl;
+      FarePozisyonu := Gorev.FarePozisyonunuAl;
 
-      GorselNesneKimlik := Gorev0.GorselNesneKimlikAl(FarePozisyonu);
-      Gorev0.GorselNesneAdiAl(FarePozisyonu, @NesneAdi[0]);
+      GorselNesneKimlik := Gorev.GorselNesneKimlikAl(FarePozisyonu);
+      Gorev.GorselNesneAdiAl(FarePozisyonu, @NesneAdi[0]);
 
-      Pencere0.Tuval.KalemRengi := RENK_BEYAZ;
-      Pencere0.Tuval.FircaRengi := RENK_BEYAZ;
+      Pencere.Tuval.KalemRengi := RENK_BEYAZ;
+      Pencere.Tuval.FircaRengi := RENK_BEYAZ;
 
-      Pencere0.Tuval.YaziYaz(18, 20, 'Yatay    : ');
-      Pencere0.Tuval.SayiYaz16(106, 20, True, 4, FarePozisyonu.A1);
-      Pencere0.Tuval.YaziYaz(18, 36, 'Dikey    : ');
-      Pencere0.Tuval.SayiYaz16(106, 36, True, 4, FarePozisyonu.B1);
-      Pencere0.Tuval.YaziYaz(18, 52, 'Kimlik   : ');
-      Pencere0.Tuval.SayiYaz16(106, 52, True, 8, GorselNesneKimlik);
-      Pencere0.Tuval.YaziYaz(18, 68, 'Nesne Adý: ');
-      Pencere0.Tuval.YaziYaz(106, 68, NesneAdi);
+      Pencere.Tuval.YaziYaz(18, 20, 'Yatay    : ');
+      Pencere.Tuval.SayiYaz16(106, 20, True, 4, FarePozisyonu.A1);
+      Pencere.Tuval.YaziYaz(18, 36, 'Dikey    : ');
+      Pencere.Tuval.SayiYaz16(106, 36, True, 4, FarePozisyonu.B1);
+      Pencere.Tuval.YaziYaz(18, 52, 'Kimlik   : ');
+      Pencere.Tuval.SayiYaz16(106, 52, True, 8, GorselNesneKimlik);
+      Pencere.Tuval.YaziYaz(18, 68, 'Nesne Adý: ');
+      Pencere.Tuval.YaziYaz(106, 68, NesneAdi);
 
-      Zamanlayici0.Baslat;
+      Zamanlayici.Baslat;
     end;
-
-  until (1 = 2);
+  end;
 end.

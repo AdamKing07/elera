@@ -7,15 +7,15 @@ program dskbolum;
   Program Adý: dskbolum.lpr
   Program Ýþlevi: sistemdeki mantýksal sürücü bilgisini verir
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses gorev, gn_pencere, gn_dugme;
+uses n_gorev, gn_pencere, gn_dugme;
 
 var
-  Pencere0: TPencere;
+  Pencere: TPencere;
   dugDepolama: array[1..6] of TDugme;
 
 const
@@ -25,7 +25,7 @@ const
   DepolamaAygitiSeciniz: string  = 'Lütfen bir depolama aygýtý seçiniz!';
 
 var
-  Gorev0: TGorev;
+  Gorev: TGorev;
   OlayKayit: TOlayKayit;
   DiskSayisi, SeciliDisk,
   DugmeA1, i: TISayi4;
@@ -55,37 +55,37 @@ begin
   MantiksalSurucu3 := @MantiksalSurucuListesi[ASiraNo];
 
   // sürücü tipi
-  Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-  Pencere0.Tuval.YaziYaz(0, 2 * 16, 'Sürücü Tipi  :');
+  Pencere.Tuval.KalemRengi := RENK_SIYAH;
+  Pencere.Tuval.YaziYaz(0, 2 * 16, 'Sürücü Tipi  :');
   if(MantiksalSurucu3^.SurucuTipi = SURUCUTIP_DISKET) then
-    Pencere0.Tuval.YaziYaz(15 * 8, 2 * 16, 'Disket Sürücüsü')
+    Pencere.Tuval.YaziYaz(15 * 8, 2 * 16, 'Disket Sürücüsü')
   else if(MantiksalSurucu3^.SurucuTipi = SURUCUTIP_DISK) then
-    Pencere0.Tuval.YaziYaz(15 * 8, 2 * 16, 'Disk Sürücüsü');
+    Pencere.Tuval.YaziYaz(15 * 8, 2 * 16, 'Disk Sürücüsü');
 
     // sürücü dosya sistemi
-    Pencere0.Tuval.YaziYaz(0, 3 * 16, 'Dosya Sistemi:');
+    Pencere.Tuval.YaziYaz(0, 3 * 16, 'Dosya Sistemi:');
     if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT12) then
-      Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT12')
+      Pencere.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT12')
     else if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT16) then
-      Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT16')
+      Pencere.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT16')
     else if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT32) then
-      Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT32')
+      Pencere.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT32')
     else if(MantiksalSurucu3^.DosyaSistemTipi = DATTIP_FAT32LBA) then
-      Pencere0.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT32+LBA');
+      Pencere.Tuval.YaziYaz(15 * 8, 3 * 16, 'FAT32+LBA');
 
   // ilk sektör
-  Pencere0.Tuval.YaziYaz(0, 4 * 16, 'Ýlk Sektör   :');
-  Pencere0.Tuval.SayiYaz16(15 * 8, 4 * 16, False, 8, MantiksalSurucu3^.BolumIlkSektor);
+  Pencere.Tuval.YaziYaz(0, 4 * 16, 'Ýlk Sektör   :');
+  Pencere.Tuval.SayiYaz16(15 * 8, 4 * 16, False, 8, MantiksalSurucu3^.BolumIlkSektor);
 
   // toplam sektör
-  Pencere0.Tuval.YaziYaz(0, 5 * 16, 'Toplam Sektör:');
-  Pencere0.Tuval.SayiYaz16(15 * 8, 5 * 16, False, 8, MantiksalSurucu3^.BolumToplamSektor);
+  Pencere.Tuval.YaziYaz(0, 5 * 16, 'Toplam Sektör:');
+  Pencere.Tuval.SayiYaz16(15 * 8, 5 * 16, False, 8, MantiksalSurucu3^.BolumToplamSektor);
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 50, 50, 310, 95, ptBoyutlandirilabilir, ProgramAdi, $EEF0D1);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 50, 50, 310, 95, ptBoyutlandirilabilir, ProgramAdi, $EEF0D1);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   DiskSayisi := MantiksalDepolamaAygitSayisiAl;
   if(DiskSayisi > 0) then
@@ -98,7 +98,7 @@ begin
       if(MantiksalDepolamaAygitBilgisiAl(i, @MantiksalSurucuListesi[i])) then
       begin
 
-        dugDepolama[i].Olustur(Pencere0.Kimlik, DugmeA1, 2, 65, 22,
+        dugDepolama[i].Olustur(Pencere.Kimlik, DugmeA1, 2, 65, 22,
           MantiksalSurucuListesi[i].AygitAdi);
         dugDepolama[i].Etiket := i;
         dugDepolama[i].Goster;
@@ -107,14 +107,14 @@ begin
     end;
   end;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   SeciliDisk := 0;
 
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
@@ -129,7 +129,7 @@ begin
         end;
       end;
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
 
     else if(OlayKayit.Olay = CO_CIZIM) then
@@ -138,8 +138,8 @@ begin
       if(DiskSayisi = 0) then
       begin
 
-        Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-        Pencere0.Tuval.YaziYaz(0, 0 * 16, DepolamaAygitiBulunamadi);
+        Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+        Pencere.Tuval.YaziYaz(0, 0 * 16, DepolamaAygitiBulunamadi);
       end
       else
       begin
@@ -147,8 +147,8 @@ begin
         if(SeciliDisk = 0) then
         begin
 
-          Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-          Pencere0.Tuval.YaziYaz(0, 2 * 16, DepolamaAygitiSeciniz);
+          Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+          Pencere.Tuval.YaziYaz(0, 2 * 16, DepolamaAygitiSeciniz);
         end
         else
         begin

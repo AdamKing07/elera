@@ -6,7 +6,7 @@
   Dosya Adý: k_olay.pas
   Dosya Ýþlevi: olay (event) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 17/06/2020
+  Güncelleme Tarihi: 23/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -52,7 +52,7 @@ begin
     if(OlayMevcut) then
     begin
 
-      _Olay := POlay(PSayi4(ADegiskenler)^ + AktifGorevBellekAdresi);
+      _Olay := POlay(PSayi4(ADegiskenler)^ + CalisanGorevBellekAdresi);
       _Olay^.Kimlik := Olay.Kimlik;
       _Olay^.Olay := Olay.Olay;
       _Olay^.Deger1 := Olay.Deger1;
@@ -91,7 +91,7 @@ begin
     until (OlayMevcut = True);
 
     // olay deðiþkenlerini görevin yýðýn alanýna kopyala
-    _Olay := POlay(PSayi4(ADegiskenler)^ + AktifGorevBellekAdresi);
+    _Olay := POlay(PSayi4(ADegiskenler)^ + CalisanGorevBellekAdresi);
     _Olay^.Kimlik := Olay.Kimlik;
     _Olay^.Olay := Olay.Olay;
     _Olay^.Deger1 := Olay.Deger1;

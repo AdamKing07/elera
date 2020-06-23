@@ -7,7 +7,7 @@ program bharita;
   Program Adý: bharita.lpr
   Program Ýþlevi: bellek içerik harita programý
 
-  Güncelleme Tarihi: 07/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
   Not:
     programýn çalýþmasý için gereken 8K bellek makinenin kilitlenmesine sebep olduðu
@@ -15,7 +15,7 @@ program bharita;
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_durumcubugu, zamanlayici, elera;
+uses n_gorev, gn_pencere, gn_durumcubugu, n_zamanlayici, elera;
 
 const
   ProgramAdi: string = 'Bellek Haritasý';
@@ -23,13 +23,13 @@ const
   MEVCUTBELLEKADRESI = $510000;
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
-  DurumCubugu0: TDurumCubugu;
+  DurumCubugu: TDurumCubugu;
   ToplamRAMBlok, AyrilmisRAMBlok,
-  KullanilanRAMBlok, _BosRAMBlok,
+  KullanilanRAMBlok, BosRAMBlok,
   RAMUzunlugu: TSayi4;
   s: string;
   Sol, Ust: TSayi4;
@@ -43,11 +43,11 @@ begin
   Sol := ASol * 3;
   Ust := AUst * 3;
 
-  Pencere0.Tuval.PixelYaz(Sol, Ust, ARenk);
-  Pencere0.Tuval.PixelYaz(Sol + 1, Ust, ARenk);
+  Pencere.Tuval.PixelYaz(Sol, Ust, ARenk);
+  Pencere.Tuval.PixelYaz(Sol + 1, Ust, ARenk);
 
-  Pencere0.Tuval.PixelYaz(Sol, Ust + 1, ARenk);
-  Pencere0.Tuval.PixelYaz(Sol + 1, Ust + 1, ARenk);
+  Pencere.Tuval.PixelYaz(Sol, Ust + 1, ARenk);
+  Pencere.Tuval.PixelYaz(Sol + 1, Ust + 1, ARenk);
 end;
 
 var
@@ -55,40 +55,40 @@ var
 
 begin
 
-  Pencere0.Olustur(-1, 5, 5, (128 * 3) - 1, (64 * 3) + 20 - 1, ptBoyutlandirilabilir,
+  Pencere.Olustur(-1, 5, 5, (128 * 3) - 1, (64 * 3) + 20 - 1, ptBoyutlandirilabilir,
     ProgramAdi, RENK_SIYAH);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Boþ Blok Sayýsý: 0');
-  DurumCubugu0.Goster;
+  DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 20, 'Boþ Blok Sayýsý: 0');
+  DurumCubugu.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   // 3 saniyelik frekansla güncelle
-  Zamanlayici0.Olustur(300);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(300);
+  Zamanlayici.Baslat;
 
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
       GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
-        @_BosRAMBlok, @RAMUzunlugu);
+        @BosRAMBlok, @RAMUzunlugu);
 
       s := 'Boþ Blok Sayýsý: ' + IntToStr(ToplamRAMBlok);
       s += ' / ';
-      s += IntToStr(_BosRAMBlok);
-      DurumCubugu0.DurumYazisiDegistir(s);
+      s += IntToStr(BosRAMBlok);
+      DurumCubugu.DurumYazisiDegistir(s);
 
-//      Pencere0.Tuval.Dikdortgen(0, 0, 128 * 3, 64 * 3, $000000, True);
+//      Pencere.Tuval.Dikdortgen(0, 0, 128 * 3, 64 * 3, $000000, True);
 
       // 1. 4K bellek sistemden okunuyor
       BellekIcerikOku(ISaretci(MEVCUTBELLEKADRESI), @Veriler[0], 4096);

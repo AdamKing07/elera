@@ -7,12 +7,12 @@ program dskgor;
   Program Adý: dskgor.lpr
   Program Ýþlevi: depolama aygýtý sektör içeriðini görüntüler
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses gorev, gn_pencere, gn_dugme, gn_etiket, gn_durumcubugu, gn_giriskutusu;
+uses n_gorev, gn_pencere, gn_dugme, gn_etiket, gn_durumcubugu, gn_giriskutusu;
 
 var
   DiskBellek: array[0..511] of TSayi1;
@@ -25,9 +25,9 @@ const
   DepolamaAygitiOkumaHatasi: string  = 'Depolama aygýtý okuma hatasý!';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  DurumCubugu0: TDurumCubugu;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  DurumCubugu: TDurumCubugu;
   etiSektorNo: TEtiket;
   dugAzalt, dugArtir, dugYenile: TDugme;
   dugDepolamaAygitlari: array[1..6] of TDugme;
@@ -78,8 +78,8 @@ begin
   for i := 0 to 31 do
   begin
 
-    Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-    Pencere0.Tuval.SayiYaz16(0, Ust, True, 8, SektorNo);
+    Pencere.Tuval.KalemRengi := RENK_SIYAH;
+    Pencere.Tuval.SayiYaz16(0, Ust, True, 8, SektorNo);
     SektorNo += 16;
     Ust += 16;
   end;
@@ -100,14 +100,14 @@ begin
       if((Sol and 1) = 1) then
       begin
 
-        Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-        Pencere0.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 58, False, 2, Deger)
+        Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+        Pencere.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 58, False, 2, Deger)
       end
       else
       begin
 
-        Pencere0.Tuval.KalemRengi := RENK_MAVI;
-        Pencere0.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 58, False, 2, Deger);
+        Pencere.Tuval.KalemRengi := RENK_MAVI;
+        Pencere.Tuval.SayiYaz16(((Sol * 3) + 11) * 8, (Ust * 16) + 58, False, 2, Deger);
       end;
     end;
   end;
@@ -127,8 +127,8 @@ begin
 
       Deger := Char(DiskBellek[(Ust * 16) + Sol]);
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.HarfYaz((Sol + 59) * 8, (Ust * 16) + 58, Deger);
+      Pencere.Tuval.KalemRengi := RENK_SIYAH;
+      Pencere.Tuval.HarfYaz((Sol + 59) * 8, (Ust * 16) + 58, Deger);
     end;
   end;
 end;
@@ -136,8 +136,8 @@ end;
 begin
 
   // ana form oluþtur
-  Pencere0.Olustur(-1, 100, 20, 615, 400, ptBoyutlandirilabilir, ProgramAdi, $D1F0ED);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 20, 615, 400, ptBoyutlandirilabilir, ProgramAdi, $D1F0ED);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   // toplam fiziksel sürücü sayýsýný al
   FizikselDepolamaAygitSayisi := FizikselDepolamaAygitSayisiAl;
@@ -152,7 +152,7 @@ begin
       if(FizikselDepolamaAygitBilgisiAl(i, @FizikselSurucuListesi[i])) then
       begin
 
-        dugDepolamaAygitlari[i].Olustur(Pencere0.Kimlik, DugmeA1, 2, 65, 22,
+        dugDepolamaAygitlari[i].Olustur(Pencere.Kimlik, DugmeA1, 2, 65, 22,
           FizikselSurucuListesi[i].AygitAdi);
         dugDepolamaAygitlari[i].Etiket := i;
         dugDepolamaAygitlari[i].Goster;
@@ -162,31 +162,31 @@ begin
   end;
 
   // sektör no etiketi
-  etiSektorNo.Olustur(Pencere0.Kimlik, 0, 33, $000000, 'Sektör No: ');
+  etiSektorNo.Olustur(Pencere.Kimlik, 0, 33, $000000, 'Sektör No: ');
   etiSektorNo.Goster;
 
   // sektör no giriþ kutusu
-  gkAdres.Olustur(Pencere0.Kimlik, 90, 30, 120, 22, HexToStr(0, False, 8));
+  gkAdres.Olustur(Pencere.Kimlik, 90, 30, 120, 22, HexToStr(0, False, 8));
   gkAdres.Goster;
 
   // sektör no azaltma düðmesi
-  dugAzalt.Olustur(Pencere0.Kimlik, 220, 29, 20, 22, '<');
+  dugAzalt.Olustur(Pencere.Kimlik, 220, 29, 20, 22, '<');
   dugAzalt.Goster;
 
   // sektör no artýrma düðmesi
-  dugArtir.Olustur(Pencere0.Kimlik, 242, 29, 20, 22, '>');
+  dugArtir.Olustur(Pencere.Kimlik, 242, 29, 20, 22, '>');
   dugArtir.Goster;
 
   // sektör no yeniden okuma düðmesi
-  dugYenile.Olustur(Pencere0.Kimlik, 264, 29, 80, 22, 'Yenile');
+  dugYenile.Olustur(Pencere.Kimlik, 264, 29, 80, 22, 'Yenile');
   dugYenile.Goster;
 
   // durum göstergesi
-  DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 20, 'Aygýt: - Sektör: - / -');
-  DurumCubugu0.Goster;
+  DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 20, 'Aygýt: - Sektör: - / -');
+  DurumCubugu.Goster;
 
   // pencereyi görüntüle
-  Pencere0.Goster;
+  Pencere.Goster;
 
   // öndeðer atamalarý
   SeciliAygitSiraNo := 0;
@@ -196,7 +196,7 @@ begin
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_TUSBASILDI) then
     begin
 
@@ -211,14 +211,14 @@ begin
         if(SeciliAygitSiraNo > 0) then
         begin
 
-          DurumCubugu0.DurumYazisiDegistir('Aygýt: ' +
+          DurumCubugu.DurumYazisiDegistir('Aygýt: ' +
             FizikselSurucuListesi[SeciliAygitSiraNo].AygitAdi + ' - Sektör: ' +
             HexToStr(FizikselSurucuListesi[SeciliAygitSiraNo].ToplamSektorSayisi, True, 8) + ' / ' +
             HexToStr(MevcutSektor, True, 8));
 
           AygitOkumaDurumu := FizikselDepolamaVeriOku(SeciliAygitSiraNo,
             MevcutSektor, 1, @DiskBellek);
-          Pencere0.Ciz;
+          Pencere.Ciz;
         end;
       end;
     end
@@ -281,14 +281,14 @@ begin
       if(SeciliAygitSiraNo > 0) then
       begin
 
-        DurumCubugu0.DurumYazisiDegistir('Aygýt: ' +
+        DurumCubugu.DurumYazisiDegistir('Aygýt: ' +
           FizikselSurucuListesi[SeciliAygitSiraNo].AygitAdi + ' - Sektör: ' +
           HexToStr(FizikselSurucuListesi[SeciliAygitSiraNo].ToplamSektorSayisi, True, 8) + ' / ' +
           HexToStr(MevcutSektor, True, 8));
 
         AygitOkumaDurumu := FizikselDepolamaVeriOku(SeciliAygitSiraNo,
           MevcutSektor, 1, @DiskBellek);
-        Pencere0.Ciz;
+        Pencere.Ciz;
       end;
     end
 
@@ -298,19 +298,19 @@ begin
       if(FizikselDepolamaAygitSayisi = 0) then
       begin
 
-        Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-        Pencere0.Tuval.YaziYaz(0, 58, DepolamaAygitiBulunamadi);
+        Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+        Pencere.Tuval.YaziYaz(0, 58, DepolamaAygitiBulunamadi);
       end
       else
       begin
 
-        Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
+        Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
         if(SeciliAygitSiraNo = 0) then
 
-          Pencere0.Tuval.YaziYaz(0, 58, DepolamaAygitiSeciniz)
+          Pencere.Tuval.YaziYaz(0, 58, DepolamaAygitiSeciniz)
         else if(AygitOkumaDurumu = 0) then
 
-          Pencere0.Tuval.YaziYaz(0, 58, DepolamaAygitiOkumaHatasi)
+          Pencere.Tuval.YaziYaz(0, 58, DepolamaAygitiOkumaHatasi)
         else
         begin
 

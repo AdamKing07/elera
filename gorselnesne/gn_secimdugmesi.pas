@@ -92,7 +92,7 @@ begin
       GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
       Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
         PISayi4(ADegiskenler + 08)^, PKarakterKatari(PSayi4(ADegiskenler + 12)^ +
-        AktifGorevBellekAdresi)^);
+        CalisanGorevBellekAdresi)^);
     end;
 
     $0104:

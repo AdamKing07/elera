@@ -36,7 +36,7 @@ begin
   if(_Islev = 1) then
   begin
 
-    _SB := PSistemBilgisi(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+    _SB := PSistemBilgisi(PSayi4(Degiskenler + 00)^ + CalisanGorevBellekAdresi);
     _SB^.SistemAdi := SistemAdi;
     _SB^.DerlemeBilgisi := DerlemeTarihi;
     _SB^.FPCMimari := FPCMimari;
@@ -48,7 +48,7 @@ begin
   else if(_Islev = 2) then
   begin
 
-    _IB := PIslemciBilgisi(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+    _IB := PIslemciBilgisi(PSayi4(Degiskenler + 00)^ + CalisanGorevBellekAdresi);
     _IB^.Satici := GIslemciBilgisi.Satici;
     _IB^.Ozellik1_EAX := GIslemciBilgisi.Ozellik1_EAX;
     _IB^.Ozellik1_EDX := GIslemciBilgisi.Ozellik1_EDX;

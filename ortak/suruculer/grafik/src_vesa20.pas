@@ -352,87 +352,90 @@ begin
       begin
 
         Pencere := PPencere(GorselNesne);
-
-        // sol sınır kontrol
-        if(Pencere^.FKonum.Sol < 0) then
+        if(Pencere^.Gorunum) and not(Pencere^.FPencereDurum = pdKucultuldu) then
         begin
 
-          Sol := Abs(Pencere^.FKonum.Sol);
-          KaynakA2 := Pencere^.FBoyut.Genislik - Sol;
-          HedefA1 := 0;
-        end
-        else
-        begin
+          // sol sınır kontrol
+          if(Pencere^.FKonum.Sol < 0) then
+          begin
 
-          Sol := 0;
-          KaynakA2 := Pencere^.FBoyut.Genislik;
-          HedefA1 := Pencere^.FKonum.Sol;
-        end;
+            Sol := Abs(Pencere^.FKonum.Sol);
+            KaynakA2 := Pencere^.FBoyut.Genislik - Sol;
+            HedefA1 := 0;
+          end
+          else
+          begin
 
-        // sağ sınır kontrol
-        if((Pencere^.FKonum.Sol + Pencere^.FBoyut.Genislik) >
-          Masaustu^.FBoyut.Genislik - 1) then
-        begin
+            Sol := 0;
+            KaynakA2 := Pencere^.FBoyut.Genislik;
+            HedefA1 := Pencere^.FKonum.Sol;
+          end;
 
-          KaynakA2 := Pencere^.FBoyut.Genislik -
-            ((Pencere^.FKonum.Sol + Pencere^.FBoyut.Genislik) - (Masaustu^.FBoyut.Genislik - 1))
-        end
-        else
-        begin
+          // sağ sınır kontrol
+          if((Pencere^.FKonum.Sol + Pencere^.FBoyut.Genislik) >
+            Masaustu^.FBoyut.Genislik - 1) then
+          begin
 
-          if(Pencere^.FKonum.Sol >= 0) then KaynakA2 := Pencere^.FBoyut.Genislik;
-        end;
+            KaynakA2 := Pencere^.FBoyut.Genislik -
+              ((Pencere^.FKonum.Sol + Pencere^.FBoyut.Genislik) - (Masaustu^.FBoyut.Genislik - 1))
+          end
+          else
+          begin
 
-        // üst sınır kontrol
-        if(Pencere^.FKonum.Ust < 0) then
-        begin
+            if(Pencere^.FKonum.Sol >= 0) then KaynakA2 := Pencere^.FBoyut.Genislik;
+          end;
 
-          Ust := Abs(Pencere^.FKonum.Ust);
-          KaynakB2 := Pencere^.FBoyut.Yukseklik;
-          HedefB1 := 0;
-        end
-        else
-        begin
+          // üst sınır kontrol
+          if(Pencere^.FKonum.Ust < 0) then
+          begin
 
-          Ust := 0;
-          KaynakB2 := Pencere^.FBoyut.Yukseklik;
-          HedefB1 := Pencere^.FKonum.Ust;
-        end;
+            Ust := Abs(Pencere^.FKonum.Ust);
+            KaynakB2 := Pencere^.FBoyut.Yukseklik;
+            HedefB1 := 0;
+          end
+          else
+          begin
 
-        // alt sınır kontrol
-        if((Pencere^.FKonum.Ust + Pencere^.FBoyut.Yukseklik) >
-          Masaustu^.FBoyut.Yukseklik - 1) then
-        begin
+            Ust := 0;
+            KaynakB2 := Pencere^.FBoyut.Yukseklik;
+            HedefB1 := Pencere^.FKonum.Ust;
+          end;
 
-          KaynakB2 := Pencere^.FBoyut.Yukseklik -
-            ((Pencere^.FKonum.Ust + Pencere^.FBoyut.Yukseklik) - (Masaustu^.FBoyut.Yukseklik - 1))
-        end
-        else
-        begin
+          // alt sınır kontrol
+          if((Pencere^.FKonum.Ust + Pencere^.FBoyut.Yukseklik) >
+            Masaustu^.FBoyut.Yukseklik - 1) then
+          begin
 
-          if(Pencere^.FKonum.Ust >= 0) then KaynakB2 := Pencere^.FBoyut.Yukseklik;
-        end;
+            KaynakB2 := Pencere^.FBoyut.Yukseklik -
+              ((Pencere^.FKonum.Ust + Pencere^.FBoyut.Yukseklik) - (Masaustu^.FBoyut.Yukseklik - 1))
+          end
+          else
+          begin
 
-        KaynakSatirdakiByteSayisi := Pencere^.FBoyut.Genislik * NoktaBasinaByteSayisi;
-        HedefSatirdakiByteSayisi := KartBilgisi.SatirdakiByteSayisi;
+            if(Pencere^.FKonum.Ust >= 0) then KaynakB2 := Pencere^.FBoyut.Yukseklik;
+          end;
 
-        for i2 := Ust to KaynakB2 - 1 do
-        begin
+          KaynakSatirdakiByteSayisi := Pencere^.FBoyut.Genislik * NoktaBasinaByteSayisi;
+          HedefSatirdakiByteSayisi := KartBilgisi.SatirdakiByteSayisi;
 
-          KaynakBellek := (i2 * KaynakSatirdakiByteSayisi) +
-            (Sol * NoktaBasinaByteSayisi) + Pencere^.FCizimBellekAdresi;
-          HedefBellek := ((Pencere^.FKonum.Ust + i2) * (HedefSatirdakiByteSayisi)) +
-            (HedefA1 * NoktaBasinaByteSayisi) + ArkaBellek;
+          for i2 := Ust to KaynakB2 - 1 do
+          begin
 
-          j := KaynakA2 * NoktaBasinaByteSayisi;
-          asm
-            pushad
-            mov esi,KaynakBellek
-            mov edi,HedefBellek
-            mov ecx,j
-            cld
-            rep movsb
-            popad
+            KaynakBellek := (i2 * KaynakSatirdakiByteSayisi) +
+              (Sol * NoktaBasinaByteSayisi) + Pencere^.FCizimBellekAdresi;
+            HedefBellek := ((Pencere^.FKonum.Ust + i2) * (HedefSatirdakiByteSayisi)) +
+              (HedefA1 * NoktaBasinaByteSayisi) + ArkaBellek;
+
+            j := KaynakA2 * NoktaBasinaByteSayisi;
+            asm
+              pushad
+              mov esi,KaynakBellek
+              mov edi,HedefBellek
+              mov ecx,j
+              cld
+              rep movsb
+              popad
+            end;
           end;
         end;
       end;

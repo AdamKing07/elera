@@ -40,7 +40,7 @@ begin
   if(_Islev = 1) then
   begin
 
-    P1 := Isaretci(PSayi4(Degiskenler)^ + AktifGorevBellekAdresi);
+    P1 := Isaretci(PSayi4(Degiskenler)^ + CalisanGorevBellekAdresi);
 
     SaatAl(Saat, Dakika, Saniye);
     P1^ := Saat;
@@ -53,7 +53,7 @@ begin
   else if(_Islev = 2) then
   begin
 
-    P2 := Isaretci(PSayi4(Degiskenler)^ + AktifGorevBellekAdresi);
+    P2 := Isaretci(PSayi4(Degiskenler)^ + CalisanGorevBellekAdresi);
 
     TarihAl(Gun, Ay, Yil, HaftaninGunu);
     P2^ := Gun;

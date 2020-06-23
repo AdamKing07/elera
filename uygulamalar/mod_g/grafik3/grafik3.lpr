@@ -7,11 +7,11 @@ program grafik3;
   Program Adı: grafik3.lpr
   Program İşlevi: çoklu yönlendirilmiş nokta (pixel) işaretleme programı
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, zamanlayici;
+uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik-3';
@@ -30,17 +30,17 @@ type
   end;
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
   Noktalar: array[0..USTDEGER_NOKTASAYISI - 1] of TNoktaKayit;
   YatayDeger, DikeyDeger, i, Renk: TISayi4;
 
 begin
 
-  Pencere0.Olustur(-1, 50, 50, 400, 300, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 50, 50, 400, 300, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   for i := 0 to USTDEGER_NOKTASAYISI - 1 do
   begin
@@ -103,7 +103,7 @@ begin
 
       Renk := Noktalar[i].Renk;
 
-      Pencere0.Tuval.PixelYaz(YatayDeger, DikeyDeger, Renk);
+      Pencere.Tuval.PixelYaz(YatayDeger, DikeyDeger, Renk);
     end;
   end;
 end.

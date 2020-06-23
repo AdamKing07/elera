@@ -90,7 +90,7 @@ begin
       if(Defter <> nil) then
       begin
 
-        Defter^.YaziEkle(Isaretci(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi));
+        Defter^.YaziEkle(Isaretci(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi));
         Result := 1;
       end;
     end;
@@ -104,7 +104,7 @@ begin
       if(Defter <> nil) then
       begin
 
-        Defter^.YaziEkle(PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+        Defter^.YaziEkle(PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
         Result := 1;
       end;
     end;

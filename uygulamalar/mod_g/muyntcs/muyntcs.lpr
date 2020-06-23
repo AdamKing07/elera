@@ -7,7 +7,7 @@ program muyntcs;
   Program Adý: muyntcs.lpr
   Program Ýþlevi: çoklu masaüstü yönetim programý
 
-  Güncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -52,10 +52,10 @@ const
       ('sisbilgi.c'));
 
 var
-  Gorev0: TGorev;
-  Ekran0: TEkran;
-  Masaustu0: TMasaustu;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Ekran: TEkran;
+  Masaustu: TMasaustu;
+  Pencere: TPencere;
   menBaslat: TMenu;
   amenMasaustu: TAcilirMenu;
   gdELERA: TGucDugme;
@@ -63,7 +63,7 @@ var
   dugGorevYoneticisi: TDugme; //TResimDugme;
   dugMasaustuDugmeleri: array[0..3] of TDugme;
   etiSaat, etiTarih, etiAgBilgi: TEtiket;
-  Zamanlayici0: TZamanlayici;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   i, A1: TSayi4;
   s: string;
@@ -73,92 +73,92 @@ var
 begin
 
   // ekran çözünürlüðünü al
-  Ekran0.CozunurlukAl;
+  Ekran.CozunurlukAl;
 
   // oluþturulan masaüstü sayýsýný al
-  if(Masaustu0.MevcutMasaustuSayisi >= 4) then Gorev0.Sonlandir(-1);
+  if(Masaustu.MevcutMasaustuSayisi >= 4) then Gorev.Sonlandir(-1);
 
   // yeni masaüstü oluþtur
-  Masaustu0.Olustur(ProgramAdi);
+  Masaustu.Olustur(ProgramAdi);
 
   // yeni masaüstünün duvar kaðýdý
-  Masaustu0.MasaustuResminiDegistir('disk1:\1.bmp');
+  Masaustu.MasaustuResminiDegistir('disk1:\1.bmp');
 
   // görev yönetim ana paneli
-  Pencere0.Olustur(Masaustu0.Kimlik, Ekran0.A0, Ekran0.Yukseklik0 - 40, Ekran0.Genislik0,
+  Pencere.Olustur(Masaustu.Kimlik, Ekran.A0, Ekran.Yukseklik0 - 40, Ekran.Genislik0,
     40, ptBasliksiz, '', $FFFFFF);
 
   // ELERA ana düðmesini oluþtur
-  gdELERA.Olustur(Pencere0.Kimlik, 6, 9, 60, 22, 'ELERA');
+  gdELERA.Olustur(Pencere.Kimlik, 6, 9, 60, 22, 'ELERA');
   gdELERA.Goster;
 
   // 4 adet masaüstü düðmesi oluþtur
   A1 := 75;
-  dugMasaustuDugmeleri[0].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '1');
+  dugMasaustuDugmeleri[0].Olustur(Pencere.Kimlik, A1, 9, 20, 22, '1');
   dugMasaustuDugmeleri[0].Goster;
 
   A1 += 22;
-  dugMasaustuDugmeleri[1].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '2');
+  dugMasaustuDugmeleri[1].Olustur(Pencere.Kimlik, A1, 9, 20, 22, '2');
   dugMasaustuDugmeleri[1].Goster;
 
   A1 += 22;
-  dugMasaustuDugmeleri[2].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '3');
+  dugMasaustuDugmeleri[2].Olustur(Pencere.Kimlik, A1, 9, 20, 22, '3');
   dugMasaustuDugmeleri[2].Goster;
 
   A1 += 22;
-  dugMasaustuDugmeleri[3].Olustur(Pencere0.Kimlik, A1, 9, 20, 22, '4');
+  dugMasaustuDugmeleri[3].Olustur(Pencere.Kimlik, A1, 9, 20, 22, '4');
   dugMasaustuDugmeleri[3].Goster;
 
   // dosya yöneticisi programý için düðme
   A1 += 22+6;
-  dugDosyaYoneticisi.Olustur(Pencere0.Kimlik, A1, 9, 24, 22, 'DY');
+  dugDosyaYoneticisi.Olustur(Pencere.Kimlik, A1, 9, 24, 22, 'DY');
   dugDosyaYoneticisi.Goster;
 
   // görev yöneticisi programý için düðme
   A1 += 26;
-  dugGorevYoneticisi.Olustur(Pencere0.Kimlik, A1, 9, 24, 22, 'GY');
+  dugGorevYoneticisi.Olustur(Pencere.Kimlik, A1, 9, 24, 22, 'GY');
   dugGorevYoneticisi.Goster;
 
   // sistem mesaj görüntüleyici programý için düðme
   A1 += 26;
-  dugMesajGoruntuleyici.Olustur(Pencere0.Kimlik, A1, 9, 32, 22, 'MSJ');
+  dugMesajGoruntuleyici.Olustur(Pencere.Kimlik, A1, 9, 32, 22, 'MSJ');
   dugMesajGoruntuleyici.Goster;
 
   // açýklama haline getirilen aþaðýdaki kodlar TResimDugme'nin þeffaf özelliði
   // (transparent) sonrasýnda aktifleþtirilecek
-  {dugDosyaYoneticisi.Olustur(Pencere0.Kimlik, A1, 4, 24, 24, $80000000 + 1);
+  {dugDosyaYoneticisi.Olustur(Pencere.Kimlik, A1, 4, 24, 24, $80000000 + 1);
   dugDosyaYoneticisi.Goster;
 
   // görev yöneticisi programý için düðme
   A1 += 26;
-  dugGorevYoneticisi.Olustur(Pencere0.Kimlik, A1, 4, 24, 24, $80000000 + 9);
+  dugGorevYoneticisi.Olustur(Pencere.Kimlik, A1, 4, 24, 24, $80000000 + 9);
   dugGorevYoneticisi.Goster;
 
   // sistem mesaj görüntüleyici programý için düðme
   A1 += 26;
-  dugMesajGoruntuleyici.Olustur(Pencere0.Kimlik, A1, 4, 24, 24, $80000000 + 4);
+  dugMesajGoruntuleyici.Olustur(Pencere.Kimlik, A1, 4, 24, 24, $80000000 + 4);
   dugMesajGoruntuleyici.Goster;}
 
-  etiSaat.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 100, 5, $800000, '00:00:00');
+  etiSaat.Olustur(Pencere.Kimlik, Ekran.Genislik0 - 100, 5, $800000, '00:00:00');
   etiSaat.Goster;
 
-  etiTarih.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 118, 23, $800000, '00.00.0000 Aa');
+  etiTarih.Olustur(Pencere.Kimlik, Ekran.Genislik0 - 118, 23, $800000, '00.00.0000 Aa');
   etiTarih.Goster;
 
-  etiAgBilgi.Olustur(Pencere0.Kimlik, Ekran0.Genislik0 - 160, 14, $FF0000, '[Að]');
+  etiAgBilgi.Olustur(Pencere.Kimlik, Ekran.Genislik0 - 160, 14, $FF0000, '[Að]');
   etiAgBilgi.Goster;
 
   // paneli (pencere) görüntüle
-  Pencere0.Goster;
+  Pencere.Goster;
 
   // masaüstünü görüntüle
-  Masaustu0.Goster;
+  Masaustu.Goster;
 
-  Zamanlayici0.Olustur(100);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(100);
+  Zamanlayici.Baslat;
 
   // masaüstü için ELERA düðmesine baðlý menü oluþtur
-  menBaslat.Olustur(0, Ekran0.Yukseklik0 - 40 - ((PROGRAM_SAYISI * 26) + 8),
+  menBaslat.Olustur(0, Ekran.Yukseklik0 - 40 - ((PROGRAM_SAYISI * 26) + 8),
     300, (PROGRAM_SAYISI * 26) + 8, 26);
 
   // programlarý listeye ekle
@@ -187,9 +187,10 @@ begin
   amenMasaustu.ElemanEkle('Sistem Bilgisi', 12);
 
   // ve ana döngü
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
 
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
@@ -200,75 +201,75 @@ begin
 
         gdELERA.DurumYaz(0);
         i := menBaslat.SeciliSiraNoAl;
-        Gorev0.Calistir(Programlar[i]);
+        Gorev.Calistir(Programlar[i]);
       end
       // masaüstü menüsüne týklandýðýnda
       else if(OlayKayit.Kimlik = amenMasaustu.Kimlik) then
       begin
 
         i := amenMasaustu.SeciliSiraNoAl;
-        Gorev0.Calistir(MasaustuMenuProgramAdi[i]);
+        Gorev.Calistir(MasaustuMenuProgramAdi[i]);
       end
 
       else if(OlayKayit.Kimlik = dugDosyaYoneticisi.Kimlik) then
       begin
 
-        Gorev0.Calistir('dsyyntcs.c');
+        Gorev.Calistir('dsyyntcs.c');
       end
 
       else if(OlayKayit.Kimlik = dugGorevYoneticisi.Kimlik) then
       begin
 
-        Gorev0.Calistir('grvyntcs.c');
+        Gorev.Calistir('grvyntcs.c');
       end
 
       else if(OlayKayit.Kimlik = dugMesajGoruntuleyici.Kimlik) then
       begin
 
-        Gorev0.Calistir('smsjgor.c');
+        Gorev.Calistir('smsjgor.c');
       end
 
       else if(OlayKayit.Kimlik = etiSaat.Kimlik) or (OlayKayit.Kimlik = etiTarih.Kimlik) then
       begin
 
-        Gorev0.Calistir('saat.c');
+        Gorev.Calistir('saat.c');
       end
 
       else if(OlayKayit.Kimlik = etiAgBilgi.Kimlik) then
       begin
 
-        Gorev0.Calistir('agbilgi.c');
+        Gorev.Calistir('agbilgi.c');
       end
 
       else if(OlayKayit.Kimlik = dugMasaustuDugmeleri[0].Kimlik) then
       begin
 
-        Masaustu0.Aktiflestir(1);
+        Masaustu.Aktiflestir(1);
       end
 
       else if(OlayKayit.Kimlik = dugMasaustuDugmeleri[1].Kimlik) then
       begin
 
-        Masaustu0.Aktiflestir(2);
+        Masaustu.Aktiflestir(2);
       end
 
       else if(OlayKayit.Kimlik = dugMasaustuDugmeleri[2].Kimlik) then
       begin
 
-        Masaustu0.Aktiflestir(3);
+        Masaustu.Aktiflestir(3);
       end
 
       else if(OlayKayit.Kimlik = dugMasaustuDugmeleri[3].Kimlik) then
       begin
 
-        Masaustu0.Aktiflestir(4);
+        Masaustu.Aktiflestir(4);
       end
     end
     // masaüstüne sað tuþ basýlýp býrakýldýðýnda
     else if(OlayKayit.Olay = FO_SAGTUS_BIRAKILDI) then
     begin
 
-      if(OlayKayit.Kimlik = Masaustu0.Kimlik) then amenMasaustu.Goster;
+      if(OlayKayit.Kimlik = Masaustu.Kimlik) then amenMasaustu.Goster;
     end
 
     // baþlat menüsü
@@ -293,5 +294,5 @@ begin
       s := DateToStr(Tarih, True);
       etiTarih.Degistir(s);
     end;
-  until 1 = 2;
+  end;
 end.
