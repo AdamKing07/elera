@@ -38,7 +38,7 @@
       <Unit0>
         <Filename Value="iskelet.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="20" Y="12"/>
+        <CursorPos X="37" Y="14"/>
         <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -83,8 +83,9 @@
       <Unit10>
         <Filename Value="anabirim.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="28" Y="23"/>
+        <CursorPos X="24" Y="9"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit10>
@@ -325,7 +326,6 @@
       </Unit47>
       <Unit48>
         <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <TopLine Value="377"/>
         <CursorPos X="25" Y="377"/>
@@ -727,7 +727,7 @@
         <UsageCount Value="11"/>
       </Unit118>
     </Units>
-    <JumpHistory Count="23" HistoryIndex="22">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
       </Position1>
@@ -812,6 +812,10 @@
         <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
         <Caret Line="76" Column="11" TopLine="65"/>
       </Position23>
+      <Position24>
+        <Filename Value="iskelet.lpr"/>
+        <Caret Line="14" Column="37"/>
+      </Position24>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

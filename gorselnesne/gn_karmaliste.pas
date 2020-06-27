@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_karmaliste.pas
-  Dosya Ýþlevi: karma liste (açýlýr / kapanýr liste kutusu) yönetim iþlevlerini içerir
+  Dosya Ýþlevi: karma liste (açýlýr / kapanýr liste kutusu (combobox)) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 20/06/2020
+  Güncelleme Tarihi: 24/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -81,7 +81,7 @@ begin
         PKimlik(ADegiskenler + 00)^, gntKarmaListe));
       if(KarmaListe <> nil) then
         KarmaListe^.ListeyeEkle(PKarakterKatari(PSayi4(ADegiskenler + 04)^ +
-          AktifGorevBellekAdresi)^);
+          CalisanGorevBellekAdresi)^);
 
       Result := 1;
     end;
@@ -112,7 +112,7 @@ begin
       if(KarmaListe <> nil) then
       begin
 
-        p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+        p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
         p^ := KarmaListe^.Baslik;
       end;
     end;
@@ -170,6 +170,7 @@ begin
 
   KarmaListe^.FAcilirMenu := KarmaListe^.FAcilirMenu^.Olustur(KarmaListe, 0, 0,
     AGenislik, (24 * 2) + 2, 24, RENK_GRI, RENK_BEYAZ, RENK_SARI, RENK_SIYAH, RENK_LACIVERT);
+  KarmaListe^.FAcilirMenu^.FYardimciNesne := True;
   KarmaListe^.FAcilirMenu^.FAcilirMenuOlayGeriDonusAdresi := @AcilirMenuOlaylariniIsle;
 
   // nesne adresini geri döndür
@@ -247,6 +248,7 @@ end;
  ==============================================================================}
 procedure TKarmaListe.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
+  Pencere: PPencere;
   KarmaListe: PKarmaListe;
 begin
 
@@ -269,17 +271,20 @@ begin
     // basým olay sonrasýnda menü hemen kapatýlmaktadýr. bu sebepten dolayý
     // menünün açýlmasý býrakýlma iþlemine alýnmýþtýr
 
-    // açýlýr menünün görünürlüðünü aktifleþtir
-    KarmaListe^.FAcilirMenu^.Goster;
+    Pencere := EnUstPencereNesnesiniAl(KarmaListe);
+    if not(Pencere = nil) then
+    begin
 
-    // aktif menüyü belirle
-    GAktifMenu := KarmaListe^.FAcilirMenu;
+      // menüyü farenin bulunduðu konumda görüntüle
+      KarmaListe^.FAcilirMenu^.FKonum.Sol := Pencere^.FKonum.Sol + KarmaListe^.FCizimBaslangic.Sol;
+      KarmaListe^.FAcilirMenu^.FKonum.Ust := Pencere^.FKonum.Ust + KarmaListe^.FCizimBaslangic.Ust + 21;
 
-    // menüyü farenin bulunduðu konumda görüntüle
-    KarmaListe^.FAcilirMenu^.FKonum.Sol := KarmaListe^.AtaNesne^.FKonum.Sol +
-      KarmaListe^.FCizimBaslangic.Sol;
-    KarmaListe^.FAcilirMenu^.FKonum.Ust := KarmaListe^.AtaNesne^.FKonum.Ust +
-      KarmaListe^.FCizimBaslangic.Ust + 21;
+      // açýlýr menünün görünürlüðünü aktifleþtir
+      KarmaListe^.FAcilirMenu^.Goster;
+
+      // aktif menüyü belirle
+      GAktifMenu := KarmaListe^.FAcilirMenu;
+    end;
   end;
 
   // geçerli fare göstergesini güncelle
@@ -342,7 +347,7 @@ begin
   KarmaListe := PKarmaListe(KarmaListe^.NesneAl(Kimlik));
   if(KarmaListe = nil) then Exit;
 
-  KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Ekle(ADeger);
+  KarmaListe^.FAcilirMenu^.MenuEkle(ADeger, -1, True);
 
   if(KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.ElemanSayisi > 0) then
     KarmaListe^.Baslik := KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Eleman[0];

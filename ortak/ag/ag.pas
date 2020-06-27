@@ -92,7 +92,7 @@ begin
   if(_Islev = 1) then
   begin
 
-    _AgBilgisi := Isaretci(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+    _AgBilgisi := Isaretci(PSayi4(Degiskenler + 00)^ + CalisanGorevBellekAdresi);
     _AgBilgisi^.MACAdres := AgBilgisi.MACAdres;
     _AgBilgisi^.IP4Adres := AgBilgisi.IP4Adres;
     _AgBilgisi^.AltAgMaskesi := AgBilgisi.AltAgMaskesi;

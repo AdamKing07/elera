@@ -331,7 +331,7 @@ var
 begin
 
   // mac adres değerini karaktere çevir
-  MACAdres := MacToStr(AMACAdres);
+  MACAdres := MAC_KarakterKatari(AMACAdres);
 
   s := AMesaj + MACAdres;
 
@@ -348,7 +348,7 @@ var
 begin
 
   // ip adres değerini karaktere çevir
-  IPAdres := IpToStr(AIPAdres);
+  IPAdres := IP_KarakterKatari(AIPAdres);
 
   s := AMesaj + IPAdres;
 

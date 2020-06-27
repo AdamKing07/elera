@@ -7,11 +7,11 @@ program grfktest;
   Program Adý: grfktest.lpr
   Program Ýþlevi: grafik test programý (fps deðerini ölçer)
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, zamanlayici;
+uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik Test - 200x200';
@@ -20,9 +20,9 @@ const
     $00FF2020, $00FF4040, $00FF6060, $00FF8080);
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  Zamanlayici0: TZamanlayici;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   RenkSiraDegeri: TSayi4 = 0;
   FPSDegeri: TSayi4 = 0;
@@ -44,31 +44,31 @@ begin
     for Sol := 0 to 200 - 1 do
     begin
 
-      Pencere0.Tuval.PixelYaz(Sol, Ust, Renk);
+      Pencere.Tuval.PixelYaz(Sol, Ust, Renk);
     end;
   end;
 
-  Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-  Pencere0.Tuval.Dikdortgen(0, 0, 10 * 8, 1 * 16, RENK_SIYAH, True);
-  Pencere0.Tuval.KalemRengi := RENK_BEYAZ;
-  Pencere0.Tuval.SayiYaz16(0, 0, True, 8, FPSDegeri);
+  Pencere.Tuval.KalemRengi := RENK_SIYAH;
+  Pencere.Tuval.Dikdortgen(0, 0, 10 * 8, 1 * 16, RENK_SIYAH, True);
+  Pencere.Tuval.KalemRengi := RENK_BEYAZ;
+  Pencere.Tuval.SayiYaz16(0, 0, True, 8, FPSDegeri);
   Inc(FPSSayaci);
 end;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(100);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(100);
+  Zamanlayici.Baslat;
 
   while True do
   begin
 
-    if(Gorev0.OlayAl(OlayKayit) = 0) then
+    if(Gorev.OlayAl(OlayKayit) = 0) then
 
       NoktalariCiz
 

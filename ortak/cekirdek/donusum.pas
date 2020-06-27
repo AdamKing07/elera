@@ -6,7 +6,7 @@
   Dosya Adı: donusum.pas
   Dosya İşlevi: değer dönüşüm (convert) işlevlerini içerir
 
-  Güncelleme Tarihi: 15/04/2020
+  Güncelleme Tarihi: 27/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -24,8 +24,8 @@ function TimeToStr(ASaat: TSaat): string;
 function DateToStr(ATarih: TTarih): string;
 function StrToHex(ADeger: string): TSayi4;
 function IntToStr(ADeger: TISayi4): string;
-function MacToStr(AMACAdres: TMACAdres): string;
-function IPToStr(AIPAdres: TIPAdres): string;
+function MAC_KarakterKatari(AMACAdres: TMACAdres): string;
+function IP_KarakterKatari(AIPAdres: TIPAdres): string;
 function StrToIP(AIPAdres: string): TIPAdres;
 function LowerCase(AKarakter: Char): Char;
 function UpperCase(AKarakter: Char): Char;
@@ -212,11 +212,11 @@ begin
 end;
 
 {==============================================================================
-  MAC adres değerini string değere dönüştürür
+  MAC adresini karakter katarına dönüştürür
  ==============================================================================}
-function MacToStr(AMACAdres: TMACAdres): string;
+function MAC_KarakterKatari(AMACAdres: TMACAdres): string;
 var
-  _Deger, i: TSayi4;
+  Deger, i: TSayi4;
 begin
 
   Result := '';
@@ -225,9 +225,9 @@ begin
   for i := 0 to 5 do
   begin
 
-    _Deger := AMACAdres[i];
-    Result := Result + SayiSistemi16[((_Deger shr 4) and $F)];
-    Result := Result + SayiSistemi16[_Deger and $F];
+    Deger := AMACAdres[i];
+    Result := Result + SayiSistemi16[((Deger shr 4) and $F)];
+    Result := Result + SayiSistemi16[Deger and $F];
     if(i < 5) then
     begin
 
@@ -239,33 +239,33 @@ begin
 end;
 
 {==============================================================================
-  IP adres değerini string değere dönüştürür
+  IP adresini karakter katarına dönüştürür
  ==============================================================================}
-function IPToStr(AIPAdres: TIPAdres): string;
+function IP_KarakterKatari(AIPAdres: TIPAdres): string;
 var
-   _Toplam, _i: TSayi1;
-  _Deger: string[3];
+   Toplam, i: TSayi1;
+  Deger: string[3];
 begin
 
-  _Toplam := 0;
+  Toplam := 0;
   Result := '';
 
   // ip adresini çevir
-  for _i := 0 to 3 do
+  for i := 0 to 3 do
   begin
 
-    _Deger := IntToStr(AIPAdres[_i]);
-    _Toplam := _Toplam + Length(_Deger);
-    Result := Result + _Deger;
+    Deger := IntToStr(AIPAdres[i]);
+    Toplam := Toplam + Length(Deger);
+    Result := Result + Deger;
 
-    if(_i < 3) then
+    if(i < 3) then
     begin
 
       Result := Result + '.'
     end;
   end;
 
-  SetLength(Result, _Toplam + 3);  // + 3 = sayı aralardaki her nokta
+  SetLength(Result, Toplam + 3);  // + 3 = sayı aralardaki her nokta
 end;
 
 {==============================================================================

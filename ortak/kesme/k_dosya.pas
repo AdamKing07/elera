@@ -39,8 +39,8 @@ begin
     begin
 
       Result := FindFirst(PKarakterKatari(Isaretci(PSayi4(Degiskenler + 00)^ +
-        AktifGorevBellekAdresi))^, PSayi2(Degiskenler + 04)^,
-        PDosyaArama(PSayi4(Degiskenler + 06)^ + AktifGorevBellekAdresi)^);
+        CalisanGorevBellekAdresi))^, PSayi2(Degiskenler + 04)^,
+        PDosyaArama(PSayi4(Degiskenler + 06)^ + CalisanGorevBellekAdresi)^);
     end;
 
     // dosya aramayý devam ettir
@@ -48,7 +48,7 @@ begin
     begin
 
       Result := FindNext(PDosyaArama(PSayi4(Degiskenler + 00)^ +
-        AktifGorevBellekAdresi)^);
+        CalisanGorevBellekAdresi)^);
     end;
 
     // dosya aramayý sonlandýr
@@ -56,15 +56,15 @@ begin
     begin
 
       Result := FindClose(PDosyaArama(PSayi4(Degiskenler + 00)^ +
-        AktifGorevBellekAdresi)^);
+        CalisanGorevBellekAdresi)^);
     end;
 
     // iþlem yapýlacak dosya atamasýný gerçekleþtir
     5:
     begin
 
-      AssignFile(PKimlik(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi)^,
-        PKarakterKatari(Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi))^);
+      AssignFile(PKimlik(PSayi4(Degiskenler + 00)^ + CalisanGorevBellekAdresi)^,
+        PKarakterKatari(Isaretci(PSayi4(Degiskenler + 04)^ + CalisanGorevBellekAdresi))^);
     end;
 
     // dosyayý aç
@@ -100,7 +100,7 @@ begin
     begin
 
       Read(PKimlik(Degiskenler + 00)^, Isaretci(PSayi4(Degiskenler + 04)^ +
-        AktifGorevBellekAdresi));
+        CalisanGorevBellekAdresi));
     end;
 
     // dosyayý kapat

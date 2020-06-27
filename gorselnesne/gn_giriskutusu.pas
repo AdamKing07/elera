@@ -61,7 +61,7 @@ begin
       GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
       Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
         PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^, PISayi4(ADegiskenler + 16)^,
-        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 20)^ + CalisanGorevBellekAdresi)^);
     end;
 
     ISLEV_GOSTER:
@@ -76,7 +76,7 @@ begin
     begin
 
       GirisKutusu := PGirisKutusu(GirisKutusu^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      p1 := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p1 := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       p1^ := GirisKutusu^.Baslik;
     end;
 
@@ -104,7 +104,7 @@ begin
     begin
 
       GirisKutusu := PGirisKutusu(GirisKutusu^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      p1 := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p1 := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       GirisKutusu^.Baslik := p1^;
       GirisKutusu^.Ciz;
     end

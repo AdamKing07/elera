@@ -53,7 +53,8 @@ function UpperCase(s: string): string;
 procedure Tasi2(AKaynak, AHedef: Isaretci; AUzunluk: TSayi4);
 function Takas2(ADeger: TSayi2): TSayi2;
 function Takas4(ADeger: TSayi4): TSayi4;
-function IPToStr(AIPAdres: TIPAdres): string;
+function IP_KarakterKatari(AIPAdres: TIPAdres): string;
+function MAC_KarakterKatari(AMACAdres: TMACAdres): string;
 procedure StrPasEx(Src, Dest: Pointer);
 function StrPasEx(ASrc: PChar): string;
 function ParamCount: LongInt;
@@ -83,9 +84,8 @@ function ParamStr1(Index: LongInt): string;
 {*****************************************************************************}
                                  implementation
 {*****************************************************************************}
-
 const
-  HexVal: PChar = ('0123456789ABCDEF');
+  SayiSistemi16: PChar = ('0123456789ABCDEF');
 
 {$asmmode intel}
 procedure MoveEx(Src, Dest: Pointer; Size: LongInt); assembler;
@@ -260,7 +260,7 @@ begin
   for i := 0 to DivNum - 1 do
   begin
 
-    p^ := HexVal[(Val shr (i * 4) and $F)];
+    p^ := SayiSistemi16[(Val shr (i * 4) and $F)];
     Dec(p);
   end;
 end;
@@ -345,33 +345,60 @@ begin
 end;
 
 {==============================================================================
-  IP adres deðerini string deðere dönüþtürür
+  IP adresini karakter katarýna dönüþtürür
  ==============================================================================}
-function IPToStr(AIPAdres: TIPAdres): string;
+function IP_KarakterKatari(AIPAdres: TIPAdres): string;
 var
-   _Toplam, _i: TSayi1;
-  _Deger: string[3];
+   Toplam, i: TSayi1;
+  Deger: string[3];
 begin
 
-  _Toplam := 0;
+  Toplam := 0;
   Result := '';
 
   // ip adresini çevir
-  for _i := 0 to 3 do
+  for i := 0 to 3 do
   begin
 
-    _Deger := IntToStr(AIPAdres[_i]);
-    _Toplam := _Toplam + Length(_Deger);
-    Result := Result + _Deger;
+    Deger := IntToStr(AIPAdres[i]);
+    Toplam := Toplam + Length(Deger);
+    Result := Result + Deger;
 
-    if(_i < 3) then
+    if(i < 3) then
     begin
 
       Result := Result + '.'
     end;
   end;
 
-  SetLength(Result, _Toplam + 3);  // + 3 = sayý aralardaki her nokta
+  SetLength(Result, Toplam + 3);  // + 3 = sayý aralardaki her nokta
+end;
+
+{==============================================================================
+  MAC adresini karakter katarýna dönüþtürür
+ ==============================================================================}
+function MAC_KarakterKatari(AMACAdres: TMACAdres): string;
+var
+  Deger, i: TSayi4;
+begin
+
+  Result := '';
+
+  // mac adresini çevir
+  for i := 0 to 5 do
+  begin
+
+    Deger := AMACAdres[i];
+    Result := Result + SayiSistemi16[((Deger shr 4) and $F)];
+    Result := Result + SayiSistemi16[Deger and $F];
+    if(i < 5) then
+    begin
+
+      Result := Result + Char('-');
+    end;
+  end;
+
+  SetLength(Result, 17);
 end;
 
 { program çaðrý kod bilgileri }

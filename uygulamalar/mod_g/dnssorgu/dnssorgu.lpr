@@ -7,26 +7,26 @@ program dnssorgu;
   Program Adý: dnssorgu.lpr
   Program Ýþlevi: dns adres sorgulama programý
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 
-uses gorev, gn_pencere, gn_etiket, gn_giriskutusu, gn_dugme, gn_defter, n_dns,
-  zamanlayici, gn_durumcubugu;
+uses n_gorev, gn_pencere, gn_etiket, gn_giriskutusu, gn_dugme, gn_defter, n_dns,
+  n_zamanlayici, gn_durumcubugu;
 
 const
   ProgramAdi: string = 'DNS Sorgu';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
   etDNSAdi: TEtiket;
   gkDNSAdi: TGirisKutusu;
   dugSorgula: TDugme;
   defSonuc: TDefter;
-  DurumCubugu0: TDurumCubugu;
-  Zamanlayici0: TZamanlayici;
+  DurumCubugu: TDurumCubugu;
+  Zamanlayici: TZamanlayici;
   OlayKayit: TOlayKayit;
   DNS: TDNS;
   DNSAdresSorgu, DNSAdresYanit: string;
@@ -69,7 +69,7 @@ begin
       defSonuc.Temizle;
       defSonuc.YaziEkle('Sorgulanan Adres: ' + DNSAdresSorgu + #13#10#13#10);
 
-      DurumCubugu0.DurumYazisiDegistir('Adres sorgulanýyor...');
+      DurumCubugu.DurumYazisiDegistir('Adres sorgulanýyor...');
       DNS.Sorgula(DNSAdresSorgu);
     end;
   end;
@@ -81,32 +81,32 @@ begin
 
   DNSKimlik := -1;
 
-  Pencere0.Olustur(-1, 100, 100, 358, 250, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  Pencere.Olustur(-1, 100, 100, 358, 250, ptIletisim, ProgramAdi, RENK_BEYAZ);
 
-  DurumCubugu0.Olustur(Pencere0.Kimlik, 0, 0, 100, 18, 'Beklemede.');
-  DurumCubugu0.Goster;
+  DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 18, 'Beklemede.');
+  DurumCubugu.Goster;
 
-  etDNSAdi.Olustur(Pencere0.Kimlik, 10, 10, RENK_SIYAH, 'DNS Adres:');
+  etDNSAdi.Olustur(Pencere.Kimlik, 10, 10, RENK_SIYAH, 'DNS Adres:');
   etDNSAdi.Goster;
 
-  gkDNSAdi.Olustur(Pencere0.Kimlik, 96, 7, 186, 22, DNSAdresSorgu);
+  gkDNSAdi.Olustur(Pencere.Kimlik, 96, 7, 186, 22, DNSAdresSorgu);
   gkDNSAdi.Goster;
 
-  dugSorgula.Olustur(Pencere0.Kimlik, 286, 6, 62, 22, 'Sorgula');
+  dugSorgula.Olustur(Pencere.Kimlik, 286, 6, 62, 22, 'Sorgula');
   dugSorgula.Goster;
 
-  defSonuc.Olustur(Pencere0.Kimlik, 10, 32, 340, 194, $369090, RENK_BEYAZ);
+  defSonuc.Olustur(Pencere.Kimlik, 10, 32, 340, 194, $369090, RENK_BEYAZ);
   defSonuc.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(100);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(100);
+  Zamanlayici.Baslat;
 
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
 
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
@@ -137,7 +137,7 @@ begin
 
             defSonuc.YaziEkle('Hata: adres çözümlenemiyor!');
 
-            DurumCubugu0.DurumYazisiDegistir('Beklemede.');
+            DurumCubugu.DurumYazisiDegistir('Beklemede.');
 
             Exit;
           end;
@@ -202,7 +202,7 @@ begin
 
           defSonuc.YaziEkle('IP Adresi: ' + IPToStr(IPAdres));
 
-          DurumCubugu0.DurumYazisiDegistir('Beklemede.');
+          DurumCubugu.DurumYazisiDegistir('Beklemede.');
 
           DNS.Kapat;
         end;

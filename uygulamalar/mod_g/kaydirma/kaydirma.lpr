@@ -7,48 +7,49 @@ program kaydirma;
   Program Adý: kaydirma.lpr
   Program Ýþlevi: kaydýrma çubuðu tasarým çalýþmasý
 
-  Güncelleme Tarihi: 03/04/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 
-uses gorev, gn_pencere, gn_kaydirmacubugu;
+uses n_gorev, gn_pencere, gn_kaydirmacubugu;
 
 const
   ProgramAdi: string = 'Kaydýrma Çubuðu - Tasarým';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  dugKaydirmaCubugu1: TKaydirmaCubugu;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  dugKaydirmaCubugu: TKaydirmaCubugu;
   OlayKayit: TOlayKayit;
 
 begin
-  Pencere0.Olustur(-1, 100, 100, 270, 260, ptBoyutlandirilabilir, ProgramAdi,
+  Pencere.Olustur(-1, 100, 100, 270, 260, ptBoyutlandirilabilir, ProgramAdi,
     RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  dugKaydirmaCubugu1.Olustur(Pencere0.Kimlik, 30, 10, 200, 15, yYatay);
-  dugKaydirmaCubugu1.DegerleriBelirle(0, 5);
-  dugKaydirmaCubugu1.Goster;
+  dugKaydirmaCubugu.Olustur(Pencere.Kimlik, 30, 10, 200, 15, yYatay);
+  dugKaydirmaCubugu.DegerleriBelirle(0, 5);
+  dugKaydirmaCubugu.Goster;
 
-  dugKaydirmaCubugu1.Olustur(Pencere0.Kimlik, 30, 195, 200, 15, yYatay);
-  dugKaydirmaCubugu1.DegerleriBelirle(0, 10);
-  dugKaydirmaCubugu1.Goster;
+  dugKaydirmaCubugu.Olustur(Pencere.Kimlik, 30, 195, 200, 15, yYatay);
+  dugKaydirmaCubugu.DegerleriBelirle(0, 10);
+  dugKaydirmaCubugu.Goster;
 
-  dugKaydirmaCubugu1.Olustur(Pencere0.Kimlik, 10, 10, 15, 200, yDikey);
-  dugKaydirmaCubugu1.DegerleriBelirle(0, 15);
-  dugKaydirmaCubugu1.Goster;
+  dugKaydirmaCubugu.Olustur(Pencere.Kimlik, 10, 10, 15, 200, yDikey);
+  dugKaydirmaCubugu.DegerleriBelirle(0, 15);
+  dugKaydirmaCubugu.Goster;
 
-  dugKaydirmaCubugu1.Olustur(Pencere0.Kimlik, 235, 10, 15, 200, yDikey);
-  dugKaydirmaCubugu1.DegerleriBelirle(0, 20);
-  dugKaydirmaCubugu1.Goster;
+  dugKaydirmaCubugu.Olustur(Pencere.Kimlik, 235, 10, 15, 200, yDikey);
+  dugKaydirmaCubugu.DegerleriBelirle(0, 20);
+  dugKaydirmaCubugu.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
@@ -57,5 +58,5 @@ begin
     begin
 
     end;
-  until (1 = 2);
+  end;
 end.

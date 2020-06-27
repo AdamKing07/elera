@@ -74,6 +74,8 @@ const
   FUNC_DRAW                   = $10;
   FUNC_HIDE                   = $20;
   FUNC_DESTROY                = $40;
+
+  // yeni sistem çağrılarının tanımlanacağı alan
   
   EKRAN_COZUNURLUGUNUAL       = $00010200 + SAC_EKRAN;
 
@@ -195,8 +197,13 @@ const
   ACILIRMENU_ELEMANEKLE	      = $01001600 + SAC_GNESNE;
   ACILIRMENU_SECILISIRANOAL   = $02001600 + SAC_GNESNE;
 
-  // yeni nesne çağrı başlıkları:
-  // yeni nesne çağrı başlıkları üst satıra eklenecektir
+  DEGERLISTESI_OLUSTUR	      = $00011700 + SAC_GNESNE;
+  DEGERLISTESI_GOSTER	        = $00081700 + SAC_GNESNE;
+  DEGERLISTESI_DEGEREKLE	    = $01001700 + SAC_GNESNE;
+  DEGERLISTESI_TEMIZLE 	      = $03001700 + SAC_GNESNE;
+  DEGERLISTESI_SECILIYAZIAL   = $04001700 + SAC_GNESNE;
+  DEGERLISTESI_BASLIKBELIRLE  = $06001700 + SAC_GNESNE;
+  DEGERLISTESI_HIZALA         = $01041700 + SAC_GNESNE;
 
   // genel nesne çağrıları
   GORSELNESNE_KIMLIKAL 	      = $0001FF00 + SAC_GNESNE;

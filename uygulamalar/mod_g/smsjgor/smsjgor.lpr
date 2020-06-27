@@ -7,11 +7,11 @@ program smsjgor;
   Program Adý: smsjgor.lpr
   Program Ýþlevi: sistem tarafýndan üretilen mesajlarý görüntüleme programý
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, zamanlayici, sistemmesaj;
+uses n_gorev, gn_pencere, n_zamanlayici, n_sistemmesaj;
 
 const
   ProgramAdi: string = 'Sistem Mesaj Görüntüleyici';
@@ -22,45 +22,46 @@ const
   PENCERE_YUKSEKLIK = PENCERE_KULLANILMAYAN_ALAN + (USTSINIR_MESAJSAYISI * FONT_YUKSEKLIGI);
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
-  SistemMesaj0: TSistemMesaj;
-  Zamanlayici0: TZamanlayici;
-  Mesaj0: TMesaj;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  SistemMesaj: TSistemMesaj;
+  Zamanlayici: TZamanlayici;
+  Mesaj: TMesaj;
   OlayKayit: TOlayKayit;
   SistemdekiToplamMesaj, ToplamMesaj,
   IlkMesajNo, i, SatirNo: TSayi4;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 20, 600, PENCERE_YUKSEKLIK, ptBoyutlandirilabilir, ProgramAdi,
-    $E2E2E2);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 20, 600, PENCERE_YUKSEKLIK, ptBoyutlandirilabilir,
+    ProgramAdi, $E2E2E2);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  Zamanlayici0.Olustur(100);
-  Zamanlayici0.Baslat;
+  Zamanlayici.Olustur(100);
+  Zamanlayici.Baslat;
 
   ToplamMesaj := 0;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      SistemdekiToplamMesaj := SistemMesaj0.Toplam;
+      SistemdekiToplamMesaj := SistemMesaj.Toplam;
       if(SistemdekiToplamMesaj <> ToplamMesaj) then ToplamMesaj := SistemdekiToplamMesaj;
 
-      Pencere0.Ciz;
+      Pencere.Ciz;
     end
 
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      Pencere0.Tuval.KalemRengi := $32323E;
-      Pencere0.Tuval.YaziYaz(0, 0, 'No   Saat     Mesaj');
+      Pencere.Tuval.KalemRengi := $32323E;
+      Pencere.Tuval.YaziYaz(0, 0, 'No   Saat     Mesaj');
 
       if(ToplamMesaj > 0) then
       begin
@@ -75,14 +76,13 @@ begin
         for i := IlkMesajNo to ToplamMesaj do
         begin
 
-          SistemMesaj0.Al(i, @Mesaj0);
-          Pencere0.Tuval.SayiYaz16(0, SatirNo * 16, True, 2, Mesaj0.SiraNo);
-          Pencere0.Tuval.SaatYaz(5 * 8, SatirNo * 16, Mesaj0.Saat);
-          Pencere0.Tuval.YaziYaz(14 * 8, SatirNo * 16, Mesaj0.Mesaj);
+          SistemMesaj.Al(i, @Mesaj);
+          Pencere.Tuval.SayiYaz16(0, SatirNo * 16, True, 2, Mesaj.SiraNo);
+          Pencere.Tuval.SaatYaz(5 * 8, SatirNo * 16, Mesaj.Saat);
+          Pencere.Tuval.YaziYaz(14 * 8, SatirNo * 16, Mesaj.Mesaj);
           Inc(SatirNo);
         end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

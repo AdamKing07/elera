@@ -44,7 +44,7 @@ begin
   if(IslevNo = 1) then
   begin
 
-    DosyaAdi := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + AktifGorevBellekAdresi)^;
+    DosyaAdi := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi)^;
 
     p := p^.Calistir(DosyaAdi);
     if(p <> nil) then
@@ -78,9 +78,9 @@ begin
   else if(IslevNo = 3) then
   begin
 
-    p2 := PSayi4(PSayi4(ADegiskenler + 00)^ + AktifGorevBellekAdresi);
+    p2 := PSayi4(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi);
     p2^ := USTSINIR_GOREVSAYISI;
-    p2 := PSayi4(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+    p2 := PSayi4(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
     p2^ := CalisanGorevSayisi;
 
     Result := 1;
@@ -98,7 +98,7 @@ begin
       if(p <> nil) then
       begin
 
-        GorevKayit := PGorevKayit(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+        GorevKayit := PGorevKayit(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
         GorevKayit^.GorevDurum := p^.FGorevDurum;
         GorevKayit^.GorevKimlik := p^.GorevKimlik;
         GorevKayit^.GorevSayaci := p^.GorevSayaci;
@@ -124,7 +124,7 @@ begin
       if(GorevKimlik > 0) then
       begin
 
-        p4 := Isaretci(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+        p4 := Isaretci(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
         TSS := GorevTSSListesi[GorevKimlik];
         Tasi2(TSS, p4, 104);
 

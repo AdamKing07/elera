@@ -6,7 +6,7 @@
   Dosya Adı: gn_menu.pas
   Dosya İşlevi: menü yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 20/06/2020
+  Güncelleme Tarihi: 24/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -90,7 +90,7 @@ begin
 
       Menu := PMenu(Menu^.NesneTipiniKontrolEt(PKimlik(ADegiskenler + 00)^, gntMenu));
 
-      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^;
+      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^;
       AResimSiraNo := PISayi4(ADegiskenler + 08)^;
 
       if(Menu <> nil) then
@@ -241,8 +241,28 @@ end;
   menü nesnesini boyutlandırır
  ==============================================================================}
 procedure TMenu.Boyutlandir;
+var
+  Menu: PMenu;
 begin
 
+  Menu := PMenu(Menu^.NesneAl(Kimlik));
+  if(Menu = nil) then Exit;
+
+  Menu^.FCizimAlan.Sol := 0;
+  Menu^.FCizimAlan.Ust := 0;
+  Menu^.FCizimAlan.Sag := Menu^.FBoyut.Genislik - 1;
+  Menu^.FCizimAlan.Alt := Menu^.FBoyut.Yukseklik - 1;
+
+  // menü çizimi için bellekte yer ayır
+  Menu^.FCizimBellekAdresi := GGercekBellek.Ayir(Menu^.FBoyut.Genislik *
+    Menu^.FBoyut.Yukseklik * 4);
+  if(Menu^.FCizimBellekAdresi = nil) then
+  begin
+
+    // hata olması durumunda nesneyi yok et ve işlevden çık
+    Menu^.YokEt;
+    Exit;
+  end;
 end;
 
 {==============================================================================

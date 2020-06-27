@@ -36,30 +36,28 @@
         <Filename Value="agbilgi.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="16"/>
-        <CursorPos X="42" Y="29"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="temizle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="32"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit1>
       <Unit2>
         <Filename Value="derle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="32"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit2>
       <Unit3>
         <Filename Value="agbilgi.ld"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit3>
     </Units>

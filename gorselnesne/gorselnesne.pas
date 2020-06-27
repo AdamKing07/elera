@@ -348,7 +348,6 @@ begin
       if not(Pencere = nil) then Pencere^.Guncelle;
     end;
   end;
-
 end;
 
 procedure TGorselNesne.Gizle;
@@ -1108,7 +1107,7 @@ var
 begin
 
   // MAC adres deðerini karakter katarýna çevir
-  MACAdres := MacToStr(AMACAdres);
+  MACAdres := MAC_KarakterKatari(AMACAdres);
 
   // MAC adres deðerini belirtilen koordinatlara yaz
   YaziYaz(AGorselNesne, ASol, AUst, MACAdres, ARenk);
@@ -1124,7 +1123,7 @@ var
 begin
 
   // IP adres deðerini karakter katarýna çevir
-  IPAdres := IpToStr(AIPAdres);
+  IPAdres := IP_KarakterKatari(AIPAdres);
 
   // ip adres deðerini belirtilen koordinatlara yaz
   YaziYaz(AGorselNesne, ASol, AUst, IPAdres, ARenk);

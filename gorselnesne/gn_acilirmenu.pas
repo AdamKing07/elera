@@ -6,7 +6,7 @@
   Dosya Adý: gn_acilirmenu.pas
   Dosya Ýþlevi: açýlýr menü yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 20/06/2020
+  Güncelleme Tarihi: 24/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -20,6 +20,8 @@ type
   PAcilirMenu = ^TAcilirMenu;
   TAcilirMenu = object(TMenu)
   public
+    // nesne, karma liste gibi bir nesnenin yardýmcý nesnesi mi?
+    FYardimciNesne: Boolean;
     FAcilirMenuOlayGeriDonusAdresi: TOlaylariIsle;
     function Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik,
       AElemanYukseklik: TISayi4; AKenarlikRengi, AGovdeRengi, ASecimRengi, ANormalYaziRengi,
@@ -30,6 +32,8 @@ type
     procedure Boyutlandir;
     procedure Ciz;
     procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    function MenuEkle(ADeger: string; AResimSiraNo: TISayi4 = -1;
+      AMenuBoyutDegistir: Boolean = False): Boolean;
   end;
 
 function AcilirMenuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
@@ -83,18 +87,12 @@ begin
       AcilirMenu := PAcilirMenu(AcilirMenu^.NesneTipiniKontrolEt(PKimlik(ADegiskenler + 00)^,
         gntAcilirMenu));
 
-      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^;
+      AElemanAdi := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^;
       AResimSiraNo := PISayi4(ADegiskenler + 08)^;
 
       if(AcilirMenu <> nil) then
-      begin
-
-        { TODO : her bir menü eklendiðinde menünün yüksekliði yeniden belirlenecektir }
-        AcilirMenu^.FMenuBaslikListesi^.Ekle(AElemanAdi);
-        AcilirMenu^.FMenuResimListesi^.Ekle(AResimSiraNo);
-
-        Result := 1;
-      end else Result := 0;
+        Result := TISayi4(AcilirMenu^.MenuEkle(AElemanAdi, AResimSiraNo))
+      else Result := 0;
     end;
 
     // seçilen elemanýn sýra deðerini al
@@ -140,12 +138,13 @@ var
   AcilirMenu: PAcilirMenu;
 begin
 
-  { TODO : menünün geniþlik ve yüksekliði otomatik olarak belirlenecektir }
   AcilirMenu := PAcilirMenu(inherited Olustur(AAtaNesne, gntAcilirMenu, ASol, AUst,
     AGenislik, AYukseklik, AElemanYukseklik, AKenarlikRengi, AGovdeRengi));
 
   AcilirMenu^.FMenuOlayGeriDonusAdresi := @OlaylariIsle;
   AcilirMenu^.FAcilirMenuOlayGeriDonusAdresi := nil;
+
+  AcilirMenu^.FYardimciNesne := False;
 
   AcilirMenu^.FSecimRenk := ASecimRengi;
   AcilirMenu^.FNormalYaziRenk := ANormalYaziRengi;
@@ -177,9 +176,17 @@ begin
   AcilirMenu := PAcilirMenu(AcilirMenu^.NesneAl(Kimlik));
   if(AcilirMenu = nil) then Exit;
 
-  // menüyü farenin bulunduðu konumda görüntüle
-  AcilirMenu^.FKonum.Sol := GFareSurucusu.YatayKonum;
-  AcilirMenu^.FKonum.Ust := GFareSurucusu.DikeyKonum;
+  if(AcilirMenu^.FYardimciNesne) then
+  begin
+
+  end
+  else
+  begin
+
+    // menüyü farenin bulunduðu konumda görüntüle
+    AcilirMenu^.FKonum.Sol := GFareSurucusu.YatayKonum;
+    AcilirMenu^.FKonum.Ust := GFareSurucusu.DikeyKonum;
+  end;
 end;
 
 {==============================================================================
@@ -197,6 +204,7 @@ end;
 procedure TAcilirMenu.Boyutlandir;
 begin
 
+  inherited Boyutlandir;
 end;
 
 {==============================================================================
@@ -222,6 +230,45 @@ begin
   if not(AcilirMenu^.FAcilirMenuOlayGeriDonusAdresi = nil) then
     AcilirMenu^.FAcilirMenuOlayGeriDonusAdresi(AcilirMenu, AOlay)
   else GorevListesi[AcilirMenu^.GorevKimlik]^.OlayEkle(AcilirMenu^.GorevKimlik, AOlay);
+end;
+
+{==============================================================================
+  menü nesnesine menü elemaný ekler
+ ==============================================================================}
+function TAcilirMenu.MenuEkle(ADeger: string; AResimSiraNo: TISayi4 = -1;
+  AMenuBoyutDegistir: Boolean = False): Boolean;
+var
+  AcilirMenu: PAcilirMenu;
+  i: TISayi4;
+begin
+
+  AcilirMenu := PAcilirMenu(AcilirMenu^.NesneAl(Kimlik));
+  if(AcilirMenu = nil) then Exit;
+
+  AcilirMenu^.FMenuBaslikListesi^.Ekle(ADeger);
+
+  // AResimSiraNo = -1 = menünün resmi yok
+  if(AResimSiraNo > -1) then AcilirMenu^.FMenuResimListesi^.Ekle(AResimSiraNo);
+
+  // menü geniþliðini ve yüksekliðini deðiþtir
+  if(AMenuBoyutDegistir) then
+  begin
+
+    // geniþliðin yeniden belirlenmesi
+    i := Length(ADeger) * 8;
+    if(i > 100) then i := 100;
+    if(i > AcilirMenu^.FBoyut.Genislik) then AcilirMenu^.FBoyut.Genislik := i;
+
+    // yüksekliðin yeniden belirlenmesi. en fazla 5 eleman görüntülenebilir
+    i := AcilirMenu^.FMenuBaslikListesi^.ElemanSayisi;
+    if(i > 5) then i := 5;
+    i := i * 24;
+    if(i > AcilirMenu^.FBoyut.Yukseklik) then AcilirMenu^.FBoyut.Yukseklik := i;
+  end;
+
+  AcilirMenu^.Boyutlandir;
+
+  Result := Boolean(TISayi4(True));
 end;
 
 end.

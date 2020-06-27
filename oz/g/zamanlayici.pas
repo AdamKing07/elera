@@ -364,7 +364,7 @@ asm
   shl eax,2
   mov esi,GorevListesi[eax]
   mov eax,[esi + TGorev.FBellekBaslangicAdresi]
-  mov AktifGorevBellekAdresi,eax
+  mov CalisanGorevBellekAdresi,eax
 
   // görev deðiþiklik sayacýný bir artýr
   mov eax,[esi + TGorev.FGorevSayaci]
@@ -464,7 +464,7 @@ asm
   shl eax,2
   mov esi,GorevListesi[eax]
   mov eax,[esi + TGorev.FBellekBaslangicAdresi]
-  mov AktifGorevBellekAdresi,eax
+  mov CalisanGorevBellekAdresi,eax
 
   // görev deðiþiklik sayacýný bir artýr
   mov eax,CalisanGorev

@@ -81,7 +81,7 @@ begin
       ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntListeKutusu));
       if(ListeKutusu <> nil) then ListeKutusu^.ListeyeEkle(
-        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
       Result := 1;
     end;
 
@@ -119,7 +119,7 @@ begin
       ListeKutusu := PListeKutusu(ListeKutusu^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntListeKutusu));
       if(ListeKutusu <> nil) then Result := ListeKutusu^.FSeciliSiraNo;
-      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       p^ := ListeKutusu^.SeciliYaziyiAl;
     end;
 

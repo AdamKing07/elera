@@ -111,7 +111,7 @@ begin
     if(_GirdiSiraNo >= 0) and (_GirdiSiraNo < ARPKayitSayisi) then
     begin
 
-      _ARPKayit := PARPKayit(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
+      _ARPKayit := PARPKayit(PSayi4(Degiskenler + 04)^ + CalisanGorevBellekAdresi);
       Result := ARPKaydiAl(_GirdiSiraNo, _ARPKayit);
 
     end else Result := HATA_DEGERARALIKDISI;

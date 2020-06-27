@@ -57,7 +57,7 @@ begin
       GorselNesne := GorselNesne^.NesneAl(PKimlik(ADegiskenler + 00)^);
       Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
         PISayi4(ADegiskenler + 08)^, PRenk(ADegiskenler + 12)^,
-        PKarakterKatari(PSayi4(ADegiskenler + 16)^ + AktifGorevBellekAdresi)^);
+        PKarakterKatari(PSayi4(ADegiskenler + 16)^ + CalisanGorevBellekAdresi)^);
     end;
 
     ISLEV_GOSTER:
@@ -72,7 +72,7 @@ begin
     begin
 
       Etiket := PEtiket(Etiket^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + AktifGorevBellekAdresi);
+      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       Etiket^.Baslik := p^;
 
       // etiketin bağlı olduğu pencere nesnesini güncelle

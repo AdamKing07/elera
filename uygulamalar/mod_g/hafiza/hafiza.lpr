@@ -7,19 +7,19 @@ program hafiza;
   Program Adý: hafiza.lpr
   Program Ýþlevi: hafýza güçlendirmek için geliþtirilmiþ uygulama
 
-  Güncelleme Tarihi: 08/06/2020
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses gorev, gn_pencere, gn_dugme, gn_etiket;
+uses n_gorev, gn_pencere, gn_dugme, gn_etiket;
 
 const
   ProgramAdi: string = 'Hafýza';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
   Durum: TEtiket;
   Dugmeler: array[0..15] of TDugme;
   SeciliDugme1, SeciliDugme2: PDugme;
@@ -81,7 +81,7 @@ begin
   for j := 0 to 3 do
   begin
 
-    Dugmeler[DugmeSayisi].Olustur(Pencere0.Kimlik, Sol + i * 76, Ust + j * 76, 74, 74, '?');
+    Dugmeler[DugmeSayisi].Olustur(Pencere.Kimlik, Sol + i * 76, Ust + j * 76, 74, 74, '?');
     Dugmeler[DugmeSayisi].Etiket := CiftDegerDegeriAl;
     Dugmeler[DugmeSayisi].Goster;
 
@@ -108,20 +108,20 @@ end;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 328, 360, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 100, 328, 360, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Durum.Olustur(Pencere0.Kimlik, 92, 330, RENK_LACIVERT, 'Týklama Sayýsý: 0  ');
+  Durum.Olustur(Pencere.Kimlik, 92, 330, RENK_LACIVERT, 'Týklama Sayýsý: 0  ');
   Durum.Goster;
 
   IlkDegerAtamalari;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 

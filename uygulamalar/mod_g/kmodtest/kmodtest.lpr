@@ -7,42 +7,43 @@ program kmodtest;
   Program Adý: kmodtest.lpr
   Program Ýþlevi: ring3 seviyesi korumalý mod test programý
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses gorev, gn_pencere, gn_dugme, gn_baglanti;
+uses n_gorev, gn_pencere, gn_dugme, gn_baglanti;
 
 const
   ProgramAdi: string = 'Korumalý Mod Test (Ring3)';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
   bagKomutIN, bagKomutCLI,
   bagKomutJMP, bagKomutMOV: TBaglanti;
   OlayKayit: TOlayKayit;
 
 begin
 
-  Pencere0.Olustur(-1, 200, 200, 250, 130, ptIletisim, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 200, 200, 250, 130, ptIletisim, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  bagKomutIN.Olustur(Pencere0.Kimlik, 18, 10, $000000, $FF0000, 'in al,$1F0');
+  bagKomutIN.Olustur(Pencere.Kimlik, 18, 10, $000000, $FF0000, 'in al,$1F0');
   bagKomutIN.Goster;
-  bagKomutCLI.Olustur(Pencere0.Kimlik, 18, 30, $000000, $FF0000, 'cli');
+  bagKomutCLI.Olustur(Pencere.Kimlik, 18, 30, $000000, $FF0000, 'cli');
   bagKomutCLI.Goster;
-  bagKomutJMP.Olustur(Pencere0.Kimlik, 18, 50, $000000, $FF0000, 'jmp 0x8:0');
+  bagKomutJMP.Olustur(Pencere.Kimlik, 18, 50, $000000, $FF0000, 'jmp 0x8:0');
   bagKomutJMP.Goster;
-  bagKomutMOV.Olustur(Pencere0.Kimlik, 18, 70, $000000, $FF0000, 'mov esi,[$FFFFFFFF]');
+  bagKomutMOV.Olustur(Pencere.Kimlik, 18, 70, $000000, $FF0000, 'mov esi,[$FFFFFFFF]');
   bagKomutMOV.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
@@ -74,6 +75,5 @@ begin
       end;
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

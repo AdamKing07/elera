@@ -6,39 +6,59 @@
   Program Adý: agbilgi.lpr
   Program Ýþlevi: að yapýlandýrmasý hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 07/06/2020
+  Güncelleme Tarihi: 27/06/2020
 
  ==============================================================================}
 {$mode objfpc}
 program agbilgi;
 
-uses gorev, gn_pencere, gn_dugme, tuval, elera;
+uses n_gorev, gn_pencere, gn_dugme, gn_degerlistesi, n_tuval, elera;
 
 const
   ProgramAdi: string = 'Að Ayarlarý';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
+  DegerListesi: TDegerListesi;
   dugYenile: TDugme;
   OlayKayit: TOlayKayit;
   AgBilgisi: TAgBilgisi;
 
+procedure IcerigiGuncelle;
 begin
 
-  Pencere0.Olustur(-1, 300, 200, 330, 200, ptIletisim, ProgramAdi, $FAE6FF);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  DegerListesi.Temizle;
+  DegerListesi.DegerEkle('MAC Adresi|' + MAC_KarakterKatari(AgBilgisi.MACAdres));
+  DegerListesi.DegerEkle('IP4 Adresi|' + IP_KarakterKatari(AgBilgisi.IP4Adres));
+  DegerListesi.DegerEkle('IP4 Alt Að Maskesi|' + IP_KarakterKatari(AgBilgisi.AltAgMaskesi));
+  DegerListesi.DegerEkle('Að Geçidi|' + IP_KarakterKatari(AgBilgisi.AgGecitAdresi));
+  DegerListesi.DegerEkle('DHCP Sunucusu|' + IP_KarakterKatari(AgBilgisi.DHCPSunucusu));
+  DegerListesi.DegerEkle('DNS Sunucusu|' + IP_KarakterKatari(AgBilgisi.DNSSunucusu));
+  DegerListesi.DegerEkle('IP Kira Süresi|' + IntToStr(AgBilgisi.IPKiraSuresi));
+end;
 
-  dugYenile.Olustur(Pencere0.Kimlik, 240, 170, 70, 20, 'Yenile');
+begin
+
+  Pencere.Olustur(-1, 300, 200, 330, 255, ptIletisim, ProgramAdi, $FAE6FF);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
+
+  DegerListesi.Olustur(Pencere.Kimlik, 2, 2, 326, 182);
+  DegerListesi.BaslikBelirle('Özellik', 'Deðer', 20 * 8);
+  DegerListesi.Goster;
+
+  dugYenile.Olustur(Pencere.Kimlik, 250, 225, 70, 20, 'Yenile');
   dugYenile.Goster;
-  Pencere0.Goster;
+
+  Pencere.Goster;
 
   AgBilgisiAl(@AgBilgisi);
+  IcerigiGuncelle;
 
   while True do
   begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
@@ -46,31 +66,15 @@ begin
       begin
 
         AgBilgisiAl(@AgBilgisi);
-        Pencere0.Ciz;
+        IcerigiGuncelle;
       end;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      Pencere0.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere0.Tuval.YaziYaz(2, 02, 'MAC Adresi:');
-      Pencere0.Tuval.MACAdresiYaz(166, 02, @AgBilgisi.MACAdres);
-      Pencere0.Tuval.YaziYaz(2, 18, 'IP4 Adresi:');
-      Pencere0.Tuval.IPAdresiYaz(166, 18, @AgBilgisi.IP4Adres);
-      Pencere0.Tuval.YaziYaz(2, 34, 'IP4 Alt Að Maskesi:');
-      Pencere0.Tuval.IPAdresiYaz(166, 34, @AgBilgisi.AltAgMaskesi);
-      Pencere0.Tuval.YaziYaz(2, 50, 'Að Geçidi:');
-      Pencere0.Tuval.IPAdresiYaz(166, 50, @AgBilgisi.AgGecitAdresi);
-      Pencere0.Tuval.YaziYaz(2, 66, 'DHCP Sunucusu:');
-      Pencere0.Tuval.IPAdresiYaz(166, 66, @AgBilgisi.DHCPSunucusu);
-      Pencere0.Tuval.YaziYaz(2, 82, 'DNS Sunucusu:');
-      Pencere0.Tuval.IPAdresiYaz(166, 82, @AgBilgisi.DNSSunucusu);
-      Pencere0.Tuval.YaziYaz(2, 98, 'IP Kira Süresi:');
-      Pencere0.Tuval.SayiYaz10(166, 98, AgBilgisi.IPKiraSuresi);
-
-      Pencere0.Tuval.KalemRengi := RENK_KIRMIZI;
-      Pencere0.Tuval.YaziYaz(2, 130, 'DHCP sunucundan yeni IP adresi almak');
-      Pencere0.Tuval.YaziYaz(2, 146, 'için Ctrl+2 tuþuna basýnýz.');
+      Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
+      Pencere.Tuval.YaziYaz(2, 187, 'DHCP sunucusundan yeni IP adresi almak');
+      Pencere.Tuval.YaziYaz(2, 203, 'için Ctrl+2 tuþuna basýnýz.');
     end;
   end;
 end.

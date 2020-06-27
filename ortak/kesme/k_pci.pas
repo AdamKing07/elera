@@ -6,7 +6,7 @@
   Dosya Adı: k_pci.pas
   Dosya İşlevi: pci yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 22/09/2019
+  Güncelleme Tarihi: 23/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,7 +16,7 @@ interface
 
 uses paylasim;
 
-function PCICagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function PCICagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
@@ -25,82 +25,82 @@ uses pci;
 {==============================================================================
   pci kesme çağrılarını yönetir
  ==============================================================================}
-function PCICagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function PCICagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
   p: Isaretci;
-  _Islev: TSayi1;
-  _PCIAygitSiraNo: TISayi4;
+  Islev: TSayi1;
+  PCIAygitSiraNo: TISayi4;
 begin
 
   // işlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   // toplam pci aygıt sayısını al
-  if(_Islev = 1) then
+  if(Islev = 1) then
   begin
 
     Result := ToplamPCIAygitSayisi;
   end
 
   // pci bilgilerini al
-  else if(_Islev = 2) then
+  else if(Islev = 2) then
   begin
 
-    _PCIAygitSiraNo := PSayi4(Degiskenler + 00)^;
-    if(_PCIAygitSiraNo >= 0) and (_PCIAygitSiraNo < ToplamPCIAygitSayisi) then
+    PCIAygitSiraNo := PSayi4(ADegiskenler + 00)^;
+    if(PCIAygitSiraNo >= 0) and (PCIAygitSiraNo < ToplamPCIAygitSayisi) then
     begin
 
-      p := Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-      Move(PCIAygitBellekAdresi[_PCIAygitSiraNo]^, Isaretci(p)^, SizeOf(TPCI));
+      p := Isaretci(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
+      Move(PCIAygitBellekAdresi[PCIAygitSiraNo]^, Isaretci(p)^, SizeOf(TPCI));
     end else Result := HATA_DEGERARALIKDISI;
   end
 
   // pci aygıtından 1 byte veri oku
-  else if(_Islev = 3) then
+  else if(Islev = 3) then
   begin
 
-    Result := PCIOku1(PSayi4(Degiskenler + 00)^, PSayi4(Degiskenler + 04)^,
-      PSayi4(Degiskenler + 08)^, PSayi4(Degiskenler + 12)^) and $FF;
+    Result := PCIOku1(PSayi4(ADegiskenler + 00)^, PSayi4(ADegiskenler + 04)^,
+      PSayi4(ADegiskenler + 08)^, PSayi4(ADegiskenler + 12)^) and $FF;
   end
 
   // pci aygıtından 2 byte veri oku
-  else if(_Islev = 4) then
+  else if(Islev = 4) then
   begin
 
-    Result := PCIOku2(PSayi4(Degiskenler + 00)^, PSayi4(Degiskenler + 04)^,
-      PSayi4(Degiskenler + 08)^, PSayi4(Degiskenler + 12)^) and $FFFF;
+    Result := PCIOku2(PSayi4(ADegiskenler + 00)^, PSayi4(ADegiskenler + 04)^,
+      PSayi4(ADegiskenler + 08)^, PSayi4(ADegiskenler + 12)^) and $FFFF;
   end
 
   // pci aygıtından 4 byte veri oku
-  else if(_Islev = 5) then
+  else if(Islev = 5) then
   begin
 
-    Result := PCIOku4(PSayi4(Degiskenler + 00)^, PSayi4(Degiskenler + 04)^,
-      PSayi4(Degiskenler + 08)^, PSayi4(Degiskenler + 12)^);
+    Result := PCIOku4(PSayi4(ADegiskenler + 00)^, PSayi4(ADegiskenler + 04)^,
+      PSayi4(ADegiskenler + 08)^, PSayi4(ADegiskenler + 12)^);
   end
 
   // pci aygıtına 1 byte veri yaz
-  else if(_Islev = 6) then
+  else if(Islev = 6) then
   begin
 
-    PCIYaz1(PSayi4(Degiskenler + 00)^, PSayi4(Degiskenler + 04)^, PSayi4(Degiskenler + 08)^,
-      PSayi4(Degiskenler + 12)^, PSayi4(Degiskenler + 16)^);
+    PCIYaz1(PSayi4(ADegiskenler + 00)^, PSayi4(ADegiskenler + 04)^, PSayi4(ADegiskenler + 08)^,
+      PSayi4(ADegiskenler + 12)^, PSayi4(ADegiskenler + 16)^);
   end
 
   // pci aygıtına 2 byte veri yaz
-  else if(_Islev = 7) then
+  else if(Islev = 7) then
   begin
 
-    PCIYaz2(PSayi4(Degiskenler + 00)^, PSayi4(Degiskenler + 04)^, PSayi4(Degiskenler + 08)^,
-      PSayi4(Degiskenler + 12)^, PSayi4(Degiskenler + 16)^);
+    PCIYaz2(PSayi4(ADegiskenler + 00)^, PSayi4(ADegiskenler + 04)^, PSayi4(ADegiskenler + 08)^,
+      PSayi4(ADegiskenler + 12)^, PSayi4(ADegiskenler + 16)^);
   end
 
   // pci aygıtına 4 byte veri yaz
-  else if(_Islev = 8) then
+  else if(Islev = 8) then
   begin
 
-    PCIYaz4(PSayi4(Degiskenler + 00)^, PSayi4(Degiskenler + 04)^, PSayi4(Degiskenler + 08)^,
-      PSayi4(Degiskenler + 12)^, PSayi4(Degiskenler + 16)^);
+    PCIYaz4(PSayi4(ADegiskenler + 00)^, PSayi4(ADegiskenler + 04)^, PSayi4(ADegiskenler + 08)^,
+      PSayi4(ADegiskenler + 12)^, PSayi4(ADegiskenler + 16)^);
   end
 
   else Result := HATA_ISLEV;

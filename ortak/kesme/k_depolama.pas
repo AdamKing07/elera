@@ -6,7 +6,7 @@
   Dosya Adı: k_depolama.pas
   Dosya İşlevi: depolama aygıt kesme çağrılarını yönetir
 
-  Güncelleme Tarihi: 17/10/2019
+  Güncelleme Tarihi: 23/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,7 +16,7 @@ interface
 
 uses paylasim;
 
-function DepolamaCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function DepolamaCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
@@ -25,70 +25,70 @@ uses depolama;
 {==============================================================================
   depolama aygıt kesme çağrılarını yönetir
  ==============================================================================}
-function DepolamaCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function DepolamaCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Islev: TSayi4;
-  _AygitKimlik: TKimlik;
-  _p: Isaretci;
+  Islev: TSayi4;
+  AygitKimlik: TKimlik;
+  p: Isaretci;
 begin
 
   // işlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   //********** mantıksal aygıt işlevleri ***********
 
   // toplam mantıksal depolama aygıt sayısını al
-  if(_Islev = 1) then
+  if(Islev = 1) then
   begin
 
     Result := MantiksalDepolamaAygitSayisi;
   end
 
   // mantıksal depolama aygıt bilgilerini al
-  else if(_Islev = 2) then
+  else if(Islev = 2) then
   begin
 
-    _AygitKimlik := PISayi4(Degiskenler + 00)^;
-    _p := Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-    Result := MantiksalDepolamaAygitBilgisiAl(_AygitKimlik, _p);
+    AygitKimlik := PISayi4(ADegiskenler + 00)^;
+    p := Isaretci(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
+    Result := MantiksalDepolamaAygitBilgisiAl(AygitKimlik, p);
   end
 
   // mantıksal depolama aygıtından veri oku
-  else if(_Islev = 3) then
+  else if(Islev = 3) then
   begin
 
-    _AygitKimlik := PSayi4(Degiskenler + 00)^;
-    _p := Isaretci(PSayi4(Degiskenler + 12)^ + AktifGorevBellekAdresi);
-    Result := MantiksalDepolamaVeriOku(_AygitKimlik, PSayi4(Degiskenler + 04)^,
-      PSayi4(Degiskenler + 08)^, _p);
+    AygitKimlik := PSayi4(ADegiskenler + 00)^;
+    p := Isaretci(PSayi4(ADegiskenler + 12)^ + CalisanGorevBellekAdresi);
+    Result := MantiksalDepolamaVeriOku(AygitKimlik, PSayi4(ADegiskenler + 04)^,
+      PSayi4(ADegiskenler + 08)^, p);
   end;
 
   //********** fiziksel aygıt işlevleri ***********
 
   // toplam fiziksel depolama aygıt sayısını al
-  if(_Islev = $71) then
+  if(Islev = $71) then
   begin
 
     Result := FizikselDepolamaAygitSayisi;
   end
 
   // fiziksel depolama aygıt bilgilerini al
-  else if(_Islev = $72) then
+  else if(Islev = $72) then
   begin
 
-    _AygitKimlik := PSayi4(Degiskenler + 00)^;
-    _p := Isaretci(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
-    Result := FizikselDepolamaAygitBilgisiAl(_AygitKimlik, _p);
+    AygitKimlik := PSayi4(ADegiskenler + 00)^;
+    p := Isaretci(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
+    Result := FizikselDepolamaAygitBilgisiAl(AygitKimlik, p);
   end
 
   // fiziksel depolama aygıtından veri oku
-  else if(_Islev = $73) then
+  else if(Islev = $73) then
   begin
 
-    _AygitKimlik := PSayi4(Degiskenler + 00)^;
-    _p := Isaretci(PSayi4(Degiskenler + 12)^ + AktifGorevBellekAdresi);
-    Result := FizikselDepolamaVeriOku(_AygitKimlik, PSayi4(Degiskenler + 04)^,
-      PSayi4(Degiskenler + 08)^, _p);
+    AygitKimlik := PSayi4(ADegiskenler + 00)^;
+    p := Isaretci(PSayi4(ADegiskenler + 12)^ + CalisanGorevBellekAdresi);
+    Result := FizikselDepolamaVeriOku(AygitKimlik, PSayi4(ADegiskenler + 04)^,
+      PSayi4(ADegiskenler + 08)^, p);
   end;
 end;
 

@@ -633,8 +633,8 @@ var
 
 var
   CalisanGorevSayisi,                     // oluþturulan / çalýþan program sayýsý
-  CalisanGorev: TISayi4;                    // o an çalýþan program
-  AktifGorevBellekAdresi: TSayi4;         // o an çalýþan programýn yüklendiði bellek adresi
+  CalisanGorev: TISayi4;                  // o an çalýþan program
+  CalisanGorevBellekAdresi: TSayi4;       // o an çalýþan programýn yüklendiði bellek adresi
 
 type
   PAlan = ^TAlan;
@@ -683,7 +683,8 @@ type { Görsel Nesne Tipi }
   TGNTip = (gntTanimsiz, gntMasaustu, gntPencere, gntDugme, gntGucDugmesi, gntListeKutusu,
     gntMenu, gntDefter, gntIslemGostergesi, gntOnayKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
-    gntPanel, gntResimDugmesi, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu);
+    gntPanel, gntResimDugmesi, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu,
+    gntDegerListesi, gntIzgara);
 
 type
   THamResim = record

@@ -1,3 +1,17 @@
+*******************************************************************************
+  Sürüm: 0.3.7 - 00.00.0000 (R33)
+*******************************************************************************
+  + TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
+
+  + TDegerListesi (valuelisteditor) görsel nesnesi projeye eklendi
+  + tasarýmsal olarak her bir göreve tek bir ana pencere atamasý gerçekleþtirildi
+  + pencere küçültme iþlevi uygulandý
+
+*******************************************************************************
+  Sürüm: 0.3.6 - 21.06.2020 (R32) - Beta
+*******************************************************************************
+  + tasarýmsal olarak her bir göreve tek bir ana pencere atamasý gerçekleþtirildi
+  + pencere küçültme iþlevi uygulandý
   + tüm görsel nesneler TPanel nesnesinden türetilecek þekilde yeniden yapýlandýrýldý
   + nesnelere yatay / dikey yazý hizalama iþlevi eklendi
   + hafýza programý kodlandý
@@ -19,6 +33,7 @@
   + TAcilirMenu (popupmenu) görsel nesnesi projeye eklendi
   + masaüstü yöneticisi (muyntcs.c) programýna açýlýr menü ile 4 programa kýsa yoldan eriþim saðlanmasý seçeneði eklendi
   + TKarmaListe (combobox) görsel nesnesi projeye eklendi
+
 *******************************************************************************
   Sürüm: 0.3.5 - 08.04.2020 (R31) - Beta
 *******************************************************************************

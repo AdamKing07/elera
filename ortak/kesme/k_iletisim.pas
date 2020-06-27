@@ -48,7 +48,7 @@ begin
     begin
 
       _ProtokolTip := PProtokolTip(Degiskenler + 00)^;
-      _IPAdres := PKarakterKatari(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi)^;
+      _IPAdres := PKarakterKatari(PSayi4(Degiskenler + 04)^ + CalisanGorevBellekAdresi)^;
       _HedefPort := PSayi4(Degiskenler + 08)^;
 
       _IPAdres2 := StrToIP(_IPAdres);
@@ -88,7 +88,7 @@ begin
       i := PSayi4(Degiskenler + 04)^;
 
       _Baglanti := AgIletisimListesi[_BaglantiKimlik];
-      Result := _Baglanti^.Oku(Isaretci(i + AktifGorevBellekAdresi));
+      Result := _Baglanti^.Oku(Isaretci(i + CalisanGorevBellekAdresi));
     end
     // bağlantıya veri gönder
     else if(_AltIslev = 5) then
@@ -99,7 +99,7 @@ begin
       j := PSayi4(Degiskenler + 08)^;
 
       _Baglanti := AgIletisimListesi[_BaglantiKimlik];
-      _Baglanti^.Yaz(Isaretci(i + AktifGorevBellekAdresi), j);
+      _Baglanti^.Yaz(Isaretci(i + CalisanGorevBellekAdresi), j);
     end
     // bağlantıyı kapat
     else if(_AltIslev = 6) then

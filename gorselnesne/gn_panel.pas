@@ -63,7 +63,7 @@ begin
       PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^,
       PISayi4(ADegiskenler + 16)^, PSayi4(ADegiskenler + 20)^, PRenk(ADegiskenler + 24)^,
       PRenk(ADegiskenler + 28)^, PRenk(ADegiskenler + 32)^,
-      PKarakterKatari(PSayi4(ADegiskenler + 36)^ + AktifGorevBellekAdresi)^);
+      PKarakterKatari(PSayi4(ADegiskenler + 36)^ + CalisanGorevBellekAdresi)^);
     end;
 
     ISLEV_GOSTER:
@@ -294,7 +294,7 @@ begin
   else
   begin
 
-    GorevListesi[Panel^.GorevKimlik]^.OlayEkle(Panel^.GorevKimlik, AOlay);
+    //GorevListesi[Panel^.GorevKimlik]^.OlayEkle(Panel^.GorevKimlik, AOlay);
   end;
 
   // geçerli fare göstergesini güncelle

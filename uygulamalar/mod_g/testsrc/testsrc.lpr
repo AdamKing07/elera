@@ -7,7 +7,7 @@ program testsrc;
   Program Adý: testsrc.lpr
   Program Ýþlevi: temel aygýt sürücü (device driver) kod dosyasý
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}

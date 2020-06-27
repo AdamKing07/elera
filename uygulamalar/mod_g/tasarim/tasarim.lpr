@@ -7,50 +7,51 @@ program tasarim;
   Program Adý: tasarim.lpr
   Program Ýþlevi: nesne tasarým - test programý
 
-  Güncelleme Tarihi: 26/10/2019
+  Güncelleme Tarihi: 22/06/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses gorev, gn_pencere, gn_dugme;
+uses n_gorev, gn_pencere, gn_dugme;
 
 const
   ProgramAdi: string = 'Nesne Tasarým - Test';
 
 var
-  Gorev0: TGorev;
-  Pencere0: TPencere;
+  Gorev: TGorev;
+  Pencere: TPencere;
   dugSol, dugSag, dugUst, dugAlt,
   dugIlkDurum, dugTestDugmesi: TDugme;
   OlayKayit: TOlayKayit;
 
 begin
 
-  Pencere0.Olustur(-1, 100, 100, 400, 400, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
-  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);
+  Pencere.Olustur(-1, 100, 100, 400, 400, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  dugSol.Olustur(Pencere0.Kimlik, 100, 150, 45, 45, 'Sol');
+  dugSol.Olustur(Pencere.Kimlik, 100, 150, 45, 45, 'Sol');
   dugSol.Goster;
 
-  dugUst.Olustur(Pencere0.Kimlik, 150, 100, 45, 45, 'Üst');
+  dugUst.Olustur(Pencere.Kimlik, 150, 100, 45, 45, 'Üst');
   dugUst.Goster;
 
-  dugSag.Olustur(Pencere0.Kimlik, 200, 150, 45, 45, 'Sað');
+  dugSag.Olustur(Pencere.Kimlik, 200, 150, 45, 45, 'Sað');
   dugSag.Goster;
 
-  dugAlt.Olustur(Pencere0.Kimlik, 150, 200, 45, 45, 'Alt');
+  dugAlt.Olustur(Pencere.Kimlik, 150, 200, 45, 45, 'Alt');
   dugAlt.Goster;
 
-  dugIlkDurum.Olustur(Pencere0.Kimlik, 150, 150, 45, 45, '');
+  dugIlkDurum.Olustur(Pencere.Kimlik, 150, 150, 45, 45, '');
   dugIlkDurum.Goster;
 
-  dugTestDugmesi.Olustur(Pencere0.Kimlik, 5, 5, 45, 45, 'Test');
+  dugTestDugmesi.Olustur(Pencere.Kimlik, 5, 5, 45, 45, 'Test');
   dugTestDugmesi.Goster;
 
-  Pencere0.Goster;
+  Pencere.Goster;
 
-  repeat
+  while True do
+  begin
 
-    Gorev0.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(OlayKayit);
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
@@ -80,6 +81,5 @@ begin
         dugTestDugmesi.Hizala(hzYok);
       end;
     end;
-
-  until (1 = 2);
+  end;
 end.

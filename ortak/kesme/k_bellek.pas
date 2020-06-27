@@ -38,11 +38,11 @@ begin
   if(_Islev = 1) then
   begin
 
-    p := PSayi4(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 00)^ + CalisanGorevBellekAdresi);
     p^ := CekirdekBaslangicAdresi;
-    p := PSayi4(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 04)^ + CalisanGorevBellekAdresi);
     p^ := CekirdekBaslangicAdresi + CekirdekUzunlugu;
-    p := PSayi4(PSayi4(Degiskenler + 08)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 08)^ + CalisanGorevBellekAdresi);
     p^ := CekirdekUzunlugu;
 
     Result := 1;
@@ -52,15 +52,15 @@ begin
   else if(_Islev = 2) then
   begin
 
-    p := PSayi4(PSayi4(Degiskenler + 00)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 00)^ + CalisanGorevBellekAdresi);
     p^ := GGercekBellek.ToplamBlok;
-    p := PSayi4(PSayi4(Degiskenler + 04)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 04)^ + CalisanGorevBellekAdresi);
     p^ := GGercekBellek.AyrilmisBlok;
-    p := PSayi4(PSayi4(Degiskenler + 08)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 08)^ + CalisanGorevBellekAdresi);
     p^ := GGercekBellek.KullanilmisBlok;
-    p := PSayi4(PSayi4(Degiskenler + 12)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 12)^ + CalisanGorevBellekAdresi);
     p^ := GGercekBellek.ToplamBlok - GGercekBellek.KullanilmisBlok;
-    p := PSayi4(PSayi4(Degiskenler + 16)^ + AktifGorevBellekAdresi);
+    p := PSayi4(PSayi4(Degiskenler + 16)^ + CalisanGorevBellekAdresi);
     p^ := 4096;
 
     Result := 1;
@@ -79,7 +79,7 @@ begin
     else
     begin
 
-      Tasi2(Isaretci(Kaynak), Isaretci(Hedef + AktifGorevBellekAdresi), Uzunluk);
+      Tasi2(Isaretci(Kaynak), Isaretci(Hedef + CalisanGorevBellekAdresi), Uzunluk);
       Result := 1;
     end;
   end

@@ -6,7 +6,7 @@
   Dosya Adý: gn_pencere.pas
   Dosya Ýþlevi: pencere yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 20/06/2020
+  Güncelleme Tarihi: 23/06/2020
 
   Önemli Bilgiler:
 
@@ -29,6 +29,9 @@ type
   PPencereTipi = ^TPencereTipi;
   TPencereTipi = (ptBoyutlanabilir, ptBasliksiz, ptIletisim);
 
+  PPencereDurum = ^TPencereDurum;
+  TPencereDurum = (pdNormal, pdKucultuldu, pdBuyutuldu);
+
 type
   PPencere = ^TPencere;
   TPencere = object(TPanel)
@@ -40,6 +43,7 @@ type
     procedure IcBilesenleriKonumlandir(var APencere: PPencere);
     procedure KontrolDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   public
+    FPencereDurum: TPencereDurum;
     FPencereTipi: TPencereTipi;
     FKucultmeDugmesi, FBuyutmeDugmesi, FKapatmaDugmesi: PResimDugmesi;
     function Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
@@ -62,7 +66,8 @@ implementation
 uses genel, gorev, gn_islevler, gn_masaustu, gn_gucdugmesi, gn_listekutusu,
   gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugmesi, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_kaydirmacubugu, gn_karmaliste, temelgorselnesne, giysi, sistemmesaj;
+  gn_kaydirmacubugu, gn_karmaliste, gn_degerlistesi, gn_izgara, temelgorselnesne,
+  giysi, sistemmesaj;
 
 const
   PENCERE_ALTLIMIT_GENISLIK = 110;
@@ -99,7 +104,7 @@ begin
       Result := NesneOlustur(GorselNesne, PISayi4(ADegiskenler + 04)^,
       PISayi4(ADegiskenler + 08)^, PISayi4(ADegiskenler + 12)^,
       PISayi4(ADegiskenler + 16)^, PPencereTipi(ADegiskenler + 20)^,
-      PKarakterKatari(PSayi4(ADegiskenler + 24)^ + AktifGorevBellekAdresi)^,
+      PKarakterKatari(PSayi4(ADegiskenler + 24)^ + CalisanGorevBellekAdresi)^,
       PRenk(ADegiskenler + 28)^);
     end;
 
@@ -147,6 +152,7 @@ end;
 function TPencere.Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): PPencere;
 var
+  Gorev: PGorev;
   Masaustu: PMasaustu;
   Pencere: PPencere;
   Genislik, Yukseklik: TSayi4;
@@ -194,7 +200,11 @@ begin
 
   Pencere^.AnaOlayCagriAdresi := @OlaylariIsle;
 
+  Gorev := Gorev^.GorevBul(CalisanGorev);
+  if not(Gorev = nil) then Gorev^.FAnaPencere := Pencere;
+
   Pencere^.FPencereTipi := APencereTipi;
+  Pencere^.FPencereDurum := pdNormal;
 
   Pencere^.FKucultmeDugmesi := nil;
   Pencere^.FBuyutmeDugmesi := nil;
@@ -344,12 +354,14 @@ begin
           gntBaglanti       : PBaglanti(GorunurNesne)^.Boyutlandir;
           gntDefter         : PDefter(GorunurNesne)^.Boyutlandir;
           gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Boyutlandir;
+          gntDegerListesi   : PDegerListesi(GorunurNesne)^.Boyutlandir;
           gntDugme          : PDugme(GorunurNesne)^.Boyutlandir;
           gntDurumCubugu    : PDurumCubugu(GorunurNesne)^.Boyutlandir;
           gntEtiket         : PEtiket(GorunurNesne)^.Boyutlandir;
           gntGirisKutusu    : PGirisKutusu(GorunurNesne)^.Boyutlandir;
           gntGucDugmesi     : PGucDugmesi(GorunurNesne)^.Boyutlandir;
           gntIslemGostergesi: PIslemGostergesi(GorunurNesne)^.Boyutlandir;
+          gntIzgara         : PIzgara(GorunurNesne)^.Boyutlandir;
           gntKarmaListe     : PKarmaListe(GorunurNesne)^.Boyutlandir;
           gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Boyutlandir;
           gntListeGorunum   : PListeGorunum(GorunurNesne)^.Boyutlandir;
@@ -576,12 +588,14 @@ begin
           gntBaglanti       : PBaglanti(GorunurNesne)^.Ciz;
           gntDefter         : PDefter(GorunurNesne)^.Ciz;
           gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Ciz;
+          gntDegerListesi   : PDegerListesi(GorunurNesne)^.Ciz;
           gntDugme          : PDugme(GorunurNesne)^.Ciz;
           gntDurumCubugu    : PDurumCubugu(GorunurNesne)^.Ciz;
           gntEtiket         : PEtiket(GorunurNesne)^.Ciz;
           gntGirisKutusu    : PGirisKutusu(GorunurNesne)^.Ciz;
           gntGucDugmesi     : PGucDugmesi(GorunurNesne)^.Ciz;
           gntIslemGostergesi: PIslemGostergesi(GorunurNesne)^.Ciz;
+          gntIzgara         : PIzgara(GorunurNesne)^.Ciz;
           gntKarmaListe     : PKarmaListe(GorunurNesne)^.Ciz;
           gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Ciz;
           gntListeGorunum   : PListeGorunum(GorunurNesne)^.Ciz;
@@ -1339,7 +1353,7 @@ begin
     Pencere := PPencere(ResimDugmesi^.AtaNesne);
 
     if(ResimDugmesi^.Kimlik = Pencere^.FKucultmeDugmesi^.Kimlik) then
-      SISTEM_MESAJ('Bilgi: küçültme düðmesi iþlevi yapýlandýrýlacak', [])
+      Pencere^.FPencereDurum := pdKucultuldu
     else if(ResimDugmesi^.Kimlik = Pencere^.FBuyutmeDugmesi^.Kimlik) then
       SISTEM_MESAJ('Bilgi: büyütme düðmesi iþlevi yapýlandýrýlacak', [])
     else if(ResimDugmesi^.Kimlik = Pencere^.FKapatmaDugmesi^.Kimlik) then
