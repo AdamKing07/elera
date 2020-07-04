@@ -64,6 +64,8 @@ Türkçe - Telif Hakkı Bilgisi
 English - Copyright Information
 
 * The executable / source codes of Elera Operating System are completely open to all programmers / users if the author / authors name is shown as a source.
+
+
 ---
 
 
