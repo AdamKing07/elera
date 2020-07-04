@@ -3,6 +3,8 @@
 *******************************************************************************
   + TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
 
+  + programa ait her yeni açýlan pencerenin masaüstünde ortalanmasý saðlandý
+  + pencere nesnesine mac pencere görünümü (skin) uygulandý
   + TDegerListesi (valuelisteditor) görsel nesnesi projeye eklendi
   + tasarýmsal olarak her bir göreve tek bir ana pencere atamasý gerçekleþtirildi
   + pencere küçültme iþlevi uygulandý

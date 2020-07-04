@@ -24,8 +24,9 @@ type
   TIzgara = object(TPanel)
   private
     FYatayKCubugu, FDikeyKCubugu: PKaydirmaCubugu;
-    FSutunSayisi, FSatirSayisi: TSayi4;
-    FSeciliSiraNo: TISayi4;               // seçili sıra değeri
+    FSutunSayisi, FSatirSayisi,
+    FSutunGenislik, FSatirYukseklik: TISayi4;
+    FSeciliSatir, FSeciliSutun: TISayi4;  // seçili satır ve sütun
     FGorunenIlkSiraNo: TISayi4;           // ızgara nesnesinde en üstte görüntülenen elemanın sıra değeri
     FGorunenElemanSayisi: TISayi4;        // kullanıcıya nesne içerisinde gösterilen eleman sayısı
     FDegerler: PYaziListesi;              // kolon değerleri
@@ -44,6 +45,8 @@ type
       DegerDizisi: PYaziListesi);
     function DegerEkle(ADeger: string): Boolean;
     procedure DegerIceriginiTemizle;
+    procedure HucreSayisiBelirle(ASatirSayisi, ASutunSayisi: TSayi4);
+    procedure HucreBoyutuBelirle(ASutunGenislik, ASatirYukseklik: TSayi4);
   end;
 
 function IzgaraCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
@@ -51,7 +54,7 @@ function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik
 
 implementation
 
-uses genel, gn_islevler, gn_pencere, temelgorselnesne;
+uses genel, gn_islevler, gn_pencere, temelgorselnesne, donusum, sistemmesaj;
 
 {==============================================================================
   ızgara nesnesi kesme çağrılarını yönetir
@@ -89,13 +92,13 @@ begin
     end;
 
     // seçilen sıra değerini al
-    $0200:
+    {$0200:
     begin
 
       DegerListesi := PIzgara(DegerListesi^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntIzgara));
-      if(DegerListesi <> nil) then Result := DegerListesi^.FSeciliSiraNo;
-    end;
+      if(DegerListesi <> nil) then Result := DegerListesi^.FSeciliSutun;
+    end;}
 
     // liste içeriğini temizle
     $0300:
@@ -117,7 +120,7 @@ begin
 
       DegerListesi := PIzgara(DegerListesi^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntIzgara));
-      if(DegerListesi <> nil) then Result := DegerListesi^.FSeciliSiraNo;
+      if(DegerListesi <> nil) then Result := DegerListesi^.FSeciliSutun;
       p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
       p^ := DegerListesi^.SeciliSatirDegeriniAl;
     end;
@@ -192,10 +195,11 @@ function TIzgara.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
   ASol, AUst, AGenislik, AYukseklik: TISayi4): PIzgara;
 var
   DegerListesi: PIzgara;
+  i: TSayi4;
 begin
 
   DegerListesi := PIzgara(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
-    AGenislik, AYukseklik, 2, $828790, RENK_BEYAZ, 0, ''));
+    AGenislik, AYukseklik, 2, RENK_BEYAZ, RENK_BEYAZ, 0, ''));
 
   DegerListesi^.NesneTipi := gntIzgara;
 
@@ -221,13 +225,16 @@ begin
 
   // nesnenin kullanacağı diğer değerler
   DegerListesi^.FGorunenIlkSiraNo := 0;
-  DegerListesi^.FSeciliSiraNo := -1;
+  DegerListesi^.FSeciliSatir := -1;
+  DegerListesi^.FSeciliSutun := -1;
 
   // ızgara nesnesinde görüntülenecek eleman sayısı
   DegerListesi^.FGorunenElemanSayisi := (AYukseklik - 24) div 21;
 
-  DegerListesi^.FSutunSayisi := 5;
-  DegerListesi^.FSatirSayisi := 5;
+  DegerListesi^.FSutunSayisi := 0;
+  DegerListesi^.FSatirSayisi := 0;
+  DegerListesi^.FSutunGenislik := 30;
+  DegerListesi^.FSatirYukseklik := 24;
 
   // nesne adresini geri döndür
   Result := DegerListesi;
@@ -327,9 +334,9 @@ var
   Pencere: PPencere;
   Izgara: PIzgara;
   Alan1, Alan2: TAlan;
-  ElemanSayisi, SatirNo, i, j,
-  Sol, Ust, DegerSayisi: TISayi4;
-  s: string;
+  i, j, Sol, Sol2, Ust, Ust2,
+  G, Y, SolIlk, UstIlk, UstBaslangic2: TISayi4;
+  SolBaslangic2: Integer;
 begin
 
   Izgara := PIzgara(Izgara^.NesneAl(Kimlik));
@@ -345,102 +352,159 @@ begin
   if(Pencere = nil) then Exit;
 
   // tanımlanmış hiçbir kolon yok ise, çık
-{  if(KolonAdlari^.ElemanSayisi = 0) then Exit;
+  if(FDegerler^.ElemanSayisi = 0) then Exit;
 
-  // kolon başlık ve değerleri
+  // yatay üst kolonların çizilmesi
   Sol := Alan1.Sol + 1;
-  for i := 0 to KolonUzunluklari^.ElemanSayisi - 1 do
+  Ust := Alan1.Ust + 1;
+
+  SolIlk := Izgara^.FYatayKCubugu^.FMevcutDeger;
+  UstIlk := Izgara^.FDikeyKCubugu^.FMevcutDeger;
+
+  G := Alan1.Sol + 1 + ((FSutunSayisi - SolIlk) * (FSutunGenislik + 1)) - 1;
+  Y := Alan1.Ust + 1 + ((FSatirSayisi - UstIlk) * (FSatirYukseklik + 1)) - 1;
+
+  if(UstIlk = 0) then
   begin
 
-    Sol += KolonUzunluklari^.Eleman[i];
-
-    // dikey kılavuz çizgisi
-    Izgara^.Cizgi(Izgara, Sol, Alan1.Ust + 1, Sol, Alan1.Alt - 1, $F0F0F0);
-
-    // başlık dolgusu
-    Alan2.Sol := Sol - KolonUzunluklari^.Eleman[i];
-    Alan2.Ust := Alan1.Ust + 1;
-    Alan2.Sag := Sol - 1;
-    Alan2.Alt := Alan1.Ust + 1 + 22;
-    Izgara^.EgimliDoldur3(Izgara, Alan2, $EAECEE, $ABB2B9);
-
-    // başlık
-    Izgara^.AlanaYaziYaz(Izgara, Alan2, 4, 3, KolonAdlari^.Eleman[i], RENK_LACIVERT);
-
-    Inc(Sol);    // 1 px çizgi kalınlığı
-  end;
-
-  // yatay kılavuz çizgileri
-  Ust := Alan1.Ust + 1 + 22;
-  Ust += 20;
-  while Ust < Alan1.Alt do
-  begin
-
-    Izgara^.Cizgi(Izgara, Alan1.Sol + 1, Ust, Alan1.Sag - 1, Ust, $F0F0F0);
-    Ust += 1 + 20;
-  end;
-
-  // ızgara nesnesinde görüntülenecek eleman sayısı
-  Izgara^.FGorunenElemanSayisi := ((Izgara^.FCizimAlan.Alt -
-    Izgara^.FCizimAlan.Ust) - 24) div 21;
-
-  // ızgara nesnesinde görüntülenecek eleman sayısının belirlenmesi
-  if(FDegerler^.ElemanSayisi > Izgara^.FGorunenElemanSayisi) then
-    ElemanSayisi := Izgara^.FGorunenElemanSayisi + Izgara^.FGorunenIlkSiraNo
-  else ElemanSayisi := FDegerler^.ElemanSayisi + Izgara^.FGorunenIlkSiraNo;
-
-  Ust := Alan1.Ust + 1 + 22;
-  Ust += 20;
-  SatirNo := 0;
-  KolonUzunluklari := Izgara^.FKolonUzunluklari;
-
-  // ızgara nesnesi değerlerini yerleştir
-  for SatirNo := Izgara^.FGorunenIlkSiraNo to ElemanSayisi - 1 do
-  begin
-
-    // değeri belirtilen karakter ile bölümle
-    Bolumle(FDegerler^.Eleman[SatirNo], '|', FDegerDizisi);
-
-    Sol := Alan1.Sol + 1;
-    if(FDegerDizisi^.ElemanSayisi > 0) then
+    for i := SolIlk to FSutunSayisi - 1 do
     begin
 
-      if(FDegerDizisi^.ElemanSayisi > 1) then
-        DegerSayisi := 2
-      else DegerSayisi := 1;
+      // kolon içeriğinin boyanması
+      Alan2.Sol := Sol;
+      Alan2.Ust := Ust;
+      Alan2.Sag := Sol + Izgara^.FSutunGenislik;
+      Alan2.Alt := Ust + Izgara^.FSatirYukseklik;
+      Izgara^.EgimliDoldur3(Izgara, Alan2, $EAECEE, $ABB2B9);
 
-      for j := 0 to DegerSayisi - 1 do
+      // kolon içerik değerleri
+      Izgara^.AlanaYaziYaz(Izgara, Alan2, 4, 3, FDegerler^.Eleman[i], RENK_LACIVERT);
+
+      Sol += Izgara^.FSutunGenislik;      // 1 px çizgi kalınlığı
+
+      // dikey kılavuz çizgisi
+      Izgara^.Cizgi(Izgara, Sol, Ust, Sol, Y, $F0F0F0);
+
+      Sol += 1;
+    end;
+  end
+  else
+  begin
+
+    for i := SolIlk to FSutunSayisi - 1 do
+    begin
+
+      Sol += Izgara^.FSutunGenislik;      // 1 px çizgi kalınlığı
+
+      // dikey kılavuz çizgisi
+      Izgara^.Cizgi(Izgara, Sol, Ust, Sol, Y, $F0F0F0);
+
+      Sol += 1;
+    end;
+  end;
+
+  // dikey üst kolonların çizilmesi
+  Sol := Alan1.Sol + 1;
+
+  // ilk çizim başlangıç noktası
+  if(UstIlk = 0) then
+    Ust := Alan1.Ust + 1 + Izgara^.FSatirYukseklik
+  else Ust := Alan1.Ust; // + 1;
+
+  if(SolIlk = 0) then
+  begin
+
+    // ilk çizim başlangıç noktası
+    if(UstIlk = 0) then Izgara^.Cizgi(Izgara, Sol, Ust, G, Ust, $F0F0F0);
+
+    for i := UstIlk to FSatirSayisi - 1 do
+    begin
+
+      if(i > 0) then
       begin
 
-        s := FDegerDizisi^.Eleman[j];
-        Alan2.Sol := Sol + 1;
-        Alan2.Ust := Ust - 20 + 1;
-        Alan2.Sag := Sol + KolonUzunluklari^.Eleman[j] - 1;
-        Alan2.Alt := Ust - 1;
+        Ust += 1;
 
-        // satır verisini boyama ve yazma işlemi
-        if(SatirNo = Izgara^.FSeciliSiraNo) then
-        begin
+        // başlık dolgusu
+        Alan2.Sol := Sol;
+        Alan2.Ust := Ust;
+        Alan2.Sag := Alan1.Sol + Izgara^.FSutunGenislik;
+        Alan2.Alt := Ust + Izgara^.FSatirYukseklik;
+        Izgara^.EgimliDoldur3(Izgara, Alan2, $EAECEE, $ABB2B9);
 
-          Izgara^.DikdortgenDoldur(Izgara, Alan2.Sol - 1, Alan2.Ust - 1,
-            Alan2.Sag, Alan2.Alt, $3EC5FF, $3EC5FF);
-        end
-        else
-        begin
+        // başlık
+        Izgara^.AlanaYaziYaz(Izgara, Alan2, 4, 3, FDegerler^.Eleman[i *
+          (Izgara^.FSutunSayisi)], RENK_LACIVERT);
 
-          Izgara^.DikdortgenDoldur(Izgara, Alan2.Sol - 1, Alan2.Ust - 1,
-            Alan2.Sag, Alan2.Alt, RENK_BEYAZ, RENK_BEYAZ);
-        end;
+        Ust += Izgara^.FSatirYukseklik;
 
-        Izgara^.AlanaYaziYaz(Izgara, Alan2, 2, 2, s, RENK_SIYAH);
-
-        Sol += 1 + KolonUzunluklari^.Eleman[j];
+        // yatay kılavuz çizgisi
+        Izgara^.Cizgi(Izgara, Sol, Ust, G, Ust, $F0F0F0);
       end;
     end;
+  end
+  else
+  begin
 
-    Ust += 1 + 20;
+    for i := UstIlk to FSatirSayisi - 1 do
+    begin
+
+      // yatay kılavuz çizgisi
+      Izgara^.Cizgi(Izgara, Sol, Ust, G, Ust, $F0F0F0);
+
+      Ust += Izgara^.FSatirYukseklik + 1;
+    end;
   end;
-}
+
+  // yatay & dikey değerlerin yazılması
+  if(SolIlk = 0) then
+    Sol := Alan1.Sol + 1 + Izgara^.FSutunGenislik + 1
+  else Sol := Alan1.Sol + 1;
+
+  if(UstIlk = 0) then
+    Ust := Alan1.Ust + 1 + Izgara^.FSatirYukseklik + 1
+  else Ust := Alan1.Ust + 1;
+
+  Sol2 := Sol;
+  Ust2 := Ust;
+
+  if(SolIlk = 0) then
+    SolBaslangic2 := 1
+  else SolBaslangic2 := SolIlk;
+
+  if(UstIlk = 0) then
+    UstBaslangic2 := 1
+  else UstBaslangic2 := UstIlk;
+
+  // veriye göre yapılan döngü
+  for i := UstBaslangic2 to FSatirSayisi - 1 do
+  begin
+
+    for j := SolBaslangic2 to FSutunSayisi - 1 do
+    begin
+
+      // başlık dolgusu
+      Alan2.Sol := Sol2;
+      Alan2.Ust := Ust2;
+      Alan2.Sag := Sol2 + Izgara^.FSutunGenislik - 1;
+      Alan2.Alt := Ust2 + Izgara^.FSatirYukseklik - 1;
+
+      if(Izgara^.FSeciliSatir = i) and (Izgara^.FSeciliSutun = j) then
+        Izgara^.DikdortgenDoldur(Izgara, Alan2, RENK_KIRMIZI, RENK_BEYAZ)
+      else Izgara^.DikdortgenDoldur(Izgara, Alan2, RENK_BEYAZ, RENK_BEYAZ);
+
+      // başlık
+      Izgara^.AlanaYaziYaz(Izgara, Alan2, 4, 3, FDegerler^.Eleman[(i * (Izgara^.FSutunSayisi)) + j],
+        RENK_LACIVERT);
+
+      Sol2 += Izgara^.FSutunGenislik + 1;
+    end;
+
+    Sol2 := Sol;
+
+    Ust2 += Izgara^.FSatirYukseklik + 1;
+  end;
+
   // kaydırma çubuklarını en son çiz
   Izgara^.FYatayKCubugu^.Ciz;
   Izgara^.FDikeyKCubugu^.Ciz;
@@ -475,11 +539,18 @@ begin
       // fare olaylarını yakala
       OlayYakalamayaBasla(DegerListesi);
 
-      // seçilen sırayı yeniden belirle
-      j := (AOlay.Deger2 - 24) div 21;
+      // seçili sütün ve satır değerini yeniden belirle
+      i := (AOlay.Deger1 + (DegerListesi^.FYatayKCubugu^.FMevcutDeger * DegerListesi^.FSutunGenislik)) div DegerListesi^.FSutunGenislik;
+      j := (AOlay.Deger2 + (DegerListesi^.FDikeyKCubugu^.FMevcutDeger * DegerListesi^.FSatirYukseklik)) div DegerListesi^.FSatirYukseklik;
+      if(i > 0) and (j > 0) then
+      begin
 
-      // bu değere kaydırılan değeri de ekle
-      DegerListesi^.FSeciliSiraNo := (j + DegerListesi^.FGorunenIlkSiraNo);
+        DegerListesi^.FSeciliSutun := i;
+        DegerListesi^.FSeciliSatir := j;
+      end;
+
+      //SISTEM_MESAJ('DegerListesi^.FSeciliSutun: %d', [DegerListesi^.FSeciliSutun]);
+      //SISTEM_MESAJ('DegerListesi^.FSeciliSatir: %d', [DegerListesi^.FSeciliSatir]);
 
       // ızgara nesnesini yeniden çiz
       DegerListesi^.Ciz;
@@ -535,7 +606,7 @@ begin
         begin
 
           DegerListesi^.FGorunenIlkSiraNo := j;
-          DegerListesi^.FSeciliSiraNo := j;
+          DegerListesi^.FSeciliSutun := j;
         end;
       end
 
@@ -554,7 +625,7 @@ begin
 
           DegerListesi^.FGorunenIlkSiraNo := j;
           i := (AOlay.Deger2 - 24) div 21;
-          DegerListesi^.FSeciliSiraNo := i + DegerListesi^.FGorunenIlkSiraNo;
+          DegerListesi^.FSeciliSutun := i + DegerListesi^.FGorunenIlkSiraNo;
         end}
       end
 
@@ -563,7 +634,7 @@ begin
       begin
 
         i := (AOlay.Deger2 - 24) div 21;
-        DegerListesi^.FSeciliSiraNo := i + DegerListesi^.FGorunenIlkSiraNo;
+        DegerListesi^.FSeciliSutun := i + DegerListesi^.FGorunenIlkSiraNo;
       end;
 
       // ızgara nesnesini yeniden çiz
@@ -636,6 +707,30 @@ begin
   GecerliFareGostegeTipi := Izgara^.FFareImlecTipi;
 end;
 
+procedure TIzgara.HucreSayisiBelirle(ASatirSayisi, ASutunSayisi: TSayi4);
+var
+  Izgara: PIzgara;
+begin
+
+  Izgara := PIzgara(Izgara^.NesneAl(Kimlik));
+  if(Izgara = nil) then Exit;
+
+  Izgara^.FSatirSayisi := ASatirSayisi;
+  Izgara^.FSutunSayisi := ASutunSayisi;
+end;
+
+procedure TIzgara.HucreBoyutuBelirle(ASutunGenislik, ASatirYukseklik: TSayi4);
+var
+  Izgara: PIzgara;
+begin
+
+  Izgara := PIzgara(Izgara^.NesneAl(Kimlik));
+  if(Izgara = nil) then Exit;
+
+  Izgara^.FSutunGenislik := ASutunGenislik;
+  Izgara^.FSatirYukseklik := ASatirYukseklik;
+end;
+
 {==============================================================================
   seçili elemanın yazı (text) değerini geri döndürür
  ==============================================================================}
@@ -648,9 +743,9 @@ begin
   DegerListesi := PIzgara(DegerListesi^.NesneTipiniKontrolEt(Kimlik, gntIzgara));
   if(DegerListesi = nil) then Exit;
 
-  if(FSeciliSiraNo = -1) or (FSeciliSiraNo > FDegerler^.ElemanSayisi) then Exit('');
+  if(FSeciliSutun = -1) or (FSeciliSutun > FDegerler^.ElemanSayisi) then Exit('');
 
-  Result := DegerListesi^.FDegerler^.Eleman[FSeciliSiraNo];
+  Result := DegerListesi^.FDegerler^.Eleman[FSeciliSutun];
 end;
 
 {==============================================================================
@@ -717,7 +812,7 @@ begin
 
   DegerListesi^.FDegerler^.Temizle;
   DegerListesi^.FGorunenIlkSiraNo := 0;
-  DegerListesi^.FSeciliSiraNo := -1;
+  DegerListesi^.FSeciliSutun := -1;
 
   DegerListesi^.Ciz;
 end;

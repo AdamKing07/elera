@@ -215,7 +215,7 @@ begin
   // sistem deðer görüntüleyicisini baþlat
   SistemDegerleriBasla;
 
-  //TestAlani.Program1Basla;
+  TestAlani.Program3Basla;
 
   // sistem için DHCP sunucusundan IP adresi al
   if(AgYuklendi) then DHCPSunucuKesfet;
@@ -254,7 +254,7 @@ begin
           end;
           FindClose(AramaKaydi);}
           //Gorev^.Calistir('disk1:\6.bmp');
-          Gorev^.Calistir('disk1:\sisbilgi.c');
+          Gorev^.Calistir('disk1:\grafik4.c');
         end
         else if(Tus = 'd') then
         begin
@@ -626,12 +626,18 @@ var
   i: Integer;
 begin
 
-  P3Pencere := P3Pencere^.Olustur(nil, 10, 10, 300, 300, ptBoyutlanabilir, 'Izgara', RENK_BEYAZ);
+  exit;
+
+  P3Pencere := P3Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir, 'Izgara', RENK_BEYAZ);
   P3Pencere^.OlayCagriAdresi := @P3NesneTestOlayIsle;
 
   P3Izgara := P3Izgara^.Olustur(ktNesne, P3Pencere, 0, 0, 180, 180);
   P3Izgara^.FHiza := hzTum;
-  //P3Izgara^.
+  P3Izgara^.HucreSayisiBelirle(10, 10);
+  P3Izgara^.HucreBoyutuBelirle(60, 25);
+
+  for i := 1 to 100 do P3Izgara^.DegerEkle(IntToStr(i));
+
   //P3Izgara^.BaslikEkle('Yazmaç', 'Deðer', 80);
   P3Izgara^.Goster;
 

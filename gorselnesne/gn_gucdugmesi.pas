@@ -43,7 +43,7 @@ function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik
 
 implementation
 
-uses genel, gn_islevler, temelgorselnesne, giysi, gn_pencere;
+uses genel, gn_islevler, temelgorselnesne, giysi_mac, gn_pencere;
 
 {==============================================================================
   güç düğme kesme çağrılarını yönetir

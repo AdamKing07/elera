@@ -136,7 +136,7 @@ type
 implementation
 
 uses genel, genel8x16, donusum, bmp, gn_islevler, sistemmesaj, gn_pencere,
-  hamresim, giysi;
+  hamresim, giysi_mac;
 
 function TGorselNesne.Olustur(AKullanimTipi: TKullanimTipi; AGNTip: TGNTip;
   AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;

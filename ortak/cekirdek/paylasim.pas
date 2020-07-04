@@ -205,6 +205,9 @@ const
 var
   CekirdekBaslangicAdresi, CekirdekUzunlugu: TSayi4;
 
+  // görevin ana penceresinin ortalanmasýný saðlar
+  AnaPencereyiOrtala: Boolean = True;
+
 type
   PAygitSurucusu = ^TAygitSurucusu;
   TAygitSurucusu = record
@@ -756,6 +759,20 @@ const
   RENK_PEMBE 	                = TRenk($FF00FF);
   RENK_ACIKMAVI		            = TRenk($00FFFF);
   RENK_BEYAZ		              = TRenk($FFFFFF);
+
+const
+  // görev çubuðu iç dolgu rengi
+  GOREVCUBUGU_ILKRENK       = $B9C9F9;
+  GOREVCUBUGU_SONRENK       = $A1B7F7;
+
+  // düðme dolgu renkleri
+  DUGME_NORMAL_ILKRENK      = GOREVCUBUGU_ILKRENK;
+  DUGME_NORMAL_SONRENK      = GOREVCUBUGU_SONRENK;
+  DUGME_NORMAL_YAZIRENK     = RENK_SIYAH;
+
+  DUGME_BASILI_ILKRENK      = $609FCC;
+  DUGME_BASILI_SONRENK      = $2C6187;
+  DUGME_BASILI_YAZIRENK     = RENK_BEYAZ;
 
 type
   PTSS = ^TTSS;

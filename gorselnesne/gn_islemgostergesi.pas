@@ -38,7 +38,7 @@ function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik
 
 implementation
 
-uses temelgorselnesne, giysi;
+uses temelgorselnesne, giysi_mac;
 
 {==============================================================================
   işlem göstergesi kesme çağrılarını yönetir

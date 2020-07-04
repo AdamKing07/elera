@@ -10,11 +10,61 @@
 
  ==============================================================================}
 {$mode objfpc}
-unit giysi;
+unit giysi_normal;
 
 interface
 
 uses paylasim;
+
+{     bu yapı henüz uygulanmadı
+type
+  TGiysi = record
+    ResimSayisi,
+    BaslikYukseklik,
+    BaslikSolGenislik,
+    BaslikSagGenislik: TSayi4;
+    DisKenarCizgiRengi,
+    IcKenarCizgiRengi,
+    IcDolguRengi,
+    AktifKenarDolguRengi,
+    PasifKenarDolguRengi,
+    GorevCubuguIlkRenk,
+    GorevCubuguSonRenk,
+    DugmeNormalIlkRenk,
+    DugmeNormalSonRenk,
+    DugmeNormalYaziRenk,
+    DugmeBasiliIlkRenk,
+    DugmeBasiliSonRenk,
+    DugmeBasiliYaziRenk,
+    AktifBaslikRengi,
+    PasifBaslikRengi: TRenk;
+    KenarDolguKenarligi,
+    KenarKalinlik: TSayi4;
+  end;
+
+var
+  NormalGiysi: TGiysi = (
+    ResimSayisi: 6;
+    BaslikYukseklik: 24;
+    BaslikSolGenislik: 4;
+    BaslikSagGenislik: 52;
+    DisKenarCizgiRengi: $101010;
+    IcKenarCizgiRengi: $101010;
+    IcDolguRengi: RENK_BEYAZ;
+    AktifKenarDolguRengi: $609FCC;
+    PasifKenarDolguRengi: $727272;
+    GorevCubuguIlkRenk: $B9C9F9;
+    GorevCubuguSonRenk: $A1B7F7;
+    DugmeNormalIlkRenk: $B9C9F9;
+    DugmeNormalSonRenk: $A1B7F7;
+    DugmeNormalYaziRenk: RENK_SIYAH;
+    DugmeBasiliIlkRenk: $609FCC;
+    DugmeBasiliSonRenk: $2C6187;
+    DugmeBasiliYaziRenk: RENK_BEYAZ;
+    AktifBaslikRengi: RENK_BEYAZ;
+    PasifBaslikRengi: RENK_GUMUS;
+    KenarDolguKenarligi: 3;
+    KenarKalinlik: 5);       }
 
 const
   GIYSIRESIM_SAYISI = 6;
@@ -22,6 +72,7 @@ const
   // başlık = taşıma çubuğu sabitleri
   GIYSI_BASLIK_YUKSEKLIK    = 24;
   GIYSI_BASLIK_SOL_GENISLIK = 4;
+  GIYSI_BASLIK_ORTA_GENISLIK = 1;
   GIYSI_BASLIK_SAG_GENISLIK = 52;
 
   // çizim renkleri
@@ -57,13 +108,10 @@ type
   TAktifGiysiBaslikSol = array[0..GIYSI_BASLIK_YUKSEKLIK - 1, 0..GIYSI_BASLIK_SOL_GENISLIK - 1] of TRenk;
 
   PAktifGiysiBaslikOrta = ^TAktifGiysiBaslikOrta;
-  TAktifGiysiBaslikOrta = array[0..GIYSI_BASLIK_YUKSEKLIK - 1, 0..0] of TRenk;
+  TAktifGiysiBaslikOrta = array[0..GIYSI_BASLIK_YUKSEKLIK - 1, 0..GIYSI_BASLIK_ORTA_GENISLIK - 1] of TRenk;
 
   PAktifGiysiBaslikSag = ^TAktifGiysiBaslikSag;
   TAktifGiysiBaslikSag = array[0..GIYSI_BASLIK_YUKSEKLIK - 1, 0..GIYSI_BASLIK_SAG_GENISLIK - 1] of TRenk;
-
-  PPencereDugme = ^TPencereDugme;
-  TPencereDugme = array[0..15, 0..15] of TRenk;
 
 const
   AktifGiysiBaslikSol: array[0..23, 0..3] of TRenk = (

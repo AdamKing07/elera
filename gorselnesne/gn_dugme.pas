@@ -43,7 +43,7 @@ function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik
 
 implementation
 
-uses genel, gn_pencere, gn_islevler, temelgorselnesne, giysi;
+uses genel, gn_pencere, gn_islevler, temelgorselnesne, giysi_mac;
 
 {==============================================================================
   düðme kesme çaðrýlarýný yönetir
