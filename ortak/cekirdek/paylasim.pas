@@ -775,6 +775,64 @@ const
   DUGME_BASILI_YAZIRENK     = RENK_BEYAZ;
 
 type
+  TGiysiResim = record
+    Genislik, Yukseklik: TSayi4;
+    BellekAdresi: Isaretci;
+  end;
+
+type
+  TGiysi = record
+    BaslikYukseklik,
+
+    ResimSolUstGenislik,
+    ResimUstGenislik,
+    ResimSagUstGenislik,
+
+    ResimSolGenislik,
+    ResimSolYukseklik,
+    ResimSagGenislik,
+    ResimSagYukseklik,
+
+    ResimSolAltGenislik,
+    ResimSolAltYukseklik,
+    ResimAltGenislik,
+    ResimAltYukseklik,
+    ResimSagAltGenislik,
+    ResimSagAltYukseklik,
+
+    AktifBaslikYaziRengi,
+    PasifBaslikYaziRengi,
+    IcDolguRengi,
+    BaslikYaziSol,
+    BaslikYaziUst,
+
+    KapatmaDugmesiSol,
+    KapatmaDugmesiUst,
+    KapatmaDugmesiGenislik,
+    KapatmaDugmesiYukseklik,
+    BuyutmeDugmesiSol,
+    BuyutmeDugmesiUst,
+    BuyutmeDugmesiGenislik,
+    BuyutmeDugmesiYukseklik,
+    KucultmeDugmesiSol,
+    KucultmeDugmesiUst,
+    KucultmeDugmesiGenislik,
+    KucultmeDugmesiYukseklik: TSayi4;
+
+    ResimSolUstA, ResimSolUstP,
+    ResimUstA, ResimUstP,
+    ResimSagUstA, ResimSagUstP,
+    ResimSolA, ResimSolP,
+    ResimSagA, ResimSagP,
+    ResimSolAltA, ResimSolAltP,
+    ResimAltA, ResimAltP,
+    ResimSagAltA, ResimSagAltP: TGiysiResim;
+  end;
+
+var
+  AktifGiysi: TGiysi;
+
+type
   PTSS = ^TTSS;
   TTSS = packed record
     OncekiTSS, A00: TSayi2;     // A(00)yrýldý

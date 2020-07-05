@@ -6,7 +6,7 @@
   Dosya Adý: yukleyici.pas
   Dosya Ýþlevi: sistem ilk açýlýþ yükleme iþlevleri gerçekleþtirir
 
-  Güncelleme Tarihi: 18/04/2020
+  Güncelleme Tarihi: 05/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -26,7 +26,7 @@ implementation
 
 uses yonetim, gdt, idt, irq, pic, aygityonetimi, pci, src_klavye, genel, gorev,
   gn_islevler, dosya, sistemmesaj, bolumleme, islemci, paylasim, usb, zamanlayici,
-  ag, src_vesa20, src_com, src_sb, bmp, acpi;
+  ag, src_vesa20, src_com, src_sb, bmp, acpi, giysi_mac;
 
 {==============================================================================
   çekirdek çevre donaným yükleme iþlevlerini gerçekleþtir
@@ -142,6 +142,9 @@ begin
 
   // çekirdek yükleme sonrasý iþlevleri gerçekleþtir
   YukleIslevindenSonraCalistir;
+
+  // aktif pencere giysisi tanýmlanýyor
+  AktifGiysi := GiysiMac;
 
   // sistem mesajlarýný görmek için bekleme süresi.
   Bekle(50);

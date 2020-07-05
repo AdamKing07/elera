@@ -6,7 +6,7 @@
   Dosya Adı: giysi_mac.pas
   Dosya İşlevi: pencere nesnesine mac görünümünü uygular
 
-  Güncelleme Tarihi: 04/07/2020
+  Güncelleme Tarihi: 05/07/2020
 
   Önemli Notlar:
     1. renk değeri olarak kullanılan $FFFFFFFF değeri renk değerinin olmadığını gösterir
@@ -22,73 +22,44 @@ interface
 uses paylasim;
 
 const
-  GIYSIRESIM_SAYISI = 6;
-
   // başlık = taşıma çubuğu sabitleri
-  BASLIK_Y    = 28;
+  BASLIK_Y                = 28;
 
-  RESIM_SOLUST_G = 8;
-  RESIM_UST_G = 4;
-  RESIM_SAGUST_G = 8;
+  RESIM_SOLUST_G          = 8;
+  RESIM_UST_G             = 4;
+  RESIM_SAGUST_G          = 8;
 
-  RESIM_SOL_G = 2;
-  RESIM_SOL_Y = 16;
-  RESIM_SAG_G = 2;
-  RESIM_SAG_Y = 16;
+  RESIM_SOL_G             = 2;
+  RESIM_SOL_Y             = 16;
+  RESIM_SAG_G             = 2;
+  RESIM_SAG_Y             = 16;
 
-  RESIM_SOLALT_G           = 10;
-  RESIM_SOLALT_Y           = 10;
-  RESIM_ALT_G = 16;
-  RESIM_ALT_Y = 2;
-  RESIM_SAGALT_G           = 10;
-  RESIM_SAGALT_Y           = 10;
+  RESIM_SOLALT_G          = 10;
+  RESIM_SOLALT_Y          = 10;
+  RESIM_ALT_G             = 16;
+  RESIM_ALT_Y             = 2;
+  RESIM_SAGALT_G          = 10;
+  RESIM_SAGALT_Y          = 10;
 
-  IC_DOLGU_RENGI            = -1;
-
-  AKTIF_BASLIK_RENGI        = RENK_SIYAH;
-  PASIF_BASLIK_RENGI        = RENK_GUMUS;
+  AKTIF_BASLIK_YAZIRENGI  = RENK_SIYAH;
+  PASIF_BASLIK_YAZIRENGI  = RENK_GUMUS;
+  IC_DOLGU_RENGI          = $FFFFFFFF;
+  BASLIK_YAZI_S           = $FFFFFFFF;
+  BASLIK_YAZI_U           = $FFFFFFFF;
 
   // yeni değerler
-  KAPATMA_DUGMESI_S         = 10;
-  KAPATMA_DUGMESI_U         = 6;
-  KAPATMA_DUGMESI_G    = 14;
-  KAPATMA_DUGMESI_Y   = 14;
-  BUYUTME_DUGMESI_S         = 50;
-  BUYUTME_DUGMESI_U         = 6;
-  BUYUTME_DUGMESI_G    = 14;
-  BUYUTME_DUGMESI_Y   = 14;
-  KUCULTME_DUGMESI_S        = 30;
-  KUCULTME_DUGMESI_U        = 6;
-  KUCULTME_DUGMESI_G   = 14;
-  KUCULTME_DUGMESI_Y  = 14;
-
-  GIYSI_BASLIK_YAZI_S           = -1;
-  GIYSI_BASLIK_YAZI_U           = -1;
-
-type
-  PResimSolUst = ^TResimSolUst;
-  TResimSolUst = array[0..BASLIK_Y - 1, 0..RESIM_SOLUST_G - 1] of TRenk;
-
-  PResimUst = ^TResimUst;
-  TResimUst = array[0..BASLIK_Y - 1, 0..RESIM_UST_G - 1] of TRenk;
-
-  PResimSagUst = ^TResimSagUst;
-  TResimSagUst = array[0..BASLIK_Y - 1, 0..RESIM_SAGUST_G - 1] of TRenk;
-
-  PResimSol = ^TResimSol;
-  TResimSol = array[0..RESIM_SOL_Y - 1, 0..RESIM_SOL_G - 1] of TRenk;
-
-  PResimSag = ^TResimSag;
-  TResimSag = array[0..RESIM_SAG_Y - 1, 0..RESIM_SAG_G - 1] of TRenk;
-
-  PResimSolAlt = ^TResimSolAlt;
-  TResimSolAlt = array[0..RESIM_SOLALT_Y - 1, 0..RESIM_SOLALT_G - 1] of TRenk;
-
-  PResimAlt = ^TResimAlt;
-  TResimAlt = array[0..RESIM_ALT_Y - 1, 0..RESIM_ALT_G - 1] of TRenk;
-
-  PResimSagAlt = ^TResimSagAlt;
-  TResimSagAlt = array[0..RESIM_SAGALT_Y - 1, 0..RESIM_SAGALT_G - 1] of TRenk;
+  KAPATMA_DUGMESI_S       = 10;
+  KAPATMA_DUGMESI_U       = 6;
+  KAPATMA_DUGMESI_G       = 14;
+  KAPATMA_DUGMESI_Y       = 14;
+  BUYUTME_DUGMESI_S       = 50;
+  BUYUTME_DUGMESI_U       = 6;
+  BUYUTME_DUGMESI_G       = 14;
+  BUYUTME_DUGMESI_Y       = 14;
+  KUCULTME_DUGMESI_S      = 30;
+  KUCULTME_DUGMESI_U      = 6;
+  KUCULTME_DUGMESI_G      = 14;
+  KUCULTME_DUGMESI_Y      = 14;
 
 const
   ResimSolUstA: array[0..BASLIK_Y - 1, 0..RESIM_SOLUST_G - 1] of TRenk = (
@@ -351,13 +322,60 @@ var
   KucultmeDugmesiP: array[0..KUCULTME_DUGMESI_Y - 1, 0..KUCULTME_DUGMESI_G - 1] of TRenk absolute KapatmaDugmesiP;
 
 var
-  GiysiResimler: array[0..GIYSIRESIM_SAYISI - 1] of THamResim = (
-    {0}(Genislik: 14; Yukseklik: 14; BellekAdresi: @KapatmaDugmesiA),
-    {1}(Genislik: 14; Yukseklik: 14; BellekAdresi: @KapatmaDugmesiP),
-    {2}(Genislik: 14; Yukseklik: 14; BellekAdresi: @BuyutmeDugmesiA),
-    {3}(Genislik: 14; Yukseklik: 14; BellekAdresi: @BuyutmeDugmesiP),
-    {4}(Genislik: 14; Yukseklik: 14; BellekAdresi: @KucultmeDugmesiA),
-    {5}(Genislik: 14; Yukseklik: 14; BellekAdresi: @KucultmeDugmesiP));
+  GiysiMac: TGiysi = (
+    BaslikYukseklik         : BASLIK_Y;
+
+    ResimSolUstGenislik     : RESIM_SOLUST_G;
+    ResimUstGenislik        : RESIM_UST_G;
+    ResimSagUstGenislik     : RESIM_SAGUST_G;
+
+    ResimSolGenislik        : RESIM_SOL_G;
+    ResimSolYukseklik       : RESIM_SOL_Y;
+    ResimSagGenislik        : RESIM_SAG_G;
+    ResimSagYukseklik       : RESIM_SAG_Y;
+
+    ResimSolAltGenislik     : RESIM_SOLALT_G;
+    ResimSolAltYukseklik    : RESIM_SOLALT_Y;
+    ResimAltGenislik        : RESIM_ALT_G;
+    ResimAltYukseklik       : RESIM_ALT_Y;
+    ResimSagAltGenislik     : RESIM_SAGALT_G;
+    ResimSagAltYukseklik    : RESIM_SAGALT_Y;
+
+    AktifBaslikYaziRengi    : AKTIF_BASLIK_YAZIRENGI;
+    PasifBaslikYaziRengi    : PASIF_BASLIK_YAZIRENGI;
+    IcDolguRengi            : IC_DOLGU_RENGI;     // pencere iç rengi sistem tarafından belirlenecek
+    BaslikYaziSol           : BASLIK_YAZI_S;      // başlığın sol başlangıç değeri pencerenin ortası olarak belirlenecek
+    BaslikYaziUst           : BASLIK_YAZI_U;      // başlığın üst başlangıç değeri pencerenin ortası olarak belirlenecek
+
+    KapatmaDugmesiSol       : KAPATMA_DUGMESI_S;
+    KapatmaDugmesiUst       : KAPATMA_DUGMESI_U;
+    KapatmaDugmesiGenislik  : KAPATMA_DUGMESI_G;
+    KapatmaDugmesiYukseklik : KAPATMA_DUGMESI_Y;
+    BuyutmeDugmesiSol       : BUYUTME_DUGMESI_S;
+    BuyutmeDugmesiUst       : BUYUTME_DUGMESI_U;
+    BuyutmeDugmesiGenislik  : BUYUTME_DUGMESI_G;
+    BuyutmeDugmesiYukseklik : BUYUTME_DUGMESI_Y;
+    KucultmeDugmesiSol      : KUCULTME_DUGMESI_S;
+    KucultmeDugmesiUst      : KUCULTME_DUGMESI_U;
+    KucultmeDugmesiGenislik : KUCULTME_DUGMESI_G;
+    KucultmeDugmesiYukseklik: KUCULTME_DUGMESI_Y;
+
+    ResimSolUstA: (Genislik: RESIM_SOLUST_G;  Yukseklik: BASLIK_Y;        BellekAdresi: @ResimSolUstA);
+    ResimSolUstP: (Genislik: RESIM_SOLUST_G;  Yukseklik: BASLIK_Y;        BellekAdresi: @ResimSolUstP);
+    ResimUstA:    (Genislik: RESIM_UST_G;     Yukseklik: BASLIK_Y;        BellekAdresi: @ResimUstA);
+    ResimUstP:    (Genislik: RESIM_UST_G;     Yukseklik: BASLIK_Y;        BellekAdresi: @ResimUstP);
+    ResimSagUstA: (Genislik: RESIM_SAGUST_G;  Yukseklik: BASLIK_Y;        BellekAdresi: @ResimSagUstA);
+    ResimSagUstP: (Genislik: RESIM_SAGUST_G;  Yukseklik: BASLIK_Y;        BellekAdresi: @ResimSagUstP);
+    ResimSolA:    (Genislik: RESIM_SOL_G;     Yukseklik: RESIM_SOL_Y;     BellekAdresi: @ResimSolA);
+    ResimSolP:    (Genislik: RESIM_SOL_G;     Yukseklik: RESIM_SOL_Y;     BellekAdresi: @ResimSolP);
+    ResimSagA:    (Genislik: RESIM_SAG_G;     Yukseklik: RESIM_SAG_Y;     BellekAdresi: @ResimSagA);
+    ResimSagP:    (Genislik: RESIM_SAG_G;     Yukseklik: RESIM_SAG_Y;     BellekAdresi: @ResimSagP);
+    ResimSolAltA: (Genislik: RESIM_SOLALT_G;  Yukseklik: RESIM_SOLALT_Y;  BellekAdresi: @ResimSolAltA);
+    ResimSolAltP: (Genislik: RESIM_SOLALT_G;  Yukseklik: RESIM_SOLALT_Y;  BellekAdresi: @ResimSolAltP);
+    ResimAltA:    (Genislik: RESIM_ALT_G;     Yukseklik: RESIM_ALT_Y;     BellekAdresi: @ResimAltA);
+    ResimAltP:    (Genislik: RESIM_ALT_G;     Yukseklik: RESIM_ALT_Y;     BellekAdresi: @ResimAltP);
+    ResimSagAltA: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltA);
+    ResimSagAltP: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltP));
 
 implementation
 

@@ -254,7 +254,7 @@ begin
           end;
           FindClose(AramaKaydi);}
           //Gorev^.Calistir('disk1:\6.bmp');
-          Gorev^.Calistir('disk1:\grafik4.c');
+          Gorev^.Calistir('disk1:\hafiza.c');
         end
         else if(Tus = 'd') then
         begin
@@ -626,7 +626,7 @@ var
   i: Integer;
 begin
 
-  exit;
+  Exit;
 
   P3Pencere := P3Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir, 'Izgara', RENK_BEYAZ);
   P3Pencere^.OlayCagriAdresi := @P3NesneTestOlayIsle;

@@ -136,7 +136,22 @@ type
 implementation
 
 uses genel, genel8x16, donusum, bmp, gn_islevler, sistemmesaj, gn_pencere,
-  hamresim, giysi_mac;
+  hamresim, giysi_normal, giysi_mac;
+
+var
+  GiysiResimler: array[0..11] of THamResim = (
+    (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.KapatmaDugmesiA),
+    (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.KapatmaDugmesiP),
+    (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.BuyutmeDugmesiA),
+    (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.BuyutmeDugmesiP),
+    (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.KucultmeDugmesiA),
+    (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.KucultmeDugmesiP),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KapatmaDugmesiA),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KapatmaDugmesiP),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.BuyutmeDugmesiA),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.BuyutmeDugmesiP),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KucultmeDugmesiA),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KucultmeDugmesiP));
 
 function TGorselNesne.Olustur(AKullanimTipi: TKullanimTipi; AGNTip: TGNTip;
   AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
