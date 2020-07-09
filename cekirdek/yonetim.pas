@@ -16,7 +16,8 @@ unit yonetim;
 interface
 
 uses paylasim, gn_pencere, gn_etiket, zamanlayici, dns, gn_panel, gorselnesne,
-  gn_gucdugmesi, gn_resim, gn_karmaliste, gn_degerlistesi, gn_dugme, gn_izgara;
+  gn_gucdugmesi, gn_resim, gn_karmaliste, gn_degerlistesi, gn_dugme, gn_izgara,
+  gn_araccubugu, gn_durumcubugu, gn_giriskutusu, gn_onaykutusu, gn_renksecici;
 
 type
   // gerçek moddan gelen veri yapýsý
@@ -43,6 +44,12 @@ type
   end;
 
 type
+  TArgeProgram = procedure of object;
+
+type
+
+  { TArGe }
+
   TArGe = object
   private
     P1Dugmeler: array[0..44] of PGucDugmesi;
@@ -52,22 +59,34 @@ type
     Degerler: array[1..8] of TSayi4;
     BulunanCiftSayisi, TiklamaSayisi,
     SecilenEtiket, ToplamTiklamaSayisi: TSayi4;
+    FCalisanBirim: TArgeProgram;
+    procedure Olustur;
     procedure Program1Basla;
     procedure Program2Basla;
     procedure Program3Basla;
+    procedure Program4Basla;
+    procedure Program5Basla;
     procedure P1NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure P2NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure P5NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
 
 var
   SDPencere: PPencere;
   SDZamanlayici, P1Zamanlayici: PZamanlayici;
   P1Pencere, P1Pencere2,
-  P2Pencere, P3Pencere: PPencere;
+  P2Pencere, P3Pencere, P4Pencere, P5Pencere: PPencere;
+  P4DurumCubugu: PDurumCubugu;
+  P4AracCubugu: PAracCubugu;
+  P4Etiket: PEtiket;
+  P4GirisKutusu: PGirisKutusu;
+  P4OnayKutusu: POnayKutusu;
+  P4ACDugmeler: array[0..4] of TISayi4;
   P1Panel: PPanel;
   P1KarmaListe: PKarmaListe;
-  P1Dugme: PDugme;
+  P1Dugme, P4Dugme: PDugme;
   P1DegerListesi: PDegerListesi;
   P3Izgara: PIzgara;
   GNEtiket: PEtiket;
@@ -75,6 +94,7 @@ var
   _DNS: PDNS = nil;
   DugmeSayisi: TSayi4;
   TestAlani: TArGe;
+  SonKonumY, SonKonumD, SonSecim: TSayi4;
 
 procedure Yukle;
 procedure SistemAnaKontrol;
@@ -215,7 +235,8 @@ begin
   // sistem deðer görüntüleyicisini baþlat
   SistemDegerleriBasla;
 
-  TestAlani.Program3Basla;
+  TestAlani.Olustur;
+  TestAlani.FCalisanBirim;
 
   // sistem için DHCP sunucusundan IP adresi al
   if(AgYuklendi) then DHCPSunucuKesfet;
@@ -404,8 +425,10 @@ begin
     else if(Olay.Olay = CO_CIZIM) then
     begin
 
-      SDPencere^.YaziYaz(SDPencere, 12, 10, 'EIP:', RENK_LACIVERT);
-      SDPencere^.YaziYaz(SDPencere, 46, 10, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), RENK_LACIVERT);
+      //SDPencere^.YaziYaz(SDPencere, 12, 10, 'EIP:', RENK_LACIVERT);
+      //SDPencere^.YaziYaz(SDPencere, 46, 10, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), RENK_LACIVERT);
+      SDPencere^.YaziYaz(SDPencere, 12, 10, 'GDS:', RENK_LACIVERT);
+      SDPencere^.YaziYaz(SDPencere, 46, 10, '0x' + hexStr(GorevDegisimSayisi, 8), RENK_LACIVERT);
       SDPencere^.YaziYaz(SDPencere, 12, 28, 'DNT:', RENK_MAVI);
       SDPencere^.YaziYaz(SDPencere, 46, 28, '0x' + hexStr(SistemKontrolSayaci, 8), RENK_MAVI);
     end;
@@ -432,6 +455,12 @@ begin
   SISTEM_MESAJ('TTestSinif.Eksilt: %d', [FDeger1]);
 end;
 
+procedure TArGe.Olustur;
+begin
+
+  FCalisanBirim := @Program5Basla;
+end;
+
 procedure TArGe.Program1Basla;
 var
   i: TSayi4;
@@ -446,7 +475,7 @@ begin
   P1Zamanlayici := P1Zamanlayici^.Olustur(200);
   P1Zamanlayici^.Durum := zdCalisiyor;
 
-  P1Pencere2 := P1Pencere2^.Olustur(nil, 10, 10, 180, 400, ptBoyutlanabilir,
+  P1Pencere2 := P1Pencere2^.Olustur(nil, 0, 0, 180, 440, ptBoyutlanabilir,
     'Yazmaçlar', RENK_BEYAZ);
   //P1Pencere2^.OlayCagriAdresi := @P1NesneTestOlayIsle;
 
@@ -527,22 +556,22 @@ begin
 
     P1DegerListesi^.DegerIceriginiTemizle;
 
-    TSS := GorevTSSListesi[2];
+    TSS := GorevTSSListesi[1];
 
     P1DegerListesi^.DegerEkle('EAX|0x' + hexStr(TSS^.EAX, 8));
+    P1DegerListesi^.DegerEkle('EBX|0x' + hexStr(TSS^.EBX, 8));
     P1DegerListesi^.DegerEkle('ECX|0x' + hexStr(TSS^.ECX, 8));
     P1DegerListesi^.DegerEkle('EDX|0x' + hexStr(TSS^.EDX, 8));
-    P1DegerListesi^.DegerEkle('EBX|0x' + hexStr(TSS^.EBX, 8));
-    P1DegerListesi^.DegerEkle('ESP|0x' + hexStr(TSS^.ESP, 8));
-    P1DegerListesi^.DegerEkle('EBP|0x' + hexStr(TSS^.EBP, 8));
     P1DegerListesi^.DegerEkle('ESI|0x' + hexStr(TSS^.ESI, 8));
     P1DegerListesi^.DegerEkle('EDI|0x' + hexStr(TSS^.EDI, 8));
     P1DegerListesi^.DegerEkle('CS|0x' + hexStr(TSS^.CS, 8));
     P1DegerListesi^.DegerEkle('DS|0x' + hexStr(TSS^.DS, 8));
     P1DegerListesi^.DegerEkle('ES|0x' + hexStr(TSS^.ES, 8));
-    P1DegerListesi^.DegerEkle('SS|0x' + hexStr(TSS^.SS, 8));
     P1DegerListesi^.DegerEkle('FS|0x' + hexStr(TSS^.FS, 8));
     P1DegerListesi^.DegerEkle('GS|0x' + hexStr(TSS^.GS, 8));
+    P1DegerListesi^.DegerEkle('SS|0x' + hexStr(TSS^.SS, 8));
+    P1DegerListesi^.DegerEkle('ESP|0x' + hexStr(TSS^.ESP, 8));
+    P1DegerListesi^.DegerEkle('EBP|0x' + hexStr(TSS^.EBP, 8));
     P1DegerListesi^.DegerEkle('SS0|0x' + hexStr(TSS^.SS0, 8));
     P1DegerListesi^.DegerEkle('ESP0|0x' + hexStr(TSS^.ESP0, 8));
     P1DegerListesi^.DegerEkle('SS1|0x' + hexStr(TSS^.SS1, 8));
@@ -626,8 +655,6 @@ var
   i: Integer;
 begin
 
-  Exit;
-
   P3Pencere := P3Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir, 'Izgara', RENK_BEYAZ);
   P3Pencere^.OlayCagriAdresi := @P3NesneTestOlayIsle;
 
@@ -647,6 +674,141 @@ end;
 procedure TArGe.P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 begin
 
+end;
+
+procedure TArGe.Program4Basla;
+begin
+
+  SonSecim := 0;
+
+  P4Pencere := P4Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir,
+    'Nesneler', RENK_BEYAZ);
+  P4Pencere^.OlayCagriAdresi := @P4NesneTestOlayIsle;
+
+  P4AracCubugu := P4AracCubugu^.Olustur(ktNesne, P4Pencere);
+  P4ACDugmeler[0] := P4AracCubugu^.DugmeEkle(6);
+  P4ACDugmeler[1] := P4AracCubugu^.DugmeEkle(7);
+  P4ACDugmeler[2] := P4AracCubugu^.DugmeEkle(8);
+  P4ACDugmeler[3] := P4AracCubugu^.DugmeEkle(9);
+  P4ACDugmeler[4] := P4AracCubugu^.DugmeEkle(10);
+  P4AracCubugu^.OlayCagriAdresi := @P4NesneTestOlayIsle;
+  P4AracCubugu^.Goster;
+
+  P4DurumCubugu := P4DurumCubugu^.Olustur(ktNesne, P4Pencere, 0, 0, 10, 10, 'Konum: 0:0');
+  P4DurumCubugu^.OlayCagriAdresi := @P4NesneTestOlayIsle;
+  P4DurumCubugu^.Goster;
+
+  P4Pencere^.Goster;
+end;
+
+procedure TArGe.P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+var
+  Sol, Ust, G, Y, i: TISayi4;
+  Alan: TAlan;
+  s: String;
+begin
+
+  if(AOlay.Olay = CO_CIZIM) then
+  begin
+
+    G := AGonderici^.FBoyut.Genislik;
+    Y := AGonderici^.FBoyut.Yukseklik - 28;
+
+    // yatay çizgiler
+    Ust := 5 + 28;
+    repeat
+
+      Alan := P4Pencere^.FKalinlik;
+      for i := 0 to G div 10 do P4Pencere^.PixelYaz(P4Pencere, Alan.Sol + (i * 10) + 3,
+        Alan.Ust + Ust, RENK_GRI);
+      Inc(Ust, 10);
+    until Ust > Y;
+  end
+  else if(AOlay.Olay = FO_HAREKET) and (AOlay.Kimlik = P4Pencere^.Kimlik) then
+  begin
+
+    SonKonumY := AOlay.Deger1 - P4Pencere^.FKalinlik.Sol;
+    SonKonumD := AOlay.Deger2 - P4Pencere^.FKalinlik.Ust;
+
+    case SonSecim of
+      0: s := '-';
+      1: s := 'TDüðme';
+      2: s := 'TEtiket';
+      3: s := 'TGiriþKutusu';
+      4: s := 'TOnayKutusu';
+    end;
+
+    P4DurumCubugu^.Baslik := 'Konum: ' + IntToStr(AOlay.Deger1) + ':' +
+      IntToStr(AOlay.Deger2) + ' - Seçili Nesne: ' + s;
+    P4DurumCubugu^.Ciz;
+  end
+  else if(AOlay.Olay = FO_SAGTUS_BIRAKILDI) and (AOlay.Kimlik = P4Pencere^.Kimlik) then
+  begin
+
+    if(SonSecim = 1) then
+    begin
+
+      P4Dugme := P4Dugme^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD, 100, 20, 'Merhaba');
+      P4Dugme^.Goster;
+    end
+    else if(SonSecim = 2) then
+    begin
+
+      P4Etiket := P4Etiket^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD, RENK_KIRMIZI, 'Merhaba');
+      P4Etiket^.Goster;
+    end
+    else if(SonSecim = 3) then
+    begin
+
+      P4GirisKutusu := P4GirisKutusu^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD,
+        100, 20, 'Merhaba');
+      P4GirisKutusu^.Goster;
+    end
+    else if(SonSecim = 4) then
+    begin
+
+      P4OnayKutusu := P4OnayKutusu^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD,
+        'Merhaba');
+      P4OnayKutusu^.Goster;
+    end;
+  end
+  else if(AOlay.Olay = FO_TIKLAMA) then
+  begin
+
+    if(AOlay.Kimlik = P4ACDugmeler[0]) then
+      SonSecim := 0
+    else if(AOlay.Kimlik = P4ACDugmeler[1]) then
+      SonSecim := 1
+    else if(AOlay.Kimlik = P4ACDugmeler[2]) then
+      SonSecim := 2
+    else if(AOlay.Kimlik = P4ACDugmeler[3]) then
+      SonSecim := 3
+    else if(AOlay.Kimlik = P4ACDugmeler[4]) then
+      SonSecim := 4;
+
+    //SISTEM_MESAJ('Kimlik: %d', [AOlay.Kimlik]);
+  end;
+end;
+
+procedure TArGe.Program5Basla;
+begin
+
+  Exit;
+
+  P5Pencere := P5Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir, 'Renk Seçici', RENK_BEYAZ);
+  P5Pencere^.OlayCagriAdresi := @P5NesneTestOlayIsle;
+
+  P5Pencere^.Goster;
+end;
+
+procedure TArGe.P5NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+begin
+
+  if(AOlay.Olay = FO_TIKLAMA) then
+  begin
+
+    SISTEM_MESAJ('Kimlik: %d', [AOlay.Kimlik]);
+  end;
 end;
 
 end.

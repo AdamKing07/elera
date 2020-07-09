@@ -12,13 +12,10 @@ program mustudk;
  ==============================================================================}
 {$mode objfpc}
 uses gn_masaustu, n_gorev, gn_pencere, gn_dugme, gn_etiket, gn_secimdugmesi,
-  gn_listekutusu;
+  gn_listekutusu, gn_renksecici;
 
 const
   ProgramAdi: string = 'Masaüstü Duvar Kaðýdý';
-  MasaustuRenkleri: array[0..15] of TRenk = (
-    $FFFFFF, $C0C0C0, $808080, $000000, $FF0000, $800000, $FFFF00, $808000,
-    $00FF00, $008000, $00FFFF, $008080, $0000FF, $000080, $FF00FF, $800080);
 
 var
   DosyaAramaListesi: array[0..15] of TDosyaArama;
@@ -29,9 +26,9 @@ var
   Pencere: TPencere;
   lkDosyaListesi: TListeKutusu;
   etiBilgi: array[0..1] of TEtiket;
-  sdRenkler: array[0..15] of TSecimDugmesi;
+  RenkSecici: TRenkSecici;
   OlayKayit: TOlayKayit;
-  Sol, Ust, i: TISayi4;
+  i: TISayi4;
 
 procedure DosyalariListele;
 var
@@ -68,37 +65,23 @@ end;
 
 begin
 
-  Pencere.Olustur(-1, 100, 100, 208, 395, ptIletisim, ProgramAdi, $FFFFCC);
+  Pencere.Olustur(-1, 100, 100, 200, 190, ptIletisim, ProgramAdi, $F9FAF9);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
-
-  // liste kutusu oluþtur
-  lkDosyaListesi.Olustur(Pencere.Kimlik, 5, 286, 195, 100);
-  lkDosyaListesi.Goster;
-
-  DosyalariListele;
 
   etiBilgi[0].Olustur(Pencere.Kimlik, 5, 0, $FF0000, 'Masaüstü Renkleri:');
   etiBilgi[0].Goster;
 
-  etiBilgi[1].Olustur(Pencere.Kimlik, 5, 270, $FF0000, 'Masaüstü Resimleri:');
+  RenkSecici.Olustur(Pencere.Kimlik, 5, 21, 190, 32);
+  RenkSecici.Goster;
+
+  etiBilgi[1].Olustur(Pencere.Kimlik, 5, 60, $FF0000, 'Masaüstü Resimleri:');
   etiBilgi[1].Goster;
 
-  Sol := 17;
-  Ust := 60;
-  for i := 1 to 16 do
-  begin
+  // liste kutusu oluþtur
+  lkDosyaListesi.Olustur(Pencere.Kimlik, 5, 76, 190, 107);
+  lkDosyaListesi.Goster;
 
-    sdRenkler[i - 1].Olustur(Pencere.Kimlik, Sol, Ust, '');
-    sdRenkler[i - 1].Goster;
-
-    Sol += 50;
-    if((i mod 4) = 0) then
-    begin
-
-      Sol := 17;
-      Ust += 60;
-    end;
-  end;
+  DosyalariListele;
 
   // pencereyi görüntüle
   Pencere.Goster;
@@ -122,41 +105,12 @@ begin
         masELERA.MasaustuResminiDegistir('disk1:\' + DosyaAramaListesi[i].DosyaAdi);
         masELERA.Guncelle;
       end
-    end
-    else if(OlayKayit.Olay = CO_DURUMDEGISTI) then
-    begin
-
-      for i := 0 to 15 do
+      else if(OlayKayit.Kimlik = RenkSecici.Kimlik) then
       begin
 
-        if(sdRenkler[i].Kimlik <> OlayKayit.Kimlik) then
-          sdRenkler[i].DurumDegistir(sdNormal)
-        else
-        begin
-
-          masELERA.MasaustuRenginiDegistir(MasaustuRenkleri[i]);
-          masELERA.Guncelle;
-        end;
+        masELERA.MasaustuRenginiDegistir(OlayKayit.Deger1);
+        masELERA.Guncelle;
       end;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
-    begin
-
-      Sol := 5;
-      Ust := 18;
-      for i := 1 to 16 do
-      begin
-
-        Pencere.Tuval.Dikdortgen(Sol, Ust, 40, 40, MasaustuRenkleri[i - 1], True);
-
-        Sol += 50;
-        if((i mod 4) = 0) then
-        begin
-
-          Sol := 5;
-          Ust += 60;
-        end;
-      end;
-    end;
   end;
 end.

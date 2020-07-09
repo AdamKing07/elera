@@ -6,7 +6,7 @@
   Dosya Adı: gn_durumcubugu.pas
   Dosya İşlevi: durum çubuğu yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 06/06/2020
+  Güncelleme Tarihi: 08/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -107,6 +107,9 @@ function TDurumCubugu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNe
 var
   DurumCubugu: PDurumCubugu;
 begin
+
+  // nesne yüksekliği 2px olarak sabitlendi
+  AYukseklik := 20;
 
   DurumCubugu := PDurumCubugu(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
     AGenislik, AYukseklik, 2, $D4D0C8, $D4D0C8, 0, ''));

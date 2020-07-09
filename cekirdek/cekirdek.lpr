@@ -43,7 +43,7 @@ begin
   asm
     cli
 
-    mov eax,GOREV3_ESP
+    mov eax,GOREV0_ESP
     mov esp,eax
 
     fninit

@@ -3,10 +3,10 @@
   Kodlayan: Fatih KILIÇ
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
-  Dosya Adı: gn_pencere.pp
+  Dosya Adı: gn_pencere.pas
   Dosya İşlevi: pencere nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 24/09/2019
+  Güncelleme Tarihi: 09/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -24,7 +24,7 @@ type
     FKimlik: TKimlik;
     FTuval: TTuval;
   public
-    procedure Olustur(AtaKimlik: TKimlik; A1, B1, Genislik, Yukseklik: TISayi4;
+    procedure Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
       APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk);
     procedure Goster;
     procedure Ciz;
@@ -33,19 +33,19 @@ type
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _PencereOlustur(AtaKimlik: TKimlik; A1, B1, Genislik, Yukseklik: TISayi4;
+function _PencereOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): TKimlik; assembler;
 procedure _PencereGoster(AKimlik: TKimlik); assembler;
 procedure _PencereCiz(AKimlik: TKimlik); assembler;
 
 implementation
 
-procedure TPencere.Olustur(AtaKimlik: TKimlik; A1, B1, Genislik, Yukseklik: TISayi4;
+procedure TPencere.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk);
 begin
 
-  FKimlik := _PencereOlustur(AtaKimlik, A1, B1, Genislik, Yukseklik, APencereTipi,
-    ABaslik, AGovdeRenk);
+  FKimlik := _PencereOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik,
+    APencereTipi, ABaslik, AGovdeRenk);
 
   FTuval.Olustur(FKimlik);
 end;
@@ -62,17 +62,17 @@ begin
   _PencereCiz(FKimlik);
 end;
 
-function _PencereOlustur(AtaKimlik: TKimlik; A1, B1, Genislik, Yukseklik: TISayi4;
+function _PencereOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): TKimlik;
 asm
-  push  AGovdeRenk
-  push  ABaslik
-  push  APencereTipi
-  push  Yukseklik
-  push  Genislik
-  push  B1
-  push  A1
-  push  AtaKimlik
+  push  DWORD AGovdeRenk
+  push  DWORD ABaslik
+  push  DWORD APencereTipi
+  push  DWORD AYukseklik
+  push  DWORD AGenislik
+  push  DWORD AUst
+  push  DWORD ASol
+  push  DWORD AAtaKimlik
   mov   eax,PENCERE_OLUSTUR
   int   $34
   add   esp,32
@@ -80,7 +80,7 @@ end;
 
 procedure _PencereGoster(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,PENCERE_GOSTER
   int   $34
   add   esp,4
@@ -88,7 +88,7 @@ end;
 
 procedure _PencereCiz(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,PENCERE_CIZ
   int   $34
   add   esp,4

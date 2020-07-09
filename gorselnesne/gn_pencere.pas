@@ -6,7 +6,7 @@
   Dosya Adý: gn_pencere.pas
   Dosya Ýþlevi: pencere yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 23/06/2020
+  Güncelleme Tarihi: 08/07/2020
 
   Önemli Bilgiler:
 
@@ -66,8 +66,8 @@ implementation
 uses genel, gorev, gn_islevler, gn_masaustu, gn_gucdugmesi, gn_listekutusu,
   gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugmesi, gn_baglanti, gn_resim, gn_listegorunum,
-  gn_kaydirmacubugu, gn_karmaliste, gn_degerlistesi, gn_izgara, temelgorselnesne,
-  sistemmesaj;
+  gn_kaydirmacubugu, gn_karmaliste, gn_degerlistesi, gn_izgara, gn_araccubugu,
+  gn_renksecici, temelgorselnesne, sistemmesaj;
 
 const
   PENCERE_ALTLIMIT_GENISLIK = 110;
@@ -380,7 +380,10 @@ begin
       if(GorunurNesne^.Gorunum) then
       begin
 
+        // yeni eklenecek görsel nesne - görsel nesneyi buraya ekle...
         case GorunurNesne^.NesneTipi of
+          //gntAcilirMenu     :
+          gntAracCubugu     : PAracCubugu(GorunurNesne)^.Boyutlandir;
           gntBaglanti       : PBaglanti(GorunurNesne)^.Boyutlandir;
           gntDefter         : PDefter(GorunurNesne)^.Boyutlandir;
           gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Boyutlandir;
@@ -396,8 +399,12 @@ begin
           gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Boyutlandir;
           gntListeGorunum   : PListeGorunum(GorunurNesne)^.Boyutlandir;
           gntListeKutusu    : PListeKutusu(GorunurNesne)^.Boyutlandir;
+          //gntMasaustu;
+          //gntMenu;
           gntOnayKutusu     : POnayKutusu(GorunurNesne)^.Boyutlandir;
           gntPanel          : PPanel(GorunurNesne)^.Boyutlandir;
+          //gntPencere;
+          gntRenkSecici     : PRenkSecici(GorunurNesne)^.Boyutlandir;
           gntResim          : PResim(GorunurNesne)^.Boyutlandir;
           gntResimDugmesi   : PResimDugmesi(GorunurNesne)^.Boyutlandir;
           gntSecimDugmesi   : PSecimDugmesi(GorunurNesne)^.Boyutlandir;
@@ -710,8 +717,10 @@ begin
       if(GorunurNesne^.Gorunum) and not(GorunurNesne^.Kimlik = HATA_KIMLIK) then
       begin
 
-        // pencere nesnesinin altýnda çizilecek nesneler
+        // yeni eklenecek görsel nesne - görsel nesneyi buraya ekle...
         case GorunurNesne^.NesneTipi of
+          //gntAcilirMenu     :
+          gntAracCubugu     : PAracCubugu(GorunurNesne)^.Ciz;
           gntBaglanti       : PBaglanti(GorunurNesne)^.Ciz;
           gntDefter         : PDefter(GorunurNesne)^.Ciz;
           gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Ciz;
@@ -727,8 +736,12 @@ begin
           gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Ciz;
           gntListeGorunum   : PListeGorunum(GorunurNesne)^.Ciz;
           gntListeKutusu    : PListeKutusu(GorunurNesne)^.Ciz;
+          //gntMasaustu;
+          //gntMenu;
           gntOnayKutusu     : POnayKutusu(GorunurNesne)^.Ciz;
           gntPanel          : PPanel(GorunurNesne)^.Ciz;
+          //gntPencere;
+          gntRenkSecici     : PRenkSecici(GorunurNesne)^.Ciz;
           gntResim          : PResim(GorunurNesne)^.Ciz;
           gntResimDugmesi   : PResimDugmesi(GorunurNesne)^.Ciz;
           gntSecimDugmesi   : PSecimDugmesi(GorunurNesne)^.Ciz;
@@ -1033,8 +1046,9 @@ begin
     if(FareKonumu = fkGovde) then
     begin
 
-      GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik,
-        AOlay);
+      if not(APencere^.OlayCagriAdresi = nil) then
+        APencere^.OlayCagriAdresi(APencere, AOlay)
+      else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
     end
     else
     begin
@@ -1108,8 +1122,11 @@ begin
 
                 // fare göstergesi APencere gövdesinde
                 FareKonumu := fkGovde;
-                GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
                 GecerliFareGostegeTipi := APencere^.FFareImlecTipi;
+
+                if not(APencere^.OlayCagriAdresi = nil) then
+                  APencere^.OlayCagriAdresi(APencere, AOlay)
+                else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
               end
               else
               begin
@@ -1199,7 +1216,9 @@ begin
       if(FareKonumu = fkGovde) then
       begin
 
-        GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
+        if not(APencere^.OlayCagriAdresi = nil) then
+          APencere^.OlayCagriAdresi(APencere, AOlay)
+        else GorevListesi[APencere^.GorevKimlik]^.OlayEkle(APencere^.GorevKimlik, AOlay);
       end
       else
       begin
@@ -1447,19 +1466,19 @@ begin
 
     i := AktifGiysi.KucultmeDugmesiSol;
     if(i < 0) then
-      i := APencere^.FBoyut.Genislik - AktifGiysi.KucultmeDugmesiSol;
+      i := APencere^.FBoyut.Genislik + AktifGiysi.KucultmeDugmesiSol;
     APencere^.FKucultmeDugmesi^.FKonum.Sol := i;
     APencere^.FKucultmeDugmesi^.FKonum.Ust := AktifGiysi.KucultmeDugmesiUst;
 
     i := AktifGiysi.BuyutmeDugmesiSol;
     if(i < 0) then
-      i := APencere^.FBoyut.Genislik - AktifGiysi.BuyutmeDugmesiSol;
+      i := APencere^.FBoyut.Genislik + AktifGiysi.BuyutmeDugmesiSol;
     APencere^.FBuyutmeDugmesi^.FKonum.Sol := i;
     APencere^.FKucultmeDugmesi^.FKonum.Ust := AktifGiysi.BuyutmeDugmesiUst;
 
     i := AktifGiysi.KapatmaDugmesiSol;
     if(i < 0) then
-      i := APencere^.FBoyut.Genislik - AktifGiysi.KapatmaDugmesiSol;
+      i := APencere^.FBoyut.Genislik + AktifGiysi.KapatmaDugmesiSol;
     APencere^.FKapatmaDugmesi^.FKonum.Sol := i;
     APencere^.FKapatmaDugmesi^.FKonum.Ust := AktifGiysi.KapatmaDugmesiUst;
 
@@ -1475,7 +1494,7 @@ begin
 
     i := AktifGiysi.KapatmaDugmesiSol;
     if(i < 0) then
-      i := APencere^.FBoyut.Genislik - AktifGiysi.KapatmaDugmesiSol;
+      i := APencere^.FBoyut.Genislik + AktifGiysi.KapatmaDugmesiSol;
     APencere^.FKapatmaDugmesi^.FKonum.Sol := i;
     APencere^.FKapatmaDugmesi^.FKonum.Ust := AktifGiysi.KapatmaDugmesiUst;
 

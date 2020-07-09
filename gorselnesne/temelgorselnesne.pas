@@ -6,7 +6,7 @@
   Dosya Adý: temelgorselnesne.pas
   Dosya Ýþlevi: temel görsel nesne yapýsýný içerir
 
-  Güncelleme Tarihi: 15/06/2020
+  Güncelleme Tarihi: 08/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -77,28 +77,32 @@ type
   end;
 
 var
-  AcilirMenu: TISayi4 = 0;
+  AcilirMenuSayac: TISayi4 = 0;
+  AracCubuguSayac: TISayi4 = 0;
   BaglantiSayac: TISayi4 = 0;
   DefterSayac: TISayi4 = 0;
   DegerDugmesiSayac: TISayi4 = 0;
+  DegerListesiSayac: TISayi4 = 0;
   DugmeSayac: TISayi4 = 0;
   DurumCubuguSayac: TISayi4 = 0;
   EtiketSayac: TISayi4 = 0;
   GirisKutusuSayac: TISayi4 = 0;
   GucDugmesiSayac: TISayi4 = 0;
-  IsaretKutusuSayac: TISayi4 = 0;
   IslemGostergesiSayac: TISayi4 = 0;
-  KarmaListe: TISayi4 = 0;
-  KaydirmaCubugu: TISayi4 = 0;
+  IzgaraSayac: TISayi4 = 0;
+  KarmaListeSayac: TISayi4 = 0;
+  KaydirmaCubuguSayac: TISayi4 = 0;
   ListeGorunumSayac: TISayi4 = 0;
   ListeKutusuSayac: TISayi4 = 0;
   MasaustuSayac: TISayi4 = 0;
   MenuSayac: TISayi4 = 0;
+  OnayKutusuSayac: TISayi4 = 0;
   PanelSayac: TISayi4 = 0;
   PencereSayac: TISayi4 = 0;
-  ResimDugmeSayac: TISayi4 = 0;
+  RenkSeciciSayac: TISayi4 = 0;
   ResimSayac: TISayi4 = 0;
-  SecimKutusuSayac: TISayi4 = 0;
+  ResimDugmeSayac: TISayi4 = 0;
+  SecimDugmesiSayac: TISayi4 = 0;
 
 function NesneAdiAl(AGNTip: TGNTip): string;
 
@@ -112,21 +116,38 @@ uses donusum;
 function NesneAdiAl(AGNTip: TGNTip): string;
 begin
 
+  // nesne sýralamasý alfabetiktir
+
   case AGNTip of
     gntAcilirMenu:
     begin
-      Inc(AcilirMenu);
-      Result := 'açýlýrmenu' + '.' + IntToStr(AcilirMenu);
+      Inc(AcilirMenuSayac);
+      Result := 'açýlýrmenu' + '.' + IntToStr(AcilirMenuSayac);
+    end;
+    gntAracCubugu:
+    begin
+      Inc(AracCubuguSayac);
+      Result := 'araççubuðu' + '.' + IntToStr(AracCubuguSayac);
     end;
     gntBaglanti:
     begin
       Inc(BaglantiSayac);
       Result := 'baðlantý' + '.' + IntToStr(BaglantiSayac);
     end;
+    gntDefter:
+    begin
+      Inc(DefterSayac);
+      Result := 'defter' + '.' + IntToStr(DefterSayac);
+    end;
     gntDegerDugmesi:
     begin
       Inc(DegerDugmesiSayac);
       Result := 'deðerdüðmesi' + '.' + IntToStr(DegerDugmesiSayac);
+    end;
+    gntDegerListesi:
+    begin
+      Inc(DegerListesiSayac);
+      Result := 'deðerlistesi' + '.' + IntToStr(DegerListesiSayac);
     end;
     gntDugme:
     begin
@@ -153,25 +174,25 @@ begin
       Inc(GucDugmesiSayac);
       Result := 'güçdüðmesi' + '.' + IntToStr(GucDugmesiSayac);
     end;
-    gntDefter:
-    begin
-      Inc(DefterSayac);
-      Result := 'defter' + '.' + IntToStr(DefterSayac);
-    end;
     gntIslemGostergesi:
     begin
       Inc(IslemGostergesiSayac);
       Result := 'iþlemgöstergesi' + '.' + IntToStr(IslemGostergesiSayac);
     end;
+    gntIzgara:
+    begin
+      Inc(IzgaraSayac);
+      Result := 'ýzgara' + '.' + IntToStr(IzgaraSayac);
+    end;
     gntKarmaListe:
     begin
-      Inc(KarmaListe);
-      Result := 'karmaliste' + '.' + IntToStr(KarmaListe);
+      Inc(KarmaListeSayac);
+      Result := 'karmaliste' + '.' + IntToStr(KarmaListeSayac);
     end;
     gntKaydirmaCubugu:
     begin
-      Inc(KaydirmaCubugu);
-      Result := 'kaydýrmaçubuðu' + '.' + IntToStr(KaydirmaCubugu);
+      Inc(KaydirmaCubuguSayac);
+      Result := 'kaydýrmaçubuðu' + '.' + IntToStr(KaydirmaCubuguSayac);
     end;
     gntListeGorunum:
     begin
@@ -195,8 +216,8 @@ begin
     end;
     gntOnayKutusu:
     begin
-      Inc(IsaretKutusuSayac);
-      Result := 'iþaretkutusu' + '.' + IntToStr(IsaretKutusuSayac);
+      Inc(OnayKutusuSayac);
+      Result := 'onaykutusu' + '.' + IntToStr(OnayKutusuSayac);
     end;
     gntPanel:
     begin
@@ -207,6 +228,11 @@ begin
     begin
       Inc(PencereSayac);
       Result := 'pencere' + '.' + IntToStr(PencereSayac);
+    end;
+    gntRenkSecici:
+    begin
+      Inc(RenkSeciciSayac);
+      Result := 'renkseçici' + '.' + IntToStr(RenkSeciciSayac);
     end;
     gntResim:
     begin
@@ -220,8 +246,8 @@ begin
     end;
     gntSecimDugmesi:
     begin
-      Inc(SecimKutusuSayac);
-      Result := 'seçimkutusu' + '.' + IntToStr(SecimKutusuSayac);
+      Inc(SecimDugmesiSayac);
+      Result := 'seçimdüðmesi' + '.' + IntToStr(SecimDugmesiSayac);
     end;
   end;
 end;

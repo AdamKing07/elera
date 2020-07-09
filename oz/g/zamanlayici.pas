@@ -371,6 +371,11 @@ asm
   inc eax
   mov [esi + TGorev.FGorevSayaci],eax
 
+  // GorevDegisimSayisi = kilitlenmeleri denetleyebilmek için eklenen deðiþken
+  mov eax,GorevDegisimSayisi
+  inc eax
+  mov GorevDegisimSayisi,eax
+
   // görevin devredileceði TSS giriþini belirle
   mov   ecx,CalisanGorev
   cmp   ecx,1

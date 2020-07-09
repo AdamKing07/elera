@@ -6,7 +6,7 @@
   Dosya Adı: gn_listegorunum.pas
   Dosya İşlevi: liste görünüm nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 02/11/2019
+  Güncelleme Tarihi: 09/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,7 +21,7 @@ type
   private
     FKimlik: TKimlik;
   public
-    function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
     procedure Hizala(AHiza: THiza);
     procedure ElemanEkle(ADeger: string);
     function SeciliSiraAl: LongInt;
@@ -32,7 +32,7 @@ type
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _ListeGorunumOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik; assembler;
+function _ListeGorunumOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik; assembler;
 procedure _ListeGorunumHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
 procedure _ListeGorunumElemanEkle(AKimlik: TKimlik; ADeger: string); assembler;
 function _ListeGorunumSeciliSiraAl(AKimlik: TKimlik): TISayi4; assembler;
@@ -44,10 +44,10 @@ procedure _ListeGorunumBaslikEkle(AKimlik: TKimlik; ABaslikDeger: string;
 
 implementation
 
-function TListeGorunum.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function TListeGorunum.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 begin
 
-  FKimlik := _ListeGorunumOlustur(AtaKimlik, A1, B1, AGenislik, AYukseklik);
+  FKimlik := _ListeGorunumOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik);
   Result := FKimlik;
 end;
 
@@ -96,13 +96,13 @@ begin
   _ListeGorunumBaslikEkle(FKimlik, ABaslikDeger, ABaslikGenisligi);
 end;
 
-function _ListeGorunumOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4): TKimlik;
+function _ListeGorunumOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 asm
-  push  AYukseklik
-  push  AGenislik
-  push  B1
-  push  A1
-  push  AtaKimlik
+  push  DWORD AYukseklik
+  push  DWORD AGenislik
+  push  DWORD AUst
+  push  DWORD ASol
+  push  DWORD AAtaKimlik
   mov   eax,LISTEGORUNUM_OLUSTUR
   int   $34
   add   esp,20
@@ -110,8 +110,8 @@ end;
 
 procedure _ListeGorunumHizala(AKimlik: TKimlik; AHiza: THiza);
 asm
-  push  AHiza
-  push  AKimlik
+  push  DWORD AHiza
+  push  DWORD AKimlik
   mov   eax,PANEL_HIZALA
   int   $34
   add   esp,8
@@ -119,8 +119,8 @@ end;
 
 procedure _ListeGorunumElemanEkle(AKimlik: TKimlik; ADeger: string);
 asm
-  push  ADeger
-  push  AKimlik
+  push  DWORD ADeger
+  push  DWORD AKimlik
   mov   eax,LISTEGORUNUM_ELEMANEKLE
   int   $34
   add   esp,8
@@ -128,7 +128,7 @@ end;
 
 function _ListeGorunumSeciliSiraAl(AKimlik: TKimlik): TISayi4;
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,LISTEGORUNUM_SECILISIRAAL
   int   $34
   add   esp,4
@@ -136,8 +136,8 @@ end;
 
 procedure _ListeGorunumSeciliYaziAl(AKimlik: TKimlik; AHedefBellek: Isaretci);
 asm
-  push  AHedefBellek
-  push  AKimlik
+  push  DWORD AHedefBellek
+  push  DWORD AKimlik
   mov   eax,LISTEGORUNUM_SECILIYAZIAL
   int   $34
   add   esp,8
@@ -145,7 +145,7 @@ end;
 
 procedure _ListeGorunumTemizle(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,LISTEGORUNUM_TEMIZLE
   int   $34
   add   esp,4
@@ -153,7 +153,7 @@ end;
 
 procedure _ListeGorunumBasliklariTemizle(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,LISTEGORUNUM_BTEMIZLE
   int   $34
   add   esp,4
@@ -162,9 +162,9 @@ end;
 procedure _ListeGorunumBaslikEkle(AKimlik: TKimlik; ABaslikDeger: string;
   ABaslikGenisligi: TSayi4);
 asm
-  push  ABaslikGenisligi
-  push  ABaslikDeger
-  push  AKimlik
+  push  DWORD ABaslikGenisligi
+  push  DWORD ABaslikDeger
+  push  DWORD AKimlik
   mov   eax,LISTEGORUNUM_BASLIKEKLE
   int   $34
   add   esp,12

@@ -17,7 +17,7 @@ interface
 
 const
   ProjeBaslangicTarihi: string = '30.07.2005';
-  SistemAdi: string = 'ELERA Ýþletim Sistemi - 0.3.5 - R31';
+  SistemAdi: string = 'ELERA Ýþletim Sistemi - 0.3.7 - R33';
   DerlemeTarihi: string = {$i %DATE%};
   FPCMimari: string = {$i %FPCTARGET%};
   FPCSurum: string = {$i %FPCVERSION%};
@@ -136,10 +136,10 @@ const
   BELLEK_HARITA_ADRESI: PByte = PByte($510000);
 
   // alttaki satýrlar yeni tasarým çerçevesinde onaylanacak veya deðiþtirilecek
-  GOREV0_ESP        = $500000 - $600;
-  GOREV0_ESP2       = $500000 - $100;
-  GOREV3_ESP        = $500000;
-  GOREV3_ESP_U      = $1000;           // 4096 byte
+  GOREV0_ESP        = $510000 - $1000;
+  GOREV3_ESP        = $570D00;
+  GOREV3_ESP_U      = $2000;           // 2048 byte
+
   BILDEN_VERIADRESI = $10008;
 
 type
@@ -638,6 +638,7 @@ var
   CalisanGorevSayisi,                     // oluþturulan / çalýþan program sayýsý
   CalisanGorev: TISayi4;                  // o an çalýþan program
   CalisanGorevBellekAdresi: TSayi4;       // o an çalýþan programýn yüklendiði bellek adresi
+  GorevDegisimSayisi: TSayi4 = 0;         // çekirdek baþladýðý andan itibaren gerçekleþtirilen görev deðiþim sayýsý
 
 type
   PAlan = ^TAlan;
@@ -647,6 +648,9 @@ type
 
 type
   TKesmeCagrisi = function(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+
+type
+  TCizgiTipi = (ctDuz, ctNokta);
 
 type
   PEkranKartBilgisi = ^TEkranKartBilgisi;
@@ -687,7 +691,7 @@ type { Görsel Nesne Tipi }
     gntMenu, gntDefter, gntIslemGostergesi, gntOnayKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
     gntPanel, gntResimDugmesi, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu,
-    gntDegerListesi, gntIzgara);
+    gntDegerListesi, gntIzgara, gntAracCubugu, gntRenkSecici);
 
 type
   THamResim = record
@@ -743,22 +747,22 @@ const
   //FO_CIFTTIKLAMA        = FO_ILKDEGER + 126;
   FO_KAYDIRMA             = FO_ILKDEGER + 128;
 
-  RENK_SIYAH		              = TRenk($000000);
-  RENK_BORDO		              = TRenk($800000);
-  RENK_YESIL		              = TRenk($008000);
-  RENK_ZEYTINYESILI		        = TRenk($808000);
-  RENK_LACIVERT	              = TRenk($000080);
-  RENK_MOR		                = TRenk($800080);
-  RENK_TURKUAZ	              = TRenk($008080);
-  RENK_GRI		                = TRenk($808080);
-  RENK_GUMUS		              = TRenk($C0C0C0);
-  RENK_KIRMIZI                = TRenk($FF0000);
-  RENK_ACIKYESIL              = TRenk($00FF00);
-  RENK_SARI		                = TRenk($FFFF00);
-  RENK_MAVI		                = TRenk($0000FF);
-  RENK_PEMBE 	                = TRenk($FF00FF);
-  RENK_ACIKMAVI		            = TRenk($00FFFF);
   RENK_BEYAZ		              = TRenk($FFFFFF);
+  RENK_GUMUS		              = TRenk($C0C0C0);
+  RENK_GRI		                = TRenk($808080);
+  RENK_SIYAH		              = TRenk($000000);
+  RENK_KIRMIZI                = TRenk($FF0000);
+  RENK_BORDO		              = TRenk($800000);
+  RENK_SARI		                = TRenk($FFFF00);
+  RENK_ZEYTINYESILI		        = TRenk($808000);
+  RENK_ACIKYESIL              = TRenk($00FF00);
+  RENK_YESIL		              = TRenk($008000);
+  RENK_ACIKMAVI		            = TRenk($00FFFF);
+  RENK_TURKUAZ	              = TRenk($008080);
+  RENK_MAVI		                = TRenk($0000FF);
+  RENK_LACIVERT	              = TRenk($000080);
+  RENK_PEMBE 	                = TRenk($FF00FF);
+  RENK_MOR		                = TRenk($800080);
 
 const
   // görev çubuðu iç dolgu rengi
@@ -921,7 +925,7 @@ type
     Genislik,                   // karakter geniþliði
     Yukseklik,                  // karakter yüksekliði
     YT,                         // yatay +/- tolerans deðeri
-    DT: Byte;                   // dikey +/- tolerans deðeri
+    DT: TISayi1;                // dikey +/- tolerans deðeri
     Adres: Isaretci;            // karakter resim baþlangýç adresi
   end;
 

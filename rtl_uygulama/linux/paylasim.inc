@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: program arabiriminde kullanılacak sabit değerleri içerir
 
-  Güncelleme Tarihi: 15/05/2020
+  Güncelleme Tarihi: 09/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -204,6 +204,11 @@ const
   DEGERLISTESI_SECILIYAZIAL   = $04001700 + SAC_GNESNE;
   DEGERLISTESI_BASLIKBELIRLE  = $06001700 + SAC_GNESNE;
   DEGERLISTESI_HIZALA         = $01041700 + SAC_GNESNE;
+
+  RENKSECICI_OLUSTUR	        = $00011A00 + SAC_GNESNE;
+  RENKSECICI_GOSTER	          = $00081A00 + SAC_GNESNE;
+
+  // görsel nesne çağrı tanımları sonu
 
   // genel nesne çağrıları
   GORSELNESNE_KIMLIKAL 	      = $0001FF00 + SAC_GNESNE;
