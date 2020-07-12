@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_baglanti.pas
-  Dosya İşlevi: bağlantı (link) nesne yönetim işlevlerini içerir
+  Dosya İşlevi: bağlantı nesne yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 07/06/2020
 

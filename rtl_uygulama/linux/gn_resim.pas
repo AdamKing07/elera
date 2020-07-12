@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_resim.pas
-  Dosya İşlevi: resim nesne çağrı işlevlerini içerir
+  Dosya İşlevi: resim (TImage) nesne yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 08/11/2019
+  Güncelleme Tarihi: 10/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,17 +21,16 @@ type
   private
     FKimlik: TKimlik;
   public
-    function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
       ADosyaYolu: string): TKimlik;
     procedure Goster;
     procedure Hizala(AHiza: THiza);
     procedure Degistir(ADosyaYolu: string);
     procedure TuvaleSigdir(ATuvaleSigdir: LongBool);
-  published
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _ResimOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function _ResimOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADosyaYolu: string): TKimlik; assembler;
 procedure _ResimGoster(AKimlik: TKimlik); assembler;
 procedure _ResimHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
@@ -40,11 +39,11 @@ procedure _ResimTuvaleSigdir(AKimlik: TKimlik; ATuvaleSigdir: LongBool); assembl
 
 implementation
 
-function TResim.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function TResim.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADosyaYolu: string): TKimlik;
 begin
 
-  FKimlik := _ResimOlustur(AtaKimlik, A1, B1, AGenislik, AYukseklik, ADosyaYolu);
+  FKimlik := _ResimOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik, ADosyaYolu);
   Result := FKimlik;
 end;
 
@@ -72,15 +71,15 @@ begin
   _ResimTuvaleSigdir(FKimlik, ATuvaleSigdir);
 end;
 
-function _ResimOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function _ResimOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADosyaYolu: string): TKimlik;
 asm
-  push  ADosyaYolu
-  push  AYukseklik
-  push  AGenislik
-  push  B1
-  push  A1
-  push  AtaKimlik
+  push  DWORD ADosyaYolu
+  push  DWORD AYukseklik
+  push  DWORD AGenislik
+  push  DWORD AUst
+  push  DWORD ASol
+  push  DWORD AAtaKimlik
   mov   eax,RESIM_OLUSTUR
   int   $34
   add   esp,24
@@ -88,7 +87,7 @@ end;
 
 procedure _ResimGoster(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,RESIM_GOSTER
   int   $34
   add   esp,4
@@ -96,8 +95,8 @@ end;
 
 procedure _ResimHizala(AKimlik: TKimlik; AHiza: THiza);
 asm
-  push  AHiza
-  push  AKimlik
+  push  DWORD AHiza
+  push  DWORD AKimlik
   mov   eax,RESIM_HIZALA
   int   $34
   add   esp,8
@@ -105,8 +104,8 @@ end;
 
 procedure _ResimDegistir(AKimlik: TKimlik; ADosyaYolu: string);
 asm
-  push  ADosyaYolu
-  push  AKimlik
+  push  DWORD ADosyaYolu
+  push  DWORD AKimlik
   mov   eax,RESIM_DEGISTIR
   int   $34
   add   esp,8
@@ -114,8 +113,8 @@ end;
 
 procedure _ResimTuvaleSigdir(AKimlik: TKimlik; ATuvaleSigdir: LongBool);
 asm
-  push  ATuvaleSigdir
-  push  AKimlik
+  push  DWORD ATuvaleSigdir
+  push  DWORD AKimlik
   mov   eax,RESIM_TUVALESIGDIR
   int   $34
   add   esp,8

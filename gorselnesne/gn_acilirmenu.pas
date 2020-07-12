@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_acilirmenu.pas
-  Dosya Ýþlevi: açýlýr menü yönetim iþlevlerini içerir
+  Dosya Ýþlevi: açýlýr menü (TPopupMenu) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 24/06/2020
+  Güncelleme Tarihi: 11/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -169,6 +169,7 @@ end;
 procedure TAcilirMenu.Goster;
 var
   AcilirMenu: PAcilirMenu;
+  Olay: TOlay;
 begin
 
   inherited Goster;
@@ -187,15 +188,39 @@ begin
     AcilirMenu^.FKonum.Sol := GFareSurucusu.YatayKonum;
     AcilirMenu^.FKonum.Ust := GFareSurucusu.DikeyKonum;
   end;
+
+  // menünün açýldýðýna dair nesne sahibine mesaj gönder
+  Olay.Kimlik := AcilirMenu^.Kimlik;
+  Olay.Olay := CO_MENUACILDI;
+  Olay.Deger1 := 0;
+  Olay.Deger2 := 0;
+  if not(AcilirMenu^.FMenuOlayGeriDonusAdresi = nil) then
+    AcilirMenu^.FMenuOlayGeriDonusAdresi(AcilirMenu, Olay)
+  else GorevListesi[AcilirMenu^.GorevKimlik]^.OlayEkle(AcilirMenu^.GorevKimlik, Olay);
 end;
 
 {==============================================================================
   açýlýr menü nesnesini gizler
  ==============================================================================}
 procedure TAcilirMenu.Gizle;
+var
+  AcilirMenu: PAcilirMenu;
+  Olay: TOlay;
 begin
 
   inherited Gizle;
+
+  AcilirMenu := PAcilirMenu(AcilirMenu^.NesneAl(Kimlik));
+  if(AcilirMenu = nil) then Exit;
+
+  // menünün açýldýðýna dair nesne sahibine mesaj gönder
+  Olay.Kimlik := AcilirMenu^.Kimlik;
+  Olay.Olay := CO_MENUKAPATILDI;
+  Olay.Deger1 := 0;
+  Olay.Deger2 := 0;
+  if not(AcilirMenu^.FMenuOlayGeriDonusAdresi = nil) then
+    AcilirMenu^.FMenuOlayGeriDonusAdresi(AcilirMenu, Olay)
+  else GorevListesi[AcilirMenu^.GorevKimlik]^.OlayEkle(AcilirMenu^.GorevKimlik, Olay);
 end;
 
 {==============================================================================

@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_onaykutusu.pas
-  Dosya İşlevi: onay kutusu (checkbox) yönetim işlevlerini içerir
+  Dosya İşlevi: onay kutusu (TCheckBox) yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 01/06/2020
 

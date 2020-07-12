@@ -6,7 +6,7 @@
   Dosya Adı: k_cizim.pas
   Dosya İşlevi: grafiksel ekrana çizim işlevlerini içerir
 
-  Güncelleme Tarihi: 08/10/2019
+  Güncelleme Tarihi: 07/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,7 +16,7 @@ interface
 
 uses paylasim;
 
-function CizimCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function CizimCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
@@ -25,107 +25,111 @@ uses gorselnesne, genel;
 {==============================================================================
   görsel nesne çizim kesmelerini içerir
  ==============================================================================}
-function CizimCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function CizimCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Pencere: PGorselNesne;
-  _Alan: TAlan;
-  _Islev: TSayi4;
-  _A1, _B1, _A2, _B2,
-  _YariCap: TISayi4;
+  GorselNesne: PGorselNesne;
+  Alan: TAlan;
+  Islev: TSayi4;
+  Sol, Ust, Sag, Alt,
+  YariCap: TISayi4;
 begin
 
   // işlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   // nesneye nokta (pixel) yazma işlemi
-  if(_Islev = 1) then
+  if(Islev = 1) then
   begin
 
     // nesneyi kontrol et
-    _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler + 00)^, gntPencere);
-    if(_Pencere = nil) then Exit;
+    GorselNesne := GorselNesne^.NesneTipiniKontrolEt(PKimlik(ADegiskenler + 00)^, gntPencere);
+    if(GorselNesne = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl2(_Pencere^.Kimlik);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
+    Alan := GorselNesne^.CizimAlaniniAl2(GorselNesne^.Kimlik);
+    Sol := PISayi4(ADegiskenler + 04)^ + Alan.Sol;
+    Ust := PISayi4(ADegiskenler + 08)^ + Alan.Ust;
 
     // belirtilen koordinatı işaretle
-    GEkranKartSurucusu.NoktaYaz(_Pencere, _A1, _B1, PRenk(Degiskenler + 12)^, True);
+    GEkranKartSurucusu.NoktaYaz(GorselNesne, Sol, Ust, PRenk(ADegiskenler + 12)^, True);
 
     // başarı kodunu geri döndür
     Result := 1;
   end
 
   // dikdörtgen çiz
-  else if(_Islev = 2) then
+  else if(Islev = 2) then
   begin
 
     // nesneyi kontrol et
-    _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler + 00)^, gntPencere);
-    if(_Pencere = nil) then Exit;
+    GorselNesne := GorselNesne^.NesneTipiniKontrolEt(PKimlik(ADegiskenler + 00)^, gntPencere);
+    if(GorselNesne = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler + 00)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
-    _A2 := PISayi4(Degiskenler + 12)^ + _A1;
-    _B2 := PISayi4(Degiskenler + 16)^ + _B1;
+    Alan := GorselNesne^.CizimAlaniniAl2(PKimlik(ADegiskenler + 00)^);
+    Sol := PISayi4(ADegiskenler + 04)^ + Alan.Sol;
+    Ust := PISayi4(ADegiskenler + 08)^ + Alan.Ust;
+    Sag := PISayi4(ADegiskenler + 12)^ + Sol;
+    Alt := PISayi4(ADegiskenler + 16)^ + Ust;
 
-    if(PBoolean(Degiskenler + 24)^) then
+    if(PBoolean(ADegiskenler + 24)^) then
     begin
 
-      _Pencere^.DikdortgenDoldur(_Pencere, _A1, _B1, _A2, _B2, PRenk(Degiskenler + 20)^,
-        PRenk(Degiskenler + 20)^);
+      GorselNesne^.DikdortgenDoldur(GorselNesne, Sol, Ust, Sag, Alt, PRenk(ADegiskenler + 20)^,
+        PRenk(ADegiskenler + 20)^);
 
       Result := 1;
     end
     else
     begin
 
-      _Pencere^.Dikdortgen(_Pencere, _A1, _B1, _A2, _B2, PRenk(Degiskenler + 20)^);
+      Alan.Sol := Sol;
+      Alan.Ust := Ust;
+      Alan.Sag := Sag;
+      Alan.Alt := Alt;
+      GorselNesne^.Dikdortgen(GorselNesne, Alan, PRenk(ADegiskenler + 20)^);
 
       Result := 1;
     end;
   end
 
   // çizgi çiz
-  else if(_Islev = 3) then
+  else if(Islev = 3) then
   begin
 
     // nesneyi kontrol et
-    _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler)^, gntPencere);
-    if(_Pencere = nil) then Exit;
+    GorselNesne := GorselNesne^.NesneTipiniKontrolEt(PKimlik(ADegiskenler)^, gntPencere);
+    if(GorselNesne = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler + 00)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
-    _A2 := PISayi4(Degiskenler + 12)^ + _Alan.Sol;
-    _B2 := PISayi4(Degiskenler + 16)^ + _Alan.Ust;
+    Alan := GorselNesne^.CizimAlaniniAl2(PKimlik(ADegiskenler + 00)^);
+    Sol := PISayi4(ADegiskenler + 04)^ + Alan.Sol;
+    Ust := PISayi4(ADegiskenler + 08)^ + Alan.Ust;
+    Sag := PISayi4(ADegiskenler + 12)^ + Alan.Sol;
+    Alt := PISayi4(ADegiskenler + 16)^ + Alan.Ust;
 
-    _Pencere^.Cizgi(_Pencere, _A1, _B1, _A2, _B2, PRenk(Degiskenler + 20)^);
+    GorselNesne^.Cizgi(GorselNesne, ctDuz, Sol, Ust, Sag, Alt, PRenk(ADegiskenler + 20)^);
   end
 
   // daire çiz
-  else if(_Islev = 4) then
+  else if(Islev = 4) then
   begin
 
     // nesneyi kontrol et
-    _Pencere := _Pencere^.NesneTipiniKontrolEt(PKimlik(Degiskenler)^, gntPencere);
-    if(_Pencere = nil) then Exit;
+    GorselNesne := GorselNesne^.NesneTipiniKontrolEt(PKimlik(ADegiskenler)^, gntPencere);
+    if(GorselNesne = nil) then Exit;
 
-    _Alan := _Pencere^.CizimAlaniniAl2(PKimlik(Degiskenler + 00)^);
-    _A1 := PISayi4(Degiskenler + 04)^ + _Alan.Sol;
-    _B1 := PISayi4(Degiskenler + 08)^ + _Alan.Ust;
-    _YariCap := PISayi4(Degiskenler + 12)^;
+    Alan := GorselNesne^.CizimAlaniniAl2(PKimlik(ADegiskenler + 00)^);
+    Sol := PISayi4(ADegiskenler + 04)^ + Alan.Sol;
+    Ust := PISayi4(ADegiskenler + 08)^ + Alan.Ust;
+    YariCap := PISayi4(ADegiskenler + 12)^;
 
-    if(PBoolean(Degiskenler + 20)^) then
+    if(PBoolean(ADegiskenler + 20)^) then
     begin
 
-      _Pencere^.DaireDoldur(_Pencere, _A1, _B1, _YariCap, PISayi4(Degiskenler + 16)^);
+      GorselNesne^.DaireDoldur(GorselNesne, Sol, Ust, YariCap, PISayi4(ADegiskenler + 16)^);
     end
     else
     begin
 
-      _Pencere^.Daire(_A1, _B1, _YariCap, PISayi4(Degiskenler + 16)^);
+      GorselNesne^.Daire(Sol, Ust, YariCap, PISayi4(ADegiskenler + 16)^);
     end;
   end
 

@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_etiket.pas
-  Dosya İşlevi: etiket (label) nesne yönetim işlevlerini içerir
+  Dosya İşlevi: etiket (TLabel) nesne yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 07/07/2020
 

@@ -24,7 +24,7 @@ var
   OlayKayit: TOlayKayit;
 
 begin
-  Pencere.Olustur(-1, 100, 100, 270, 260, ptBoyutlandirilabilir, ProgramAdi,
+  Pencere.Olustur(-1, 100, 100, 270, 260, ptBoyutlanabilir, ProgramAdi,
     RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 

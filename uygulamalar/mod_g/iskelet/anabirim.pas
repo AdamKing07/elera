@@ -37,7 +37,7 @@ const
 procedure TAnaBirim.OlusturVeCalistir;
 begin
 
-  Pencere.Olustur(-1, 100, 100, 200, 100, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
+  Pencere.Olustur(-1, 100, 100, 200, 100, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   TiklamaSayisi := 0;

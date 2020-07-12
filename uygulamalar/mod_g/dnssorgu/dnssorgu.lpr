@@ -200,7 +200,7 @@ begin
           Inc(Veri1);
           IPAdres[3] := Veri1^;
 
-          defSonuc.YaziEkle('IP Adresi: ' + IPToStr(IPAdres));
+          defSonuc.YaziEkle('IP Adresi: ' + IP_KarakterKatari(IPAdres));
 
           DurumCubugu.DurumYazisiDegistir('Beklemede.');
 

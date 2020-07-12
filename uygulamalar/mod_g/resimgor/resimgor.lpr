@@ -64,7 +64,7 @@ end;
 
 begin
 
-  Pencere.Olustur(-1, 50, 50, 400, 300, ptBoyutlandirilabilir, ProgramAdi, $C0C4C3);
+  Pencere.Olustur(-1, 50, 50, 400, 300, ptBoyutlanabilir, ProgramAdi, $C0C4C3);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 10, 22, 'Dosya: -');
