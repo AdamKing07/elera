@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_defter.pas
-  Dosya İşlevi: defter nesnesi (memo) yönetim işlevlerini içerir
+  Dosya İşlevi: defter nesnesi (TMemo) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 03/11/2019
+  Güncelleme Tarihi: 10/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,18 +21,17 @@ type
   private
     FKimlik: TKimlik;
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
       ADefterRenk, AYaziRenk: TRenk): TKimlik;
     procedure Hizala(AHiza: THiza);
     procedure Goster;
     procedure YaziEkle(ABellekAdresi: PChar);
     procedure YaziEkle(ADeger: string);
     procedure Temizle;
-  published
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _DefterOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function _DefterOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADefterRenk, AYaziRenk: TRenk): TKimlik; assembler;
 procedure _DefterHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
 procedure _DefterGoster(AKimlik: TKimlik); assembler;
@@ -42,12 +41,12 @@ procedure _DefterTemizle(AKimlik: TKimlik); assembler;
 
 implementation
 
-function TDefter.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function TDefter.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADefterRenk, AYaziRenk: TRenk): TKimlik;
 begin
 
-  FKimlik := _DefterOlustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik, ADefterRenk,
-    AYaziRenk);
+  FKimlik := _DefterOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik,
+    ADefterRenk, AYaziRenk);
   Result := FKimlik;
 end;
 
@@ -81,16 +80,16 @@ begin
   _DefterTemizle(FKimlik);
 end;
 
-function _DefterOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+function _DefterOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ADefterRenk, AYaziRenk: TRenk): TKimlik;
 asm
-  push  AYaziRenk
-  push  ADefterRenk
-  push  AYukseklik
-  push  AGenislik
-  push  B1
-  push  A1
-  push  AAtaKimlik
+  push  DWORD AYaziRenk
+  push  DWORD ADefterRenk
+  push  DWORD AYukseklik
+  push  DWORD AGenislik
+  push  DWORD AUst
+  push  DWORD ASol
+  push  DWORD AAtaKimlik
   mov   eax,DEFTER_OLUSTUR
   int   $34
   add   esp,28
@@ -98,8 +97,8 @@ end;
 
 procedure _DefterHizala(AKimlik: TKimlik; AHiza: THiza);
 asm
-  push  AHiza
-  push  AKimlik
+  push  DWORD AHiza
+  push  DWORD AKimlik
   mov   eax,DEFTER_HIZALA
   int   $34
   add   esp,8
@@ -107,7 +106,7 @@ end;
 
 procedure _DefterGoster(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,DEFTER_GOSTER
   int   $34
   add   esp,4
@@ -115,8 +114,8 @@ end;
 
 procedure _DefterYaziEklePChar(AKimlik: TKimlik; ABellekAdresi: PChar);
 asm
-  push  ABellekAdresi
-  push  AKimlik
+  push  DWORD ABellekAdresi
+  push  DWORD AKimlik
   mov   eax,DEFTER_YAZIEKLEP
   int   $34
   add   esp,8
@@ -124,8 +123,8 @@ end;
 
 procedure _DefterYaziEkleStr(AKimlik: TKimlik; ADeger: string);
 asm
-  push  ADeger
-  push  AKimlik
+  push  DWORD ADeger
+  push  DWORD AKimlik
   mov   eax,DEFTER_YAZIEKLES
   int   $34
   add   esp,8
@@ -133,7 +132,7 @@ end;
 
 procedure _DefterTemizle(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,DEFTER_TEMIZLE
   int   $34
   add   esp,4

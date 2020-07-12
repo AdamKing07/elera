@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_islemgostergesi.pas
-  Dosya İşlevi: işlem göstergesi (progress bar) yönetim işlevlerini içerir
+  Dosya İşlevi: işlem göstergesi (TProgressBar) yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 07/06/2020
 

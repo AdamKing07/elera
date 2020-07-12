@@ -32,7 +32,7 @@ const
 var
   Gorev: TGorev;
   Pencere: TPencere;
-  rdDugmeler: array[0..15] of TResimDugme;
+  rdDugmeler: array[0..15] of TResimDugmesi;
   OlayKayit: TOlayKayit;
   Sol, Ust, i: TISayi4;
 

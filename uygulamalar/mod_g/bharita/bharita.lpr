@@ -55,7 +55,7 @@ var
 
 begin
 
-  Pencere.Olustur(-1, 5, 5, (128 * 3) - 1, (64 * 3) + 20 - 1, ptBoyutlandirilabilir,
+  Pencere.Olustur(-1, 5, 5, (128 * 3) - 1, (64 * 3) + 20 - 1, ptBoyutlanabilir,
     ProgramAdi, RENK_SIYAH);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 

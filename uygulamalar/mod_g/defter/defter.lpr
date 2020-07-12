@@ -95,7 +95,7 @@ end;
 
 begin
 
-  Pencere.Olustur(-1, 10, 10, 400 + 10, 300 + 85, ptBoyutlandirilabilir, ProgramAdi,
+  Pencere.Olustur(-1, 10, 10, 400 + 10, 300 + 85, ptBoyutlanabilir, ProgramAdi,
     RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 

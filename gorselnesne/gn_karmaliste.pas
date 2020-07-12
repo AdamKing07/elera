@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_karmaliste.pas
-  Dosya Ýþlevi: karma liste (açýlýr / kapanýr liste kutusu (combobox)) yönetim iþlevlerini içerir
+  Dosya Ýþlevi: karma liste (açýlýr / kapanýr liste kutusu (TComboBox)) yönetim iþlevlerini içerir
 
   Güncelleme Tarihi: 24/06/2020
 

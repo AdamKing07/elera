@@ -4,10 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_onaykutusu.pas
-  Dosya İşlevi: onay kutusu nesne işlevlerini içerir
-  İşlev No: 0x02 / 0x09
+  Dosya İşlevi: onay kutusu (TCheckBox) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 31/05/2020
+  Güncelleme Tarihi: 10/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -24,7 +23,6 @@ type
   public
     function Olustur(AAtaKimlik: TKimlik; ASol, AUst: TISayi4; ABaslik: string): TKimlik;
     procedure Goster;
-  published
     property Kimlik: TKimlik read FKimlik;
   end;
 
@@ -48,10 +46,10 @@ end;
 
 function _OnayKutusuOlustur(AAtaKimlik: TKimlik; ASol, AUst: TISayi4; ABaslik: string): TKimlik;
 asm
-  push  ABaslik
-  push  AUst
-  push  ASol
-  push  AAtaKimlik
+  push  DWORD ABaslik
+  push  DWORD AUst
+  push  DWORD ASol
+  push  DWORD AAtaKimlik
   mov   eax,ONAYKUTUSU_OLUSTUR
   int   $34
   add   esp,16
@@ -59,7 +57,7 @@ end;
 
 procedure _OnayKutusuGoster(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ONAYKUTUSU_GOSTER
   int   $34
   add   esp,4

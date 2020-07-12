@@ -1,22 +1,26 @@
 Görsel Nesneler
 ==================================
-TBaglanti		- baðlantý nesnesi (link)
-TDefter			- yazý görüntüleme nesnesi (memo)
-TDegerNesnesi	- deðer artýrma / eksiltme düðmesi (updown)
-TDurumCubugu	- pencere alt durum çubuðu (statusbar)
-TDugme			- düðme nesnesi (button)
-TEtiket			- etiket nesnesi (label)
-TGirisKutusu	- veri giriþ nesnesi (edit)
-TGucDugme		- açýk / kapalý güç düðmesi
-TIslemGostergesi- iþlem göstergesi (progressbar)
-TKarmaListe		- açýlýr / kapanýr liste kutusu (combobox)
-TKaydirmaCubugu	- kaydýrma çubuðu (scrollbar)
-TListeGorunum	- çok deðerli liste (listview)
-TListeKutusu	- liste kutusu (listbox)
-TMasaustu		- masaüstü nesnesi (desktop)
+TAcilirMenu		- açýlýr menü (TPopupMenu)
+TBaglanti		- baðlantý (link) nesnesi
+TDefter			- defter nesnesi (TMemo)
+TDegerNesnesi	- deðer artýrma / eksiltme düðmesi (TUpDown)
+TDegerListesi	- deðer listesi (TValueListeEditor)
+TDugme			- düðme nesnesi (TButton)
+TDurumCubugu	- pencere alt durum çubuðu (TStatusBar)
+TEtiket			- etiket nesnesi (TLabel)
+TGirisKutusu	- veri giriþ nesnesi (TEdit)
+TGucDugmesi		- açýk / kapalý güç düðmesi
+TIslemGostergesi- iþlem göstergesi (TProgressBar)
+TKarmaListe		- açýlýr / kapanýr liste kutusu (TComboBox)
+TKaydirmaCubugu	- kaydýrma çubuðu (TScrollBar)
+TListeGorunum	- çok deðerli liste (TListView)
+TListeKutusu	- liste kutusu (TListBox)
+TMasaustu		- masaüstü nesnesi
 TMenu			- menü nesnesi
-TOnayKutusu		- onay kutusu (checkbox)
-TPanel			- panel nesnesi
-TPencere		- pencere (window)
-TResim			- resim görüntüleme nesnesi
-TSecimDugme		- seçim düðmesi (radio button)
+TOnayKutusu		- onay kutusu (TCheckBox)
+TPanel			- panel nesnesi (TPanel)
+TPencere		- pencere nesnesi (TForm)
+TRenkSecici		- renk seçim nesnesi
+TResim			- resim görüntüleme nesnesi (TImage)
+TResimDugmesi	- resim gösterebilen düðme
+TSecimDugmesi	- seçim düðmesi (TRadioButton)

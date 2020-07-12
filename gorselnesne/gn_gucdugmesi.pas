@@ -6,7 +6,7 @@
   Dosya Adı: gn_gucdugmesi.pas
   Dosya İşlevi: güç düğmesi yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 06/06/2020
+  Güncelleme Tarihi: 11/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -52,6 +52,8 @@ function GucDugmeCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISay
 var
   GorselNesne: PGorselNesne;
   GucDugmesi: PGucDugmesi;
+  Konum: PKonum;
+  Boyut: PBoyut;
 begin
 
   case AIslevNo of
@@ -105,6 +107,23 @@ begin
       if(GucDugmesi <> nil) then
         GucDugmesi^.DurumYaz(PKimlik(ADegiskenler + 00)^, PISayi4(ADegiskenler + 04)^);
 
+    end;
+
+    // güç düğmesini yeniden boyutlandır
+    $0804:
+    begin
+
+      GucDugmesi := PGucDugmesi(GucDugmesi^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      if(GucDugmesi <> nil) then
+      begin
+
+        Konum := PKonum(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
+        Boyut := PBoyut(PSayi4(ADegiskenler + 08)^ + CalisanGorevBellekAdresi);
+        GucDugmesi^.FIlkKonum.Sol := Konum^.Sol;
+        GucDugmesi^.FIlkKonum.Ust := Konum^.Ust;
+        GucDugmesi^.FIlkBoyut.Genislik := Boyut^.Genislik;
+        GucDugmesi^.FIlkBoyut.Yukseklik := Boyut^.Yukseklik;
+      end;
     end
 
     else Result := HATA_ISLEV;
@@ -277,24 +296,6 @@ begin
 
     // fare olaylarını almayı bırak
     OlayYakalamayiBirak(GucDugmesi);
-  end
-  else if(AOlay.Olay = CO_NORMALDURUMAGEC) then
-  begin
-
-    if(GucDugmesi^.FDurum = ddBasili) then
-    begin
-
-      GucDugmesi^.FDurum := ddNormal;
-
-      // güç düğme nesnesini yeniden çiz
-      GucDugmesi^.Ciz;
-
-      // uygulamaya veya efendi nesneye mesaj gönder
-      AOlay.Olay := CO_DURUMDEGISTI;
-      if not(GucDugmesi^.OlayCagriAdresi = nil) then
-        GucDugmesi^.OlayCagriAdresi(GucDugmesi, AOlay)
-      else GorevListesi[GucDugmesi^.GorevKimlik]^.OlayEkle(GucDugmesi^.GorevKimlik, AOlay);
-    end;
   end;
 
   // geçerli fare göstergesini güncelle

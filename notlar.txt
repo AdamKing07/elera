@@ -4,5 +4,4 @@ baðlantýdaki (TBaglanti) CO_ODAKKAYBEDILDI olayý problemli, nesne dýþýna çýkýldý
 
 grafik-4 programýnda zamanlayýcý çalýþmýyor
 
-
 resim ve liste kutusu iþlevi (oluþturma) içerisinde çizim alaný manuel olarak belirlendi. kontrol edilsin ve gerekirse iþlevselleþtirilsin

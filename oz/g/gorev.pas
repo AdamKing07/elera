@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 23/06/2020
+  Güncelleme Tarihi: 11/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -50,25 +50,24 @@ type
     procedure SecicileriOlustur;
   public
     FAnaPencere: PPencere;
-    FOlayBellekAdresi: POlay;        // olaylarýn yerleþtirileceði bellek bölgesi
+    FOlayBellekAdresi: POlay;             // olaylarýn yerleþtirileceði bellek bölgesi
     FOlaySayisi: TSayi4;                  // olay sayacý
 
-    FGorevKimlik: TGorevKimlik;           // iþlem numarasý
+    FGorevKimlik: TKimlik;                // iþlem numarasý
     FGorevDurum: TGorevDurum;             // iþlem durumu
     FGorevSayaci: TSayi4;                 // görev deðiþim sayacý
     FBellekBaslangicAdresi: TSayi4;       // iþlemin yüklendiði bellek adresi
     FProgramAdi: string;                  // iþlem adý
     procedure Yukle;
     function Calistir(ATamDosyaYolu: string): PGorev;
-    procedure DurumDegistir(AGorevKimlik: TGorevKimlik; AGorevDurum: TGorevDurum);
-    procedure OlayEkle(AGorevKimlik: TGorevKimlik; AOlay: TOlay);
+    procedure DurumDegistir(AGorevKimlik: TKimlik; AGorevDurum: TGorevDurum);
+    procedure OlayEkle(AGorevKimlik: TKimlik; AOlay: TOlay);
     function OlayAl(var AOlay: TOlay): Boolean;
-    function Sonlandir(AGorevKimlik: TGorevKimlik;
-      const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
+    function Sonlandir(AGorevKimlik: TKimlik; const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
     function GorevBul(AGorevKimlik: TKimlik): PGorev;
     property OlayBellekAdresi: POlay read FOlayBellekAdresi write FOlayBellekAdresi;
   published
-    property GorevKimlik: TGorevKimlik read FGorevKimlik;
+    property GorevKimlik: TKimlik read FGorevKimlik;
     property BellekBaslangicAdresi: TSayi4 read FBellekBaslangicAdresi write FBellekBaslangicAdresi;
     property BellekUzunlugu: TSayi4 read FBellekUzunlugu write FBellekUzunlugu;
     property KodBaslangicAdres: TSayi4 read FKodBaslangicAdres write FKodBaslangicAdres;
@@ -78,8 +77,11 @@ type
   end;
 
 function GorevBilgisiAl(AGorevSiraNo: TISayi4): PGorev;
-function GorevSiraNumarasiniAl(AGorevSiraNo: TISayi4): TGorevKimlik;
-function CalistirilacakBirSonrakiGoreviBul: TGorevKimlik;
+function CalisanProgramSayisiniAl: TSayi4;
+function CalisanProgramBilgisiAl(AGorevSiraNo: TISayi4): TProgramKayit;
+function AktifProgramiAl: TISayi4;
+function GorevSiraNumarasiniAl(AGorevSiraNo: TISayi4): TKimlik;
+function CalistirilacakBirSonrakiGoreviBul: TKimlik;
 function IliskiliProgramAl(ADosyaUzanti: string): TDosyaIliskisi;
 
 implementation
@@ -413,7 +415,7 @@ end;
 procedure TGorev.SecicileriOlustur;
 var
   SeciciCSSiraNo, SeciciDSSiraNo,
-  SeciciTSSSiraNo: TGorevKimlik;
+  SeciciTSSSiraNo: TKimlik;
   Uzunluk, i: TSayi4;
 begin
 
@@ -474,7 +476,7 @@ end;
 {==============================================================================
   iþlemin yeni çalýþma durumunu belirler
  ==============================================================================}
-procedure TGorev.DurumDegistir(AGorevKimlik: TGorevKimlik; AGorevDurum: TGorevDurum);
+procedure TGorev.DurumDegistir(AGorevKimlik: TKimlik; AGorevDurum: TGorevDurum);
 var
   Gorev: PGorev;
 begin
@@ -504,7 +506,7 @@ end;
 {==============================================================================
   çekirdek tarafýndan görev için oluþturulan olayý kaydeder
  ==============================================================================}
-procedure TGorev.OlayEkle(AGorevKimlik: TGorevKimlik; AOlay: TOlay);
+procedure TGorev.OlayEkle(AGorevKimlik: TKimlik; AOlay: TOlay);
 var
   Gorev: PGorev;
   Olay: POlay;
@@ -602,7 +604,7 @@ end;
 var
   SonlandirGorevNo: TSayi4 = 0;
 
-function TGorev.Sonlandir(AGorevKimlik: TGorevKimlik; const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
+function TGorev.Sonlandir(AGorevKimlik: TKimlik; const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
 var
   Gorev: PGorev;
 begin
@@ -683,6 +685,72 @@ begin
 end;
 
 {==============================================================================
+  pencereye sahip görev sayýsýný alýr
+ ==============================================================================}
+function CalisanProgramSayisiniAl: TSayi4;
+var
+  i: TISayi4;
+begin
+
+  Result := 0;
+
+  for i := 1 to USTSINIR_GOREVSAYISI do
+  begin
+
+    // 1. görev boþ deðilse
+    // 2. pencereye sahip ise
+    // 3. pencere tipi baþlýksýz deðilse
+    if not(GorevListesi[i]^.FGorevDurum = gdBos) and
+      not(GorevListesi[i]^.FAnaPencere = nil) and
+      not(GorevListesi[i]^.FAnaPencere^.FPencereTipi = ptBasliksiz) then Inc(Result);
+  end;
+end;
+
+{==============================================================================
+  pencereye sahip görev ile ilgili bilgi alýr
+ ==============================================================================}
+function CalisanProgramBilgisiAl(AGorevSiraNo: TISayi4): TProgramKayit;
+var
+  i, ArananGorev: TISayi4;
+begin
+
+  ArananGorev := -1;
+
+  Result.PencereKimlik := HATA_KIMLIK;
+
+  for i := 1 to USTSINIR_GOREVSAYISI do
+  begin
+
+    // 1. görev boþ deðilse
+    // 2. pencereye sahip ise
+    // 3. pencere tipi baþlýksýz deðilse
+    if not(GorevListesi[i]^.FGorevDurum = gdBos) and
+      not(GorevListesi[i]^.FAnaPencere = nil) and
+      not(GorevListesi[i]^.FAnaPencere^.FPencereTipi = ptBasliksiz) then Inc(ArananGorev);
+
+    // görev sýra no aranan görev ise iþlem bellek bölgesini geri döndür
+    if(AGorevSiraNo = ArananGorev) then
+    begin
+
+      Result.PencereKimlik := GorevListesi[i]^.FAnaPencere^.Kimlik;
+      Result.GorevKimlik := GorevListesi[i]^.GorevKimlik;
+      Result.PencereTipi := GorevListesi[i]^.FAnaPencere^.FPencereTipi;
+      Result.PencereDurum := GorevListesi[i]^.FAnaPencere^.FPencereDurum;
+      Result.ProgramAdi := GorevListesi[i]^.FProgramAdi;
+      Exit;
+    end;
+  end;
+end;
+
+function AktifProgramiAl: TISayi4;
+begin
+
+  if(AktifPencere = nil) then Exit(-1);
+
+  Result := AktifPencere^.Kimlik;
+end;
+
+{==============================================================================
   görev kimlik numarasýna göre görev aramasý yapar
  ==============================================================================}
 function TGorev.GorevBul(AGorevKimlik: TKimlik): PGorev;
@@ -708,7 +776,7 @@ end;
 {==============================================================================
   görev bellek sýra numarasýný geri döndürür
  ==============================================================================}
-function GorevSiraNumarasiniAl(AGorevSiraNo: TISayi4): TGorevKimlik;
+function GorevSiraNumarasiniAl(AGorevSiraNo: TISayi4): TKimlik;
 var
   i, j: TISayi4;
 begin
@@ -733,9 +801,9 @@ end;
 {==============================================================================
   çalýþtýrýlacak bir sonraki görevi bulur
  ==============================================================================}
-function CalistirilacakBirSonrakiGoreviBul: TGorevKimlik;
+function CalistirilacakBirSonrakiGoreviBul: TKimlik;
 var
-  GorevKimlik: TGorevKimlik;
+  GorevKimlik: TKimlik;
   i: TISayi4;
 begin
 

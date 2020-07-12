@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_degerdugmesi.pas
-  Dosya İşlevi: artırma / eksiltme (updown) düğme yönetim işlevlerini içerir
+  Dosya İşlevi: artırma / eksiltme (TUpDown) düğme yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 19/10/2019
+  Güncelleme Tarihi: 10/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,24 +21,20 @@ type
   private
     FKimlik: TKimlik;
   public
-    function Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
-      AYukseklik: TISayi4): TKimlik;
+    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
     procedure Goster;
-  published
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _DegerDugmesiOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
-  AYukseklik: TISayi4): TKimlik; assembler;
+function _DegerDugmesiOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik; assembler;
 procedure _DegerDugmesiGoster(AKimlik: TKimlik); assembler;
 
 implementation
 
-function TDegerDugmesi.Olustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
-  AYukseklik: TISayi4): TKimlik;
+function TDegerDugmesi.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 begin
 
-  FKimlik := _DegerDugmesiOlustur(AAtaKimlik, A1, B1, AGenislik, AYukseklik);
+  FKimlik := _DegerDugmesiOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik);
   Result := FKimlik;
 end;
 
@@ -48,14 +44,13 @@ begin
   _DegerDugmesiGoster(FKimlik);
 end;
 
-function _DegerDugmesiOlustur(AAtaKimlik: TKimlik; A1, B1, AGenislik,
-  AYukseklik: TISayi4): TKimlik;
+function _DegerDugmesiOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
 asm
-  push  AYukseklik
-  push  AGenislik
-  push  B1
-  push  A1
-  push  AAtaKimlik
+  push  DWORD AYukseklik
+  push  DWORD AGenislik
+  push  DWORD AUst
+  push  DWORD ASol
+  push  DWORD AAtaKimlik
   mov   eax,DEGERDUGMESI_OLUSTUR
   int   $34
   add   esp,20
@@ -63,7 +58,7 @@ end;
 
 procedure _DegerDugmesiGoster(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,DEGERDUGMESI_GOSTER
   int   $34
   add   esp,4

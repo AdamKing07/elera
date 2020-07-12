@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_defter.pas
-  Dosya İşlevi: defter nesnesi (memo) yönetim işlevlerini içerir
+  Dosya İşlevi: defter nesnesi (TMemo) yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 20/06/2020
 

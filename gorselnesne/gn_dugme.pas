@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_dugme.pas
-  Dosya Ýþlevi: düðme yönetim iþlevlerini içerir
+  Dosya Ýþlevi: düðme (TButton) yönetim iþlevlerini içerir
 
   Güncelleme Tarihi: 20/06/2020
 

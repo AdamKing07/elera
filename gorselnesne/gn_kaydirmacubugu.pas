@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_kaydirmacubugu.pp
-  Dosya Ýþlevi: kaydýrma çubuðu yönetim iþlevlerini içerir
+  Dosya Ýþlevi: kaydýrma çubuðu (TScrollBar) yönetim iþlevlerini içerir
 
   Güncelleme Tarihi: 20/06/2020
 

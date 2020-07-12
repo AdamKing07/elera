@@ -34,12 +34,12 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="48">
+    <Units Count="52">
       <Unit0>
         <Filename Value="mustudk.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="24" Y="10"/>
+        <CursorPos X="57" Y="81"/>
         <UsageCount Value="36"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -261,11 +261,10 @@
       </Unit42>
       <Unit43>
         <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="20"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
         <CursorPos X="5" Y="33"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit43>
       <Unit44>
         <Filename Value="../../../rtl_uygulama/linux/inc/gn_secimdugmeb.inc"/>
@@ -282,8 +281,6 @@
         <Filename Value="../../../rtl_uygulama/linux/linux.pp"/>
         <UnitName Value="Linux"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="8"/>
-        <CursorPos X="62" Y="30"/>
         <UsageCount Value="10"/>
       </Unit46>
       <Unit47>
@@ -293,119 +290,30 @@
         <CursorPos X="31" Y="66"/>
         <UsageCount Value="10"/>
       </Unit47>
+      <Unit48>
+        <Filename Value="../../../rtl_uygulama/linux/paylasim.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="186"/>
+        <CursorPos X="20" Y="209"/>
+        <UsageCount Value="10"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="../../../rtl_uygulama/linux/gn_renksecici.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="../../../rtl_uygulama/linux/gn_pencere.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="../../../rtl_uygulama/linux/gn_listegorunum.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit51>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
-      <Position1>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="46" Column="56" TopLine="32"/>
-      </Position1>
-      <Position2>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="51" Column="28" TopLine="38"/>
-      </Position2>
-      <Position3>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="52" Column="71" TopLine="39"/>
-      </Position3>
-      <Position4>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="53" Column="59" TopLine="40"/>
-      </Position4>
-      <Position5>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="56" Column="42" TopLine="43"/>
-      </Position5>
-      <Position6>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="62" Column="40" TopLine="49"/>
-      </Position6>
-      <Position7>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="39" Column="30" TopLine="30"/>
-      </Position7>
-      <Position8>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="44" Column="4" TopLine="30"/>
-      </Position8>
-      <Position9>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="57" Column="26" TopLine="44"/>
-      </Position9>
-      <Position10>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="58" Column="52" TopLine="45"/>
-      </Position10>
-      <Position11>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="34" Column="5" TopLine="20"/>
-      </Position11>
-      <Position12>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="34" Column="5" TopLine="20"/>
-      </Position12>
-      <Position13>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="85" Column="36" TopLine="64"/>
-      </Position13>
-      <Position14>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="34" Column="4" TopLine="20"/>
-      </Position14>
-      <Position15>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="15" Column="35"/>
-      </Position15>
-      <Position16>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="19" Column="39"/>
-      </Position16>
-      <Position17>
-        <Filename Value="mustudk.lpr"/>
-      </Position17>
-      <Position18>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="46" Column="19" TopLine="32"/>
-      </Position18>
-      <Position19>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="63" Column="21" TopLine="50"/>
-      </Position19>
-      <Position20>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="66" Column="4" TopLine="53"/>
-      </Position20>
-      <Position21>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="14" Column="74"/>
-      </Position21>
-      <Position22>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="76" Column="25" TopLine="64"/>
-      </Position22>
-      <Position23>
-        <Filename Value="mustudk.lpr"/>
-      </Position23>
-      <Position24>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="155" Column="19" TopLine="133"/>
-      </Position24>
-      <Position25>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="34" Column="20" TopLine="21"/>
-      </Position25>
-      <Position26>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="27" Column="8" TopLine="13"/>
-      </Position26>
-      <Position27>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="29" Column="10" TopLine="13"/>
-      </Position27>
-      <Position28>
-        <Filename Value="mustudk.lpr"/>
-        <Caret Line="31" Column="23" TopLine="13"/>
-      </Position28>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>

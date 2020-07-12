@@ -104,7 +104,7 @@ end;
 
 begin
 
-  Pencere.Olustur(-1, 5, 5, 615, 400, ptBoyutlandirilabilir, ProgramAdi, RENK_BEYAZ);
+  Pencere.Olustur(-1, 5, 5, 615, 400, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 20, 'Bellek Adresi: ' +

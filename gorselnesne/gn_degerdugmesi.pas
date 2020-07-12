@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_degerdugmesi.pp
-  Dosya Ýþlevi: artýrma / eksiltme (updown) düðme yönetim iþlevlerini içerir
+  Dosya Ýþlevi: artýrma / eksiltme (TUpDown) düðme yönetim iþlevlerini içerir
 
   Güncelleme Tarihi: 20/06/2020
 

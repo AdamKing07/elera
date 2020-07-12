@@ -324,7 +324,7 @@ end;
 
 begin
 
-  Pencere.Olustur(-1, 50, 10, 500, 450, ptBoyutlandirilabilir, ProgramAdi, $FFE0CC);
+  Pencere.Olustur(-1, 50, 10, 500, 450, ptBoyutlanabilir, ProgramAdi, $FFE0CC);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   AygitSiraNo := 0;

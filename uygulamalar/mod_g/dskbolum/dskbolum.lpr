@@ -84,7 +84,7 @@ end;
 
 begin
 
-  Pencere.Olustur(-1, 50, 50, 310, 95, ptBoyutlandirilabilir, ProgramAdi, $EEF0D1);
+  Pencere.Olustur(-1, 50, 50, 310, 95, ptBoyutlanabilir, ProgramAdi, $EEF0D1);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   DiskSayisi := MantiksalDepolamaAygitSayisiAl;

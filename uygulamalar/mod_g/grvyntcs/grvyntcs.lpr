@@ -34,7 +34,7 @@ var
 
 begin
 
-  Pencere.Olustur(-1, 100, 150, 600, 300, ptBoyutlandirilabilir, ProgramAdi, $E3DBC8);
+  Pencere.Olustur(-1, 100, 150, 600, 300, ptBoyutlanabilir, ProgramAdi, $E3DBC8);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   Panel.Olustur(Pencere.Kimlik, 0, 0, 100, 27, 0, 0, 0, 0, '');

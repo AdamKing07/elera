@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_acilirmenu.pas
-  Dosya İşlevi: açılır menü nesne işlevlerini içerir
+  Dosya İşlevi: açılır menü (TPopupMenu) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 11/04/2020
+  Güncelleme Tarihi: 10/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -75,11 +75,11 @@ end;
 function _AcilirMenuOlustur(AKenarRenk, AGovdeRenk, ASecimRenk, ANormalYaziRenk,
   ASeciliYaziRenk: TRenk): TKimlik;
 asm
-  push  ASeciliYaziRenk
-  push  ANormalYaziRenk
-  push  ASecimRenk
-  push  AGovdeRenk
-  push  AKenarRenk
+  push  DWORD ASeciliYaziRenk
+  push  DWORD ANormalYaziRenk
+  push  DWORD ASecimRenk
+  push  DWORD AGovdeRenk
+  push  DWORD AKenarRenk
   mov   eax,ACILIRMENU_OLUSTUR
   int   $34
   add   esp,20
@@ -87,7 +87,7 @@ end;
 
 procedure _AcilirMenuGoster(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ACILIRMENU_GOSTER
   int   $34
   add   esp,4
@@ -95,7 +95,7 @@ end;
 
 procedure _AcilirMenuGizle(AKimlik: TKimlik);
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ACILIRMENU_GIZLE
   int   $34
   add   esp,4
@@ -103,9 +103,9 @@ end;
 
 procedure _AcilirMenuElemanEkle(AKimlik: TKimlik; AElemanAdi: string; AResimSiraNo: TISayi4);
 asm
-  push  AResimSiraNo
-  push  AElemanAdi
-  push  AKimlik
+  push  DWORD AResimSiraNo
+  push  DWORD AElemanAdi
+  push  DWORD AKimlik
   mov   eax,ACILIRMENU_ELEMANEKLE
   int   $34
   add   esp,12
@@ -113,7 +113,7 @@ end;
 
 function _AcilirMenuSeciliSiraNoAl(AKimlik: TKimlik): TISayi4;
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ACILIRMENU_SECILISIRANOAL
   int   $34
   add   esp,4

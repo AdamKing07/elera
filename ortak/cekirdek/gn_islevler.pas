@@ -17,12 +17,12 @@ interface
 uses gorselnesne, genel, paylasim, gn_masaustu, gn_pencere;
 
 var
-  AktifPencere: PPencere;
+  AktifPencere: PPencere = nil;
   YakalananGorselNesne: PGorselNesne;  // farenin, üzerine sol tuş ile basılıp seçildiği nesne
 
 procedure Yukle;
 function GorselNesneIslevCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
-procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TGorevKimlik);
+procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TKimlik);
 function GorselNesneBul(var AKonum: TKonum): PGorselNesne;
 function EnUstNesneyiAl(AGorselNesne: PGorselNesne): PGorselNesne;
 function EnUstPencereNesnesiniAl(AGorselNesne: PGorselNesne): PPencere;
@@ -123,7 +123,7 @@ end;
 {==============================================================================
   çalışan işleme ait pencere ve tüm alt nesneleri yok eder
  ==============================================================================}
-procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TGorevKimlik);
+procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TKimlik);
 var
   Masaustu: PMasaustu;
   Pencere: PGorselNesne;

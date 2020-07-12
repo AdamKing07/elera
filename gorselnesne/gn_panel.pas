@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_panel.pas
-  Dosya İşlevi: panel yönetim işlevlerini içerir
+  Dosya İşlevi: panel (TPanel) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 16/06/2020
+  Güncelleme Tarihi: 11/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -40,7 +40,8 @@ implementation
 uses genel, gorev, gn_islevler, temelgorselnesne, gn_pencere, gn_resimdugmesi,
   gn_kaydirmacubugu, gn_dugme, gn_gucdugmesi, gn_defter, gn_baglanti, gn_degerdugmesi,
   gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_islemgostergesi, gn_karmaliste,
-  gn_listegorunum, gn_listekutusu, gn_onaykutusu, gn_resim, gn_secimdugmesi;
+  gn_listegorunum, gn_listekutusu, gn_onaykutusu, gn_resim, gn_secimdugmesi,
+  gn_araccubugu, gn_degerlistesi, gn_izgara, gn_renksecici;
 
 {==============================================================================
     panel kesme çağrılarını yönetir
@@ -51,6 +52,8 @@ var
   Pencere: PPencere;
   Panel: PPanel;
   Hiza: THiza;
+  Konum: PKonum;
+  Boyut: PBoyut;
 begin
 
   case AIslevNo of
@@ -82,6 +85,23 @@ begin
 
       Pencere := PPencere(Panel^.FAtaNesne);
       Pencere^.Guncelle;
+    end;
+
+    // panel konum ve boyut değerlerini geri döndür
+    $0802:
+    begin
+
+      Panel := PPanel(Panel^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      if(Panel <> nil) then
+      begin
+
+        Konum := PKonum(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
+        Boyut := PBoyut(PSayi4(ADegiskenler + 08)^ + CalisanGorevBellekAdresi);
+        Konum^.Sol := Panel^.FKonum.Sol;
+        Konum^.Ust := Panel^.FKonum.Ust;
+        Boyut^.Genislik := Panel^.FBoyut.Genislik;
+        Boyut^.Yukseklik := Panel^.FBoyut.Yukseklik;
+      end;
     end
 
     else Result := HATA_ISLEV;
@@ -163,12 +183,63 @@ end;
 procedure TPanel.Boyutlandir;
 var
   Panel: PPanel;
+  GorunurNesne: PGorselNesne;
+  AltNesneler: PPGorselNesne;
+  i: TSayi4;
 begin
 
   Panel := PPanel(Panel^.NesneAl(Kimlik));
   if(Panel = nil) then Exit;
 
   Panel^.Hizala;
+
+  // panel alt nesnelerini yeniden boyutlandır
+  if(Panel^.FAltNesneSayisi > 0) then
+  begin
+
+    AltNesneler := Panel^.FAltNesneBellekAdresi;
+
+    // ilk oluşturulan alt nesneden son oluşturulan alt nesneye doğru
+    // panelin alt nesnelerini yeniden boyutlandır
+    for i := 0 to Panel^.FAltNesneSayisi - 1 do
+    begin
+
+      GorunurNesne := AltNesneler[i];
+      if(GorunurNesne^.Gorunum) then
+      begin
+
+        // yeni eklenecek görsel nesne - görsel nesneyi buraya ekle...
+        case GorunurNesne^.NesneTipi of
+          //gntAcilirMenu     :
+          gntAracCubugu     : PAracCubugu(GorunurNesne)^.Boyutlandir;
+          gntBaglanti       : PBaglanti(GorunurNesne)^.Boyutlandir;
+          gntDefter         : PDefter(GorunurNesne)^.Boyutlandir;
+          gntDegerDugmesi   : PDegerDugmesi(GorunurNesne)^.Boyutlandir;
+          gntDegerListesi   : PDegerListesi(GorunurNesne)^.Boyutlandir;
+          gntDugme          : PDugme(GorunurNesne)^.Boyutlandir;
+          gntDurumCubugu    : PDurumCubugu(GorunurNesne)^.Boyutlandir;
+          gntEtiket         : PEtiket(GorunurNesne)^.Boyutlandir;
+          gntGirisKutusu    : PGirisKutusu(GorunurNesne)^.Boyutlandir;
+          gntGucDugmesi     : PGucDugmesi(GorunurNesne)^.Boyutlandir;
+          gntIslemGostergesi: PIslemGostergesi(GorunurNesne)^.Boyutlandir;
+          gntIzgara         : PIzgara(GorunurNesne)^.Boyutlandir;
+          gntKarmaListe     : PKarmaListe(GorunurNesne)^.Boyutlandir;
+          gntKaydirmaCubugu : PKaydirmaCubugu(GorunurNesne)^.Boyutlandir;
+          gntListeGorunum   : PListeGorunum(GorunurNesne)^.Boyutlandir;
+          gntListeKutusu    : PListeKutusu(GorunurNesne)^.Boyutlandir;
+          //gntMasaustu;
+          //gntMenu;
+          gntOnayKutusu     : POnayKutusu(GorunurNesne)^.Boyutlandir;
+          gntPanel          : PPanel(GorunurNesne)^.Boyutlandir;
+          //gntPencere;
+          gntRenkSecici     : PRenkSecici(GorunurNesne)^.Boyutlandir;
+          gntResim          : PResim(GorunurNesne)^.Boyutlandir;
+          gntResimDugmesi   : PResimDugmesi(GorunurNesne)^.Boyutlandir;
+          gntSecimDugmesi   : PSecimDugmesi(GorunurNesne)^.Boyutlandir;
+        end;
+      end;
+    end;
+  end;
 end;
 
 {==============================================================================
@@ -202,23 +273,32 @@ begin
         if(AltGorselNesne^.Gorunum) then
         begin
 
+          // yeni eklenecek görsel nesne - görsel nesneyi buraya ekle...
           // panelin altında olabilecek tüm nesneler
           case AltGorselNesne^.NesneTipi of
+            //gntAcilirMenu     :
+            gntAracCubugu     : PAracCubugu(AltGorselNesne)^.Ciz;
             gntBaglanti       : PBaglanti(AltGorselNesne)^.Ciz;
             gntDefter         : PDefter(AltGorselNesne)^.Ciz;
             gntDegerDugmesi   : PDegerDugmesi(AltGorselNesne)^.Ciz;
+            gntDegerListesi   : PDegerListesi(AltGorselNesne)^.Ciz;
             gntDugme          : PDugme(AltGorselNesne)^.Ciz;
             gntDurumCubugu    : PDurumCubugu(AltGorselNesne)^.Ciz;
             gntEtiket         : PEtiket(AltGorselNesne)^.Ciz;
             gntGirisKutusu    : PGirisKutusu(AltGorselNesne)^.Ciz;
             gntGucDugmesi     : PGucDugmesi(AltGorselNesne)^.Ciz;
             gntIslemGostergesi: PIslemGostergesi(AltGorselNesne)^.Ciz;
+            gntIzgara         : PIzgara(AltGorselNesne)^.Ciz;
             gntKarmaListe     : PKarmaListe(AltGorselNesne)^.Ciz;
             gntKaydirmaCubugu : PKaydirmaCubugu(AltGorselNesne)^.Ciz;
             gntListeGorunum   : PListeGorunum(AltGorselNesne)^.Ciz;
             gntListeKutusu    : PListeKutusu(AltGorselNesne)^.Ciz;
+            //gntMasaustu;
+            //gntMenu;
             gntOnayKutusu     : POnayKutusu(AltGorselNesne)^.Ciz;
             gntPanel          : PPanel(AltGorselNesne)^.Ciz;
+            //gntPencere;
+            gntRenkSecici     : PRenkSecici(AltGorselNesne)^.Ciz;
             gntResim          : PResim(AltGorselNesne)^.Ciz;
             gntResimDugmesi   : PResimDugmesi(AltGorselNesne)^.Ciz;
             gntSecimDugmesi   : PSecimDugmesi(AltGorselNesne)^.Ciz;

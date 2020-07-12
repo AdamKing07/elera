@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_listekutusu.pas
-  Dosya İşlevi: liste kutusu yönetim işlevlerini içerir
+  Dosya İşlevi: liste kutusu (TListBox) yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 13/06/2020
 
