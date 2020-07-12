@@ -17,9 +17,6 @@ interface
 
 type
   PGorev = ^TGorev;
-
-  { TGorev }
-
   TGorev = object
   public
     function Calistir(ADosyaTamYol: string): TKimlik;
@@ -35,9 +32,6 @@ type
     function GorselNesneKimlikAl(ANokta: TNokta): TKimlik;
     procedure GorselNesneAdiAl(ANokta: TNokta; ANesneAdi: Isaretci);
     function GorselNesneBilgisiAl(AKimlik: TKimlik; AHedefBellek: Isaretci): TISayi4;
-    function CalisanProgramSayisiniAl: TSayi4; assembler;
-    procedure CalisanProgramBilgisiAl(ASiraNo: TSayi4; var AProgramKayit: TProgramKayit); assembler;
-    function AktifProgramiAl: TSayi4; assembler;
   end;
 
 function _GorevCalistir(ADosyaTamYol: string): TKimlik; assembler;
@@ -130,30 +124,9 @@ begin
   // bu işlevin alt yapı çalışması yapılacak
 end;
 
-function TGorev.CalisanProgramSayisiniAl: TSayi4;
-asm
-  mov	  eax,GOREV_CALISANPSAYISINIAL
-  int	  $34
-end;
-
-procedure TGorev.CalisanProgramBilgisiAl(ASiraNo: TSayi4; var AProgramKayit: TProgramKayit);
-asm
-  push  DWORD AProgramKayit
-  push  DWORD ASiraNo
-  mov	  eax,GOREV_CALISANPBILGISIAL
-  int	  $34
-  add   esp,8
-end;
-
-function TGorev.AktifProgramiAl: TSayi4;
-asm
-  mov	  eax,GOREV_AKTIFPROGRAMIAL
-  int	  $34
-end;
-
 function _GorevCalistir(ADosyaTamYol: string): TKimlik;
 asm
-  push	DWORD ADosyaTamYol
+  push	ADosyaTamYol
   mov	  eax,GOREV_CALISTIR
   int	  $34
   add	  esp,4
@@ -161,7 +134,7 @@ end;
 
 function _GorevSonlandir(AGorevNo: TISayi4): TISayi4;
 asm
-  push  DWORD AGorevNo
+  push  AGorevNo
   mov	  eax,GOREV_SONLANDIR
   int	  $34
   add   esp,4
@@ -169,8 +142,8 @@ end;
 
 procedure _GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4);
 asm
-  push  DWORD ACalisanGorevSayisi
-  push  DWORD AUstSinirGorevSayisi
+  push  ACalisanGorevSayisi
+  push  AUstSinirGorevSayisi
   mov	  eax,GOREV_SAYISINIAL
   int	  $34
   add	  esp,8
@@ -178,8 +151,8 @@ end;
 
 function _GorevBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
 asm
-  push	DWORD ABellekAdresi
-  push	DWORD AKimlik
+  push	ABellekAdresi
+  push	AKimlik
   mov	  eax,GOREV_BILGISIAL
   int	  $34
   add	  esp,8
@@ -187,8 +160,8 @@ end;
 
 function _GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
 asm
-  push	DWORD ABellekAdresi
-  push	DWORD AKimlik
+  push	ABellekAdresi
+  push	AKimlik
   mov	  eax,GOREV_YAZMACBILGISIAL
   int	  $34
   add	  esp,8

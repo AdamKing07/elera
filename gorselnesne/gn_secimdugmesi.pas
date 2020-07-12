@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_secimdugmesi.pas
-  Dosya İşlevi: seçim düğmesi (TRadioButton) yönetim işlevlerini içerir
+  Dosya İşlevi: seçim düğmesi (radio button) yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 14/06/2020
 

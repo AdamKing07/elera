@@ -6,7 +6,7 @@
   Dosya Adý: paylasim.pas
   Dosya Ýþlevi: tüm birimler için ortak paylaþýlan iþlevleri içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 21/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,7 +17,7 @@ interface
 
 const
   ProjeBaslangicTarihi: string = '30.07.2005';
-  SistemAdi: string = 'ELERA Ýþletim Sistemi - 0.3.7 - R33';
+  SistemAdi: string = 'ELERA Ýþletim Sistemi - 0.3.5 - R31';
   DerlemeTarihi: string = {$i %DATE%};
   FPCMimari: string = {$i %FPCTARGET%};
   FPCSurum: string = {$i %FPCVERSION%};
@@ -105,6 +105,7 @@ type
   TTarih = Sayi4;
   TSaat = Sayi4;
   PSaat = ^TSaat;
+  TGorevKimlik = TISayi4;
 
   HResult = ISayi4;
   PChar = ^Char;
@@ -135,10 +136,10 @@ const
   BELLEK_HARITA_ADRESI: PByte = PByte($510000);
 
   // alttaki satýrlar yeni tasarým çerçevesinde onaylanacak veya deðiþtirilecek
-  GOREV0_ESP        = $510000 - $1000;
-  GOREV3_ESP        = $570D00;
-  GOREV3_ESP_U      = $2000;           // 2048 byte
-
+  GOREV0_ESP        = $500000 - $600;
+  GOREV0_ESP2       = $500000 - $100;
+  GOREV3_ESP        = $500000;
+  GOREV3_ESP_U      = $1000;           // 4096 byte
   BILDEN_VERIADRESI = $10008;
 
 type
@@ -637,7 +638,6 @@ var
   CalisanGorevSayisi,                     // oluþturulan / çalýþan program sayýsý
   CalisanGorev: TISayi4;                  // o an çalýþan program
   CalisanGorevBellekAdresi: TSayi4;       // o an çalýþan programýn yüklendiði bellek adresi
-  GorevDegisimSayisi: TSayi4 = 0;         // çekirdek baþladýðý andan itibaren gerçekleþtirilen görev deðiþim sayýsý
 
 type
   PAlan = ^TAlan;
@@ -647,9 +647,6 @@ type
 
 type
   TKesmeCagrisi = function(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
-
-type
-  TCizgiTipi = (ctDuz, ctNokta);
 
 type
   PEkranKartBilgisi = ^TEkranKartBilgisi;
@@ -690,7 +687,7 @@ type { Görsel Nesne Tipi }
     gntMenu, gntDefter, gntIslemGostergesi, gntOnayKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
     gntPanel, gntResimDugmesi, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu,
-    gntDegerListesi, gntIzgara, gntAracCubugu, gntRenkSecici);
+    gntDegerListesi, gntIzgara);
 
 type
   THamResim = record
@@ -724,8 +721,9 @@ const
   CO_ODAKKAZANILDI        = CO_ILKDEGER + 4;
   CO_ODAKKAYBEDILDI       = CO_ILKDEGER + 5;
   CO_TUSBASILDI           = CO_ILKDEGER + 6;
-  CO_MENUACILDI           = CO_ILKDEGER + 7;        // menünün açýlmasý
-  CO_MENUKAPATILDI        = CO_ILKDEGER + 8;        // menünün kapatýlmasý
+  // açýk / kapalý durumda olabilen görsel nesnelere (örn: TGucDugme) kapalý ol mesajý
+  CO_NORMALDURUMAGEC      = CO_ILKDEGER + 7;
+  // CO_BOYUTLANDIR          = CO_ILKDEGER + 8;   daha sonra aktifleþtirilecek
 
   // fare aygýtýnýn ürettiði olaylar - fare olaylarý (FO)
   FO_ILKDEGER             = $200;
@@ -745,22 +743,22 @@ const
   //FO_CIFTTIKLAMA        = FO_ILKDEGER + 126;
   FO_KAYDIRMA             = FO_ILKDEGER + 128;
 
-  RENK_BEYAZ		              = TRenk($FFFFFF);
-  RENK_GUMUS		              = TRenk($C0C0C0);
-  RENK_GRI		                = TRenk($808080);
   RENK_SIYAH		              = TRenk($000000);
-  RENK_KIRMIZI                = TRenk($FF0000);
   RENK_BORDO		              = TRenk($800000);
-  RENK_SARI		                = TRenk($FFFF00);
-  RENK_ZEYTINYESILI		        = TRenk($808000);
-  RENK_ACIKYESIL              = TRenk($00FF00);
   RENK_YESIL		              = TRenk($008000);
-  RENK_ACIKMAVI		            = TRenk($00FFFF);
-  RENK_TURKUAZ	              = TRenk($008080);
-  RENK_MAVI		                = TRenk($0000FF);
+  RENK_ZEYTINYESILI		        = TRenk($808000);
   RENK_LACIVERT	              = TRenk($000080);
-  RENK_PEMBE 	                = TRenk($FF00FF);
   RENK_MOR		                = TRenk($800080);
+  RENK_TURKUAZ	              = TRenk($008080);
+  RENK_GRI		                = TRenk($808080);
+  RENK_GUMUS		              = TRenk($C0C0C0);
+  RENK_KIRMIZI                = TRenk($FF0000);
+  RENK_ACIKYESIL              = TRenk($00FF00);
+  RENK_SARI		                = TRenk($FFFF00);
+  RENK_MAVI		                = TRenk($0000FF);
+  RENK_PEMBE 	                = TRenk($FF00FF);
+  RENK_ACIKMAVI		            = TRenk($00FFFF);
+  RENK_BEYAZ		              = TRenk($FFFFFF);
 
 const
   // görev çubuðu iç dolgu rengi
@@ -895,35 +893,18 @@ type
 type
   TGorevDurum = (gdBos, gdOlusturuldu, gdCalisiyor, gdDurduruldu);
 
+// program için süreç yapýsý
 type
-  PPencereTipi = ^TPencereTipi;
-  TPencereTipi = (ptBasliksiz, ptIletisim, ptBoyutlanabilir);
-
-  PPencereDurum = ^TPencereDurum;
-  TPencereDurum = (pdNormal, pdKucultuldu, pdBuyutuldu);
-
-type
-  // program için (API) görev yapýsý
+  // görev kayýt bilgisi
   PGorevKayit = ^TGorevKayit;
   TGorevKayit = record
     GorevDurum: TGorevDurum;            // görev durumu
-    GorevKimlik: TKimlik;               // görev kimliði - sýra numarasý
+    GorevKimlik: TGorevKimlik;          // görev kimlik - sýra numarasý
     GorevSayaci: TSayi4;                // görevin kaç kez çalýþtýðý
     BellekBaslangicAdresi: TSayi4;      // görevin yerleþtirildiði bellek adresi
     BellekUzunlugu: TSayi4;             // görev bellek uzunluðu
     OlaySayisi: TSayi4;                 // görev için iþlenmeyi bekleyen olay sayýsý
-    ProgramAdi: string;                 // program adý
-  end;
-
-type
-  // program için (API) program yapýsý
-  PProgramKayit = ^TProgramKayit;
-  TProgramKayit = record
-    PencereKimlik: TKimlik;             // pencere kimliði
-    GorevKimlik: TKimlik;               // görev kimliði
-    PencereTipi: TPencereTipi;          // pencere tipi
-    PencereDurum: TPencereDurum;        // pencere durumu
-    ProgramAdi: string;                 // program adý
+    ProgramAdi: string;                 // program ad uzunluðu
   end;
 
 type
@@ -940,7 +921,7 @@ type
     Genislik,                   // karakter geniþliði
     Yukseklik,                  // karakter yüksekliði
     YT,                         // yatay +/- tolerans deðeri
-    DT: TISayi1;                // dikey +/- tolerans deðeri
+    DT: Byte;                   // dikey +/- tolerans deðeri
     Adres: Isaretci;            // karakter resim baþlangýç adresi
   end;
 

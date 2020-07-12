@@ -6,7 +6,7 @@
   Dosya Adı: giysi_mac.pas
   Dosya İşlevi: pencere nesnesine mac görünümünü uygular
 
-  Güncelleme Tarihi: 06/07/2020
+  Güncelleme Tarihi: 05/07/2020
 
   Önemli Notlar:
     1. renk değeri olarak kullanılan $FFFFFFFF değeri renk değerinin olmadığını gösterir

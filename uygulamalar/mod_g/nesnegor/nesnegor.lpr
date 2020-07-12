@@ -28,7 +28,7 @@ var
 
 begin
 
-  Pencere.Olustur(-1, 110, 110, 250, 130, ptBoyutlanabilir, ProgramAdi, $906AD1);
+  Pencere.Olustur(-1, 110, 110, 250, 130, ptBoyutlandirilabilir, ProgramAdi, $906AD1);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   Pencere.Goster;

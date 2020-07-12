@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_listegorunum.pas
-  Dosya Ýþlevi: liste görünüm (TListView) yönetim iþlevlerini içerir
+  Dosya Ýþlevi: liste görünüm (listview) yönetim iþlevlerini içerir
 
   Güncelleme Tarihi: 11/06/2020
 
@@ -326,7 +326,7 @@ begin
     Sol += KolonUzunluklari^.Eleman[i];
 
     // dikey kýlavuz çizgisi
-    ListeGorunum^.Cizgi(ListeGorunum, ctDuz, Sol, Alan1.Ust + 1, Sol, Alan1.Alt - 1, $F0F0F0);
+    ListeGorunum^.Cizgi(ListeGorunum, Sol, Alan1.Ust + 1, Sol, Alan1.Alt - 1, $F0F0F0);
 
     // baþlýk dolgusu
     Alan2.Sol := Sol - KolonUzunluklari^.Eleman[i];
@@ -347,7 +347,7 @@ begin
   while Ust < Alan1.Alt do
   begin
 
-    ListeGorunum^.Cizgi(ListeGorunum, ctDuz, Alan1.Sol + 1, Ust, Alan1.Sag - 1, Ust, $F0F0F0);
+    ListeGorunum^.Cizgi(ListeGorunum, Alan1.Sol + 1, Ust, Alan1.Sag - 1, Ust, $F0F0F0);
     Ust += 1 + 20;
   end;
 

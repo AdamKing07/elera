@@ -49,7 +49,7 @@ var
   ZamanlayiciListesi: array[1..AZAMI_ZAMANLAYICI_SAYISI] of PZamanlayici;
 
 procedure ZamanlayicilariKontrolEt;
-procedure ZamanlayicilariYokEt(AGorevKimlik: TKimlik);
+procedure ZamanlayicilariYokEt(AGorevKimlik: TGorevKimlik);
 procedure Bekle(AMilisaniye: TSayi4);
 procedure TekGorevZamanlayiciIslevi;
 procedure OtomatikGorevDegistir;
@@ -228,7 +228,7 @@ end;
 {==============================================================================
   bir süreçe ait tüm zamanlayýcý nesnelerini yok eder.
  ==============================================================================}
-procedure ZamanlayicilariYokEt(AGorevKimlik: TKimlik);
+procedure ZamanlayicilariYokEt(AGorevKimlik: TGorevKimlik);
 var
   Zamanlayici: PZamanlayici;
   i: TISayi4;
@@ -370,11 +370,6 @@ asm
   mov eax,[esi + TGorev.FGorevSayaci]
   inc eax
   mov [esi + TGorev.FGorevSayaci],eax
-
-  // GorevDegisimSayisi = kilitlenmeleri denetleyebilmek için eklenen deðiþken
-  mov eax,GorevDegisimSayisi
-  inc eax
-  mov GorevDegisimSayisi,eax
 
   // görevin devredileceði TSS giriþini belirle
   mov   ecx,CalisanGorev

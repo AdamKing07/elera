@@ -6,7 +6,7 @@
   Dosya Adı: k_gorev.pas
   Dosya İşlevi: görev (program) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 10/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -27,17 +27,15 @@ uses genel, gorev, sistemmesaj;
  ==============================================================================}
 function GorevCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  GorevKimlik: TKimlik;
+  GorevKimlik: TGorevKimlik;
   DosyaAdi: string;
   GorevKayit: PGorevKayit;
   p: PGorev;
   p2: PSayi4;
   p4: Isaretci;
   IslevNo: TSayi4;
-  i: TISayi4;
+  GorevNo: TISayi4;
   TSS: PTSS;
-  ProgramKayit: TProgramKayit;
-  ProgramKayit2: PProgramKayit;
 begin
 
   IslevNo := (AIslevNo and $FF);
@@ -59,20 +57,20 @@ begin
   else if(IslevNo = 2) then
   begin
 
-    i := PISayi4(ADegiskenler + 00)^;
+    GorevNo := PISayi4(ADegiskenler + 00)^;
 
     // -1 = çalışan uygulamayı sonlandır
-    if(i = -1) then
+    if(GorevNo = -1) then
     begin
 
       p := GorevListesi[CalisanGorev];
       p^.Sonlandir(CalisanGorev);
     end
-    else if(i > 0) and (i <= USTSINIR_GOREVSAYISI) then
+    else if(GorevNo > 0) and (GorevNo <= USTSINIR_GOREVSAYISI) then
     begin
 
-      p := GorevListesi[i];
-      p^.Sonlandir(i);
+      p := GorevListesi[GorevNo];
+      p^.Sonlandir(GorevNo);
     end;
   end
 
@@ -92,11 +90,11 @@ begin
   else if(IslevNo = 4) then
   begin
 
-    i := PISayi4(ADegiskenler + 00)^;
-    if(i > 0) and (i <= USTSINIR_GOREVSAYISI) then
+    GorevNo := PISayi4(ADegiskenler + 00)^;
+    if(GorevNo > 0) and (GorevNo <= USTSINIR_GOREVSAYISI) then
     begin
 
-      p := GorevBilgisiAl(i);
+      p := GorevBilgisiAl(GorevNo);
       if(p <> nil) then
       begin
 
@@ -118,11 +116,11 @@ begin
   else if(IslevNo = 5) then
   begin
 
-    i := PISayi4(ADegiskenler + 00)^;
-    if(i > 0) and (i <= USTSINIR_GOREVSAYISI) then
+    GorevNo := PISayi4(ADegiskenler + 00)^;
+    if(GorevNo > 0) and (GorevNo <= USTSINIR_GOREVSAYISI) then
     begin
 
-      GorevKimlik := GorevSiraNumarasiniAl(i);
+      GorevKimlik := GorevSiraNumarasiniAl(GorevNo);
       if(GorevKimlik > 0) then
       begin
 
@@ -133,35 +131,6 @@ begin
         Result := HATA_YOK;
       end else Result := HATA_GOREVNO;
     end else Result := HATA_GOREVNO;
-  end
-
-  // pencereye sahip (ptBasliksiz pencere hariç) çalışan program sayısını al
-  else if(IslevNo = 6) then
-  begin
-
-    Result := CalisanProgramSayisiniAl;
-  end
-
-  // program hakkında bilgi al
-  else if(IslevNo = 7) then
-  begin
-
-    i := PISayi4(ADegiskenler + 00)^;
-    ProgramKayit := CalisanProgramBilgisiAl(i);
-
-    ProgramKayit2 := PProgramKayit(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
-    ProgramKayit2^.PencereKimlik := ProgramKayit.PencereKimlik;
-    ProgramKayit2^.GorevKimlik := ProgramKayit.GorevKimlik;
-    ProgramKayit2^.PencereTipi := ProgramKayit.PencereTipi;
-    ProgramKayit2^.PencereDurum := ProgramKayit.PencereDurum;
-    ProgramKayit2^.ProgramAdi := ProgramKayit.ProgramAdi;
-  end
-
-  // pencereye sahip aktif programı al
-  else if(IslevNo = 8) then
-  begin
-
-    Result := AktifProgramiAl;
   end;
 end;
 

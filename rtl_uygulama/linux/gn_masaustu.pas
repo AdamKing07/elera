@@ -6,7 +6,7 @@
   Dosya Adı: gn_masaustu.pas
   Dosya İşlevi: masaüstü nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 13/10/2019
 
  ==============================================================================}
 {$mode objfpc}
@@ -29,6 +29,7 @@ type
     procedure Guncelle;
     procedure MasaustuRenginiDegistir(ARenk: TRenk);
     procedure MasaustuResminiDegistir(ADosyaTamYol: string);
+  published
     property Kimlik: TKimlik read FKimlik;
   end;
 
@@ -95,7 +96,7 @@ end;
 
 function _MasaustuOlustur(AMasaustuAdi: string): TKimlik;
 asm
-  push  DWORD AMasaustuAdi
+  push  AMasaustuAdi
   mov	  eax,MASAUSTU_OLUSTUR
   int	  $34
   add	  esp,4
@@ -103,7 +104,7 @@ end;
 
 function _MasaustuGoster(AKimlik: TKimlik): TKimlik;
 asm
-  push	DWORD AKimlik
+  push	AKimlik
   mov	  eax,MASAUSTU_GOSTER
   int	  $34
   add	  esp,4
@@ -123,7 +124,7 @@ end;
 
 function _MasaustuAktiflestir(AKimlik: TKimlik): Boolean;
 asm
-  push	DWORD AKimlik
+  push	AKimlik
   mov	  eax,MASAUSTU_AKTIFLESTIR
   int	  $34
   add	  esp,4
@@ -131,7 +132,7 @@ end;
 
 procedure _MasaustuGuncelle(AKimlik: TKimlik);
 asm
-  push	DWORD AKimlik
+  push	AKimlik
   mov	  eax,$08040102
   int	  $34
   add	  esp,4
@@ -139,8 +140,8 @@ end;
 
 procedure _MasaustuRenginiDegistir(AKimlik: TKimlik; ARenk: TRenk);
 asm
-  push	DWORD ARenk
-  push  DWORD AKimlik
+  push	ARenk
+  push  AKimlik
   mov	  eax,$02040102
   int	  $34
   add	  esp,8
@@ -148,8 +149,8 @@ end;
 
 procedure _MasaustuResminiDegistir(AKimlik: TKimlik; ADosyaTamYol: string);
 asm
-  push	DWORD ADosyaTamYol
-  push  DWORD AKimlik
+  push	ADosyaTamYol
+  push  AKimlik
   mov	  eax,$04040102
   int	  $34
   add	  esp,8

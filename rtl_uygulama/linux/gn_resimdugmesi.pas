@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_resimdugmesi.pas
-  Dosya İşlevi: resim düğmesi yönetim işlevlerini içerir
+  Dosya İşlevi: resim düğme nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 09/11/2019
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,74 +16,75 @@ unit gn_resimdugmesi;
 interface
 
 type
-  PResimDugmesi = ^TResimDugmesi;
-  TResimDugmesi = object
+  PResimDugme = ^TResimDugme;
+  TResimDugme = object
   private
     FKimlik: TKimlik;
     FEtiket: TSayi4;
   public
-    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik,
+    function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik,
       ADeger: TISayi4): TKimlik;
     procedure Goster;
     procedure Hizala(AHiza: THiza);
+  published
     property Kimlik: TKimlik read FKimlik;
     property Etiket: TSayi4 read FEtiket write FEtiket;
   end;
 
-function _ResimDugmesiOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik,
+function _ResimDugmeOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik,
   ADeger: TISayi4): TKimlik; assembler;
-procedure _ResimDugmesiGoster(AKimlik: TKimlik); assembler;
-procedure _ResimDugmesiHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
+procedure _ResimDugmeGoster(AKimlik: TKimlik); assembler;
+procedure _ResimDugmeHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
 
 implementation
 
-function TResimDugmesi.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik,
+function TResimDugme.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik,
   ADeger: TISayi4): TKimlik;
 begin
 
-  FKimlik := _ResimDugmesiOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik, ADeger);
+  FKimlik := _ResimDugmeOlustur(AtaKimlik, A1, B1, AGenislik, AYukseklik, ADeger);
   Result := FKimlik;
 end;
 
-procedure TResimDugmesi.Goster;
+procedure TResimDugme.Goster;
 begin
 
-  _ResimDugmesiGoster(FKimlik);
+  _ResimDugmeGoster(FKimlik);
 end;
 
-procedure TResimDugmesi.Hizala(AHiza: THiza);
+procedure TResimDugme.Hizala(AHiza: THiza);
 begin
 
-  _ResimDugmesiHizala(FKimlik, AHiza);
+  _ResimDugmeHizala(FKimlik, AHiza);
 end;
 
-function _ResimDugmesiOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik,
+function _ResimDugmeOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik,
   ADeger: TISayi4): TKimlik;
 asm
-  push  DWORD ADeger
-  push  DWORD AYukseklik
-  push  DWORD AGenislik
-  push  DWORD AUst
-  push  DWORD ASol
-  push  DWORD AAtaKimlik
-  mov   eax,RESIMDUGMESI_OLUSTUR
+  push  ADeger
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AtaKimlik
+  mov   eax,RESIMDUGME_OLUSTUR
   int   $34
   add   esp,24
 end;
 
-procedure _ResimDugmesiGoster(AKimlik: TKimlik);
+procedure _ResimDugmeGoster(AKimlik: TKimlik);
 asm
-  push  DWORD AKimlik
-  mov   eax,RESIMDUGMESI_GOSTER
+  push  AKimlik
+  mov   eax,RESIMDUGME_GOSTER
   int   $34
   add   esp,4
 end;
 
-procedure _ResimDugmesiHizala(AKimlik: TKimlik; AHiza: THiza);
+procedure _ResimDugmeHizala(AKimlik: TKimlik; AHiza: THiza);
 asm
-  push  DWORD AHiza
-  push  DWORD AKimlik
-  mov   eax,RESIMDUGMESI_HIZALA
+  push  AHiza
+  push  AKimlik
+  mov   eax,RESIMDUGME_HIZALA
   int   $34
   add   esp,8
 end;

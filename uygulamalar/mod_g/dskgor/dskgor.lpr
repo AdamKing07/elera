@@ -136,7 +136,7 @@ end;
 begin
 
   // ana form oluþtur
-  Pencere.Olustur(-1, 100, 20, 615, 400, ptBoyutlanabilir, ProgramAdi, $D1F0ED);
+  Pencere.Olustur(-1, 100, 20, 615, 400, ptBoyutlandirilabilir, ProgramAdi, $D1F0ED);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   // toplam fiziksel sürücü sayýsýný al

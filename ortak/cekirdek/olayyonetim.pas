@@ -3,10 +3,10 @@
   Kodlayan: Fatih KILIÇ
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Dosya Adý: olayyonetim.pas
+  Dosya Adý: olay.pas
   Dosya Ýþlevi: olay yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 20/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -211,6 +211,21 @@ begin
         // nesneye odak kazandýðýna dair mesaj gönder
         Olay2.Olay := CO_ODAKKAZANILDI;
         OlaylariYonlendir(FOdaklanilanGorselNesne, Olay2);
+      end;
+
+      // güç düðmesi ve ona benzer diðer açýk / kapalý durumda olan görsel nesneleri kapatmak için
+      if((Olay2.Olay = FO_SOLTUS_BASILDI) or (Olay2.Olay = FO_SAGTUS_BASILDI))
+        and (FOdaklanilanGorselNesne <> GFareIleBasilanSonGN) then
+      begin
+
+        if not(GFareIleBasilanSonGN = nil) and (GFareIleBasilanSonGN^.NesneTipi = gntGucDugmesi) then
+        begin
+
+          Olay2.Olay := CO_NORMALDURUMAGEC;
+          OlaylariYonlendir(GFareIleBasilanSonGN, Olay2);
+        end;
+
+        GFareIleBasilanSonGN := FOdaklanilanGorselNesne;
       end;
 
       // nesneye yönlendirilecek parametreleri hazýrla

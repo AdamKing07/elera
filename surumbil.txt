@@ -1,14 +1,8 @@
 *******************************************************************************
   Sürüm: 0.3.7 - 00.00.0000 (R33)
 *******************************************************************************
-  - TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
-  - TAracCubugu (TToolBar) görsel nesne çalýþmalarý devam ediyor
+  + TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
 
-  + masaüstü programý / görev çubuðu için pencereye sahip nesneler ile ilgili iþlevler / kesmeler kodlandý
-  + masaüstü yönetim programý (muyntcs) yeniden yapýlandýrýlarak, görev çubuðuna, çalýþan programlarýn eklenmesi saðlandý
-  + görev çubuðu üzerinden pencerenin normal ve küçültme iþlevlerinin denetimi saðlandý
-  + 16 renkli renk seçim görsel nesnesi (TRenkSecim) projeye eklendi
-  + yatay / dikey düz çizgi tipine noktalý çizgi tipi eklendi
   + programa ait her yeni açýlan pencerenin masaüstünde ortalanmasý saðlandý
   + pencere nesnesine mac pencere görünümü (skin) uygulandý
   + TDegerListesi (valuelisteditor) görsel nesnesi projeye eklendi

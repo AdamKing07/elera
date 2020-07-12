@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: program arabiriminde kullanılacak sabit değerleri içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 15/05/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -74,7 +74,6 @@ const
   FUNC_DRAW                   = $10;
   FUNC_HIDE                   = $20;
   FUNC_DESTROY                = $40;
-  ISL_BOYUTLANDIR             = $80;
 
   // yeni sistem çağrılarının tanımlanacağı alan
   
@@ -88,8 +87,6 @@ const
   PENCERE_OLUSTUR	            = $00010200 + SAC_GNESNE;
   PENCERE_GOSTER              = $00080200 + SAC_GNESNE;
   PENCERE_CIZ		              = $00100200 + SAC_GNESNE;
-  PENCERE_DRM_NORMAL          = $01800200 + SAC_GNESNE;
-  PENCERE_DRM_KUCULT          = $02800200 + SAC_GNESNE;
 
   DUGME_OLUSTUR 	            = $00010300 + SAC_GNESNE;
   DUGME_YOKET 	              = $00400300 + SAC_GNESNE;
@@ -98,14 +95,12 @@ const
   DUGME_GOSTER		            = $00080300 + SAC_GNESNE;
   DUGME_GIZLE	                = $00200300 + SAC_GNESNE;
 
-  GUCDUGMESI                  = $0400;
-  GUCDUGMESI_OLUSTUR	        = $00010400 + SAC_GNESNE;
-  GUCDUGMESI_YOKET 	          = $00400400 + SAC_GNESNE;
-  GUCDUGMESI_BASLIKDEGISTIR   = $02040400 + SAC_GNESNE;
-  GUCDUGMESI_GOSTER	          = $00080400 + SAC_GNESNE;
-  GUCDUGMESI_GIZLE	          = $00200400 + SAC_GNESNE;
-  GUCDUGMESI_DURUMYAZ	        = $03040400 + SAC_GNESNE;
-  GUCDUGMESI_BOYUTLANDIR      = $08040400 + SAC_GNESNE;
+  GUCDUGME_OLUSTUR	          = $00010400 + SAC_GNESNE;
+  GUCDUGME_YOKET 	            = $00400400 + SAC_GNESNE;
+  GUCDUGME_BASLIKDEGISTIR     = $02040400 + SAC_GNESNE;
+  GUCDUGME_GOSTER	            = $00080400 + SAC_GNESNE;
+  GUCDUGME_GIZLE	            = $00200400 + SAC_GNESNE;
+  GUCDUGME_DURUMYAZ	          = $03040400 + SAC_GNESNE;
 
   LISTEKUTUSU_OLUSTUR	        = $00010500 + SAC_GNESNE;
   LISTEKUTUSU_GOSTER	        = $00080500 + SAC_GNESNE;
@@ -179,11 +174,10 @@ const
   PANEL_OLUSTUR	              = $00011200 + SAC_GNESNE;
   PANEL_HIZALA                = $01041200 + SAC_GNESNE;
   PANEL_GOSTER                = $00081200 + SAC_GNESNE;
-  PANEL_BOYUTAL               = $08021200 + SAC_GNESNE;
 
-  RESIMDUGMESI_OLUSTUR 	      = $00011300 + SAC_GNESNE;
-  RESIMDUGMESI_HIZALA         = $01041300 + SAC_GNESNE;
-  RESIMDUGMESI_GOSTER		      = $00081300 + SAC_GNESNE;
+  RESIMDUGME_OLUSTUR 	        = $00011300 + SAC_GNESNE;
+  RESIMDUGME_HIZALA           = $01041300 + SAC_GNESNE;
+  RESIMDUGME_GOSTER		        = $00081300 + SAC_GNESNE;
 
   KAYDIRMACUBUGU_OLUSTUR 	    = $00011400 + SAC_GNESNE;
   KAYDIRMACUBUGU_HIZALA       = $01041400 + SAC_GNESNE;
@@ -210,11 +204,6 @@ const
   DEGERLISTESI_SECILIYAZIAL   = $04001700 + SAC_GNESNE;
   DEGERLISTESI_BASLIKBELIRLE  = $06001700 + SAC_GNESNE;
   DEGERLISTESI_HIZALA         = $01041700 + SAC_GNESNE;
-
-  RENKSECICI_OLUSTUR	        = $00011A00 + SAC_GNESNE;
-  RENKSECICI_GOSTER	          = $00081A00 + SAC_GNESNE;
-
-  // görsel nesne çağrı tanımları sonu
 
   // genel nesne çağrıları
   GORSELNESNE_KIMLIKAL 	      = $0001FF00 + SAC_GNESNE;
@@ -273,9 +262,6 @@ const
   GOREV_SAYISINIAL	          = $00000300 + SAC_GOREV;
   GOREV_BILGISIAL	            = $00000400 + SAC_GOREV;
   GOREV_YAZMACBILGISIAL	      = $00000500 + SAC_GOREV;
-  GOREV_CALISANPSAYISINIAL    = $00000600 + SAC_GOREV;
-  GOREV_CALISANPBILGISIAL     = $00000700 + SAC_GOREV;
-  GOREV_AKTIFPROGRAMIAL       = $00000800 + SAC_GOREV;
 
   PCI_TOPLAMAYGITSAYISI	      = $00000100 + SAC_PCI;
   PCI_AYGITBILGISIAL	        = $00000200 + SAC_PCI;
@@ -319,8 +305,6 @@ const
   CO_ODAKKAZANILDI        = CO_ILKDEGER + 4;
   CO_ODAKKAYBEDILDI       = CO_ILKDEGER + 5;
   CO_TUSBASILDI           = CO_ILKDEGER + 6;
-  CO_MENUACILDI           = CO_ILKDEGER + 7;        // menünün açılması
-  CO_MENUKAPATILDI        = CO_ILKDEGER + 8;        // menünün kapatılması
 
   // fare aygıtının ürettiği olaylar - fare olayları (FO)
   FO_ILKDEGER             = $200;

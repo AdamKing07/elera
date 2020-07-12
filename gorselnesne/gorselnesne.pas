@@ -94,7 +94,8 @@ type
       AMACAdres: TMACAdres; ARenk: TRenk);
     procedure IPAdresiYaz(AGorselNesne: PGorselNesne; ASol, AUst: TSayi4; AIPAdres: TIPAdres;
       ARenk: TRenk);
-    procedure Dikdortgen(AGorselNesne: PGorselNesne; AAlan: TAlan; ACizgiRengi: TRenk);
+    procedure Dikdortgen(AGorselNesne: PGorselNesne; ASol, AUst,
+      ASag, AAlt: TISayi4; ACizgiRengi: TRenk);
     procedure DikdortgenDoldur(AGorselNesne: PGorselNesne; ASol, AUst,
       ASag, AAlt: TISayi4; ACizgiRengi, ADolguRengi: TRenk);
     procedure DikdortgenDoldur(AGorselNesne: PGorselNesne; AAlan: TAlan;
@@ -103,8 +104,7 @@ type
       ASag, AAlt: TISayi4; ACizgiRengi, ADolguRengi: TRenk);
     procedure BMPGoruntusuCiz(AGNTip: TGNTip; AGorselNesne: PGorselNesne;
       AGoruntuYapi: TGoruntuYapi);
-    procedure Cizgi(AGorselNesne: PGorselNesne; ACizgiTipi: TCizgiTipi;
-      ASol, AUst, ASag, AAlt: TISayi4; ACizgiRengi: TRenk);
+    procedure Cizgi(AGorselNesne: PGorselNesne; ASol, AUst, ASag, AAlt: TISayi4; ACizgiRengi: TRenk);
     procedure Daire(ASol, AUst, AYariCap: TISayi4; ARenk: TRenk);
     procedure DaireDoldur(AGorselNesne: PGorselNesne; ASol, AUst,
       AYariCap: TISayi4; ARenk: TRenk);
@@ -146,12 +146,12 @@ var
     (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.BuyutmeDugmesiP),
     (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.KucultmeDugmesiA),
     (Genislik: 14;  Yukseklik: 14;  BellekAdresi: @giysi_mac.KucultmeDugmesiP),
-    (Genislik: 12;  Yukseklik: 12;  BellekAdresi: @giysi_normal.KapatmaDugmesiA),
-    (Genislik: 12;  Yukseklik: 12;  BellekAdresi: @giysi_normal.KapatmaDugmesiP),
-    (Genislik: 12;  Yukseklik: 12;  BellekAdresi: @giysi_normal.BuyutmeDugmesiA),
-    (Genislik: 12;  Yukseklik: 12;  BellekAdresi: @giysi_normal.BuyutmeDugmesiP),
-    (Genislik: 12;  Yukseklik: 12;  BellekAdresi: @giysi_normal.KucultmeDugmesiA),
-    (Genislik: 12;  Yukseklik: 12;  BellekAdresi: @giysi_normal.KucultmeDugmesiP));
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KapatmaDugmesiA),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KapatmaDugmesiP),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.BuyutmeDugmesiA),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.BuyutmeDugmesiP),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KucultmeDugmesiA),
+    (Genislik: 16;  Yukseklik: 16;  BellekAdresi: @giysi_normal.KucultmeDugmesiP));
 
 function TGorselNesne.Olustur(AKullanimTipi: TKullanimTipi; AGNTip: TGNTip;
   AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
@@ -493,7 +493,7 @@ begin
   if(GorselNesne^.FHiza = hzSol) then
   begin
 
-    //SISTEM_MESAJ('Boyut: %d', [GorselAtaNesne^.FBoyut.Yukseklik]);
+    SISTEM_MESAJ('Boyut: %d', [GorselAtaNesne^.FBoyut.Yukseklik]);
 
     // nesnenin hesaplanmasý
     GorselNesne^.FKonum.Sol := GorselAtaNesne^.FHizaAlani.Sol;
@@ -1147,20 +1147,21 @@ end;
 {==============================================================================
   nesneye belirtilen renkte dikdörtgen çizer
  ==============================================================================}
-procedure TGorselNesne.Dikdortgen(AGorselNesne: PGorselNesne; AAlan: TAlan; ACizgiRengi: TRenk);
+procedure TGorselNesne.Dikdortgen(AGorselNesne: PGorselNesne; ASol, AUst,
+  ASag, AAlt: TISayi4; ACizgiRengi: TRenk);
 begin
 
   // üst yatay çizgiyi çiz
-  YatayCizgi(AGorselNesne, AAlan.Sol, AAlan.Ust, AAlan.Sag, ACizgiRengi);
+  YatayCizgi(AGorselNesne, ASol, AUst, ASag, ACizgiRengi);
 
   // sol dikey çizgiyi çiz
-  DikeyCizgi(AGorselNesne, AAlan.Sol, AAlan.Ust, AAlan.Alt, ACizgiRengi);
+  DikeyCizgi(AGorselNesne, ASol, AUst, AAlt, ACizgiRengi);
 
   // alt yatay çizgiyi çiz
-  YatayCizgi(AGorselNesne, AAlan.Sag, AAlan.Alt, AAlan.Sol, ACizgiRengi);
+  YatayCizgi(AGorselNesne, ASag, AAlt, ASol, ACizgiRengi);
 
   // sað dikey çizgiyi çiz
-  DikeyCizgi(AGorselNesne, AAlan.Sag, AAlan.Alt, AAlan.Ust, ACizgiRengi);
+  DikeyCizgi(AGorselNesne, ASag, AAlt, AUst, ACizgiRengi);
 end;
 
 {==============================================================================
@@ -1170,7 +1171,6 @@ end;
 procedure TGorselNesne.Doldur4(AGorselNesne: PGorselNesne; AAlan: TAlan; ASol, AUst,
   ASag, AAlt: TISayi4; ACizgiRengi, ADolguRengi: TRenk);
 var
-  Alan: TAlan;
   i, j, Sol, Ust, Sag, Alt: TISayi4;
 begin
 
@@ -1192,11 +1192,7 @@ begin
   else Alt := AAlt;
 
   // dýþ kenarlýk
-  Alan.Sol := Sol;
-  Alan.Ust := Ust;
-  Alan.Sag := Sag;
-  Alan.Alt := Alt;
-  Dikdortgen(AGorselNesne, Alan, ACizgiRengi);
+  Dikdortgen(AGorselNesne, Sol, Ust, Sag, Alt, ACizgiRengi);
 
   // iç kenarlýk
   Inc(Sol);
@@ -1237,22 +1233,26 @@ end;
 procedure TGorselNesne.DikdortgenDoldur(AGorselNesne: PGorselNesne; AAlan: TAlan;
   ACizgiRengi, ADolguRengi: TRenk);
 var
-  i, j: TISayi4;
+  i, j, Sol, Ust, Sag, Alt: TISayi4;
 begin
 
   // dýþ kenarlýk
-  Dikdortgen(AGorselNesne, AAlan, ACizgiRengi);
+  Sol := AAlan.Sol;
+  Ust := AAlan.Ust;
+  Sag := AAlan.Sag;
+  Alt := AAlan.Alt;
+  Dikdortgen(AGorselNesne, Sol, Ust, Sag, Alt, ACizgiRengi);
 
   // iç kenarlýk
-  Inc(AAlan.Sol);
-  Inc(AAlan.Ust);
-  Dec(AAlan.Sag);
-  Dec(AAlan.Alt);
+  Inc(Sol);
+  Inc(Ust);
+  Dec(Sag);
+  Dec(Alt);
 
-  for j := AAlan.Ust to AAlan.Alt do
+  for j := Ust to Alt do
   begin
 
-    for i := AAlan.Sol to AAlan.Sag do
+    for i := Sol to Sag do
     begin
 
       GEkranKartSurucusu.NoktaYaz(AGorselNesne, i, j, ADolguRengi, True);
@@ -1272,8 +1272,8 @@ end;
  ==============================================================================}
 // https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm
 // procedure drawLine (bitmap : TBitmap; xStart, yStart, xEnd, yEnd : integer; color : TAlphaColor);
-procedure TGorselNesne.Cizgi(AGorselNesne: PGorselNesne; ACizgiTipi: TCizgiTipi;
-  ASol, AUst, ASag, AAlt: TISayi4; ACizgiRengi: TRenk);
+procedure TGorselNesne.Cizgi(AGorselNesne: PGorselNesne; ASol, AUst, ASag, AAlt: TISayi4;
+  ACizgiRengi: TRenk);
 // Bresenham's Line Algorithm.  Byte, March 1988, pp. 249-253.
 // Modified from http://www.efg2.com/Lab/Library/Delphi/Graphics/Bresenham.txt and tested.
 var
@@ -1287,13 +1287,8 @@ var
   i: TISayi4;             // loop index
   nondiag_inc: TISayi4;   // d's increment for nondiagonal steps
   swap: TISayi4;          // temporary variable for swap
-  x,y,                    // current x and y coordinates
-  AdimSayisi: TISayi4;
-  Isaretle: Boolean;
+  x,y: TISayi4;           // current x and y coordinates
 begin
-
-  Isaretle := True;
-  AdimSayisi := 0;
 
   x := ASol;                // line starting point}
   y := AUst;
@@ -1342,21 +1337,8 @@ begin
   for i := 0 to a do
   begin                   // draw the a+1 pixels
 
-    if(Isaretle) then GEkranKartSurucusu.NoktaYaz(AGorselNesne, x, y,
-      ACizgiRengi, True);
-
-    if(ACizgiTipi = ctNokta) then
-    begin
-
-      Inc(AdimSayisi);
-      if(AdimSayisi = 3) then
-      begin
-
-        Isaretle := not Isaretle;
-        AdimSayisi := 0;
-      end;
-    end;
-
+    //drawPixel (bitmap, x, y, color);
+    GEkranKartSurucusu.NoktaYaz(AGorselNesne, x, y, ACizgiRengi, True);
     if d < 0 then         // is midpoint above the line?
     begin                 // step nondiagonally
 
@@ -1429,9 +1411,9 @@ begin
 
     Ust := round(sqrt(YariCap - Sol * Sol));
     DX := ASol - Sol;
-    Cizgi(AGorselNesne, ctDuz, DX - 1, AUst - Ust, DX - 1, AUst + Ust, ARenk);
+    Cizgi(AGorselNesne, DX - 1, AUst - Ust, DX - 1, AUst + Ust, ARenk);
     DX := ASol + Sol;
-    Cizgi(AGorselNesne, ctDuz, DX, AUst - Ust, DX, AUst + Ust, ARenk);
+    Cizgi(AGorselNesne, DX, AUst - Ust, DX, AUst + Ust, ARenk);
   end;
 end;
 

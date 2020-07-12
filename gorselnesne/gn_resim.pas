@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_resim.pas
-  Dosya İşlevi: resim (TImage) nesne yönetim işlevlerini içerir
+  Dosya İşlevi: resim nesne yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 11/06/2020
 

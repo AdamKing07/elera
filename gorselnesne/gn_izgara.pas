@@ -383,7 +383,7 @@ begin
       Sol += Izgara^.FSutunGenislik;      // 1 px çizgi kalınlığı
 
       // dikey kılavuz çizgisi
-      Izgara^.Cizgi(Izgara, ctDuz, Sol, Ust, Sol, Y, $F0F0F0);
+      Izgara^.Cizgi(Izgara, Sol, Ust, Sol, Y, $F0F0F0);
 
       Sol += 1;
     end;
@@ -397,7 +397,7 @@ begin
       Sol += Izgara^.FSutunGenislik;      // 1 px çizgi kalınlığı
 
       // dikey kılavuz çizgisi
-      Izgara^.Cizgi(Izgara, ctDuz, Sol, Ust, Sol, Y, $F0F0F0);
+      Izgara^.Cizgi(Izgara, Sol, Ust, Sol, Y, $F0F0F0);
 
       Sol += 1;
     end;
@@ -415,7 +415,7 @@ begin
   begin
 
     // ilk çizim başlangıç noktası
-    if(UstIlk = 0) then Izgara^.Cizgi(Izgara, ctDuz, Sol, Ust, G, Ust, $F0F0F0);
+    if(UstIlk = 0) then Izgara^.Cizgi(Izgara, Sol, Ust, G, Ust, $F0F0F0);
 
     for i := UstIlk to FSatirSayisi - 1 do
     begin
@@ -439,7 +439,7 @@ begin
         Ust += Izgara^.FSatirYukseklik;
 
         // yatay kılavuz çizgisi
-        Izgara^.Cizgi(Izgara, ctDuz, Sol, Ust, G, Ust, $F0F0F0);
+        Izgara^.Cizgi(Izgara, Sol, Ust, G, Ust, $F0F0F0);
       end;
     end;
   end
@@ -450,7 +450,7 @@ begin
     begin
 
       // yatay kılavuz çizgisi
-      Izgara^.Cizgi(Izgara, ctDuz, Sol, Ust, G, Ust, $F0F0F0);
+      Izgara^.Cizgi(Izgara, Sol, Ust, G, Ust, $F0F0F0);
 
       Ust += Izgara^.FSatirYukseklik + 1;
     end;

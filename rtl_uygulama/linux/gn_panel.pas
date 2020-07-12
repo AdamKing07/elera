@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_panel.pas
-  Dosya İşlevi: panel (TPanel) yönetim işlevlerini içerir
+  Dosya İşlevi: panel nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 30/10/2019
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,34 +17,33 @@ interface
 
 type
   PPanel = ^TPanel;
-
-  { TPanel }
-
   TPanel = object
   private
     FKimlik: TKimlik;
   public
-    procedure Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
-      ACizimModel: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk; ABaslik: string);
+    procedure Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+      AGovdeRenkSecim: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk;
+      ABaslik: string);
     procedure Goster;
     procedure Hizala(AHiza: THiza);
-    procedure BoyutAl(var AKonum: TKonum; var ABoyut: TBoyut);
+  published
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _PanelOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
-  AGovdeRenkSecim: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk; ABaslik: string): TKimlik; assembler;
+function _PanelOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+  AGovdeRenkSecim: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk;
+  ABaslik: string): TKimlik; assembler;
 procedure _PanelGoster(AKimlik: TKimlik); assembler;
 procedure _PanelHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
-procedure _PanelBoyutAl(AKimlik: TKimlik; var AKonum: TKonum; var ABoyut: TBoyut); assembler;
 
 implementation
 
-procedure TPanel.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
-  ACizimModel: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk; ABaslik: string);
+procedure TPanel.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+  AGovdeRenkSecim: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk;
+  ABaslik: string);
 begin
 
-  FKimlik := _PanelOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik, ACizimModel,
+  FKimlik := _PanelOlustur(AtaKimlik, A1, B1, AGenislik, AYukseklik, AGovdeRenkSecim,
     AGovdeRenk1, AGovdeRenk2, AYaziRenk, ABaslik);
 end;
 
@@ -60,25 +59,20 @@ begin
   _PanelHizala(FKimlik, AHiza);
 end;
 
-procedure TPanel.BoyutAl(var AKonum: TKonum; var ABoyut: TBoyut);
-begin
-
-  _PanelBoyutAl(FKimlik, AKonum, ABoyut);
-end;
-
-function _PanelOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
-  AGovdeRenkSecim: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk; ABaslik: string): TKimlik;
+function _PanelOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik, AYukseklik: TISayi4;
+  AGovdeRenkSecim: TSayi4; AGovdeRenk1, AGovdeRenk2, AYaziRenk: TRenk;
+  ABaslik: string): TKimlik;
 asm
-  push  DWORD ABaslik
-  push  DWORD AYaziRenk
-  push  DWORD AGovdeRenk2
-  push  DWORD AGovdeRenk1
-  push  DWORD AGovdeRenkSecim
-  push  DWORD AYukseklik
-  push  DWORD AGenislik
-  push  DWORD AUst
-  push  DWORD ASol
-  push  DWORD AAtaKimlik
+  push  ABaslik
+  push  AYaziRenk
+  push  AGovdeRenk2
+  push  AGovdeRenk1
+  push  AGovdeRenkSecim
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AtaKimlik
   mov   eax,PANEL_OLUSTUR
   int   $34
   add   esp,40
@@ -86,7 +80,7 @@ end;
 
 procedure _PanelGoster(AKimlik: TKimlik);
 asm
-  push  DWORD AKimlik
+  push  AKimlik
   mov   eax,PANEL_GOSTER
   int   $34
   add   esp,4
@@ -94,21 +88,11 @@ end;
 
 procedure _PanelHizala(AKimlik: TKimlik; AHiza: THiza);
 asm
-  push  DWORD AHiza
-  push  DWORD AKimlik
+  push  AHiza
+  push  AKimlik
   mov   eax,PANEL_HIZALA
   int   $34
   add   esp,8
-end;
-
-procedure _PanelBoyutAl(AKimlik: TKimlik; var AKonum: TKonum; var ABoyut: TBoyut);
-asm
-  push  DWORD ABoyut
-  push  DWORD AKonum
-  push  DWORD AKimlik
-  mov   eax,PANEL_BOYUTAL
-  int   $34
-  add   esp,12
 end;
 
 end.

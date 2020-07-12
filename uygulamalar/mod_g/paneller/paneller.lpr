@@ -24,7 +24,7 @@ var
 
 begin
 
-  Pencere.Olustur(-1, 10, 10, 700, 450, ptBoyutlanabilir, ProgramAdi, $EBEBE0);
+  Pencere.Olustur(-1, 10, 10, 700, 450, ptBoyutlandirilabilir, ProgramAdi, $EBEBE0);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   PanelListesi[0].Olustur(Pencere.Kimlik, 10, 10, 50, 50, 4, RENK_KIRMIZI,

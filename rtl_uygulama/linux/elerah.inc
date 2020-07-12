@@ -70,6 +70,8 @@ type
   PRenk = ^TRenk;
   TSaat = Sayi4;
   PSaat = ^TSaat;
+  TGorevKimlik = TISayi4;
+  PGorevKimlik = ^TISayi4;
 //  HResult = ISayi4;
 //  PChar = ^Char;
 //  PByte = ^Byte;
@@ -98,18 +100,6 @@ type
   end;
 
 type
-  PKonum = ^TKonum;
-  TKonum = record
-    Sol, Ust: TISayi4;
-  end;
-
-type
-  PBoyut = ^TBoyut;
-  TBoyut = record
-    Genislik, Yukseklik: TISayi4;
-  end;
-
-type
   PNokta = ^TNokta;
   TNokta = record
     A1, B1: TISayi4;
@@ -121,10 +111,7 @@ type
 
 type
   PPencereTipi = ^TPencereTipi;
-  TPencereTipi = (ptBasliksiz, ptIletisim, ptBoyutlanabilir);
-
-  PPencereDurum = ^TPencereDurum;
-  TPencereDurum = (pdNormal, pdKucultuldu, pdBuyutuldu);
+  TPencereTipi = (ptBoyutlandirilabilir, ptBasliksiz, ptIletisim);
 
 type
   POlayKayit = ^TOlayKayit;
@@ -223,28 +210,18 @@ type
 type
   TGorevDurum = (gdBos, gdOlusturuldu, gdCalisiyor, gdDurduruldu);
 
+// program için süreç yapýsý
 type
-  // program için (API) görev yapýsý
+  // görev kayýt bilgisi
   PGorevKayit = ^TGorevKayit;
   TGorevKayit = record
     GorevDurum: TGorevDurum;            // görev durumu
-    GorevKimlik: TKimlik;               // görev kimliði - sýra numarasý
+    GorevKimlik: TGorevKimlik;          // görev kimlik - sýra numarasý
     GorevSayaci: TSayi4;                // görevin kaç kez çalýþtýðý
     BellekBaslangicAdresi: TSayi4;      // görevin yerleþtirildiði bellek adresi
     BellekUzunlugu: TSayi4;             // görev bellek uzunluðu
     OlaySayisi: TSayi4;                 // görev için iþlenmeyi bekleyen olay sayýsý
-    ProgramAdi: string;                 // program adý
-  end;
-
-type
-  // program için (API) program yapýsý
-  PProgramKayit = ^TProgramKayit;
-  TProgramKayit = record
-    PencereKimlik: TKimlik;             // pencere kimliði
-    GorevKimlik: TKimlik;               // görev kimliði
-    PencereTipi: TPencereTipi;          // pencere tipi
-    PencereDurum: TPencereDurum;        // pencere durumu
-    ProgramAdi: string;                 // program adý
+    ProgramAdi: string;                 // program ad uzunluðu
   end;
 
 type

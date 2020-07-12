@@ -1,11 +1,10 @@
 ================================================================================
                         Gerçekleþtirilecek Çalýþmalar
 ================================================================================
--
-- pencereli ve penceresiz görev sayýlarýnýn alýmý tasarlanacak (görev çubuðu için)
 - usb uhci kod çalýþmalarý (usb / uhci)
 - çekirdek sürücü model çalýþmalarý (görev)
 - birden fazla kontrol amacýyla çekirdek seviyesinde çalýþan görev olacak
+- grafik yaslama (align) iþlevine FBorderSpacing deðerleri eklenecek
 - ses kartý ile ilgili iþlevler aktif ve çalýþýr hale getirilecek
 - object yapýlarý class yapýlarýna çevrilecek
 - program geliþtirmek için tasarlanan widget'in grafiksel arabirimi tasarlanacak
@@ -32,6 +31,6 @@
 - program sonlandýrma iþleminde bellek azaltýlmasý kontrol edilecek
 - masaüstü uygulamasý çöktüðünde baðlý tüm nesnelerin yok edildiði kontrol edilecek
 - 4 ve 5. fare düðmeleri test edilecek
-- sonlandýrýlan iþlemlerin bellekten güvenli bir þekilde yol edilmesi saðlanacak
+- yazý modu ve diðer modda sonlandýrýlan iþlemlerin bellekten güvenli bir þekilde yol edilmesi saðlanacak
 - ParamStr (rtl_prog: System.pp, systemh.inc, system.inc) iþlevi dsybil programý üzerinden kontrol edilecek
 - floppy sürücü okumalarý test edilecek

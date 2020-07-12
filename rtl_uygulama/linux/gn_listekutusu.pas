@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_listekutusu.pas
-  Dosya İşlevi: liste kutusu (TListBox) yönetim işlevlerini içerir
+  Dosya İşlevi: liste kutusu nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 07/11/2019
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,7 +21,8 @@ type
   private
     FKimlik: TKimlik;
   public
-    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
+    function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+      AYukseklik: TISayi4): TKimlik;
     procedure Goster;
     procedure Hizala(AHiza: THiza);
     procedure ElemanEkle(AElemanAdi: string);
@@ -31,7 +32,8 @@ type
     property Kimlik: TKimlik read FKimlik;
   end;
 
-function _ListeKutusuOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik; assembler;
+function _ListeKutusuOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4): TKimlik; assembler;
 procedure _ListeKutusuGoster(AKimlik: TKimlik); assembler;
 procedure _ListeKutusuHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
 procedure _ListeKutusuElemanEkle(AKimlik: TKimlik; AElemanAdi: string); assembler;
@@ -41,10 +43,11 @@ procedure _ListeKutusuSeciliSiraYaziAl(AKimlik: TKimlik; AHedefBellek: Isaretci)
 
 implementation
 
-function TListeKutusu.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
+function TListeKutusu.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4): TKimlik;
 begin
 
-  FKimlik := _ListeKutusuOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik);
+  FKimlik := _ListeKutusuOlustur(AtaKimlik, A1, B1, AGenislik, AYukseklik);
   Result := FKimlik;
 end;
 
@@ -87,13 +90,14 @@ begin
   Result := s;
 end;
 
-function _ListeKutusuOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
+function _ListeKutusuOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4): TKimlik;
 asm
-  push  DWORD AYukseklik
-  push  DWORD AGenislik
-  push  DWORD AUst
-  push  DWORD ASol
-  push  DWORD AAtaKimlik
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AtaKimlik
   mov   eax,LISTEKUTUSU_OLUSTUR
   int   $34
   add   esp,20
@@ -101,7 +105,7 @@ end;
 
 procedure _ListeKutusuGoster(AKimlik: TKimlik);
 asm
-  push  DWORD AKimlik
+  push  AKimlik
   mov   eax,LISTEKUTUSU_GOSTER
   int   $34
   add   esp,4
@@ -109,8 +113,8 @@ end;
 
 procedure _ListeKutusuHizala(AKimlik: TKimlik; AHiza: THiza);
 asm
-  push  DWORD AHiza
-  push  DWORD AKimlik
+  push  AHiza
+  push  AKimlik
   mov   eax,LISTEKUTUSU_HIZALA
   int   $34
   add   esp,8
@@ -118,8 +122,8 @@ end;
 
 procedure _ListeKutusuElemanEkle(AKimlik: TKimlik; AElemanAdi: string);
 asm
-  push  DWORD AElemanAdi
-  push  DWORD AKimlik
+  push  AElemanAdi
+  push  AKimlik
   mov   eax,LISTEKUTUSU_ELEMANEKLE
   int   $34
   add   esp,8
@@ -127,7 +131,7 @@ end;
 
 procedure _ListeKutusuTemizle(AKimlik: TKimlik);
 asm
-  push  DWORD AKimlik
+  push  AKimlik
   mov   eax,LISTEKUTUSU_TEMIZLE
   int   $34
   add   esp,4
@@ -135,7 +139,7 @@ end;
 
 function _ListeKutusuSeciliSiraNoAl(AKimlik: TKimlik): TISayi4;
 asm
-  push  DWORD AKimlik
+  push  AKimlik
   mov   eax,LISTEKUTUSU_SECILISIRANOAL
   int   $34
   add   esp,4
@@ -143,8 +147,8 @@ end;
 
 procedure _ListeKutusuSeciliSiraYaziAl(AKimlik: TKimlik; AHedefBellek: Isaretci);
 asm
-  push  DWORD AHedefBellek
-  push  DWORD AKimlik
+  push  AHedefBellek
+  push  AKimlik
   mov   eax,LISTEKUTUSU_SECILISIRAYAZIAL
   int   $34
   add   esp,8

@@ -6,7 +6,7 @@
   Dosya Adı: k_gorselnesne.pas
   Dosya İşlevi: görsel nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 08/07/2020
+  Güncelleme Tarihi: 24/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -18,10 +18,10 @@ uses paylasim, gn_masaustu, gn_pencere, gn_dugme, gn_gucdugmesi, gn_listekutusu,
   gn_menu, gn_defter, gn_islemgostergesi, gn_onaykutusu, gn_giriskutusu, gn_degerdugmesi,
   gn_etiket, gn_durumcubugu, gn_secimdugmesi, gn_baglanti, gn_resim, gn_listegorunum,
   gn_panel, gn_resimdugmesi, gn_kaydirmacubugu, gn_karmaliste, gn_acilirmenu,
-  gn_degerlistesi, gn_izgara, gn_araccubugu, gn_renksecici;
+  gn_degerlistesi, gn_izgara;
 
 const
-  MEVCUT_GN_SAYISI = 26;    // görsel nesne sayısı
+  MEVCUT_GN_SAYISI = 24;    // görsel nesne sayısı
 
 var
   GorselNesneListesi: array[1..MEVCUT_GN_SAYISI] of TKesmeCagrisi = (
@@ -32,8 +32,7 @@ var
     @DurumCubuguCagriIslevleri, @SecimDugmeCagriIslevleri, @BaglantiCagriIslevleri,
     @ResimCagriIslevleri, @ListeGorunumCagriIslevleri, @PanelCagriIslevleri,
     @ResimDugmeCagriIslevleri, @KaydirmaCubuguCagriIslevleri, @KarmaListeCagriIslevleri,
-    @AcilirMenuCagriIslevleri, @DegerListesiCagriIslevleri, @IzgaraCagriIslevleri,
-    @AracCubuguCagriIslevleri, @RenkSeciciCagriIslevleri);
+    @AcilirMenuCagriIslevleri, @DegerListesiCagriIslevleri, @IzgaraCagriIslevleri);
 
 function GorselNesneCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 

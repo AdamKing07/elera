@@ -26,7 +26,7 @@ implementation
 
 uses yonetim, gdt, idt, irq, pic, aygityonetimi, pci, src_klavye, genel, gorev,
   gn_islevler, dosya, sistemmesaj, bolumleme, islemci, paylasim, usb, zamanlayici,
-  ag, src_vesa20, src_com, src_sb, bmp, acpi, giysi_mac, giysi_normal;
+  ag, src_vesa20, src_com, src_sb, bmp, acpi, giysi_mac;
 
 {==============================================================================
   çekirdek çevre donaným yükleme iþlevlerini gerçekleþtir
@@ -144,7 +144,7 @@ begin
   YukleIslevindenSonraCalistir;
 
   // aktif pencere giysisi tanýmlanýyor
-  AktifGiysi := GiysiMac; //GiysiNormal;
+  AktifGiysi := GiysiMac;
 
   // sistem mesajlarýný görmek için bekleme süresi.
   Bekle(50);

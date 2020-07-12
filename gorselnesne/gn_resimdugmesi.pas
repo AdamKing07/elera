@@ -230,8 +230,8 @@ begin
   begin
 
     if(ResimDugmesi^.FDurum = ddNormal) then
-      Dikdortgen(ResimDugmesi, Alan, RENK_GUMUS)
-    else Dikdortgen(ResimDugmesi, Alan, RENK_SIYAH);
+      Dikdortgen(ResimDugmesi, Alan.Sol, Alan.Ust, Alan.Sag, Alan.Alt, RENK_GUMUS)
+    else Dikdortgen(ResimDugmesi, Alan.Sol, Alan.Ust, Alan.Sag, Alan.Alt, RENK_SIYAH);
   end;
 end;
 

@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_degerlistesi.pas
-  Dosya İşlevi: değer listesi (TValueListeEditor) yönetim işlevlerini içerir
+  Dosya İşlevi: değer listesi (valuelisteditor) yönetim işlevlerini içerir
 
   Güncelleme Tarihi: 27/06/2020
 
@@ -328,7 +328,7 @@ begin
     Sol += KolonUzunluklari^.Eleman[i];
 
     // dikey kılavuz çizgisi
-    DegerListesi^.Cizgi(DegerListesi, ctDuz, Sol, Alan1.Ust + 1, Sol, Alan1.Alt - 1, $F0F0F0);
+    DegerListesi^.Cizgi(DegerListesi, Sol, Alan1.Ust + 1, Sol, Alan1.Alt - 1, $F0F0F0);
 
     // başlık dolgusu
     Alan2.Sol := Sol - KolonUzunluklari^.Eleman[i];
@@ -349,7 +349,7 @@ begin
   while Ust < Alan1.Alt do
   begin
 
-    DegerListesi^.Cizgi(DegerListesi, ctDuz, Alan1.Sol + 1, Ust, Alan1.Sag - 1, Ust, $F0F0F0);
+    DegerListesi^.Cizgi(DegerListesi, Alan1.Sol + 1, Ust, Alan1.Sag - 1, Ust, $F0F0F0);
     Ust += 1 + 20;
   end;
 

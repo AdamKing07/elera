@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_islemgostergesi.pas
-  Dosya İşlevi: işlem göstergesi (TProgressBar) yönetim işlevlerini içerir
+  Dosya İşlevi: işlem göstergesi (progressbar) nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 19/10/2019
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,22 +21,24 @@ type
   private
     FKimlik: TKimlik;
   public
-    function Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
+    function Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+      AYukseklik: TISayi4): TKimlik;
     procedure DegerleriBelirle(AAltDeger, AUstDeger: TSayi4);
     procedure KonumBelirle(AKonum: TSayi4);
   end;
 
-function _IslemGostergesiOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik,
+function _IslemGostergesiOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
   AYukseklik: TISayi4): TKimlik; assembler;
 procedure _IslemGostergesiDegerleriBelirle(AKimlik: TKimlik; AAltDeger, AUstDeger: TSayi4); assembler;
 procedure _IslemGostergesiKonumBelirle(AKimlik: TKimlik; AKonum: TSayi4); assembler;
 
 implementation
 
-function TIslemGostergesi.Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
+function TIslemGostergesi.Olustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
+  AYukseklik: TISayi4): TKimlik;
 begin
 
-  FKimlik := _IslemGostergesiOlustur(AAtaKimlik, ASol, AUst, AGenislik, AYukseklik);
+  FKimlik := _IslemGostergesiOlustur(AtaKimlik, A1, B1, AGenislik, AYukseklik);
   Result := FKimlik;
 end;
 
@@ -52,14 +54,14 @@ begin
   _IslemGostergesiKonumBelirle(FKimlik, AKonum);
 end;
 
-function _IslemGostergesiOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik,
+function _IslemGostergesiOlustur(AtaKimlik: TKimlik; A1, B1, AGenislik,
   AYukseklik: TISayi4): TKimlik;
 asm
-  push  DWORD AYukseklik
-  push  DWORD AGenislik
-  push  DWORD AUst
-  push  DWORD ASol
-  push  DWORD AAtaKimlik
+  push  AYukseklik
+  push  AGenislik
+  push  B1
+  push  A1
+  push  AtaKimlik
   mov   eax,ISLEMGOSTERGESI_OLUSTUR
   int   $34
   add   esp,20
@@ -67,9 +69,9 @@ end;
 
 procedure _IslemGostergesiDegerleriBelirle(AKimlik: TKimlik; AAltDeger, AUstDeger: TSayi4);
 asm
-  push  DWORD AUstDeger
-  push  DWORD AAltDeger
-  push  DWORD AKimlik
+  push  AUstDeger
+  push  AAltDeger
+  push  AKimlik
   mov   eax,ISLEMGOSTERGESI_ALTUSTDEGER
   int   $34
   add   esp,12
@@ -77,8 +79,8 @@ end;
 
 procedure _IslemGostergesiKonumBelirle(AKimlik: TKimlik; AKonum: TSayi4);
 asm
-  push  DWORD AKonum
-  push  DWORD AKimlik
+  push  AKonum
+  push  AKimlik
   mov   eax,ISLEMGOSTERGESI_KONUMBELIRLE
   int   $34
   add   esp,8

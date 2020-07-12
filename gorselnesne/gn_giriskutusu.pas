@@ -4,7 +4,7 @@
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
   Dosya Adý: gn_giriskutusu.pas
-  Dosya Ýþlevi: giriþ kutusu (TEdit) yönetim iþlevlerini içerir
+  Dosya Ýþlevi: giriþ kutusu (edit) yönetim iþlevlerini içerir
 
   Güncelleme Tarihi: 20/06/2020
 

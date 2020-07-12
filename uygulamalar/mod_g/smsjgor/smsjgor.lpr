@@ -33,7 +33,7 @@ var
 
 begin
 
-  Pencere.Olustur(-1, 100, 20, 600, PENCERE_YUKSEKLIK, ptBoyutlanabilir,
+  Pencere.Olustur(-1, 100, 20, 600, PENCERE_YUKSEKLIK, ptBoyutlandirilabilir,
     ProgramAdi, $E2E2E2);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 

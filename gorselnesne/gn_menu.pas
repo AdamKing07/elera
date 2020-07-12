@@ -6,7 +6,7 @@
   Dosya Adı: gn_menu.pas
   Dosya İşlevi: menü yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 24/06/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -213,7 +213,6 @@ end;
 procedure TMenu.Goster;
 var
   Menu: PMenu;
-  Olay: TOlay;
 begin
 
   inherited Goster;
@@ -225,41 +224,17 @@ begin
 
   // daha önceden seçilmiş index değerini kaldır
   Menu^.FSeciliSiraNo := -1;
-
-  // menünün açıldığına dair nesne sahibine mesaj gönder
-  Olay.Kimlik := Menu^.Kimlik;
-  Olay.Olay := CO_MENUACILDI;
-  Olay.Deger1 := 0;
-  Olay.Deger2 := 0;
-  if not(Menu^.FMenuOlayGeriDonusAdresi = nil) then
-    Menu^.FMenuOlayGeriDonusAdresi(Menu, Olay)
-  else GorevListesi[Menu^.GorevKimlik]^.OlayEkle(Menu^.GorevKimlik, Olay);
 end;
 
 {==============================================================================
   menü nesnesini gizler
  ==============================================================================}
 procedure TMenu.Gizle;
-var
-  Menu: PMenu;
-  Olay: TOlay;
 begin
 
   inherited Gizle;
 
   GAktifMenu := nil;
-
-  Menu := PMenu(Menu^.NesneAl(Kimlik));
-  if(Menu = nil) then Exit;
-
-  // menünün açıldığına dair nesne sahibine mesaj gönder
-  Olay.Kimlik := Menu^.Kimlik;
-  Olay.Olay := CO_MENUKAPATILDI;
-  Olay.Deger1 := 0;
-  Olay.Deger2 := 0;
-  if not(Menu^.FMenuOlayGeriDonusAdresi = nil) then
-    Menu^.FMenuOlayGeriDonusAdresi(Menu, Olay)
-  else GorevListesi[Menu^.GorevKimlik]^.OlayEkle(Menu^.GorevKimlik, Olay);
 end;
 
 {==============================================================================
