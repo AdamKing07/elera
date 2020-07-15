@@ -152,7 +152,7 @@ begin
 
   GirisKutusu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  GirisKutusu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  GirisKutusu^.OlayCagriAdresi := @OlaylariIsle;
 
   GirisKutusu^.FFareImlecTipi := fitGiris;
 
@@ -162,7 +162,7 @@ begin
   GirisKutusu^.FSilmeDugmesi := GirisKutusu^.FSilmeDugmesi^.Olustur(ktBilesen, GirisKutusu,
     AGenislik - 13, 3, 10, 16, 'x');
   GirisKutusu^.FSilmeDugmesi^.CizimModelDegistir(False, RENK_BEYAZ, RENK_BEYAZ, RENK_SIYAH, RENK_KIRMIZI);
-  GirisKutusu^.FSilmeDugmesi^.FDugmeOlayGeriDonusumAdresi := @SilmeDugmeOlaylariniIsle;
+  GirisKutusu^.FSilmeDugmesi^.OlayYonlendirmeAdresi := @SilmeDugmeOlaylariniIsle;
 
   // nesne bellek adresini geri döndür
   Result := GirisKutusu;
@@ -279,8 +279,8 @@ begin
     if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(GirisKutusu^.OlayCagriAdresi = nil) then
-      GirisKutusu^.OlayCagriAdresi(GirisKutusu, AOlay)
+    if not(GirisKutusu^.OlayYonlendirmeAdresi = nil) then
+      GirisKutusu^.OlayYonlendirmeAdresi(GirisKutusu, AOlay)
     else GorevListesi[GirisKutusu^.GorevKimlik]^.OlayEkle(GirisKutusu^.GorevKimlik, AOlay);
   end
   // klavye tuþ basýmý
@@ -300,8 +300,8 @@ begin
 
         // uygulamaya veya efendi nesneye mesaj gönder
         AOlay.Deger1 := Tus;
-        if not(GirisKutusu^.OlayCagriAdresi = nil) then
-          GirisKutusu^.OlayCagriAdresi(GirisKutusu, AOlay)
+        if not(GirisKutusu^.OlayYonlendirmeAdresi = nil) then
+          GirisKutusu^.OlayYonlendirmeAdresi(GirisKutusu, AOlay)
         else GorevListesi[GirisKutusu^.GorevKimlik]^.OlayEkle(GirisKutusu^.GorevKimlik, AOlay);
       end
       // geri silme tuþu
@@ -320,8 +320,8 @@ begin
         GirisKutusu^.Baslik := s;
 
         AOlay.Deger1 := Tus;
-        if not(GirisKutusu^.OlayCagriAdresi = nil) then
-          GirisKutusu^.OlayCagriAdresi(GirisKutusu, AOlay)
+        if not(GirisKutusu^.OlayYonlendirmeAdresi = nil) then
+          GirisKutusu^.OlayYonlendirmeAdresi(GirisKutusu, AOlay)
         else GorevListesi[GirisKutusu^.GorevKimlik]^.OlayEkle(GirisKutusu^.GorevKimlik, AOlay);
       end
       else
@@ -337,8 +337,8 @@ begin
 
             // uygulamaya veya efendi nesneye mesaj gönder
             AOlay.Deger1 := Tus;
-            if not(GirisKutusu^.OlayCagriAdresi = nil) then
-              GirisKutusu^.OlayCagriAdresi(GirisKutusu, AOlay)
+            if not(GirisKutusu^.OlayYonlendirmeAdresi = nil) then
+              GirisKutusu^.OlayYonlendirmeAdresi(GirisKutusu, AOlay)
             else GorevListesi[GirisKutusu^.GorevKimlik]^.OlayEkle(GirisKutusu^.GorevKimlik, AOlay);
           end;
         end
@@ -348,8 +348,8 @@ begin
           GirisKutusu^.Baslik := GirisKutusu^.Baslik + C;
 
           AOlay.Deger1 := Tus;
-          if not(GirisKutusu^.OlayCagriAdresi = nil) then
-            GirisKutusu^.OlayCagriAdresi(GirisKutusu, AOlay)
+          if not(GirisKutusu^.OlayYonlendirmeAdresi = nil) then
+            GirisKutusu^.OlayYonlendirmeAdresi(GirisKutusu, AOlay)
           else GorevListesi[GirisKutusu^.GorevKimlik]^.OlayEkle(GirisKutusu^.GorevKimlik, AOlay);
         end;
       end;

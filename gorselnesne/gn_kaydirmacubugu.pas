@@ -22,7 +22,6 @@ type
   private
     procedure ResimDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   public
-    FKCOlayGeriDonusumAdresi: TOlaylariIsle;
     FYon: TYon;
     FMevcutDeger, FAltDeger, FUstDeger: TISayi4;
     // kaydýrma çubuðunun ortasýndaki çubuðun uzunluðu
@@ -153,8 +152,7 @@ begin
 
   KaydirmaCubugu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  KaydirmaCubugu^.AnaOlayCagriAdresi := @OlaylariIsle;
-  KaydirmaCubugu^.FKCOlayGeriDonusumAdresi := nil;
+  KaydirmaCubugu^.OlayCagriAdresi := @OlaylariIsle;
 
   KaydirmaCubugu^.FYon := AYon;
 
@@ -164,12 +162,12 @@ begin
     // $10000000 + 4 = sol ok resmi
     KaydirmaCubugu^.FEksiltmeDugmesi := FEksiltmeDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
       0, 0, 15, Yukseklik, $10000000 + 4, True);
-    KaydirmaCubugu^.FEksiltmeDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.OlayYonlendirmeAdresi := @ResimDugmesiOlaylariniIsle;
 
     // $10000000 + 3 = sað ok resmi
     KaydirmaCubugu^.FArtirmaDugmesi := FArtirmaDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
       Genislik - 15, 0, 15, Yukseklik, $10000000 + 3, True);
-    KaydirmaCubugu^.FArtirmaDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+    KaydirmaCubugu^.FArtirmaDugmesi^.OlayYonlendirmeAdresi := @ResimDugmesiOlaylariniIsle;
   end
   else
   begin
@@ -177,12 +175,12 @@ begin
     // $10000000 + 4 = yukarý ok resmi
     KaydirmaCubugu^.FEksiltmeDugmesi := FEksiltmeDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
       0, 0, 15, 15, $10000000 + 1, True);
-    KaydirmaCubugu^.FEksiltmeDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+    KaydirmaCubugu^.FEksiltmeDugmesi^.OlayYonlendirmeAdresi := @ResimDugmesiOlaylariniIsle;
 
     // $10000000 + 3 = aþaðý ok resmi
     KaydirmaCubugu^.FArtirmaDugmesi := FArtirmaDugmesi^.Olustur(ktBilesen, KaydirmaCubugu,
       0, Yukseklik - 15, 15, 15, $10000000 + 2, True);
-    KaydirmaCubugu^.FArtirmaDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmesiOlaylariniIsle;
+    KaydirmaCubugu^.FArtirmaDugmesi^.OlayYonlendirmeAdresi := @ResimDugmesiOlaylariniIsle;
   end;
 
   KaydirmaCubugu^.FMevcutDeger := 0;
@@ -389,8 +387,8 @@ begin
     AOlay.Deger1 := KaydirmaCubugu^.FMevcutDeger;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(KaydirmaCubugu^.FKCOlayGeriDonusumAdresi = nil) then
-      KaydirmaCubugu^.FKCOlayGeriDonusumAdresi(KaydirmaCubugu, AOlay)
+    if not(KaydirmaCubugu^.OlayYonlendirmeAdresi = nil) then
+      KaydirmaCubugu^.OlayYonlendirmeAdresi(KaydirmaCubugu, AOlay)
     else GorevListesi[KaydirmaCubugu^.GorevKimlik]^.OlayEkle(KaydirmaCubugu^.GorevKimlik, AOlay);
   end;
 

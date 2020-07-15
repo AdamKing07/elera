@@ -3,7 +3,10 @@
 *******************************************************************************
   - TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
   - TAracCubugu (TToolBar) görsel nesne çalýþmalarý devam ediyor
+  - TSayfaKontrol (TPageControl) görsel nesne çalýþmalarý devam ediyor
 
+  + programýn tüm yazmaç içeriklerini görüntüleyen yazmaç içerik görüntüleyici (yzmcgor2) kodlandý
+  + yeni çekirdek olayý: CO_SECIMDEGISTI (TKarmaListe)
   + masaüstü programý / görev çubuðu için pencereye sahip nesneler ile ilgili iþlevler / kesmeler kodlandý
   + masaüstü yönetim programý (muyntcs) yeniden yapýlandýrýlarak, görev çubuðuna, çalýþan programlarýn eklenmesi saðlandý
   + görev çubuðu üzerinden pencerenin normal ve küçültme iþlevlerinin denetimi saðlandý

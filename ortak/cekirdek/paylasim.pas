@@ -690,7 +690,7 @@ type { Görsel Nesne Tipi }
     gntMenu, gntDefter, gntIslemGostergesi, gntOnayKutusu, gntGirisKutusu, gntDegerDugmesi,
     gntEtiket, gntDurumCubugu, gntSecimDugmesi, gntBaglanti, gntResim, gntListeGorunum,
     gntPanel, gntResimDugmesi, gntKaydirmaCubugu, gntKarmaListe, gntAcilirMenu,
-    gntDegerListesi, gntIzgara, gntAracCubugu, gntRenkSecici);
+    gntDegerListesi, gntIzgara, gntAracCubugu, gntRenkSecici, gntSayfaKontrol);
 
 type
   THamResim = record
@@ -726,6 +726,7 @@ const
   CO_TUSBASILDI           = CO_ILKDEGER + 6;
   CO_MENUACILDI           = CO_ILKDEGER + 7;        // menünün açýlmasý
   CO_MENUKAPATILDI        = CO_ILKDEGER + 8;        // menünün kapatýlmasý
+  CO_SECIMDEGISTI         = CO_ILKDEGER + 9;        // karma liste nesnesinde seçimin deðiþmesi olayý
 
   // fare aygýtýnýn ürettiði olaylar - fare olaylarý (FO)
   FO_ILKDEGER             = $200;

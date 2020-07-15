@@ -151,7 +151,7 @@ begin
 
   Menu^.FTuvalNesne := Menu;
 
-  Menu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  Menu^.OlayCagriAdresi := @OlaylariIsle;
   Menu^.FMenuOlayGeriDonusAdresi := nil;
 
   Menu^.FSecimRenk := $7FB3D5;

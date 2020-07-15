@@ -65,6 +65,7 @@ type
     function OlayAl(var AOlay: TOlay): Boolean;
     function Sonlandir(AGorevKimlik: TKimlik; const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
     function GorevBul(AGorevKimlik: TKimlik): PGorev;
+    function GorevKimligiAl(AGorevAdi: string): TKimlik;
     property OlayBellekAdresi: POlay read FOlayBellekAdresi write FOlayBellekAdresi;
   published
     property GorevKimlik: TKimlik read FGorevKimlik;
@@ -771,6 +772,26 @@ begin
   end;
 
   Result := nil;
+end;
+
+{==============================================================================
+  görev adýndan görev kimlik numarasýný alýr
+ ==============================================================================}
+function TGorev.GorevKimligiAl(AGorevAdi: string): TKimlik;
+var
+  i: TISayi4;
+begin
+
+  // tüm iþlem bellek bölgelerini araþtýr
+  for i := 1 to USTSINIR_GOREVSAYISI do
+  begin
+
+    // görev boþ deðil ise görev sýra numarasýný bir artýr
+    if not(GorevListesi[i]^.FGorevDurum = gdBos) and
+      (GorevListesi[i]^.FProgramAdi = AGorevAdi) then Exit(GorevListesi[i]^.GorevKimlik);
+  end;
+
+  Result := -1;
 end;
 
 {==============================================================================

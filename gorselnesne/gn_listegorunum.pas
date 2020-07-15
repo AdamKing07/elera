@@ -202,7 +202,7 @@ begin
 
   ListeGorunum^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  ListeGorunum^.AnaOlayCagriAdresi := @OlaylariIsle;
+  ListeGorunum^.OlayCagriAdresi := @OlaylariIsle;
 
   ListeGorunum^.FKolonAdlari := nil;
   KolonAdlari := KolonAdlari^.Olustur;
@@ -448,8 +448,8 @@ begin
       ListeGorunum^.Ciz;
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(ListeGorunum^.OlayCagriAdresi = nil) then
-        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      if not(ListeGorunum^.OlayYonlendirmeAdresi = nil) then
+        ListeGorunum^.OlayYonlendirmeAdresi(ListeGorunum, AOlay)
       else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end;
   end
@@ -468,15 +468,15 @@ begin
       // yakalama & býrakma iþlemi bu nesnede olduðu için
       // nesneye FO_TIKLAMA mesajý gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(ListeGorunum^.OlayCagriAdresi = nil) then
-        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      if not(ListeGorunum^.OlayYonlendirmeAdresi = nil) then
+        ListeGorunum^.OlayYonlendirmeAdresi(ListeGorunum, AOlay)
       else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(ListeGorunum^.OlayCagriAdresi = nil) then
-      ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+    if not(ListeGorunum^.OlayYonlendirmeAdresi = nil) then
+      ListeGorunum^.OlayYonlendirmeAdresi(ListeGorunum, AOlay)
     else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
   end
 
@@ -533,8 +533,8 @@ begin
       ListeGorunum^.Ciz;
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(ListeGorunum^.OlayCagriAdresi = nil) then
-        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      if not(ListeGorunum^.OlayYonlendirmeAdresi = nil) then
+        ListeGorunum^.OlayYonlendirmeAdresi(ListeGorunum, AOlay)
       else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end
 
@@ -543,8 +543,8 @@ begin
     begin
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(ListeGorunum^.OlayCagriAdresi = nil) then
-        ListeGorunum^.OlayCagriAdresi(ListeGorunum, AOlay)
+      if not(ListeGorunum^.OlayYonlendirmeAdresi = nil) then
+        ListeGorunum^.OlayYonlendirmeAdresi(ListeGorunum, AOlay)
       else GorevListesi[ListeGorunum^.GorevKimlik]^.OlayEkle(ListeGorunum^.GorevKimlik, AOlay);
     end;
   end

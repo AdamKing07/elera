@@ -6,7 +6,7 @@
   Dosya Adı: n_gorev.pas
   Dosya İşlevi: görev (program) nesnesini yönetir
 
-  Güncelleme Tarihi: 05/04/2020
+  Güncelleme Tarihi: 15/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,9 +17,6 @@ interface
 
 type
   PGorev = ^TGorev;
-
-  { TGorev }
-
   TGorev = object
   public
     function Calistir(ADosyaTamYol: string): TKimlik;
@@ -27,6 +24,7 @@ type
     procedure GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4);
     function GorevBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
     function GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
+    function GorevKimligiAl(AGorevAdi: string): TKimlik;
     function OlayAl(var AOlayKayit: TOlayKayit): TISayi4;
     function OlayBekle(var AOlayKayit: TOlayKayit): TISayi4;
     procedure SistemBilgisiAl(ABellekAdresi: Isaretci);
@@ -45,6 +43,7 @@ function _GorevSonlandir(AGorevNo: TISayi4): TISayi4; assembler;
 procedure _GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4); assembler;
 function _GorevBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4; assembler;
 function _GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4; assembler;
+function _GorevKimligiAl(AGorevAdi: string): TKimlik; assembler;
 
 implementation
 
@@ -76,6 +75,12 @@ function TGorev.GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci):
 begin
 
   Result := _GorevYazmacBilgisiAl(AKimlik, ABellekAdresi);
+end;
+
+function TGorev.GorevKimligiAl(AGorevAdi: string): TKimlik;
+begin
+
+  Result := _GorevKimligiAl(AGorevAdi);
 end;
 
 function TGorev.OlayAl(var AOlayKayit: TOlayKayit): TISayi4;
@@ -192,6 +197,14 @@ asm
   mov	  eax,GOREV_YAZMACBILGISIAL
   int	  $34
   add	  esp,8
+end;
+
+function _GorevKimligiAl(AGorevAdi: string): TKimlik;
+asm
+  push	DWORD AGorevAdi
+  mov	  eax,GOREV_KIMLIGIAL
+  int	  $34
+  add	  esp,4
 end;
 
 end.

@@ -106,17 +106,17 @@ begin
 
   DegerDugmesi^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  DegerDugmesi^.AnaOlayCagriAdresi := @OlaylariIsle;
+  DegerDugmesi^.OlayCagriAdresi := @OlaylariIsle;
 
   // $10000000 + 1 = yukarý ok resmi
   DegerDugmesi^.FArtirmaDugmesi := DegerDugmesi^.FArtirmaDugmesi^.Olustur(ktBilesen,
     DegerDugmesi, 0, 0, 18, 10, $10000000 + 1, True);
-  DegerDugmesi^.FArtirmaDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmeOlaylariniIsle;
+  DegerDugmesi^.FArtirmaDugmesi^.OlayYonlendirmeAdresi := @ResimDugmeOlaylariniIsle;
 
   // $10000000 + 2 = aþaðý ok resmi
   DegerDugmesi^.FEksiltmeDugmesi := DegerDugmesi^.FEksiltmeDugmesi^.Olustur(ktBilesen,
     DegerDugmesi, 0, 11, 18, 10, $10000000 + 2, True);
-  DegerDugmesi^.FEksiltmeDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmeOlaylariniIsle;
+  DegerDugmesi^.FEksiltmeDugmesi^.OlayYonlendirmeAdresi := @ResimDugmeOlaylariniIsle;
 
   // kimlik adresini geri döndür
   Result := DegerDugmesi;
@@ -227,8 +227,8 @@ begin
       // nesnenin olay çaðrý adresini çaðýr veya uygulamaya mesaj gönder
       AOlay.Kimlik := DegerDugmesi^.Kimlik;
       AOlay.Deger1 := 0;
-      if not(DegerDugmesi^.OlayCagriAdresi = nil) then
-        DegerDugmesi^.OlayCagriAdresi(DegerDugmesi, AOlay)
+      if not(DegerDugmesi^.OlayYonlendirmeAdresi = nil) then
+        DegerDugmesi^.OlayYonlendirmeAdresi(DegerDugmesi, AOlay)
       else GorevListesi[DegerDugmesi^.GorevKimlik]^.OlayEkle(DegerDugmesi^.GorevKimlik, AOlay);
     end
     else if(AOlay.Kimlik = DegerDugmesi^.FEksiltmeDugmesi^.Kimlik) then
@@ -237,8 +237,8 @@ begin
       // nesnenin olay çaðrý adresini çaðýr veya uygulamaya mesaj gönder
       AOlay.Kimlik := DegerDugmesi^.Kimlik;
       AOlay.Deger1 := 1;
-      if not(DegerDugmesi^.OlayCagriAdresi = nil) then
-        DegerDugmesi^.OlayCagriAdresi(DegerDugmesi, AOlay)
+      if not(DegerDugmesi^.OlayYonlendirmeAdresi = nil) then
+        DegerDugmesi^.OlayYonlendirmeAdresi(DegerDugmesi, AOlay)
       else GorevListesi[DegerDugmesi^.GorevKimlik]^.OlayEkle(DegerDugmesi^.GorevKimlik, AOlay);
     end;
   end;

@@ -1,1 +1,0 @@
-fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\..\rtl_uygulama\linux\units\i386-linux -Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tdskgor.ld -o..\..\_g\dskgor.c dskgor.lpr

@@ -6,7 +6,7 @@
   Dosya Adý: zamanlayici.pas
   Dosya Ýþlevi: zamanlayýcý yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 11/06/2020
+  Güncelleme Tarihi: 15/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,7 @@ unit zamanlayici;
 
 interface
 
-uses paylasim, port;
+uses paylasim, port, gorselnesne;
 
 const
   AZAMI_ZAMANLAYICI_SAYISI = 32;
@@ -32,6 +32,7 @@ type
     FGorevKimlik: TKimlik;
     FTetiklemeSuresi, FGeriSayimSayaci: TSayi4;
   public
+    FOlayYonlendirmeAdresi: TOlaylariIsle;
     procedure Yukle;
     function Olustur(AMiliSaniye: TISayi4): PZamanlayici;
     function BosZamanlayiciBul: PZamanlayici;
@@ -96,6 +97,7 @@ begin
 
     Zamanlayici^.FZamanlayiciDurum := zdBos;
     Zamanlayici^.FKimlik := i;
+    Zamanlayici^.FOlayYonlendirmeAdresi := nil;
 
     BellekAdresi += ZamanlayiciU;
   end;
@@ -218,8 +220,15 @@ begin
         Olay.Deger1 := 0;
         Olay.Deger2 := 0;
 
-        Gorev := GorevListesi[ZamanlayiciListesi[i]^.GorevKimlik];
-        Gorev^.OlayEkle(Gorev^.GorevKimlik, Olay);
+        if not(ZamanlayiciListesi[i]^.FOlayYonlendirmeAdresi = nil) then
+
+          ZamanlayiciListesi[i]^.FOlayYonlendirmeAdresi(nil, Olay)
+        else
+        begin
+
+          Gorev := GorevListesi[ZamanlayiciListesi[i]^.GorevKimlik];
+          Gorev^.OlayEkle(Gorev^.GorevKimlik, Olay);
+        end;
       end;
     end;
   end;

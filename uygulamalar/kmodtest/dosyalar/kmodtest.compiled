@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1351329191"/>
+  <Params Value=" -Tlinux -Pi386 -MObjFPC -Scghi -CX -Os -Xs -XX -k-Tkmodtest.ld -l -vewnhibq -FiC:\Users\elera\Documents\bitbucket\elerais\uygulamalar\kmodtest\dosyalar -FuC:\Users\elera\Documents\bitbucket\elerais\rtl_uygulama\linux\units\i386-linux -FuC:\Users\elera\Documents\bitbucket\elerais\uygulamalar\kmodtest\ -FUC:\Users\elera\Documents\bitbucket\elerais\uygulamalar\kmodtest\dosyalar\ -FEC:\Users\elera\Documents\bitbucket\elerais\uygulamalar\_\ -oC:\Users\elera\Documents\bitbucket\elerais\uygulamalar\_\kmodtest.c kmodtest.lpr"/>
+</CONFIG>

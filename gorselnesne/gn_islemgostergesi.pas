@@ -123,7 +123,7 @@ begin
 
   IslemGostergesi^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  IslemGostergesi^.AnaOlayCagriAdresi := @OlaylariIsle;
+  IslemGostergesi^.OlayCagriAdresi := @OlaylariIsle;
 
   // diğer değer atamaları
   IslemGostergesi^.FAltDeger := 1;

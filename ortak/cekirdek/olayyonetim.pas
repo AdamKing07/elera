@@ -285,8 +285,8 @@ begin
     FAktifGorselNesne := AGorselNesne;
   end;
 
-  if not(AGorselNesne^.AnaOlayCagriAdresi = nil) then
-    AGorselNesne^.AnaOlayCagriAdresi(AGorselNesne, AOlay);
+  if not(AGorselNesne^.OlayCagriAdresi = nil) then
+    AGorselNesne^.OlayCagriAdresi(AGorselNesne, AOlay);
 
   // tuþ basýmý esnasýnda açýk bir menü var ise kapatýlacak
   if(AOlay.Olay = FO_SOLTUS_BASILDI) or (AOlay.Olay = FO_SAGTUS_BASILDI) then

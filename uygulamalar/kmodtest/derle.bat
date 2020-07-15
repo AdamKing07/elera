@@ -1,0 +1,1 @@
+fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\rtl_uygulama\linux\units\i386-linux -Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tkmodtest.ld -o..\_\kmodtest.c kmodtest.lpr

@@ -6,7 +6,7 @@
   Dosya Adı: gn_panel.pas
   Dosya İşlevi: panel (TPanel) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 13/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -41,14 +41,14 @@ uses genel, gorev, gn_islevler, temelgorselnesne, gn_pencere, gn_resimdugmesi,
   gn_kaydirmacubugu, gn_dugme, gn_gucdugmesi, gn_defter, gn_baglanti, gn_degerdugmesi,
   gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_islemgostergesi, gn_karmaliste,
   gn_listegorunum, gn_listekutusu, gn_onaykutusu, gn_resim, gn_secimdugmesi,
-  gn_araccubugu, gn_degerlistesi, gn_izgara, gn_renksecici;
+  gn_araccubugu, gn_degerlistesi, gn_izgara, gn_renksecici, gn_sayfakontrol;
 
 {==============================================================================
     panel kesme çağrılarını yönetir
  ==============================================================================}
 function PanelCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  GorselNesne: PGorselNesne;
+  GorselNesne: PGorselNesne = nil;
   Pencere: PPencere;
   Panel: PPanel;
   Hiza: THiza;
@@ -144,7 +144,7 @@ begin
     Panel^.FTuvalNesne := Panel
   else Panel^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  Panel^.AnaOlayCagriAdresi := @OlaylariIsle;
+  Panel^.OlayCagriAdresi := @OlaylariIsle;
 
   // nesne adresini geri döndür
   Result := Panel;
@@ -235,6 +235,7 @@ begin
           gntRenkSecici     : PRenkSecici(GorunurNesne)^.Boyutlandir;
           gntResim          : PResim(GorunurNesne)^.Boyutlandir;
           gntResimDugmesi   : PResimDugmesi(GorunurNesne)^.Boyutlandir;
+          gntSayfaKontrol   : PSayfaKontrol(GorunurNesne)^.Boyutlandir;
           gntSecimDugmesi   : PSecimDugmesi(GorunurNesne)^.Boyutlandir;
         end;
       end;
@@ -301,6 +302,7 @@ begin
             gntRenkSecici     : PRenkSecici(AltGorselNesne)^.Ciz;
             gntResim          : PResim(AltGorselNesne)^.Ciz;
             gntResimDugmesi   : PResimDugmesi(AltGorselNesne)^.Ciz;
+            gntSayfaKontrol   : PSayfaKontrol(AltGorselNesne)^.Ciz;
             gntSecimDugmesi   : PSecimDugmesi(AltGorselNesne)^.Ciz;
           end;
         end;
@@ -320,10 +322,10 @@ begin
 
   // nesnenin olay çağrı adresi türemiş başka bir nesne tarafından belirlenmişse,
   // olayları koşulsuz olarak ilgili nesneye yönlendir
-  if not(AGonderici^.OlayCagriAdresi = nil) then
+  if not(AGonderici^.OlayYonlendirmeAdresi = nil) then
   begin
 
-    AGonderici^.OlayCagriAdresi(AGonderici, AOlay);
+    AGonderici^.OlayYonlendirmeAdresi(AGonderici, AOlay);
     Exit;
   end;
 

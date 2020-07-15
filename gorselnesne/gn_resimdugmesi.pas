@@ -28,7 +28,6 @@ type
     FDeger: TSayi4;
     FKenarlikCiz: Boolean;
   public
-    FRDOlayGeriDonusumAdresi: TOlaylariIsle;
     function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
       ASol, AUst, AGenislik, AYukseklik, AResimSiraNo: TSayi4; AKenarlikCiz: Boolean): PResimDugmesi;
     procedure YokEt;
@@ -131,8 +130,7 @@ begin
 
   ResimDugmesi^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  ResimDugmesi^.AnaOlayCagriAdresi := @OlaylariIsle;
-  ResimDugmesi^.FRDOlayGeriDonusumAdresi := nil;
+  ResimDugmesi^.OlayCagriAdresi := @OlaylariIsle;
 
   ResimDugmesi^.FDeger := AResimSiraNo;
 
@@ -271,8 +269,8 @@ begin
       ResimDugmesi^.Ciz;
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(ResimDugmesi^.FRDOlayGeriDonusumAdresi = nil) then
-        ResimDugmesi^.FRDOlayGeriDonusumAdresi(ResimDugmesi, AOlay)
+      if not(ResimDugmesi^.OlayYonlendirmeAdresi = nil) then
+        ResimDugmesi^.OlayYonlendirmeAdresi(ResimDugmesi, AOlay)
       else GorevListesi[ResimDugmesi^.GorevKimlik]^.OlayEkle(ResimDugmesi^.GorevKimlik, AOlay);
     end;
   end
@@ -295,15 +293,15 @@ begin
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // uygulamaya veya efendi nesneye FO_TIKLAMA mesajı gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(ResimDugmesi^.FRDOlayGeriDonusumAdresi = nil) then
-        ResimDugmesi^.FRDOlayGeriDonusumAdresi(ResimDugmesi, AOlay)
+      if not(ResimDugmesi^.OlayYonlendirmeAdresi = nil) then
+        ResimDugmesi^.OlayYonlendirmeAdresi(ResimDugmesi, AOlay)
       else GorevListesi[ResimDugmesi^.GorevKimlik]^.OlayEkle(ResimDugmesi^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(ResimDugmesi^.FRDOlayGeriDonusumAdresi = nil) then
-      ResimDugmesi^.FRDOlayGeriDonusumAdresi(ResimDugmesi, AOlay)
+    if not(ResimDugmesi^.OlayYonlendirmeAdresi = nil) then
+      ResimDugmesi^.OlayYonlendirmeAdresi(ResimDugmesi, AOlay)
     else GorevListesi[ResimDugmesi^.GorevKimlik]^.OlayEkle(ResimDugmesi^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_HAREKET) then
@@ -325,8 +323,8 @@ begin
     ResimDugmesi^.Ciz;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(ResimDugmesi^.FRDOlayGeriDonusumAdresi = nil) then
-      ResimDugmesi^.FRDOlayGeriDonusumAdresi(ResimDugmesi, AOlay)
+    if not(ResimDugmesi^.OlayYonlendirmeAdresi = nil) then
+      ResimDugmesi^.OlayYonlendirmeAdresi(ResimDugmesi, AOlay)
     else GorevListesi[ResimDugmesi^.GorevKimlik]^.OlayEkle(ResimDugmesi^.GorevKimlik, AOlay);
   end;
 

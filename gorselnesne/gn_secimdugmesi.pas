@@ -148,7 +148,7 @@ begin
 
   SecimDugmesi^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  SecimDugmesi^.AnaOlayCagriAdresi := @OlaylariIsle;
+  SecimDugmesi^.OlayCagriAdresi := @OlaylariIsle;
 
   SecimDugmesi^.FSecimDurumu := sdNormal;
 
@@ -293,8 +293,8 @@ begin
         AOlay.Deger1 := TISayi4(sdSecili);
 
         // nesnenin olay çağrı adresini çağır veya uygulamaya mesaj gönder
-        if not(SecimDugmesi^.OlayCagriAdresi = nil) then
-          SecimDugmesi^.OlayCagriAdresi(SecimDugmesi, AOlay)
+        if not(SecimDugmesi^.OlayYonlendirmeAdresi = nil) then
+          SecimDugmesi^.OlayYonlendirmeAdresi(SecimDugmesi, AOlay)
         else GorevListesi[SecimDugmesi^.GorevKimlik]^.OlayEkle(SecimDugmesi^.GorevKimlik, AOlay);
       end;
     end;

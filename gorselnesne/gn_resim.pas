@@ -144,7 +144,7 @@ begin
 
   Resim^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  Resim^.AnaOlayCagriAdresi := @OlaylariIsle;
+  Resim^.OlayCagriAdresi := @OlaylariIsle;
 
   Resim^.FTuvaleSigdir := False;
 
@@ -250,8 +250,8 @@ begin
     OlayYakalamayaBasla(Resim);
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(Resim^.OlayCagriAdresi = nil) then
-      Resim^.OlayCagriAdresi(Resim, AOlay)
+    if not(Resim^.OlayYonlendirmeAdresi = nil) then
+      Resim^.OlayYonlendirmeAdresi(Resim, AOlay)
     else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
@@ -267,21 +267,21 @@ begin
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // nesneye FO_TIKLAMA mesajı gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(Resim^.OlayCagriAdresi = nil) then
-        Resim^.OlayCagriAdresi(Resim, AOlay)
+      if not(Resim^.OlayYonlendirmeAdresi = nil) then
+        Resim^.OlayYonlendirmeAdresi(Resim, AOlay)
       else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
     end;
 
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(Resim^.OlayCagriAdresi = nil) then
-      Resim^.OlayCagriAdresi(Resim, AOlay)
+    if not(Resim^.OlayYonlendirmeAdresi = nil) then
+      Resim^.OlayYonlendirmeAdresi(Resim, AOlay)
     else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_HAREKET) then
   begin
 
-    if not(Resim^.OlayCagriAdresi = nil) then
-      Resim^.OlayCagriAdresi(Resim, AOlay)
+    if not(Resim^.OlayYonlendirmeAdresi = nil) then
+      Resim^.OlayYonlendirmeAdresi(Resim, AOlay)
     else GorevListesi[Resim^.GorevKimlik]^.OlayEkle(Resim^.GorevKimlik, AOlay);
   end;
 

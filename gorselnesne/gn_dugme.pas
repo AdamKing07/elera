@@ -24,7 +24,6 @@ type
     FDolguluCizim: Boolean;         // dolgulu çizim mi, normal çizim mi?
     FYaziRenkNormal, FYaziRenkBasili: TRenk;
   public
-    FDugmeOlayGeriDonusumAdresi: TOlaylariIsle;
     function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
       ASol, AUst, AGenislik, AYukseklik: TISayi4; ABaslik: string): PDugme;
     procedure YokEt;
@@ -50,9 +49,9 @@ uses genel, gn_pencere, gn_islevler, temelgorselnesne, giysi_mac;
  ==============================================================================}
 function DugmeCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  GorselNesne: PGorselNesne;
-  Pencere: PPencere;
-  Dugme: PDugme;
+  GorselNesne: PGorselNesne = nil;
+  Pencere: PPencere = nil;
+  Dugme: PDugme = nil;
   Hiza: THiza;
 begin
 
@@ -126,7 +125,7 @@ end;
 function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   ABaslik: string): TKimlik;
 var
-  Dugme: PDugme;
+  Dugme: PDugme = nil;
 begin
 
   Dugme := Dugme^.Olustur(ktNesne, AAtaNesne, ASol, AUst, AGenislik, AYukseklik, ABaslik);
@@ -144,7 +143,7 @@ end;
 function TDugme.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
   ASol, AUst, AGenislik, AYukseklik: TISayi4; ABaslik: string): PDugme;
 var
-  Dugme: PDugme;
+  Dugme: PDugme = nil;
 begin
 
   Dugme := PDugme(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst, AGenislik,
@@ -158,8 +157,7 @@ begin
 
   Dugme^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  Dugme^.AnaOlayCagriAdresi := @OlaylariIsle;
-  Dugme^.FDugmeOlayGeriDonusumAdresi := nil;
+  Dugme^.OlayCagriAdresi := @OlaylariIsle;
 
   Dugme^.FDurum := ddNormal;
 
@@ -206,7 +204,7 @@ end;
  ==============================================================================}
 procedure TDugme.Boyutlandir;
 var
-  Dugme: PDugme;
+  Dugme: PDugme = nil;
 begin
 
   Dugme := PDugme(Dugme^.NesneAl(Kimlik));
@@ -220,7 +218,7 @@ end;
  ==============================================================================}
 procedure TDugme.Ciz;
 var
-  Dugme: PDugme;
+  Dugme: PDugme = nil;
 begin
 
   Dugme := PDugme(Dugme^.NesneAl(Kimlik));
@@ -239,8 +237,8 @@ end;
  ==============================================================================}
 procedure TDugme.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  Pencere: PPencere;
-  Dugme: PDugme;
+  Pencere: PPencere = nil;
+  Dugme: PDugme = nil;
 begin
 
   Dugme := PDugme(AGonderici);
@@ -270,8 +268,8 @@ begin
       Dugme^.Ciz;
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(Dugme^.FDugmeOlayGeriDonusumAdresi = nil) then
-        Dugme^.FDugmeOlayGeriDonusumAdresi(Dugme, AOlay)
+      if not(Dugme^.OlayYonlendirmeAdresi = nil) then
+        Dugme^.OlayYonlendirmeAdresi(Dugme, AOlay)
       else GorevListesi[Dugme^.GorevKimlik]^.OlayEkle(Dugme^.GorevKimlik, AOlay);
     end;
   end
@@ -294,15 +292,15 @@ begin
       // yakalama & býrakma iþlemi bu nesnede olduðu için
       // uygulamaya veya efendi nesneye FO_TIKLAMA mesajý gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(Dugme^.FDugmeOlayGeriDonusumAdresi = nil) then
-        Dugme^.FDugmeOlayGeriDonusumAdresi(Dugme, AOlay)
+      if not(Dugme^.OlayYonlendirmeAdresi = nil) then
+        Dugme^.OlayYonlendirmeAdresi(Dugme, AOlay)
       else GorevListesi[Dugme^.GorevKimlik]^.OlayEkle(Dugme^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(Dugme^.FDugmeOlayGeriDonusumAdresi = nil) then
-      Dugme^.FDugmeOlayGeriDonusumAdresi(Dugme, AOlay)
+    if not(Dugme^.OlayYonlendirmeAdresi = nil) then
+      Dugme^.OlayYonlendirmeAdresi(Dugme, AOlay)
     else GorevListesi[Dugme^.GorevKimlik]^.OlayEkle(Dugme^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_HAREKET) then
@@ -325,8 +323,8 @@ begin
     Dugme^.Ciz;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(Dugme^.FDugmeOlayGeriDonusumAdresi = nil) then
-      Dugme^.FDugmeOlayGeriDonusumAdresi(Dugme, AOlay)
+    if not(Dugme^.OlayYonlendirmeAdresi = nil) then
+      Dugme^.OlayYonlendirmeAdresi(Dugme, AOlay)
     else GorevListesi[Dugme^.GorevKimlik]^.OlayEkle(Dugme^.GorevKimlik, AOlay);
   end;
 
@@ -340,7 +338,7 @@ end;
 procedure TDugme.CizimModelDegistir(ADolguluCizim: Boolean; AGovdeRenk1, AGovdeRenk2,
   AYaziRenkNormal, AYaziRenkBasili: TRenk);
 var
-  Dugme: PDugme;
+  Dugme: PDugme = nil;
 begin
 
   // kimlik deðerinden nesneyi al

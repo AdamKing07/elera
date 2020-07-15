@@ -17,7 +17,7 @@ interface
 
 uses paylasim, gn_pencere, gn_etiket, zamanlayici, dns, gn_panel, gorselnesne,
   gn_gucdugmesi, gn_resim, gn_karmaliste, gn_degerlistesi, gn_dugme, gn_izgara,
-  gn_araccubugu, gn_durumcubugu, gn_giriskutusu, gn_onaykutusu, gn_renksecici;
+  gn_araccubugu, gn_durumcubugu, gn_giriskutusu, gn_onaykutusu, gn_sayfakontrol;
 
 type
   // gerçek moddan gelen veri yapýsý
@@ -56,23 +56,25 @@ type
   public
     TestSinif: TTestSinif;
     Degerler: array[1..8] of TSayi4;
+    GorevNo: TISayi4;
     Panel: PPanel;
     BulunanCiftSayisi, TiklamaSayisi,
     SecilenEtiket, ToplamTiklamaSayisi: TSayi4;
     FCalisanBirim: TArgeProgram;
+    P5SayfaKontrol: PSayfaKontrol;
     procedure Olustur;
-    procedure Program1Basla;
     procedure Program2Basla;
     procedure Program3Basla;
     procedure Program4Basla;
-    procedure P1NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure Program5Basla;
     procedure P2NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure P5NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
 
 var
-  SDPencere: PPencere;
+  SDPencere: PPencere = nil;
   SDZamanlayici, P1Zamanlayici: PZamanlayici;
   P1Pencere, P2Pencere, P3Pencere, P4Pencere, P5Pencere: PPencere;
   P4DurumCubugu: PDurumCubugu;
@@ -86,6 +88,8 @@ var
   P1Dugme, P4Dugme: PDugme;
   P1DegerListesi: PDegerListesi;
   P3Izgara: PIzgara;
+  P5Panel: array[0..1] of PPanel;
+  P5Dugme: array[0..1] of PDugme;
   GNEtiket: PEtiket;
   Resim: PResim;
   _DNS: PDNS = nil;
@@ -104,7 +108,7 @@ procedure SistemDegerleriOlayIsle;
 implementation
 
 uses gdt, gorev, src_klavye, genel, ag, dhcp, sistemmesaj, src_vesa20,
-  gn_masaustu, donusum, gn_islevler;
+  gn_masaustu, donusum, gn_islevler, giysi_normal, giysi_mac;
 
 {==============================================================================
   sistem ilk yükleme iþlevlerini gerçekleþtirir
@@ -213,7 +217,7 @@ var
   Gorev: PGorev;
   Tus: Char;
   TusDurum: TTusDurum;
-  AtaGorselNesne: PGorselNesne;
+  AtaGorselNesne: PGorselNesne = nil;
 begin
 
 {  if(CalisanGorevSayisi = 1) then
@@ -234,7 +238,8 @@ begin
   SistemDegerleriBasla;
 
   TestAlani.Olustur;
-  TestAlani.FCalisanBirim;
+
+  if not(TestAlani.FCalisanBirim = nil) then TestAlani.FCalisanBirim;
 
   // sistem için DHCP sunucusundan IP adresi al
   if(AgYuklendi) then DHCPSunucuKesfet;
@@ -263,7 +268,15 @@ begin
         else if(Tus = '3') then
         begin
 
-          Gorev^.Calistir('disk1:\dnssorgu.c');
+          Gorev^.Calistir('disk1:\yzmcgor2.c');
+
+          //AktifGiysi := GiysiNormal;
+          //GAktifMasaustu^.Ciz;
+          //Gorev^.Calistir('disk1:\dnssorgu.c');
+
+          //SISTEM_MESAJ('Panel1 Alt NS: %d', [P5Panel[0]^.FAltNesneSayisi]);
+          //SISTEM_MESAJ('Panel2 Alt NS: %d', [P5Panel[1]^.FAltNesneSayisi]);
+
           {i := FindFirst('disk1:\kaynak\*.*', 0, AramaKaydi);
           while i = 0 do
           begin
@@ -274,6 +287,11 @@ begin
           FindClose(AramaKaydi);}
           //Gorev^.Calistir('disk1:\6.bmp');
           //Gorev^.Calistir('disk1:\hafiza.c');
+        end
+        else if(Tus = '4') then
+        begin
+
+          AktifGiysi := GiysiMac;
         end
         else if(Tus = 'd') then
         begin
@@ -416,9 +434,7 @@ begin
     if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
-      if(Olay.Kimlik = SDZamanlayici^.Kimlik) then
-        SDPencere^.Ciz
-      else TestAlani.P1NesneTestOlayIsle(nil, Olay);
+      if(Olay.Kimlik = SDZamanlayici^.Kimlik) then SDPencere^.Ciz;
     end
     else if(Olay.Olay = CO_CIZIM) then
     begin
@@ -456,114 +472,7 @@ end;
 procedure TArGe.Olustur;
 begin
 
-  FCalisanBirim := @Program4Basla;
-end;
-
-procedure TArGe.Program1Basla;
-begin
-
-  P1Pencere := P1Pencere^.Olustur(nil, 0, 0, 180, 440, ptBoyutlanabilir,
-    'Yazmaçlar', RENK_BEYAZ);
-  //P1Pencere^.OlayCagriAdresi := @P1NesneTestOlayIsle;
-
-  P1Zamanlayici := P1Zamanlayici^.Olustur(200);
-  P1Zamanlayici^.Durum := zdCalisiyor;
-
-  P1Panel := P1Panel^.Olustur(ktNesne, P1Pencere, 0, 0, 100, 29, 0, 0, 0, 0, '');
-  P1Panel^.FHiza := hzUst;
-  P1Panel^.Goster;
-
-  P1KarmaListe := P1KarmaListe^.Olustur(ktNesne, P1Panel, 2, 3, 100, 28);
-  P1KarmaListe^.ListeyeEkle('Görev-1');
-  P1KarmaListe^.ListeyeEkle('Görev-2');
-  P1KarmaListe^.ListeyeEkle('Görev-3');
-  P1KarmaListe^.ListeyeEkle('Görev-4');
-  P1KarmaListe^.ListeyeEkle('Görev-5');
-  P1KarmaListe^.Goster;
-
-  P1Dugme := P1Dugme^.Olustur(ktNesne, P1Panel, 105, 2, 70, 24, 'Yenile');
-  P1Dugme^.Goster;
-
-  P1DegerListesi := P1DegerListesi^.Olustur(ktNesne, P1Pencere, 0, 0, 100, 100);
-  P1DegerListesi^.FHiza := hzTum;
-  P1DegerListesi^.BaslikEkle('Yazmaç', 'Deðer', 80);
-  P1DegerListesi^.Goster;
-
-//  TestSinif := TTestSinif.Create;
-//  TestSinif.FDeger1 := 10;
-
-  P1Pencere^.Goster;
-end;
-
-procedure TArGe.P1NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-var
-  Gorev: PGorev;
-  Pencere: PPencere;
-  GucDugmesi: PGucDugmesi;
-  TSS: PTSS;
-begin
-
-  if(AOlay.Olay = CO_ZAMANLAYICI) then
-  begin
-
-    P1DegerListesi^.DegerIceriginiTemizle;
-
-    TSS := GorevTSSListesi[1];
-
-    P1DegerListesi^.DegerEkle('EAX|0x' + hexStr(TSS^.EAX, 8));
-    P1DegerListesi^.DegerEkle('EBX|0x' + hexStr(TSS^.EBX, 8));
-    P1DegerListesi^.DegerEkle('ECX|0x' + hexStr(TSS^.ECX, 8));
-    P1DegerListesi^.DegerEkle('EDX|0x' + hexStr(TSS^.EDX, 8));
-    P1DegerListesi^.DegerEkle('ESI|0x' + hexStr(TSS^.ESI, 8));
-    P1DegerListesi^.DegerEkle('EDI|0x' + hexStr(TSS^.EDI, 8));
-    P1DegerListesi^.DegerEkle('CS|0x' + hexStr(TSS^.CS, 8));
-    P1DegerListesi^.DegerEkle('DS|0x' + hexStr(TSS^.DS, 8));
-    P1DegerListesi^.DegerEkle('ES|0x' + hexStr(TSS^.ES, 8));
-    P1DegerListesi^.DegerEkle('FS|0x' + hexStr(TSS^.FS, 8));
-    P1DegerListesi^.DegerEkle('GS|0x' + hexStr(TSS^.GS, 8));
-    P1DegerListesi^.DegerEkle('SS|0x' + hexStr(TSS^.SS, 8));
-    P1DegerListesi^.DegerEkle('ESP|0x' + hexStr(TSS^.ESP, 8));
-    P1DegerListesi^.DegerEkle('EBP|0x' + hexStr(TSS^.EBP, 8));
-    P1DegerListesi^.DegerEkle('SS0|0x' + hexStr(TSS^.SS0, 8));
-    P1DegerListesi^.DegerEkle('ESP0|0x' + hexStr(TSS^.ESP0, 8));
-    P1DegerListesi^.DegerEkle('SS1|0x' + hexStr(TSS^.SS1, 8));
-    P1DegerListesi^.DegerEkle('ESP1|0x' + hexStr(TSS^.ESP1, 8));
-    P1DegerListesi^.DegerEkle('SS2|0x' + hexStr(TSS^.SS2, 8));
-    P1DegerListesi^.DegerEkle('ESP2|0x' + hexStr(TSS^.ESP2, 8));
-    P1DegerListesi^.DegerEkle('CR3|0x' + hexStr(TSS^.CR3, 8));
-    P1DegerListesi^.DegerEkle('EIP|0x' + hexStr(TSS^.EIP, 8));
-    P1DegerListesi^.DegerEkle('EFLAGS|0x' + hexStr(TSS^.EFLAGS, 8));
-    P1DegerListesi^.DegerEkle('LDT|0x' + hexStr(TSS^.LDT, 8));
-    P1DegerListesi^.Ciz;
-  end
-  else if(AOlay.Olay = CO_DURUMDEGISTI) then
-  begin
-
-    if(AOlay.Deger1 = 1) then
-    begin
-
-      GucDugmesi := PGucDugmesi(GucDugmesi^.NesneAl(AOlay.Kimlik));
-      if not(GucDugmesi = nil) then
-      begin
-
-        Gorev := Gorev^.GorevBul(GucDugmesi^.FEtiket);
-        if not(Gorev = nil) then
-        begin
-
-          Pencere := PPencere(Gorev^.FAnaPencere);
-          if not(Pencere = nil) and (Pencere^.NesneTipi = gntPencere) then
-          begin
-
-            // pencere küçültülmüþ durumda ise normal duruma çevir
-            if(Pencere^.FPencereDurum = pdKucultuldu) then
-              Pencere^.FPencereDurum := pdNormal;
-
-            Pencere^.EnUsteGetir(Pencere);
-          end;
-        end;
-      end;
-    end;
-  end;
+  FCalisanBirim := nil; //@Program5Basla;
 end;
 
 procedure TArGe.Program2Basla;
@@ -577,16 +486,16 @@ begin
 
   P2Pencere := P2Pencere^.Olustur(P2Masaustu, 100, 100, 500, 400, ptBoyutlanabilir,
     'Görsel Nesne Yönetim', RENK_BEYAZ);
-  P2Pencere^.OlayCagriAdresi := @P2NesneTestOlayIsle;
+  P2Pencere^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
 
   P2Dugmeler[0] := P2Dugmeler[0]^.Olustur(ktNesne, P2Pencere,
     10, 10, 100, 100, 'Artýr');
-  P2Dugmeler[0]^.OlayCagriAdresi := @P2NesneTestOlayIsle;
+  P2Dugmeler[0]^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
   P2Dugmeler[0]^.Goster;
 
   P2Dugmeler[1] := P2Dugmeler[1]^.Olustur(ktNesne, P2Pencere,
     120, 10, 100, 100, 'Eksilt');
-  P2Dugmeler[1]^.OlayCagriAdresi := @P2NesneTestOlayIsle;
+  P2Dugmeler[1]^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
   P2Dugmeler[1]^.Goster;
 
 //  TestSinif := TTestSinif.Create;
@@ -608,7 +517,7 @@ var
 begin
 
   P3Pencere := P3Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir, 'Izgara', RENK_BEYAZ);
-  P3Pencere^.OlayCagriAdresi := @P3NesneTestOlayIsle;
+  P3Pencere^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
 
   P3Izgara := P3Izgara^.Olustur(ktNesne, P3Pencere, 0, 0, 180, 180);
   P3Izgara^.FHiza := hzTum;
@@ -631,13 +540,11 @@ end;
 procedure TArGe.Program4Basla;
 begin
 
-  Exit;
-
   SonSecim := 0;
 
   P4Pencere := P4Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir,
     'Nesneler', RENK_BEYAZ);
-  P4Pencere^.OlayCagriAdresi := @P4NesneTestOlayIsle;
+  P4Pencere^.OlayYonlendirmeAdresi := @P4NesneTestOlayIsle;
 
   P4AracCubugu := P4AracCubugu^.Olustur(ktNesne, P4Pencere);
   P4ACDugmeler[0] := P4AracCubugu^.DugmeEkle(6);
@@ -645,14 +552,40 @@ begin
   P4ACDugmeler[2] := P4AracCubugu^.DugmeEkle(8);
   P4ACDugmeler[3] := P4AracCubugu^.DugmeEkle(9);
   P4ACDugmeler[4] := P4AracCubugu^.DugmeEkle(10);
-  P4AracCubugu^.OlayCagriAdresi := @P4NesneTestOlayIsle;
+  P4AracCubugu^.OlayYonlendirmeAdresi := @P4NesneTestOlayIsle;
   P4AracCubugu^.Goster;
 
   P4DurumCubugu := P4DurumCubugu^.Olustur(ktNesne, P4Pencere, 0, 0, 10, 10, 'Konum: 0:0');
-  P4DurumCubugu^.OlayCagriAdresi := @P4NesneTestOlayIsle;
+  P4DurumCubugu^.OlayYonlendirmeAdresi := @P4NesneTestOlayIsle;
   P4DurumCubugu^.Goster;
 
   P4Pencere^.Goster;
+end;
+
+procedure TArGe.Program5Basla;
+begin
+
+  P5Pencere := P5Pencere^.Olustur(nil, 10, 10, 400, 400, ptBoyutlanabilir,
+    'Sayfa Kontrol', RENK_BEYAZ);
+  P5Pencere^.OlayYonlendirmeAdresi := @P5NesneTestOlayIsle;
+
+  P5SayfaKontrol := P5SayfaKontrol^.Olustur(ktNesne, P5Pencere, 10, 10, 200, 200);
+
+  P4ACDugmeler[0] := P5SayfaKontrol^.SayfaEkle('Sistem Bilgisi');
+  P5Panel[0] := PPanel(P5Panel[0]^.NesneAl(P4ACDugmeler[0]));
+
+  P4ACDugmeler[1] := P5SayfaKontrol^.SayfaEkle('Ýþlemci Bilgisi');
+  P5Panel[1] := PPanel(P5Panel[1]^.NesneAl(P4ACDugmeler[1]));
+
+//  P5Dugme[0]^.Olustur(ktBilesen, P5Panel[0]^.FTuvalNesne, 10, 10, 100, 100, 'Merhaba-1');
+//  P5Dugme[0]^.Goster;
+
+  P5Dugme[1]^.Olustur(ktNesne, P5Panel[1], 10, 10, 100, 100, 'Merhaba-2');
+  P5Dugme[1]^.Goster;
+
+  P5SayfaKontrol^.Goster;
+
+  P5Pencere^.Goster;
 end;
 
 procedure TArGe.P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
@@ -742,6 +675,12 @@ begin
 
     //SISTEM_MESAJ('Kimlik: %d', [AOlay.Kimlik]);
   end;
+end;
+
+procedure TArGe.P5NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+begin
+
+
 end;
 
 end.

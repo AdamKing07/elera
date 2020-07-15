@@ -123,7 +123,7 @@ begin
 
   Etiket^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  Etiket^.AnaOlayCagriAdresi := @OlaylariIsle;
+  Etiket^.OlayCagriAdresi := @OlaylariIsle;
 
   // FCizimModel = arka plan boyama yok, yazı var
   Etiket^.FCizimModel := 1;
@@ -213,8 +213,8 @@ begin
     Etiket^.Ciz;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(Etiket^.OlayCagriAdresi = nil) then
-      Etiket^.OlayCagriAdresi(Etiket, AOlay)
+    if not(Etiket^.OlayYonlendirmeAdresi = nil) then
+      Etiket^.OlayYonlendirmeAdresi(Etiket, AOlay)
     else GorevListesi[Etiket^.GorevKimlik]^.OlayEkle(Etiket^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
@@ -233,15 +233,15 @@ begin
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // uygulamaya veya efendi nesneye FO_TIKLAMA mesajı gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(Etiket^.OlayCagriAdresi = nil) then
-        Etiket^.OlayCagriAdresi(Etiket, AOlay)
+      if not(Etiket^.OlayYonlendirmeAdresi = nil) then
+        Etiket^.OlayYonlendirmeAdresi(Etiket, AOlay)
       else GorevListesi[Etiket^.GorevKimlik]^.OlayEkle(Etiket^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(Etiket^.OlayCagriAdresi = nil) then
-      Etiket^.OlayCagriAdresi(Etiket, AOlay)
+    if not(Etiket^.OlayYonlendirmeAdresi = nil) then
+      Etiket^.OlayYonlendirmeAdresi(Etiket, AOlay)
     else GorevListesi[Etiket^.GorevKimlik]^.OlayEkle(Etiket^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_HAREKET) then
@@ -251,8 +251,8 @@ begin
     Etiket^.Ciz;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(Etiket^.OlayCagriAdresi = nil) then
-      Etiket^.OlayCagriAdresi(Etiket, AOlay)
+    if not(Etiket^.OlayYonlendirmeAdresi = nil) then
+      Etiket^.OlayYonlendirmeAdresi(Etiket, AOlay)
     else GorevListesi[Etiket^.GorevKimlik]^.OlayEkle(Etiket^.GorevKimlik, AOlay);
   end;
 

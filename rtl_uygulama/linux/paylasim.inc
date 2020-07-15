@@ -276,6 +276,7 @@ const
   GOREV_CALISANPSAYISINIAL    = $00000600 + SAC_GOREV;
   GOREV_CALISANPBILGISIAL     = $00000700 + SAC_GOREV;
   GOREV_AKTIFPROGRAMIAL       = $00000800 + SAC_GOREV;
+  GOREV_KIMLIGIAL             = $00000900 + SAC_GOREV;
 
   PCI_TOPLAMAYGITSAYISI	      = $00000100 + SAC_PCI;
   PCI_AYGITBILGISIAL	        = $00000200 + SAC_PCI;
@@ -321,6 +322,7 @@ const
   CO_TUSBASILDI           = CO_ILKDEGER + 6;
   CO_MENUACILDI           = CO_ILKDEGER + 7;        // menünün açılması
   CO_MENUKAPATILDI        = CO_ILKDEGER + 8;        // menünün kapatılması
+  CO_SECIMDEGISTI         = CO_ILKDEGER + 9;        // karma liste nesnesinde seçimin değişmesi olayı
 
   // fare aygıtının ürettiği olaylar - fare olayları (FO)
   FO_ILKDEGER             = $200;

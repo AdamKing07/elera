@@ -6,7 +6,7 @@
   Dosya Adý: gn_acilirmenu.pas
   Dosya Ýþlevi: açýlýr menü (TPopupMenu) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 15/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -34,6 +34,7 @@ type
     procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     function MenuEkle(ADeger: string; AResimSiraNo: TISayi4 = -1;
       AMenuBoyutDegistir: Boolean = False): Boolean;
+    procedure Temizle;
   end;
 
 function AcilirMenuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
@@ -294,6 +295,21 @@ begin
   AcilirMenu^.Boyutlandir;
 
   Result := Boolean(TISayi4(True));
+end;
+
+{==============================================================================
+  menü nesnesinin elemanlarýný temizler
+ ==============================================================================}
+procedure TAcilirMenu.Temizle;
+var
+  AcilirMenu: PAcilirMenu = nil;
+begin
+
+  AcilirMenu := PAcilirMenu(AcilirMenu^.NesneAl(Kimlik));
+  if(AcilirMenu = nil) then Exit;
+
+  AcilirMenu^.FMenuBaslikListesi^.Temizle;
+  AcilirMenu^.FMenuResimListesi^.Temizle;
 end;
 
 end.

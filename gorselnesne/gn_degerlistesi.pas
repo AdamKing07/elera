@@ -195,7 +195,7 @@ begin
 
   DegerListesi^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  DegerListesi^.AnaOlayCagriAdresi := @OlaylariIsle;
+  DegerListesi^.OlayCagriAdresi := @OlaylariIsle;
 
   DegerListesi^.FKolonAdlari := nil;
   KolonAdlari := KolonAdlari^.Olustur;
@@ -454,8 +454,8 @@ begin
       DegerListesi^.Ciz;
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(DegerListesi^.OlayCagriAdresi = nil) then
-        DegerListesi^.OlayCagriAdresi(DegerListesi, AOlay)
+      if not(DegerListesi^.OlayYonlendirmeAdresi = nil) then
+        DegerListesi^.OlayYonlendirmeAdresi(DegerListesi, AOlay)
       else GorevListesi[DegerListesi^.GorevKimlik]^.OlayEkle(DegerListesi^.GorevKimlik, AOlay);
     end;
   end
@@ -474,15 +474,15 @@ begin
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // nesneye FO_TIKLAMA mesajı gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(DegerListesi^.OlayCagriAdresi = nil) then
-        DegerListesi^.OlayCagriAdresi(DegerListesi, AOlay)
+      if not(DegerListesi^.OlayYonlendirmeAdresi = nil) then
+        DegerListesi^.OlayYonlendirmeAdresi(DegerListesi, AOlay)
       else GorevListesi[DegerListesi^.GorevKimlik]^.OlayEkle(DegerListesi^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(DegerListesi^.OlayCagriAdresi = nil) then
-      DegerListesi^.OlayCagriAdresi(DegerListesi, AOlay)
+    if not(DegerListesi^.OlayYonlendirmeAdresi = nil) then
+      DegerListesi^.OlayYonlendirmeAdresi(DegerListesi, AOlay)
     else GorevListesi[DegerListesi^.GorevKimlik]^.OlayEkle(DegerListesi^.GorevKimlik, AOlay);
   end
 
@@ -539,8 +539,8 @@ begin
       DegerListesi^.Ciz;
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(DegerListesi^.OlayCagriAdresi = nil) then
-        DegerListesi^.OlayCagriAdresi(DegerListesi, AOlay)
+      if not(DegerListesi^.OlayYonlendirmeAdresi = nil) then
+        DegerListesi^.OlayYonlendirmeAdresi(DegerListesi, AOlay)
       else GorevListesi[DegerListesi^.GorevKimlik]^.OlayEkle(DegerListesi^.GorevKimlik, AOlay);
     end
 
@@ -549,8 +549,8 @@ begin
     begin
 
       // uygulamaya veya efendi nesneye mesaj gönder
-      if not(DegerListesi^.OlayCagriAdresi = nil) then
-        DegerListesi^.OlayCagriAdresi(DegerListesi, AOlay)
+      if not(DegerListesi^.OlayYonlendirmeAdresi = nil) then
+        DegerListesi^.OlayYonlendirmeAdresi(DegerListesi, AOlay)
       else GorevListesi[DegerListesi^.GorevKimlik]^.OlayEkle(DegerListesi^.GorevKimlik, AOlay);
     end;
   end

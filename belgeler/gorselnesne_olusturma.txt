@@ -9,7 +9,7 @@ Görsel Nesne Oluþturma Aþamalarý
 	3.2 MEVCUT_GN_SAYISI sayýsal deðeri bir artýrýlýr
 	3.3 GorselNesneListesi dizisine @XXXCagriIslevleri iþaretçisi eklenir
 4. temelgorselnesne.pas NesneAdiAl iþlevine görsel nesnenin ad tanýmýný ekle
-5. görsel nesne ek kaynak kullanýyorsa (TPencere, TListeGorunum gibi), ek kaynaklarýn yok edilmesi için gn_islevler dosyasýnýn uses bölümüne nesne adýný, GorevGorselNesneleriniYokEt iþlevinin "ek kaynak kullanan görsel nesneler" açýklama kýsmýnýn bulunduðu alana nesnenin yok edici (YokEt) iþlevini ekle
+5. görsel nesne ek kaynak kullanýyorsa (TPencere, TListeGorunum gibi), ek kaynaklarýn yok edilmesi için gn_islevler dosyasýnýn uses bölümüne nesne adýný, GorevGorselNesneleriniYokEt iþlevinin "ek kaynak kullanan görsel nesneler" açýklama kýsmýnýn bulunduðu alana nesnenin yok edici (YokEt) iþlevini ekle (bu iþlev kaldýrýlarak ilgili nesnenin YokEt kýsmýna eklenecek)
 6. gn_pencere dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn Boyutlandir ve Ciz iþlevindeki "yeni eklenecek görsel nesne" kýsmýna ise yeni görsel nesnenin iþlevini ekle
 7. gn_panel dosyasýnýn uses bölümüne görsel nesnenin adýný, ayný dosyanýn Boyutlandir ve Ciz iþlevindeki "yeni eklenecek görsel nesne" kýsmýna ise yeni görsel nesnenin iþlevini ekle
 

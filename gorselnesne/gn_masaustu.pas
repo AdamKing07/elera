@@ -213,7 +213,7 @@ begin
 
   Masaustu^.FTuvalNesne := Masaustu;
 
-  Masaustu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  Masaustu^.OlayCagriAdresi := @OlaylariIsle;
 
   Masaustu^.FCizimBaslangic.Sol := 0;
   Masaustu^.FCizimBaslangic.Ust := 0;
@@ -343,8 +343,8 @@ begin
     OlayYakalamayaBasla(Masaustu);
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(Masaustu^.OlayCagriAdresi = nil) then
-      Masaustu^.OlayCagriAdresi(Masaustu, AOlay)
+    if not(Masaustu^.OlayYonlendirmeAdresi = nil) then
+      Masaustu^.OlayYonlendirmeAdresi(Masaustu, AOlay)
     else GorevListesi[Masaustu^.GorevKimlik]^.OlayEkle(Masaustu^.GorevKimlik, AOlay);
   end
 
@@ -363,15 +363,15 @@ begin
 
       // uygulamaya veya efendi nesneye mesaj gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(Masaustu^.OlayCagriAdresi = nil) then
-        Masaustu^.OlayCagriAdresi(Masaustu, AOlay)
+      if not(Masaustu^.OlayYonlendirmeAdresi = nil) then
+        Masaustu^.OlayYonlendirmeAdresi(Masaustu, AOlay)
       else GorevListesi[Masaustu^.GorevKimlik]^.OlayEkle(Masaustu^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := BirOncekiOlay;
-    if not(Masaustu^.OlayCagriAdresi = nil) then
-      Masaustu^.OlayCagriAdresi(Masaustu, AOlay)
+    if not(Masaustu^.OlayYonlendirmeAdresi = nil) then
+      Masaustu^.OlayYonlendirmeAdresi(Masaustu, AOlay)
     else GorevListesi[Masaustu^.GorevKimlik]^.OlayEkle(Masaustu^.GorevKimlik, AOlay);
   end;
 

@@ -6,7 +6,7 @@
   Dosya Adý: gn_karmaliste.pas
   Dosya Ýþlevi: karma liste (açýlýr / kapanýr liste kutusu (TComboBox)) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 24/06/2020
+  Güncelleme Tarihi: 15/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -33,6 +33,7 @@ type
     procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure AcilirMenuOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure ListeyeEkle(ADeger: string);
+    procedure ListeyiTemizle;
   end;
 
 function KarmaListeCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
@@ -166,7 +167,7 @@ begin
 
   KarmaListe^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  KarmaListe^.AnaOlayCagriAdresi := @OlaylariIsle;
+  KarmaListe^.OlayCagriAdresi := @OlaylariIsle;
 
   KarmaListe^.FAcilirMenu := KarmaListe^.FAcilirMenu^.Olustur(KarmaListe, 0, 0,
     AGenislik, (24 * 2) + 2, 24, RENK_GRI, RENK_BEYAZ, RENK_SARI, RENK_SIYAH, RENK_LACIVERT);
@@ -299,6 +300,7 @@ var
   KarmaListe: PKarmaListe;
   AcilirMenu: PAcilirMenu;
   SeciliEleman: String;
+  Olay: TOlay;
 begin
 
   // nesnenin kimlik, tip deðerlerini denetle.
@@ -314,6 +316,15 @@ begin
     SeciliEleman := AcilirMenu^.FMenuBaslikListesi^.Eleman[AcilirMenu^.FSeciliSiraNo];
     KarmaListe^.Baslik := SeciliEleman;
     KarmaListe^.Ciz;
+
+    // uygulamaya veya efendi nesneye mesaj gönder
+    Olay.Kimlik := KarmaListe^.Kimlik;
+    Olay.Olay := CO_SECIMDEGISTI;
+    Olay.Deger1 := AcilirMenu^.FSeciliSiraNo;
+    Olay.Deger2 := 0;
+    if not(KarmaListe^.OlayYonlendirmeAdresi = nil) then
+      KarmaListe^.OlayYonlendirmeAdresi(KarmaListe, Olay)
+    else GorevListesi[KarmaListe^.GorevKimlik]^.OlayEkle(KarmaListe^.GorevKimlik, Olay);
   end;
 end;
 
@@ -341,6 +352,7 @@ end;
 procedure TKarmaListe.ListeyeEkle(ADeger: string);
 var
   KarmaListe: PKarmaListe;
+  i: TISayi4;
 begin
 
   // nesnenin kimlik, tip deðerlerini denetle.
@@ -349,8 +361,28 @@ begin
 
   KarmaListe^.FAcilirMenu^.MenuEkle(ADeger, -1, True);
 
-  if(KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.ElemanSayisi > 0) then
-    KarmaListe^.Baslik := KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Eleman[0];
+  i := KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.ElemanSayisi;
+  if(i > 0) then
+  begin
+
+    KarmaListe^.FAcilirMenu^.FBoyut.Yukseklik := (i * 24);
+  end;
+end;
+
+procedure TKarmaListe.ListeyiTemizle;
+var
+  KarmaListe: PKarmaListe = nil;
+begin
+
+  // nesnenin kimlik, tip deðerlerini denetle.
+  KarmaListe := PKarmaListe(KarmaListe^.NesneAl(Kimlik));
+  if(KarmaListe = nil) then Exit;
+
+  KarmaListe^.Baslik := '';
+  KarmaListe^.Ciz;
+
+  KarmaListe^.FAcilirMenu^.Temizle;
+  KarmaListe^.FAcilirMenu^.FBoyut.Yukseklik := 6;
 end;
 
 end.

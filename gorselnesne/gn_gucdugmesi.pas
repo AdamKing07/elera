@@ -167,7 +167,7 @@ begin
 
   GucDugmesi^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  GucDugmesi^.AnaOlayCagriAdresi := @OlaylariIsle;
+  GucDugmesi^.OlayCagriAdresi := @OlaylariIsle;
 
   GucDugmesi^.FDurum := ddNormal;
 
@@ -287,8 +287,8 @@ begin
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := CO_DURUMDEGISTI;
     AOlay.Deger1 := i;
-    if not(GucDugmesi^.OlayCagriAdresi = nil) then
-      GucDugmesi^.OlayCagriAdresi(GucDugmesi, AOlay)
+    if not(GucDugmesi^.OlayYonlendirmeAdresi = nil) then
+      GucDugmesi^.OlayYonlendirmeAdresi(GucDugmesi, AOlay)
     else GorevListesi[GucDugmesi^.GorevKimlik]^.OlayEkle(GucDugmesi^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then

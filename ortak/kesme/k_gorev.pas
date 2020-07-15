@@ -28,7 +28,7 @@ uses genel, gorev, sistemmesaj;
 function GorevCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
   GorevKimlik: TKimlik;
-  DosyaAdi: string;
+  s: string;
   GorevKayit: PGorevKayit;
   p: PGorev;
   p2: PSayi4;
@@ -46,9 +46,9 @@ begin
   if(IslevNo = 1) then
   begin
 
-    DosyaAdi := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi)^;
+    s := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi)^;
 
-    p := p^.Calistir(DosyaAdi);
+    p := p^.Calistir(s);
     if(p <> nil) then
 
       Result := p^.GorevKimlik
@@ -162,7 +162,18 @@ begin
   begin
 
     Result := AktifProgramiAl;
-  end;
+  end
+
+  // görev adından görev kimliğini alır
+  else if(IslevNo = 9) then
+  begin
+
+    s := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi)^;
+    Result := p^.GorevKimligiAl(s);
+  end
+
+  // işlev belirtilen aralıkta değilse hata kodunu geri döndür
+  else Result := HATA_ISLEV;
 end;
 
 end.

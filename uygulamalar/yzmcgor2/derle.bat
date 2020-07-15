@@ -1,0 +1,1 @@
+fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\rtl_uygulama\linux\units\i386-linux -Sc -Sg -Si -Sh -CX -Os -Xs -XX -k-Tyzmcgor2.ld -o..\_\yzmcgor2.c yzmcgor2.lpr

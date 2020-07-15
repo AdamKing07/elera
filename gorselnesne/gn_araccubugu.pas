@@ -50,9 +50,9 @@ uses genel, gn_pencere, gn_islevler, temelgorselnesne;
  ==============================================================================}
 function AracCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  GorselNesne: PGorselNesne;
-  Pencere: PPencere;
-  AracCubugu: PAracCubugu;
+  GorselNesne: PGorselNesne = nil;
+  Pencere: PPencere = nil;
+  AracCubugu: PAracCubugu = nil;
   p: PKarakterKatari;
 begin
 
@@ -123,7 +123,7 @@ begin
 
   AracCubugu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  AracCubugu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  AracCubugu^.OlayCagriAdresi := @OlaylariIsle;
 
   AracCubugu^.FHiza := hzUst;
 
@@ -260,8 +260,8 @@ begin
     AracCubugu^.Ciz;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(AracCubugu^.OlayCagriAdresi = nil) then
-      AracCubugu^.OlayCagriAdresi(AracCubugu, AOlay)
+    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
+      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
     else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
@@ -280,15 +280,15 @@ begin
       // yakalama & bırakma işlemi bu nesnede olduğu için
       // uygulamaya veya efendi nesneye FO_TIKLAMA mesajı gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(AracCubugu^.OlayCagriAdresi = nil) then
-        AracCubugu^.OlayCagriAdresi(AracCubugu, AOlay)
+      if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
+        AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
       else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
     end;
 
     // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(AracCubugu^.OlayCagriAdresi = nil) then
-      AracCubugu^.OlayCagriAdresi(AracCubugu, AOlay)
+    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
+      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
     else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
   end
   else if(AOlay.Olay = FO_HAREKET) then
@@ -298,8 +298,8 @@ begin
     AracCubugu^.Ciz;
 
     // uygulamaya veya efendi nesneye mesaj gönder
-    if not(AracCubugu^.OlayCagriAdresi = nil) then
-      AracCubugu^.OlayCagriAdresi(AracCubugu, AOlay)
+    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
+      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
     else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
   end;
 }
@@ -319,16 +319,16 @@ begin
   if(AOlay.Olay = FO_TIKLAMA) then
   begin
 
-    if not(AracCubugu^.OlayCagriAdresi = nil) then
-      AracCubugu^.OlayCagriAdresi(AracCubugu, AOlay)
+    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
+      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
     else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
   end;
 end;
 
 function TAracCubugu.DugmeEkle(ADugmeSiraNo: TSayi4): TKimlik;
 var
-  AracCubugu: PAracCubugu;
-  ResimDugmesi: PResimDugmesi;
+  AracCubugu: PAracCubugu = nil;
+  ResimDugmesi: PResimDugmesi = nil;
 begin
 
   // nesnenin kimlik, tip değerlerini denetle.
@@ -339,7 +339,7 @@ begin
 
   ResimDugmesi := ResimDugmesi^.Olustur(ktBilesen, AracCubugu,
     (FDugmeSayisi * 30) + 4, 1, 24, 24, $10000000 + ADugmeSiraNo, False);
-  ResimDugmesi^.FRDOlayGeriDonusumAdresi := @ResimDugmeOlaylariniIsle;
+  ResimDugmesi^.OlayYonlendirmeAdresi := @ResimDugmeOlaylariniIsle;
 
   FDugmeler[FDugmeSayisi] := ResimDugmesi;
 

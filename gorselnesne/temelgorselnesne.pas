@@ -6,7 +6,7 @@
   Dosya Adý: temelgorselnesne.pas
   Dosya Ýþlevi: temel görsel nesne yapýsýný içerir
 
-  Güncelleme Tarihi: 08/07/2020
+  Güncelleme Tarihi: 13/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -102,6 +102,7 @@ var
   RenkSeciciSayac: TISayi4 = 0;
   ResimSayac: TISayi4 = 0;
   ResimDugmeSayac: TISayi4 = 0;
+  SayfaKontrolSayac: TISayi4 = 0;
   SecimDugmesiSayac: TISayi4 = 0;
 
 function NesneAdiAl(AGNTip: TGNTip): string;
@@ -243,6 +244,11 @@ begin
     begin
       Inc(ResimDugmeSayac);
       Result := 'resimdüðmesi' + '.' + IntToStr(ResimDugmeSayac);
+    end;
+    gntSayfaKontrol:
+    begin
+      Inc(SayfaKontrolSayac);
+      Result := 'sayfakontrol' + '.' + IntToStr(SayfaKontrolSayac);
     end;
     gntSecimDugmesi:
     begin

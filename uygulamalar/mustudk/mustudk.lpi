@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="11"/>
+    <General>
+      <Flags>
+        <MainUnitIsPascalSource Value="False"/>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+        <Runnable Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <Title Value="mustudk"/>
+      <UseAppBundle Value="False"/>
+      <ResourceType Value="res"/>
+    </General>
+    <i18n>
+      <EnableI18N LFM="False"/>
+    </i18n>
+    <BuildModes Count="1" Active="Default">
+      <Item1 Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <LaunchingApplication PathPlusParams="/usr/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+          </local>
+        </Mode0>
+      </Modes>
+    </RunParams>
+    <Units Count="52">
+      <Unit0>
+        <Filename Value="mustudk.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="24" Y="10"/>
+        <UsageCount Value="36"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="../rtl/linux/elerah.inc"/>
+        <UsageCount Value="11"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="../rtl/linux/inc/fileh.inc"/>
+        <UsageCount Value="11"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../rtl/linux/inc/file.inc"/>
+        <UsageCount Value="11"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../rtl/linux/elera.inc"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../rtl/linux/inc/consts.inc"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../rtl/inc/dos.inc"/>
+        <UsageCount Value="11"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../rtl/inc/dosh.inc"/>
+        <UsageCount Value="11"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../rtl/unix/dos.pp"/>
+        <UnitName Value="Dos"/>
+        <UsageCount Value="11"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../../lazarus/fpc/2.6.0/source/rtl/inc/fpintres.pp"/>
+        <CursorPos X="6" Y="15"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../rtl/linux/inc/message.inc"/>
+        <UsageCount Value="10"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../rtl/linux/inc/messageh.inc"/>
+        <UsageCount Value="10"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="../rtl/linux/inc/listboxh.inc"/>
+        <UsageCount Value="11"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../rtl/linux/inc/listbox.inc"/>
+        <UsageCount Value="11"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../../../../../lazarus/fpc/2.6.2/source/rtl/inc/fpintres.pp"/>
+        <CursorPos X="6" Y="15"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../rtl/linux/forms.pp"/>
+        <UsageCount Value="11"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="../rtl/linux/listboxs.pp"/>
+        <UsageCount Value="21"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="../rtl/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <UsageCount Value="10"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="../rtl/linux/desktops.pp"/>
+        <UsageCount Value="10"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="../rtl/linux/buttons.pp"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="../rtl/linux/inc/buttonh.inc"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="../rtl/linux/inc/button.inc"/>
+        <UsageCount Value="10"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="../rtl/linux/inc/power_buttonh.inc"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="../rtl/linux/inc/power_button.inc"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="../../../rtl_prog/linux/system.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="277"/>
+        <CursorPos X="31" Y="300"/>
+        <UsageCount Value="12"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="../../../rtl_prog/linux/inc/fileh.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="../../../rtl_prog/linux/inc/file.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="../../../rtl_prog/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="40" Y="30"/>
+        <UsageCount Value="12"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="../../../rtl_prog/linux/elerah.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="77"/>
+        <CursorPos X="13" Y="90"/>
+        <UsageCount Value="12"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="../../../rtl_prog/linux/desktops.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="12"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="../../../rtl_prog/linux/inc/desktop.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="27" Y="24"/>
+        <UsageCount Value="11"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="../../../rtl_prog/linux/inc/desktoph.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="37" Y="3"/>
+        <UsageCount Value="11"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="../../../rtl_prog/linux/inc/gn_secimdugmeb.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="11"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="../../../rtl_prog/linux/inc/gn_secimdugme.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="11"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="../../../rtl_prog/linux/inc/consts.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="115"/>
+        <CursorPos X="31" Y="128"/>
+        <UsageCount Value="11"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="../../../rtl_prog/linux/gn_secimdugme.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="39" Y="18"/>
+        <UsageCount Value="11"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="../../../rtl_prog/linux/listboxs.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="../../../rtl_prog/linux/vo_desktop.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="15" Y="26"/>
+        <UsageCount Value="10"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="temizle.bat"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Bat"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="derle.bat"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Bat"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="mustudk.ld"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="../../../rtl_uygulama/linux/gn_secimdugmesi.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="../../../rtl_uygulama/linux/gn_onaykutusu.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="../../../rtl_uygulama/linux/system.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="15"/>
+        <CursorPos X="5" Y="33"/>
+        <UsageCount Value="10"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gn_secimdugmeb.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="../../../rtl_uygulama/linux/inc/gn_secimdugme.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="43" Y="11"/>
+        <UsageCount Value="10"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="../../../rtl_uygulama/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="../../../rtl_uygulama/linux/inc/paylasim.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="48"/>
+        <CursorPos X="31" Y="66"/>
+        <UsageCount Value="10"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="../../../rtl_uygulama/linux/paylasim.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="186"/>
+        <CursorPos X="20" Y="209"/>
+        <UsageCount Value="10"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="../../../rtl_uygulama/linux/gn_renksecici.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="../../../rtl_uygulama/linux/gn_pencere.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="../../../rtl_uygulama/linux/gn_listegorunum.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit51>
+    </Units>
+    <JumpHistory HistoryIndex="-1"/>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <Target>
+      <Filename Value="../_/mustudk.c"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="../../rtl_uygulama/linux/units/i386-linux"/>
+      <UnitOutputDirectory Value="dosyalar"/>
+      <SrcPath Value="../../rtl_uygulama/linux"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <SmartLinkUnit Value="True"/>
+      <TargetCPU Value="i386"/>
+      <TargetOS Value="linux"/>
+      <Optimizations>
+        <OptimizationLevel Value="0"/>
+      </Optimizations>
+      <SmallerCode Value="True"/>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+        <UseLineInfoUnit Value="False"/>
+        <StripSymbols Value="True"/>
+      </Debugging>
+      <LinkSmart Value="True"/>
+      <Options>
+        <PassLinkerOptions Value="True"/>
+        <LinkerOptions Value="-Tmustudk.ld"/>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

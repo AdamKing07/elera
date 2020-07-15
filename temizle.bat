@@ -32,4 +32,9 @@ cd..
 cd widgets
 rmdir lib /S /Q
 
+@echo laz-arac dizini temizleniyor...
+cd laz-arac
+rmdir lib /S /Q
+cd..
+
 pause

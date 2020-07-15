@@ -120,7 +120,7 @@ begin
 
   DurumCubugu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  DurumCubugu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  DurumCubugu^.OlayCagriAdresi := @OlaylariIsle;
 
   DurumCubugu^.FHiza := hzAlt;                        // alta hizala
 
@@ -244,8 +244,8 @@ begin
 
       // uygulamaya veya efendi nesneye mesaj gönder
       AOlay.Olay := FO_TIKLAMA;
-      if not(DurumCubugu^.OlayCagriAdresi = nil) then
-        DurumCubugu^.OlayCagriAdresi(DurumCubugu, AOlay)
+      if not(DurumCubugu^.OlayYonlendirmeAdresi = nil) then
+        DurumCubugu^.OlayYonlendirmeAdresi(DurumCubugu, AOlay)
       else GorevListesi[DurumCubugu^.GorevKimlik]^.OlayEkle(DurumCubugu^.GorevKimlik, AOlay);
     end;
 

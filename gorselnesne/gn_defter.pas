@@ -176,7 +176,7 @@ begin
 
   Defter^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  Defter^.AnaOlayCagriAdresi := @OlaylariIsle;
+  Defter^.OlayCagriAdresi := @OlaylariIsle;
 
   Defter^.FFareImlecTipi := fitGiris;
 
@@ -184,13 +184,13 @@ begin
   Defter^.FYatayKCubugu := Defter^.FYatayKCubugu^.Olustur(ktBilesen, Defter,
     0, AYukseklik - 16, AGenislik - 16, 16, yYatay);
   Defter^.FYatayKCubugu^.DegerleriBelirle(0, 10);
-  Defter^.FYatayKCubugu^.FKCOlayGeriDonusumAdresi := @KaydirmaCubuguOlaylariniIsle;
+  Defter^.FYatayKCubugu^.OlayYonlendirmeAdresi := @KaydirmaCubuguOlaylariniIsle;
 
   // dikey kaydırma çubuğu
   Defter^.FDikeyKCubugu := Defter^.FDikeyKCubugu^.Olustur(ktBilesen, Defter,
     AGenislik - 16, 0, 16, AYukseklik - 16, yDikey);
   Defter^.FDikeyKCubugu^.DegerleriBelirle(0, 10);
-  Defter^.FDikeyKCubugu^.FKCOlayGeriDonusumAdresi := @KaydirmaCubuguOlaylariniIsle;
+  Defter^.FDikeyKCubugu^.OlayYonlendirmeAdresi := @KaydirmaCubuguOlaylariniIsle;
 
   // defter nesnesinin içeriği için bellek ayır
   YaziBellekAdresi := GGercekBellek.Ayir(4096 * 10);

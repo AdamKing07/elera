@@ -7,12 +7,11 @@
   Program İşlevi: elera işletim sistemi - lazarus programlama dili
     uygulama oluşturma modülü
 
-  Güncelleme Tarihi: 15/05/2020
+  Güncelleme Tarihi: 15/07/2020
 
  ==============================================================================}
-unit eleram;
-
 {$mode objfpc}{$H+}
+unit eleram;
 
 interface
 
@@ -79,26 +78,26 @@ procedure Register;
 implementation
 
 var
-  _ELERAUygulama: TELERAUygulama;
-  _ELERALDDosyasi: TELERALDDosyasi;
-  _ELERATemizlemeDosyasi: TELERATemizlemeDosyasi;
-  _ELERADerlemeDosyasi: TELERADerlemeDosyasi;
-  _ELERAGorselArabirim: TELERAGorselArabirim;
+  ELERAUygulama: TELERAUygulama;
+  ELERALDDosyasi: TELERALDDosyasi;
+  ELERATemizlemeDosyasi: TELERATemizlemeDosyasi;
+  ELERADerlemeDosyasi: TELERADerlemeDosyasi;
+  ELERAGorselArabirim: TELERAGorselArabirim;
 
 procedure Register;
 begin
 
-  _ELERAUygulama := TELERAUygulama.Create;
-  RegisterProjectDescriptor(_ELERAUygulama);
+  ELERAUygulama := TELERAUygulama.Create;
+  RegisterProjectDescriptor(ELERAUygulama);
 
-  _ELERALDDosyasi := TELERALDDosyasi.Create;
-  RegisterProjectFileDescriptor(_ELERALDDosyasi);
+  ELERALDDosyasi := TELERALDDosyasi.Create;
+  RegisterProjectFileDescriptor(ELERALDDosyasi);
 
-  _ELERATemizlemeDosyasi := TELERATemizlemeDosyasi.Create;
-  RegisterProjectFileDescriptor(_ELERATemizlemeDosyasi);
+  ELERATemizlemeDosyasi := TELERATemizlemeDosyasi.Create;
+  RegisterProjectFileDescriptor(ELERATemizlemeDosyasi);
 
-  _ELERADerlemeDosyasi := TELERADerlemeDosyasi.Create;
-  RegisterProjectFileDescriptor(_ELERADerlemeDosyasi);
+  ELERADerlemeDosyasi := TELERADerlemeDosyasi.Create;
+  RegisterProjectFileDescriptor(ELERADerlemeDosyasi);
 end;
 
 constructor TELERAUygulama.Create;
@@ -110,22 +109,22 @@ end;
 
 function TELERAUygulama.InitProject(AProject: TLazProject): TModalResult;
 var
-  _AnaSayfa: TLazProjectFile;
-  _s: string;
+  AnaSayfa: TLazProjectFile;
+  s: string;
 begin
 
   inherited InitProject(AProject);
 
-  _AnaSayfa := AProject.CreateProjectFile('uygulama1.lpr');
-  _AnaSayfa.IsPartOfProject := True;
-  AProject.AddFile(_AnaSayfa, False);
+  AnaSayfa := AProject.CreateProjectFile('uygulama1.lpr');
+  AnaSayfa.IsPartOfProject := True;
+  AProject.AddFile(AnaSayfa, False);
   AProject.MainFileID := 0;
 
-  _s := '{  Önemli Not:' + LineEnding +
+  s := '{  Önemli Not:' + LineEnding +
     LineEnding +
-    '    Program dosyalarını, diğer programların bulunduğu elerais\uygulamalar\mod_g ' + LineEnding +
+    '    Program dosyalarını, diğer programların bulunduğu elerais\uygulamalar ' + LineEnding +
     '    dizininin altında bir klasör altına kaydetmeniz, programın' + LineEnding +
-    '    hatasız derlenmesi yönünden faydalı olacaktır.' + LineEnding +
+    '    hatasız derlenmesi yönünden faydalı olacaktır.' +
     LineEnding +
     '}' + LineEnding + LineEnding +
     'program uygulama1;' + LineEnding +
@@ -143,26 +142,26 @@ begin
     ' ==============================================================================}' +
     LineEnding +
     '{$mode objfpc}' + LineEnding + LineEnding +
-    'uses gorev, gn_pencere;' + LineEnding +
+    'uses n_gorev, gn_pencere;' + LineEnding +
     LineEnding +
     'const' + LineEnding +
     '  ProgramAdi: string = ''Uygulama1'';' + LineEnding +
     LineEnding +
     'var' + LineEnding +
-    '  Gorev0: TGorev;' + LineEnding +
-    '  Pencere0: TPencere;' + LineEnding +
+    '  Gorev: TGorev;' + LineEnding +
+    '  Pencere: TPencere;' + LineEnding +
     '  OlayKayit: TOlayKayit;' + LineEnding +
     LineEnding +
     'begin' + LineEnding +
-    '  Pencere0.Olustur(-1, 100, 100, 300, 200, ptBoyutlandirilabilir, ProgramAdi,' + LineEnding +
-    '    RENK_BEYAZ);' + LineEnding +
-    '  if(Pencere0.Kimlik < 0) then Gorev0.Sonlandir(-1);' + LineEnding +
+    '  Pencere.Olustur(-1, 100, 100, 300, 200, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);' + LineEnding +
+    '  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);' + LineEnding +
     LineEnding +
-    '  Pencere0.Goster;' + LineEnding +
+    '  Pencere.Goster;' + LineEnding +
     LineEnding +
-    '  repeat' + LineEnding +
+    '  while True do' + LineEnding +
+    '  begin' + LineEnding +
     LineEnding +
-    '    Gorev0.OlayBekle(OlayKayit);' + LineEnding +
+    '    Gorev.OlayBekle(OlayKayit);' + LineEnding +
     '    if(OlayKayit.Olay = FO_TIKLAMA) then' + LineEnding +
     '    begin' + LineEnding +
     LineEnding +
@@ -171,10 +170,10 @@ begin
     '    begin' + LineEnding +
     LineEnding +
     '    end;' + LineEnding +
-    '  until (1 = 2);' + LineEnding +
+    '  end;' + LineEnding +
     'end.';
 
-  AProject.MainFile.SetSourceText(_s);
+  AProject.MainFile.SetSourceText(s);
 
   AProject.Title := 'uygulama1';
 
@@ -185,11 +184,11 @@ begin
 
   AProject.Flags := [pfLRSFilesInOutputDirectory];
 
-  AProject.LazCompilerOptions.OtherUnitFiles := '..\..\..\rtl_uygulama\linux\units\i386-linux';
+  AProject.LazCompilerOptions.OtherUnitFiles := '..\..\rtl_uygulama\linux\units\i386-linux';
   AProject.LazCompilerOptions.IncludePath := '$(ProjOutDir)';
   AProject.LazCompilerOptions.UnitOutputDirectory := 'dosyalar';
-  AProject.LazCompilerOptions.TargetFilename := '..\..\_g\uygulama1.c';
-  AProject.LazCompilerOptions.SrcPath := '..\..\..\rtl_uygulama\linux';
+  AProject.LazCompilerOptions.TargetFilename := '..\_\uygulama1.c';
+  AProject.LazCompilerOptions.SrcPath := '..\..\rtl_uygulama\linux';
 
   AProject.LazCompilerOptions.SmartLinkUnit := True;
   AProject.LazCompilerOptions.OptimizationLevel := 0;
@@ -213,11 +212,11 @@ begin
 
   if Result <> mrOK then Exit;
 
-  LazarusIDE.DoNewEditorFile(_ELERALDDosyasi, 'bagla.ld', '', [nfCreateDefaultSrc,
+  LazarusIDE.DoNewEditorFile(ELERALDDosyasi, 'bagla.ld', '', [nfCreateDefaultSrc,
     nfIsPartOfProject, nfOpenInEditor]);
-  LazarusIDE.DoNewEditorFile(_ELERATemizlemeDosyasi, 'temizle.bat', '', [nfCreateDefaultSrc,
+  LazarusIDE.DoNewEditorFile(ELERATemizlemeDosyasi, 'temizle.bat', '', [nfCreateDefaultSrc,
     nfIsPartOfProject, nfOpenInEditor]);
-  LazarusIDE.DoNewEditorFile(_ELERADerlemeDosyasi, 'derle.bat', '', [nfCreateDefaultSrc,
+  LazarusIDE.DoNewEditorFile(ELERADerlemeDosyasi, 'derle.bat', '', [nfCreateDefaultSrc,
     nfIsPartOfProject, nfOpenInEditor]);
 end;
 
@@ -245,10 +244,10 @@ end;
 function TELERALDDosyasi.CreateSource(const Filename, SourceName,
   ResourceName: string): string;
 var
-  _s: string;
+  s: string;
 begin
 
-  _s := 'OUTPUT_FORMAT("elf32-i386")' + LineEnding +
+  s := 'OUTPUT_FORMAT("elf32-i386")' + LineEnding +
   LineEnding +
   'SECTIONS' + LineEnding +
   '{' + LineEnding +
@@ -270,7 +269,7 @@ begin
   '  }' + LineEnding +
   '}';
 
-  Result:= _s;
+  Result:= s;
 end;
 
 function TELERALDDosyasi.GetLocalizedName: string;
@@ -297,11 +296,11 @@ end;
 function TELERATemizlemeDosyasi.CreateSource(const Filename, SourceName,
   ResourceName: string): string;
 var
-  _s: string;
+  s: string;
 begin
 
-  _s := 'del dosyalar\*.* /Q';
-  Result:= _s;
+  s := 'del dosyalar\*.* /Q';
+  Result:= s;
 end;
 
 function TELERATemizlemeDosyasi.GetLocalizedName: string;
@@ -328,19 +327,16 @@ end;
 function TELERADerlemeDosyasi.CreateSource(const Filename, SourceName,
   ResourceName: string): string;
 var
-  _SL: TStringList;
+  SL: TStringList;
 begin
 
-  _SL := TStringList.Create;
+  SL := TStringList.Create;
+  SL.Add('fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\rtl_uygulama\linux\units\i386-linux -Sc' +
+    ' -Sg -Si -Sh -CX -Os -Xs -XX -k-Tbagla.ld -o..\_\uygulama1.c uygulama1.lpr');
 
-  _SL.Add('@echo off');
-  _SL.Add('');
-  _SL.Add('fpc -Tlinux -Pi386 -FUdosyalar -Fu..\..\..\rtl_uygulama\linux\units\i386-linux -Sc' +
-    ' -Sg -Si -Sh -CX -Os -Xs -XX -k-Tbagla.ld -o..\..\_g\uygulama1.c uygulama1.lpr');
+  Result := SL.Text;
 
-  Result:= _SL.Text;
-
-  _SL.Free;
+  FreeAndNil(SL);
 end;
 
 function TELERADerlemeDosyasi.GetLocalizedName: string;

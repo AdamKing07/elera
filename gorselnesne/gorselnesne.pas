@@ -42,10 +42,8 @@ type
     FCizimBellekAdresi: Isaretci;
     FCizimBellekUzunlugu: TSayi4;
 
-    // aþaðýdaki 3 deðiþken gözden geçirilerek tasarým 2 deðiþken üzerinden gerçekleþtirilecek
-    AnaOlayCagriAdresi: TOlaylariIsle;
-    OlayCagriAdresi: TOlaylariIsle;
-    GeriDonusAdresi: TOlaylariIsle;
+    OlayCagriAdresi: TOlaylariIsle;             // olaylarýn yönlendirildiði nesne olay çaðrý adresi
+    OlayYonlendirmeAdresi: TOlaylariIsle;       // görsel nesneler tarafýndan bileþenlerin olaylarýnýn yönlendirileceði olay adresi
 
     FEtiket: TSayi4;                            // nesneyi kullanacak programýn kullanýmý için
 
@@ -190,9 +188,8 @@ begin
 
   // nesne olaylarý öndeðer olarak nesneyi oluþturan programa yönlendirilecek
   // aksi durumda belirtilen çaðrý adresine yönlendirilecek
-  GorselNesne^.AnaOlayCagriAdresi := nil;
   GorselNesne^.OlayCagriAdresi := nil;
-  GorselNesne^.GeriDonusAdresi := nil;
+  GorselNesne^.OlayYonlendirmeAdresi := nil;
 
   GorselNesne^.FHiza := hzYok;
 

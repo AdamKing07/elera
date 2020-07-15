@@ -116,7 +116,7 @@ begin
 
   RenkSecici^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  RenkSecici^.AnaOlayCagriAdresi := @OlaylariIsle;
+  RenkSecici^.OlayCagriAdresi := @OlaylariIsle;
 
   // renk kutu geniþlik & yükseklik deðerlerini belirle
   RenkSecici^.FRenkKutuG := AGenislik div 8;
@@ -252,8 +252,8 @@ begin
         AOlay.Olay := FO_TIKLAMA;
         AOlay.Deger1 := SecimRenkleri[RenkSecici^.FSeciliRenkSiraNo];
         AOlay.Deger2 := 0;
-        if not(RenkSecici^.OlayCagriAdresi = nil) then
-          RenkSecici^.OlayCagriAdresi(RenkSecici, AOlay)
+        if not(RenkSecici^.OlayYonlendirmeAdresi = nil) then
+          RenkSecici^.OlayYonlendirmeAdresi(RenkSecici, AOlay)
         else GorevListesi[RenkSecici^.GorevKimlik]^.OlayEkle(RenkSecici^.GorevKimlik, AOlay);
       end;
     end;

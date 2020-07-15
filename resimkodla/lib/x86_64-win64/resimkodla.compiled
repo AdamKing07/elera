@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1351329191"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -WG -l -vewnhibq -FiC:\Users\fkilic\Documents\resimkodla\lib\x86_64-win64 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\Users\fkilic\Documents\resimkodla\ -FUC:\Users\fkilic\Documents\resimkodla\lib\x86_64-win64\ -FEC:\Users\fkilic\Documents\resimkodla\ -oC:\Users\fkilic\Documents\resimkodla\resimkodla.exe -dLCL -dLCLwin32 resimkodla.lpr"/>
-</CONFIG>

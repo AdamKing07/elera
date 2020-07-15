@@ -122,7 +122,7 @@ begin
 
   OnayKutusu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
 
-  OnayKutusu^.AnaOlayCagriAdresi := @OlaylariIsle;
+  OnayKutusu^.OlayCagriAdresi := @OlaylariIsle;
 
   OnayKutusu^.FSecimDurumu := sdNormal;
 
@@ -272,8 +272,8 @@ begin
       else AOlay.Deger1 := 1;
 
       // nesnenin olay çağrı adresini çağır veya uygulamaya mesaj gönder
-      if not(OnayKutusu^.OlayCagriAdresi = nil) then
-        OnayKutusu^.OlayCagriAdresi(OnayKutusu, AOlay)
+      if not(OnayKutusu^.OlayYonlendirmeAdresi = nil) then
+        OnayKutusu^.OlayYonlendirmeAdresi(OnayKutusu, AOlay)
       else GorevListesi[OnayKutusu^.GorevKimlik]^.OlayEkle(OnayKutusu^.GorevKimlik, AOlay);
 
     // aksi durumda onay kutusu durumunu bir önceki duruma getir
