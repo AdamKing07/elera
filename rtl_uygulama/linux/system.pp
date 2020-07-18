@@ -73,14 +73,6 @@ function ParamStr1(Index: LongInt): string;
 
   {$i paylasim.inc}
 
-  {$i gorselnesneb.inc}
-  {$i olayb.inc}
-  {$i dosyab.inc}
-  {$i sayacb.inc}
-  {$i sistemb.inc}
-  {$i pcib.inc}
-  {$i fareb.inc}
-  
 {*****************************************************************************}
                                  implementation
 {*****************************************************************************}
@@ -401,20 +393,6 @@ begin
   SetLength(Result, 17);
 end;
 
-{ program çaðrý kod bilgileri }
-
-				 {$asmmode intel}
-
-         {$i gorselnesne.inc}
-				 {$i olay.inc}
-				 {$i dosya.inc}
-				 {$i sayac.inc}
-         {$i sistem.inc}
-				 {$i pci.inc}
-				 {$i fare.inc}
-
-				 {$asmmode att}
-				 
 {$if defined(CPUI386) and not defined(FPC_USE_LIBC)}
 var
   sysenter_supported: LongInt = 0;

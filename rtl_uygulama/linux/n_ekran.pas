@@ -56,7 +56,7 @@ end;
 
 procedure EkranCozunurlugunuAl(ANokta: PNokta); assembler;
 asm
-  push  ANokta
+  push  DWORD ANokta
   mov   eax,EKRAN_COZUNURLUGUNUAL
   int   $34
   add   esp,4

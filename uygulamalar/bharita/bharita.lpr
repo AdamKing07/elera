@@ -15,7 +15,7 @@ program bharita;
 
  ==============================================================================}
 {$mode objfpc}
-uses n_gorev, gn_pencere, gn_durumcubugu, n_zamanlayici, elera;
+uses n_gorev, gn_pencere, gn_durumcubugu, n_zamanlayici, n_genel;
 
 const
   ProgramAdi: string = 'Bellek Haritasý';
@@ -23,6 +23,7 @@ const
   MEVCUTBELLEKADRESI = $510000;
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
@@ -80,7 +81,7 @@ begin
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
-      GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
+      Genel.GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
         @BosRAMBlok, @RAMUzunlugu);
 
       s := 'Boþ Blok Sayýsý: ' + IntToStr(ToplamRAMBlok);
@@ -91,7 +92,7 @@ begin
 //      Pencere.Tuval.Dikdortgen(0, 0, 128 * 3, 64 * 3, $000000, True);
 
       // 1. 4K bellek sistemden okunuyor
-      BellekIcerikOku(ISaretci(MEVCUTBELLEKADRESI), @Veriler[0], 4096);
+      Genel.BellekIcerikOku(ISaretci(MEVCUTBELLEKADRESI), @Veriler[0], 4096);
 
       p := PByte(@Veriler[0]);
       for Ust := 0 to 31 do
@@ -110,7 +111,7 @@ begin
       end;
 
       // 2. 4K bellek sistemden okunuyor
-      BellekIcerikOku(Pointer(MEVCUTBELLEKADRESI + 4096), @Veriler[0], 4096);
+      Genel.BellekIcerikOku(Pointer(MEVCUTBELLEKADRESI + 4096), @Veriler[0], 4096);
 
       p := PByte(@Veriler[0]);
       for Ust := 32 to 63 do

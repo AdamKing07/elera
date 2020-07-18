@@ -12,7 +12,7 @@
 {$mode objfpc}
 program arpbilgi;
 
-uses n_gorev, gn_pencere, n_zamanlayici, elera;
+uses n_gorev, gn_pencere, n_zamanlayici, n_genel;
 
 const
   ProgramAdi: string = 'ARP Girdi Bilgisi';
@@ -21,6 +21,7 @@ const
   Baslik2: string  = '--------------- ----------------- ------';
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
@@ -47,7 +48,7 @@ begin
     if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      ARPKayitSayisi := ARPKayitSayisiAl;
+      ARPKayitSayisi := Genel.ARPKayitSayisiAl;
       Pencere.Ciz;
     end
     else if(OlayKayit.Olay = CO_CIZIM) then
@@ -66,7 +67,7 @@ begin
         for i := 0 to ARPKayitSayisi - 1 do
         begin
 
-          j := ARPKayitBilgisiAl(i, ARPKayit);
+          j := Genel.ARPKayitBilgisiAl(i, ARPKayit);
           if(j = 0) then
           begin
 

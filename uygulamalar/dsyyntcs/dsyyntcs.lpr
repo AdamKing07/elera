@@ -12,12 +12,13 @@ program dsyyntcs;
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses n_gorev, gn_pencere, gn_dugme, gn_listegorunum, gn_durumcubugu, gn_panel;
+uses n_gorev, gn_pencere, gn_dugme, gn_listegorunum, gn_durumcubugu, gn_panel, n_genel;
 
 const
   ProgramAdi: string = 'Dosya Yöneticisi';
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   Panel: TPanel;
@@ -62,7 +63,7 @@ begin
 
     DosyaSayisi := 0;
 
-    AramaSonuc := _FindFirst(GecerliSurucu + ':\*.*', 0, DosyaArama);
+    AramaSonuc := Genel._FindFirst(GecerliSurucu + ':\*.*', 0, DosyaArama);
 
     while (AramaSonuc = 0) do
     begin
@@ -88,9 +89,9 @@ begin
 
       Inc(DosyaSayisi);
 
-      AramaSonuc := _FindNext(DosyaArama);
+      AramaSonuc := Genel._FindNext(DosyaArama);
     end;
-    _FindClose(DosyaArama);
+    Genel._FindClose(DosyaArama);
 
     DurumCubugu.DurumYazisiDegistir('Toplam Dosya: ' + IntToStr(DosyaSayisi));
 

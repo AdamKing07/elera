@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 18/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -607,7 +607,7 @@ var
 
 function TGorev.Sonlandir(AGorevKimlik: TKimlik; const ASonlanmaSebebi: TISayi4 = -1): TISayi4;
 var
-  Gorev: PGorev;
+  Gorev: PGorev = nil;
 begin
 
   if(SonlandirGorevNo <> 0) then while SonlandirGorevNo <> 0 do;
@@ -633,6 +633,8 @@ begin
       IstisnaAciklamaListesi[ASonlanmaSebebi], []);
   end;
 
+  { TODO : aþaðýdaki iþlevlerin çalýþmasýnýn doðruluðu test edilecek }
+
   // göreve ait zamanlayýcýlarý yok et
   ZamanlayicilariYokEt(AGorevKimlik);
 
@@ -643,6 +645,8 @@ begin
   GorevGorselNesneleriniYokEt(AGorevKimlik);
 
   // göreve ait olay bellek bölgesini iptal et
+  { TODO : 1. bu iþlev olay yönetim sistem nesnesinin içerisine dahil edilecek
+           2. olay bellek bölgesi iptal edilmeden önce önceden oluþturulan olaylar da kayýtlardan çýkarýlacak }
   GGercekBellek.YokEt(OlayBellekAdresi, 4096);
 
   // görev için ayrýlan bellek bölgesini serbest býrak
@@ -655,6 +659,7 @@ begin
   // görev sayýsýný bir azalt
   Dec(CalisanGorevSayisi);
 
+  CalisanGorev := 0;
   //GAktifMasaustu^.Guncelle;   artýk anlamsýz
 
   SonlandirGorevNo := 0;
@@ -836,7 +841,7 @@ begin
   begin
 
     Inc(GorevKimlik);
-    if(GorevKimlik > CalisanGorevSayisi) then GorevKimlik := 1;
+    if(GorevKimlik > USTSINIR_GOREVSAYISI) then GorevKimlik := 1;
 
     // çalýþan görev aranan görev ise çaðýran iþleve geri dön
     if(GorevListesi[GorevKimlik]^.FGorevDurum = gdCalisiyor) then Break;

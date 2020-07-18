@@ -12,12 +12,13 @@
 {$mode objfpc}
 program agbilgi;
 
-uses n_gorev, gn_pencere, gn_dugme, gn_degerlistesi, n_tuval, elera;
+uses n_gorev, gn_pencere, gn_dugme, gn_degerlistesi, n_tuval, n_genel;
 
 const
   ProgramAdi: string = 'Að Ayarlarý';
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   DegerListesi: TDegerListesi;
@@ -52,7 +53,7 @@ begin
 
   Pencere.Goster;
 
-  AgBilgisiAl(@AgBilgisi);
+  Genel.AgBilgisiAl(@AgBilgisi);
   IcerigiGuncelle;
 
   while True do
@@ -65,7 +66,7 @@ begin
       if(OlayKayit.Kimlik = dugYenile.Kimlik) then
       begin
 
-        AgBilgisiAl(@AgBilgisi);
+        Genel.AgBilgisiAl(@AgBilgisi);
         IcerigiGuncelle;
       end;
     end

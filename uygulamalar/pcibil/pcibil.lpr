@@ -11,7 +11,7 @@ program pcibil;
 
  ==============================================================================}
 {$mode objfpc}
-uses n_gorev, gn_pencere, gn_dugme, gn_degerdugmesi;
+uses n_gorev, gn_pencere, gn_dugme, gn_degerdugmesi, n_genel;
 
 const
   ProgramAdi: string = 'PCI Aygýt Bilgileri';
@@ -264,6 +264,7 @@ var
     (SaticiKimlik: $80ee; AygitKimlik: $beef; AygitAdi: 'VirtualBox Graphics Adapter'));
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   DegerDugmesi: TDegerDugmesi;
@@ -329,8 +330,8 @@ begin
 
   AygitSiraNo := 0;
 
-  ToplamPCIAygitSayisi := ToplamPCIAygitSayisiAl;
-  if(ToplamPCIAygitSayisi > 0) then PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
+  ToplamPCIAygitSayisi := Genel.ToplamPCIAygitSayisiAl;
+  if(ToplamPCIAygitSayisi > 0) then Genel.PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
 
   Pencere.Tuval.KalemRengi := RENK_SIYAH;
   Pencere.Tuval.YaziYaz(8 * 8, 5, 'Toplam Aygýt:');
@@ -364,7 +365,7 @@ begin
           begin
 
             Inc(AygitSiraNo);
-            PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
+            Genel.PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
             Pencere.Ciz;
           end;
         end
@@ -375,7 +376,7 @@ begin
           begin
 
             Dec(AygitSiraNo);
-            PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
+            Genel.PCIAygitBilgisiAl(AygitSiraNo, @PCIAygitBilgisi);
             Pencere.Ciz;
           end;
         end;
@@ -410,11 +411,11 @@ begin
       Pencere.Tuval.KalemRengi := RENK_MAVI;
       Pencere.Tuval.SayiYaz16(46 * 8, 2 * 16, True, 2, PCIAygitBilgisi.Islev);
 
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, 4);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, 4);
       PCIAygitBilgisi.Komut := (Deger32 and $FFFF);
       PCIAygitBilgisi.Durum := ((Deger32 shr 16) and $FFFF);
 
-      Deger8 := PCIOku1(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, 8);
+      Deger8 := Genel.PCIOku1(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, 8);
       PCIAygitBilgisi.RevizyonKimlik := Deger8;
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;
@@ -456,7 +457,7 @@ begin
       AygitAdi := PCIAygitAdiAl(PCIAygitBilgisi.SaticiKimlik, PCIAygitBilgisi.AygitKimlik);
       Pencere.Tuval.YaziYaz(17 * 8, 7 * 16, AygitAdi);
 
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $C);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $C);
       PCIAygitBilgisi.OnbellekHatUzunluk := (Deger32 and $FF);
       PCIAygitBilgisi.GecikmeSuresi := ((Deger32 shr 8) and $FF);
       PCIAygitBilgisi.BaslikTip := ((Deger32 shr 16) and $FF);
@@ -479,7 +480,7 @@ begin
       Pencere.Tuval.KalemRengi := RENK_MAVI;
       Pencere.Tuval.SayiYaz16(43 * 8, 10 * 16, True, 2, PCIAygitBilgisi.Bist);
 
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $2C);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $2C);
       PCIAygitBilgisi.AltSistemSaticiKimlik := (Deger32 and $FFFF);
       PCIAygitBilgisi.AltSistemKimlik := ((Deger32 shr 16) and $FFFF);
 
@@ -492,7 +493,7 @@ begin
       Pencere.Tuval.KalemRengi := RENK_MAVI;
       Pencere.Tuval.SayiYaz16(43 * 8, 11 * 16, True, 4, PCIAygitBilgisi.AltSistemKimlik);
 
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $3C);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $3C);
       PCIAygitBilgisi.KesmeNo := (Deger32 and $FF);
       PCIAygitBilgisi.KesmePin := ((Deger32 shr 8) and $FF);
       PCIAygitBilgisi.EnDusukImtiyaz := ((Deger32 shr 16) and $FF);
@@ -515,9 +516,9 @@ begin
       Pencere.Tuval.KalemRengi := RENK_MAVI;
       Pencere.Tuval.SayiYaz16(37 * 8, 14 * 16, True, 2, PCIAygitBilgisi.AzamiGecikme);
 
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $28);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $28);
       PCIAygitBilgisi.KartYolCISIsaretci := Deger32;
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $30);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $30);
       PCIAygitBilgisi.GenisletilmisROMTemelAdres := Deger32;
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;
@@ -529,17 +530,17 @@ begin
       Pencere.Tuval.KalemRengi := RENK_MAVI;
       Pencere.Tuval.SayiYaz16(21 * 8, 17 * 16, True, 8, PCIAygitBilgisi.GenisletilmisROMTemelAdres);
 
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $10);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $10);
       PCIAygitBilgisi.TemelAdres[0] := Deger32;
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $14);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $14);
       PCIAygitBilgisi.TemelAdres[1] := Deger32;
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $18);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $18);
       PCIAygitBilgisi.TemelAdres[2] := Deger32;
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $1C);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $1C);
       PCIAygitBilgisi.TemelAdres[3] := Deger32;
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $20);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $20);
       PCIAygitBilgisi.TemelAdres[4] := Deger32;
-      Deger32 := PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $24);
+      Deger32 := Genel.PCIOku4(PCIAygitBilgisi.Yol, PCIAygitBilgisi.Aygit, PCIAygitBilgisi.Islev, $24);
       PCIAygitBilgisi.TemelAdres[5] := Deger32;
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;

@@ -66,8 +66,8 @@ end;
 
 procedure _SistemMesajAl(ASiraNo: TSayi4; AMesaj: PMesaj);
 asm
-  push  AMesaj
-  push  ASiraNo
+  push  DWORD AMesaj
+  push  DWORD ASiraNo
   mov   eax,SISTEMMESAJ_MESAJAL
   int   $34
   add   esp,8
@@ -75,7 +75,7 @@ end;
 
 procedure _SistemMesajYaziEkle(AMesaj: string);
 asm
-  push  AMesaj
+  push  DWORD AMesaj
   mov   eax,SISTEMMESAJ_YAZIEKLE
   int   $34
   add   esp,4
@@ -83,9 +83,9 @@ end;
 
 procedure _SistemMesajSayi16Ekle(AMesaj: string; ASayi16, AHaneSayisi: TSayi4);
 asm
-  push  AHaneSayisi
-  push  ASayi16
-  push  AMesaj
+  push  DWORD AHaneSayisi
+  push  DWORD ASayi16
+  push  DWORD AMesaj
   mov   eax,SISTEMMESAJ_SAYI16EKLE
   int   $34
   add   esp,12

@@ -39,7 +39,8 @@
         <Filename Value="mustudk.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="24" Y="10"/>
+        <TopLine Value="47"/>
+        <CursorPos X="9" Y="64"/>
         <UsageCount Value="36"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -313,7 +314,28 @@
         <UsageCount Value="10"/>
       </Unit51>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="5" HistoryIndex="4">
+      <Position1>
+        <Filename Value="mustudk.lpr"/>
+        <Caret Line="10" Column="25"/>
+      </Position1>
+      <Position2>
+        <Filename Value="mustudk.lpr"/>
+        <Caret Line="43" Column="17" TopLine="25"/>
+      </Position2>
+      <Position3>
+        <Filename Value="mustudk.lpr"/>
+        <Caret Line="24" Column="17"/>
+      </Position3>
+      <Position4>
+        <Filename Value="mustudk.lpr"/>
+        <Caret Line="44" Column="23" TopLine="26"/>
+      </Position4>
+      <Position5>
+        <Filename Value="mustudk.lpr"/>
+        <Caret Line="61" Column="25" TopLine="44"/>
+      </Position5>
+    </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>

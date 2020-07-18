@@ -6,7 +6,7 @@
   Dosya Adý: gorselnesne.pas
   Dosya Ýþlevi: tüm görsel nesnelerin türediði temel görsel ana yapý
 
-  Güncelleme Tarihi: 21/06/2020
+  Güncelleme Tarihi: 16/07/2020
 
   Bilgi: bu görsel yapý, tüm nesnelerin ihtiyaç duyabileceði ana yapýlarý içerir
 
@@ -1743,12 +1743,14 @@ end;
 // bilgi: sistem.bmp dosyasýndaki resimleri çizer
 procedure TGorselNesne.KaynaktanResimCiz2(AGorselNesne: PGorselNesne; ASol, AUst: TSayi4;
   AResimSiraNo: TISayi4);
+const
+  RESIM_SAYISI = 17;
 var
   Sol, Ust, Renk: TSayi4;
   BaslatMenuResimAdresi: PSayi4;
 begin
 
-  if(AResimSiraNo >= 0) and (AResimSiraNo < 16) then
+  if(AResimSiraNo >= 0) and (AResimSiraNo < RESIM_SAYISI) then
   begin
 
     BaslatMenuResimAdresi := GSistemResimler.BellekAdresi + (AResimSiraNo * 24 * 24 * 4);

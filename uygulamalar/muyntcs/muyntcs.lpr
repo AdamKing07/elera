@@ -12,10 +12,10 @@ program muyntcs;
  ==============================================================================}
 {$mode objfpc}
 uses n_gorev, n_ekran, gn_masaustu, gn_pencere, n_zamanlayici, gn_dugme, gn_gucdugmesi,
-  gn_menu, gn_etiket, gn_resim, gn_acilirmenu, gn_panel;
+  gn_menu, gn_etiket, gn_resim, gn_acilirmenu, gn_panel, n_genel;
 
 const
-  BASLATMENUSU_PSAYISI = 10;    // baþlat menüsündeki program sayýsý
+  BASLATMENUSU_PSAYISI = 11;    // baþlat menüsündeki program sayýsý
   GOREVDUGMESI_G = 125;         // her bir görev düðmesinin geniþlik öndeðeri
 
 const
@@ -31,7 +31,8 @@ const
     ('grvyntcs.c'),
     ('pcibil.c'),
     ('yzmcgor.c'),
-    ('smsjgor.c'));
+    ('smsjgor.c'),
+    ('calistir.c'));
 
   ProgramAciklamalari: array[0..BASLATMENUSU_PSAYISI - 1] of string = (
     ('Bellek Kullaným Bilgisi'),
@@ -43,7 +44,8 @@ const
     ('Görev Yöneticisi'),
     ('PCI Aygýt Bilgisi'),
     ('Program Yazmaç Bilgileri'),
-    ('Sistem Mesaj Görüntüleyicisi'));
+    ('Sistem Mesaj Görüntüleyicisi'),
+    ('Program Çalýþtýr'));
 
   MasaustuMenuProgramAdi: array[0..4] of string = (
     ('mustudk.c'),
@@ -65,6 +67,7 @@ const
   CALISAN_PROGRAM_SAYISI = 20;
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Ekran: TEkran;
   Masaustu: TMasaustu;
@@ -94,11 +97,11 @@ var
   Tarih: array[0..3] of TSayi2;     // gün / ay / yýl / haftanýn günü
 begin
 
-  SaatAl(@Saat);
+  Genel.SaatAl(@Saat);
   s := TimeToStr(Saat);
   SaatDegeri.Degistir(s);
 
-  TarihAl(@Tarih);
+  Genel.TarihAl(@Tarih);
   s := DateToStr(Tarih, True);
   TarihDegeri.Degistir(s);
 end;
@@ -331,6 +334,7 @@ begin
       7: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 10);
       8: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 15);
       9: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 04);
+     10: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 16);
     end;
   end;
 

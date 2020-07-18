@@ -6,7 +6,7 @@
   Dosya Adý: gn_pencere.pas
   Dosya Ýþlevi: pencere (TForm) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 13/07/2020
+  Güncelleme Tarihi: 17/07/2020
 
   Önemli Bilgiler:
 
@@ -161,12 +161,13 @@ end;
 function TPencere.Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): PPencere;
 var
-  Gorev: PGorev;
-  Masaustu: PMasaustu;
-  Pencere: PPencere;
+  Gorev: PGorev = nil;
+  Masaustu: PMasaustu = nil;
+  Pencere: PPencere = nil;
   Genislik, Yukseklik: TSayi4;
   Sol, Ust: TISayi4;
   i: TISayi4;
+  AnaPencere: Boolean;
 begin
 
   // ata nesne nil ise üst nesne geçerli masaüstüdür
@@ -177,6 +178,16 @@ begin
 
   // geçerli masaüstü yok ise hata kodunu ver ve çýk
   if(Masaustu = nil) then Exit(nil);
+
+  // 1. görevin ana penceresini ata
+  // 2. pencerenin ana pencere olup olmadýðýný tespit et
+  Gorev := Gorev^.GorevBul(CalisanGorev);
+  if not(Gorev = nil) and (Gorev^.FAnaPencere = nil) then
+  begin
+
+    Gorev^.FAnaPencere := Pencere;
+    AnaPencere := True;
+  end else AnaPencere := False;
 
   // pencere limit kontrolleri - baþlýksýz pencere hariç
   if not(APencereTipi = ptBasliksiz) then
@@ -204,7 +215,7 @@ begin
   if not(APencereTipi = ptBasliksiz) then
   begin
 
-    if(AnaPencereyiOrtala) then
+    if AnaPencereyiOrtala and AnaPencere then
     begin
 
       Sol := (Masaustu^.FBoyut.Genislik div 2) - (AGenislik div 2);
@@ -223,10 +234,6 @@ begin
   Pencere^.FTuvalNesne := Pencere;
 
   Pencere^.OlayCagriAdresi := @OlaylariIsle;
-
-  Gorev := Gorev^.GorevBul(CalisanGorev);
-  // görevin ana penceresi sadece 1 kere atanacak
-  if not(Gorev = nil) and (Gorev^.FAnaPencere = nil) then Gorev^.FAnaPencere := Pencere;
 
   Pencere^.FPencereTipi := APencereTipi;
   Pencere^.FPencereDurum := pdNormal;
@@ -447,7 +454,7 @@ end;
  ==============================================================================}
 procedure TPencere.Ciz;
 var
-  Pencere: PPencere;
+  Pencere: PPencere = nil;
   GRSolUst, GRUst, GRSagUst,
   GRSol, GRSag,
   GRSolAlt, GRAlt, GRSagAlt: TGiysiResim;

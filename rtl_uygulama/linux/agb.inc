@@ -1,1 +1,0 @@
-procedure AgBilgisiAl(AAgBilgisi: PAgBilgisi);

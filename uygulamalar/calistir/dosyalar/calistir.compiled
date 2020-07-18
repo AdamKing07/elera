@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1351329191"/>
+  <Params Value=" -Tlinux -Pi386 -MObjFPC -Scghi -CX -Xs -XX -k-Tcalistir.ld -l -vewnhibq -FiC:\Users\fkilic\Documents\elerais\uygulamalar\calistir\dosyalar -FuC:\Users\fkilic\Documents\elerais\rtl_uygulama\linux\units\i386-linux -FuC:\Users\fkilic\Documents\elerais\uygulamalar\calistir\ -FUC:\Users\fkilic\Documents\elerais\uygulamalar\calistir\dosyalar\ -FEC:\Users\fkilic\Documents\elerais\uygulamalar\_\ -oC:\Users\fkilic\Documents\elerais\uygulamalar\_\calistir.c calistir.lpr"/>
+</CONFIG>

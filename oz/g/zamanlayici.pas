@@ -239,7 +239,7 @@ end;
  ==============================================================================}
 procedure ZamanlayicilariYokEt(AGorevKimlik: TKimlik);
 var
-  Zamanlayici: PZamanlayici;
+  Zamanlayici: PZamanlayici = nil;
   i: TISayi4;
 begin
 

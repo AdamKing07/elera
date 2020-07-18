@@ -12,7 +12,7 @@ program resimgor;
  ==============================================================================}
 {$mode objfpc}
 uses gn_masaustu, n_gorev, gn_pencere, gn_dugme, gn_etiket, gn_listekutusu,
-  gn_resim, gn_durumcubugu;
+  gn_resim, gn_durumcubugu, n_genel;
 
 const
   ProgramAdi: string = 'Resim Görüntüleyici';
@@ -21,6 +21,7 @@ var
   DosyaAramaListesi: array[0..20] of TDosyaArama;
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   lkDosyaListesi: TListeKutusu;
@@ -40,7 +41,7 @@ begin
 
   j := 0;
 
-  AramaSonuc := _FindFirst('disk1:\*.*', 0, DosyaArama);
+  AramaSonuc := Genel._FindFirst('disk1:\*.*', 0, DosyaArama);
 
   while (AramaSonuc = 0) do
   begin
@@ -56,10 +57,10 @@ begin
       Inc(j);
     end;
 
-    AramaSonuc := _FindNext(DosyaArama);
+    AramaSonuc := Genel._FindNext(DosyaArama);
   end;
 
-  _FindClose(DosyaArama);
+  Genel._FindClose(DosyaArama);
 end;
 
 begin

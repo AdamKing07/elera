@@ -83,8 +83,8 @@ end;
 function _Baglan(AProtokolTip: TProtokolTip; AHedefIPAdres: string;
   AHedefPort: TSayi4): TISayi4; assembler;
 asm
-  push  AHedefPort
-  push  AHedefIPAdres
+  push  DWORD AHedefPort
+  push  DWORD AHedefIPAdres
   push  DWORD AProtokolTip
   mov   eax,ILETISIM_BAGLAN
   int   $34
@@ -93,7 +93,7 @@ end;
 
 function _BagliMi(ABaglanti: TKimlik): Boolean; assembler;
 asm
-  push  ABaglanti
+  push  DWORD ABaglanti
   mov   eax,ILETISIM_BAGLIMI
   int   $34
   add   esp,4
@@ -101,7 +101,7 @@ end;
 
 function _VeriUzunluguAl(ABaglanti: TKimlik): TISayi4; assembler;
 asm
-  push  ABaglanti
+  push  DWORD ABaglanti
   mov   eax,ILETISIM_VERIUZUNLUGU
   int   $34
   add   esp,4
@@ -109,8 +109,8 @@ end;
 
 function _VeriOku(ABaglanti: TKimlik; ABellek: Isaretci): TISayi4; assembler;
 asm
-  push  ABellek
-  push  ABaglanti
+  push  DWORD ABellek
+  push  DWORD ABaglanti
   mov   eax,ILETISIM_VERIOKU
   int   $34
   add   esp,8
@@ -118,9 +118,9 @@ end;
 
 procedure _VeriYaz(ABaglanti: TKimlik; ABellek: Isaretci; AUzunluk: TISayi4); assembler;
 asm
-  push  AUzunluk
-  push  ABellek
-  push  ABaglanti
+  push  DWORD AUzunluk
+  push  DWORD ABellek
+  push  DWORD ABaglanti
   mov   eax,ILETISIM_VERIYAZ
   int   $34
   add   esp,12
@@ -128,7 +128,7 @@ end;
 
 function _BaglantiyiKes(ABaglanti: TKimlik): Boolean; assembler;
 asm
-  push  ABaglanti
+  push  DWORD ABaglanti
   mov   eax,ILETISIM_BAGKES
   int   $34
   add   esp,4

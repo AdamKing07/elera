@@ -83,8 +83,8 @@ end;
 
 procedure _Sorgula(AKimlik: TKimlik; ADNSAdres: string); assembler;
 asm
-  push  ADNSAdres
-  push  AKimlik
+  push  DWORD ADNSAdres
+  push  DWORD AKimlik
   mov   eax,ILETISIM_DNS_SORGULA
   int   $34
   add   esp,8
@@ -92,7 +92,7 @@ end;
 
 function _DurumAl(AKimlik: TKimlik): TDNSDurum; assembler;
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ILETISIM_DNS_DURUMAL
   int   $34
   add   esp,4
@@ -100,8 +100,8 @@ end;
 
 procedure _IcerikAl(AKimlik: TKimlik; AHedefBellek: Isaretci); assembler;
 asm
-  push  AHedefBellek
-  push  AKimlik
+  push  DWORD AHedefBellek
+  push  DWORD AKimlik
   mov   eax,ILETISIM_DNS_ICERIKAL
   int   $34
   add   esp,8
@@ -109,7 +109,7 @@ end;
 
 procedure _Kapat(AKimlik: TKimlik); assembler;
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ILETISIM_DNS_KAPAT
   int   $34
   add   esp,4
@@ -117,7 +117,7 @@ end;
 
 procedure _YokEt(AKimlik: TKimlik); assembler;
 asm
-  push  AKimlik
+  push  DWORD AKimlik
   mov   eax,ILETISIM_DNS_YOKET
   int   $34
   add   esp,4

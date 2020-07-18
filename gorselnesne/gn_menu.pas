@@ -377,6 +377,7 @@ begin
           7: KaynaktanResimCiz2(Menu, 4, Ust - 4, SL^.Eleman[SiraNo]);
           8: KaynaktanResimCiz2(Menu, 4, Ust - 4, SL^.Eleman[SiraNo]);
           9: KaynaktanResimCiz2(Menu, 4, Ust - 4, SL^.Eleman[SiraNo]);
+         10: KaynaktanResimCiz2(Menu, 4, Ust - 4, SL^.Eleman[SiraNo]);
         end;
       end;
 

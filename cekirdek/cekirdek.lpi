@@ -387,10 +387,9 @@
       <Unit52>
         <Filename Value="yonetim.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="265"/>
-        <CursorPos X="43" Y="271"/>
+        <TopLine Value="236"/>
+        <CursorPos X="55" Y="256"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
       </Unit52>
@@ -520,7 +519,9 @@
       <Unit72>
         <Filename Value="..\surumbil.txt"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
+        <CursorPos Y="4"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -559,7 +560,6 @@
         <Filename Value="planlama.txt"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="7"/>
-        <CursorPos X="56" Y="16"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
@@ -814,8 +814,8 @@
         <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="716"/>
-        <CursorPos Y="730"/>
+        <TopLine Value="624"/>
+        <CursorPos X="15" Y="638"/>
         <UsageCount Value="224"/>
         <Loaded Value="True"/>
       </Unit116>
@@ -933,8 +933,6 @@
         <Filename Value="..\ortak\dosyabicim\bmp.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="174"/>
-        <CursorPos X="29" Y="173"/>
         <UsageCount Value="224"/>
       </Unit135>
       <Unit136>
@@ -1404,7 +1402,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
-        <UsageCount Value="141"/>
+        <UsageCount Value="145"/>
       </Unit211>
       <Unit212>
         <Filename Value="..\gn_kodlama.txt"/>
@@ -1435,9 +1433,9 @@
         <Filename Value="..\gorselnesne\gn_izgara.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="686"/>
-        <CursorPos X="18" Y="700"/>
-        <UsageCount Value="134"/>
+        <TopLine Value="513"/>
+        <CursorPos X="3" Y="522"/>
+        <UsageCount Value="138"/>
         <Loaded Value="True"/>
       </Unit216>
       <Unit217>
@@ -1449,7 +1447,7 @@
         <Filename Value="..\ortak\diger\giysi_mac.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="106"/>
       </Unit218>
       <Unit219>
         <Filename Value="..\ortak\diger\giysi.pas"/>
@@ -1461,16 +1459,16 @@
         <Filename Value="..\gorselnesne\gn_araccubugu.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="201"/>
+        <TopLine Value="199"/>
         <CursorPos X="32" Y="55"/>
-        <UsageCount Value="59"/>
+        <UsageCount Value="63"/>
         <Loaded Value="True"/>
       </Unit220>
       <Unit221>
         <Filename Value="..\gorselnesne\gn_renksecici.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="54"/>
       </Unit221>
       <Unit222>
         <Filename Value="..\gorselnesne\gn_sayfakontrol.pas"/>
@@ -1478,98 +1476,59 @@
         <EditorIndex Value="4"/>
         <TopLine Value="9"/>
         <CursorPos X="3" Y="23"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit222>
     </Units>
-    <JumpHistory Count="22" HistoryIndex="21">
+    <JumpHistory Count="12" HistoryIndex="11">
       <Position1>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="487" Column="3" TopLine="475"/>
+        <Caret Line="67" Column="28" TopLine="48"/>
       </Position1>
       <Position2>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="80" Column="18" TopLine="67"/>
+        <Caret Line="68" Column="28" TopLine="48"/>
       </Position2>
       <Position3>
-        <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
-        <Caret Line="901" Column="3" TopLine="882"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="69" Column="28" TopLine="48"/>
       </Position3>
       <Position4>
-        <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
-        <Caret Line="898" Column="6" TopLine="887"/>
+        <Filename Value="yonetim.pas"/>
+        <Caret Line="70" Column="34" TopLine="48"/>
       </Position4>
       <Position5>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="71" Column="32" TopLine="66"/>
+        <Caret Line="71" Column="34" TopLine="48"/>
       </Position5>
       <Position6>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="519" Column="3" TopLine="510"/>
+        <Caret Line="72" Column="34" TopLine="48"/>
       </Position6>
       <Position7>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="66" Column="15" TopLine="60"/>
+        <Caret Line="73" Column="34" TopLine="48"/>
       </Position7>
       <Position8>
         <Filename Value="yonetim.pas"/>
-        <Caret Line="487" Column="16" TopLine="475"/>
+        <Caret Line="66" Column="23" TopLine="48"/>
       </Position8>
       <Position9>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="487" Column="18" TopLine="474"/>
+        <Filename Value="..\gorselnesne\gn_izgara.pas"/>
+        <Caret Line="657" Column="39" TopLine="639"/>
       </Position9>
       <Position10>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="476" TopLine="469"/>
+        <Filename Value="..\gorselnesne\gn_izgara.pas"/>
+        <Caret Line="42" Column="15" TopLine="24"/>
       </Position10>
       <Position11>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="66" TopLine="53"/>
+        <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
+        <Caret Line="208" Column="21" TopLine="179"/>
       </Position11>
       <Position12>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="473" Column="29" TopLine="460"/>
+        <Filename Value="planlama.txt"/>
+        <Caret Line="24" Column="38" TopLine="5"/>
       </Position12>
-      <Position13>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="65" Column="24" TopLine="55"/>
-      </Position13>
-      <Position14>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="472" Column="16" TopLine="468"/>
-      </Position14>
-      <Position15>
-        <Filename Value="yonetim.pas"/>
-      </Position15>
-      <Position16>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="63" Column="18" TopLine="41"/>
-      </Position16>
-      <Position17>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="78" Column="51" TopLine="65"/>
-      </Position17>
-      <Position18>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="64" Column="35" TopLine="51"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\gorselnesne\gn_sayfakontrol.pas"/>
-        <Caret Line="23" Column="3" TopLine="9"/>
-      </Position19>
-      <Position20>
-        <Filename Value="yonetim.pas"/>
-        <Caret Line="64" Column="34" TopLine="51"/>
-      </Position20>
-      <Position21>
-        <Filename Value="..\ortak\cekirdek\paylasim.pas"/>
-        <Caret Line="898" Column="6" TopLine="887"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\surumbil.txt"/>
-        <Caret Line="14" Column="33"/>
-      </Position22>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

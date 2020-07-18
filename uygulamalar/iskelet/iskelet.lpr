@@ -12,9 +12,14 @@
 {$mode objfpc}
 program iskelet;
 
-uses anabirim;
+uses anabirim, birim2, birim3;
 
 begin
 
-  GAnaBirim.OlusturVeCalistir;
+  Pencere1.Olustur;
+  Pencere2.Olustur;
+  Pencere3.Olustur;
+
+  Pencere1.Goster;
+  Pencere1.OlaylariIsle;
 end.

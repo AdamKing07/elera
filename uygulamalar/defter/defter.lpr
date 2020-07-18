@@ -15,13 +15,14 @@ program defter;
  ==============================================================================}
 {$mode objfpc}
 uses n_gorev, gn_pencere, gn_durumcubugu, gn_etiket, gn_giriskutusu, gn_dugme,
-  gn_defter, gn_panel;
+  gn_defter, gn_panel, n_genel;
 
 const
   ProgramAdi: string = 'Dijital Defter';
   DOSYA_BELLEK_KAPASITESI = Integer(4096 * 10);
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   Panel: TPanel;
@@ -55,10 +56,10 @@ begin
 
   Defter0.Temizle;
 
-  _AssignFile(DosyaKimlik, DosyaAdi);
-  _Reset(DosyaKimlik);
+  Genel._AssignFile(DosyaKimlik, DosyaAdi);
+  Genel._Reset(DosyaKimlik);
 
-  DosyaUzunluk := _FileSize(DosyaKimlik);
+  DosyaUzunluk := Genel._FileSize(DosyaKimlik);
 
   if(DosyaUzunluk <= DOSYA_BELLEK_KAPASITESI) then
   begin
@@ -67,10 +68,10 @@ begin
 
     //_EOF(DosyaKimlik);
 
-    _FileRead(DosyaKimlik, DosyaBellek);
+    Genel._FileRead(DosyaKimlik, DosyaBellek);
   end;
 
-  _CloseFile(DosyaKimlik);
+  Genel._CloseFile(DosyaKimlik);
 
   if(DosyaUzunluk > DOSYA_BELLEK_KAPASITESI) then
   begin

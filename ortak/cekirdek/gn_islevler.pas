@@ -122,6 +122,7 @@ end;
 
 {==============================================================================
   çalışan işleme ait pencere ve tüm alt nesneleri yok eder
+  { TODO : bu işlev çoklu pencere ve çoklu alt nesneye göre yeniden kodlanacaktır - 18072020 }
  ==============================================================================}
 procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TKimlik);
 var
@@ -161,13 +162,14 @@ begin
 
             // pencere nesnesinin alt nesne bellek bölgesine konumlan
             PencereGNBellekAdresi := Pencere^.FAltNesneBellekAdresi;
-            for PencereAltNesneSiraNo := 0 to Pencere^.FAltNesneSayisi - 1 do
+            for PencereAltNesneSiraNo := Pencere^.FAltNesneSayisi - 1 downto 0 do
             begin
 
               PencereGNBellekAdresi[PencereAltNesneSiraNo]^.YokEt;
             end;
 
             // pencere nesnesinin alt nesne için ayrılan bellek bloğunu iptal et
+            { TODO : bu işlev buradan çıkarılarak nesnenin yoketme işlevine eklenecektir }
             GGercekBellek.YokEt(Pencere^.FAltNesneBellekAdresi, 4096);
           end;
 

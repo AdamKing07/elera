@@ -12,12 +12,13 @@ program hafiza;
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses n_gorev, gn_pencere, gn_dugme, gn_etiket;
+uses n_gorev, gn_pencere, gn_dugme, gn_etiket, n_genel;
 
 const
   ProgramAdi: string = 'Hafýza';
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   Durum: TEtiket;
@@ -158,7 +159,7 @@ begin
 
             SeciliDugme2^.BaslikDegistir(IntToStr(SeciliDugme2^.Etiket));
 
-            Bekle(15);
+            Genel.Bekle(15);
 
             SeciliDugme1^.Gizle;
             SeciliDugme2^.Gizle;
@@ -167,7 +168,7 @@ begin
             if(BulunanCiftSayisi = 8) then
             begin
 
-              Bekle(40);
+              Genel.Bekle(40);
 
               for i := 0 to 15 do Dugmeler[i].YokEt;
 
@@ -181,7 +182,7 @@ begin
 
             SeciliDugme2^.BaslikDegistir(IntToStr(SeciliDugme2^.Etiket));
 
-            Bekle(35);
+            Genel.Bekle(35);
 
             SeciliDugme1^.BaslikDegistir('?');
             SeciliDugme2^.BaslikDegistir('?');

@@ -11,7 +11,7 @@ program bellkbil;
 
  ==============================================================================}
 {$mode objfpc}
-uses n_gorev, gn_pencere, gn_islemgostergesi, n_zamanlayici, elera;
+uses n_gorev, gn_pencere, gn_islemgostergesi, n_zamanlayici, n_genel;
 
 const
   ProgramAdi: string = 'Bellek Kullaným Bilgisi';
@@ -33,6 +33,7 @@ var
   BlokUzunlugu: TSayi4 = 0;
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   IslemGostergesi: TIslemGostergesi;
@@ -83,9 +84,9 @@ begin
     else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
     begin
 
-      CekirdekBellekBilgisiAl(@CekirdekBaslangicAdresi, @CekirdekBitisAdresi,
+      Genel.CekirdekBellekBilgisiAl(@CekirdekBaslangicAdresi, @CekirdekBitisAdresi,
         @CekirdekUzunlugu);
-      GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilmisRAMBlok,
+      Genel.GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilmisRAMBlok,
         @BosRAMBlok, @BlokUzunlugu);
 
       Pencere.Ciz;

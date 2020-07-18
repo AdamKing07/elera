@@ -15,9 +15,13 @@ unit n_gorev;
 
 interface
 
+uses n_genel;
+
 type
   PGorev = ^TGorev;
   TGorev = object
+  private
+    FGenel: TGenel;
   public
     function Calistir(ADosyaTamYol: string): TKimlik;
     function Sonlandir(AGorevNo: TISayi4): TISayi4;
@@ -86,25 +90,25 @@ end;
 function TGorev.OlayAl(var AOlayKayit: TOlayKayit): TISayi4;
 begin
 
-  Result := _OlayAl(AOlayKayit);
+  Result := FGenel.OlayAl(AOlayKayit);
 end;
 
 function TGorev.OlayBekle(var AOlayKayit: TOlayKayit): TISayi4;
 begin
 
-  Result := _OlayBekle(AOlayKayit);
+  Result := FGenel.OlayBekle(AOlayKayit);
 end;
 
 procedure TGorev.SistemBilgisiAl(ABellekAdresi: Isaretci);
 begin
 
-  _SistemBilgisiAl(ABellekAdresi);
+  FGenel.SistemBilgisiAl(ABellekAdresi);
 end;
 
 procedure TGorev.IslemciBilgisiAl(ABellekAdresi: Isaretci);
 begin
 
-  _IslemciBilgisiAl(ABellekAdresi);
+  FGenel.IslemciBilgisiAl(ABellekAdresi);
 end;
 
 function TGorev.FarePozisyonunuAl: TNokta;
@@ -112,7 +116,7 @@ var
   _Nokta: TNokta;
 begin
 
-  _FarePozisyonunuAl(@_Nokta);
+  FGenel.FarePozisyonunuAl(@_Nokta);
   Result.A1 := _Nokta.A1;
   Result.B1 := _Nokta.B1;
 end;
@@ -120,13 +124,13 @@ end;
 function TGorev.GorselNesneKimlikAl(ANokta: TNokta): TKimlik;
 begin
 
-  Result := _GorselNesneKimlikAl(ANokta.A1, ANokta.B1);
+  Result := FGenel.GorselNesneKimlikAl(ANokta.A1, ANokta.B1);
 end;
 
 procedure TGorev.GorselNesneAdiAl(ANokta: TNokta; ANesneAdi: Isaretci);
 begin
 
-  _GorselNesneAdiAl(ANokta.A1, ANokta.B1, ANesneAdi);
+  FGenel.GorselNesneAdiAl(ANokta.A1, ANokta.B1, ANesneAdi);
 end;
 
 function TGorev.GorselNesneBilgisiAl(AKimlik: TKimlik; AHedefBellek: Isaretci): TISayi4;

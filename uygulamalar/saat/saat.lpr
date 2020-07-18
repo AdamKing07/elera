@@ -11,9 +11,10 @@ program saat;
 
  ==============================================================================}
 {$mode objfpc}
-uses n_gorev, gn_pencere, n_zamanlayici;
+uses n_gorev, gn_pencere, n_zamanlayici, n_genel;
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
@@ -46,11 +47,11 @@ begin
 
       Pencere.Tuval.KalemRengi := $041F2F;
 
-      SaatAl(@SaatDizi);
+      Genel.SaatAl(@SaatDizi);
       s := TimeToStr(SaatDizi);
       Pencere.Tuval.YaziYaz(46, 8, s);
 
-      TarihAl(@TarihDizi);
+      Genel.TarihAl(@TarihDizi);
       s := DateToStr(TarihDizi, True);
       Pencere.Tuval.YaziYaz(22, 28, s);
     end;

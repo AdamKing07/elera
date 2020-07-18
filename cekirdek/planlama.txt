@@ -1,11 +1,8 @@
 ================================================================================
                         Gerçekleþtirilecek Çalýþmalar
 ================================================================================
--
-- pencereli ve penceresiz görev sayýlarýnýn alýmý tasarlanacak (görev çubuðu için)
 - usb uhci kod çalýþmalarý (usb / uhci)
 - çekirdek sürücü model çalýþmalarý (görev)
-- birden fazla kontrol amacýyla çekirdek seviyesinde çalýþan görev olacak
 - ses kartý ile ilgili iþlevler aktif ve çalýþýr hale getirilecek
 - object yapýlarý class yapýlarýna çevrilecek
 - program geliþtirmek için tasarlanan widget'in grafiksel arabirimi tasarlanacak
@@ -28,7 +25,6 @@
 ================================================================================
                              Test Edilecek Ýþlevler
 ================================================================================
-- önceki iþlem iptal edildiðinde olay yanlýþ yere yönlendirilmesi kontrol edilecek
 - program sonlandýrma iþleminde bellek azaltýlmasý kontrol edilecek
 - masaüstü uygulamasý çöktüðünde baðlý tüm nesnelerin yok edildiði kontrol edilecek
 - 4 ve 5. fare düðmeleri test edilecek

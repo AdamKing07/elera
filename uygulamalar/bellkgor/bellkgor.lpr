@@ -11,7 +11,7 @@ program bellkgor;
 
  ==============================================================================}
 {$mode objfpc}
-uses n_gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, elera;
+uses n_gorev, gn_pencere, gn_dugme, gn_giriskutusu, gn_durumcubugu, n_genel;
 
 const
   ProgramAdi: string = 'Bellek Ýçerik Görüntüleyici';
@@ -27,6 +27,7 @@ var
   Veriler: array[0..1023] of TSayi1;
 
 var
+  Genel: TGenel;
   Gorev: TGorev;
   OlayKayit: TOlayKayit;
   gkAdres: TGirisKutusu;
@@ -127,7 +128,7 @@ begin
   dugYenile.Olustur(Pencere.Kimlik, 282, 3, 80, 22, 'Yenile');
   dugYenile.Goster;
 
-  GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
+  Genel.GenelBellekBilgisiAl(@ToplamRAMBlok, @AyrilmisRAMBlok, @KullanilanRAMBlok,
     @BosRAMBlok, @BlokUzunlugu);
 
   ToplamRAMUzunlugu := ToplamRAMBlok * BlokUzunlugu;
@@ -136,7 +137,7 @@ begin
 
   Pencere.Goster;
 
-  BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
+  Genel.BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
 
   while True do
   begin
@@ -154,7 +155,7 @@ begin
         DurumCubugu.DurumYazisiDegistir('Bellek Adresi: ' +
           HexToStr(MevcutBellekAdresi, True, 8));
 
-        BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
+        Genel.BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
 
         Pencere.Ciz;
       end;
@@ -180,7 +181,7 @@ begin
       DurumCubugu.DurumYazisiDegistir('Bellek Adresi: ' +
         HexToStr(MevcutBellekAdresi, True, 8));
 
-      BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
+      Genel.BellekIcerikOku(Isaretci(MevcutBellekAdresi), @Veriler[0], 512);
 
       Pencere.Ciz;
     end

@@ -4,7 +4,10 @@
   - TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
   - TAracCubugu (TToolBar) görsel nesne çalýþmalarý devam ediyor
   - TSayfaKontrol (TPageControl) görsel nesne çalýþmalarý devam ediyor
+  - çoklu pencere çalýþmalarý devam ediyor
 
+  + program çalýþtýrma (calistir.c) programý kodlandý (kýsayol tuþu olara ctrl+c atandý)
+  + masaüstü yönetim programýna program çalýþtýrma menüsü eklendi
   + programýn tüm yazmaç içeriklerini görüntüleyen yazmaç içerik görüntüleyici (yzmcgor2) kodlandý
   + yeni çekirdek olayý: CO_SECIMDEGISTI (TKarmaListe)
   + masaüstü programý / görev çubuðu için pencereye sahip nesneler ile ilgili iþlevler / kesmeler kodlandý

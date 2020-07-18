@@ -14,35 +14,55 @@ unit anabirim;
 
 interface
 
-uses gn_pencere, n_gorev;
+uses gn_pencere, n_gorev, gn_dugme, birim2, birim3;
 
 type
-  TAnaBirim = object
+  TPencere1 = object
   public
     Gorev: TGorev;
     Pencere: TPencere;
+    Dugme2, Dugme3: TDugme;
+//    SistemMesaj: TSistemMesaj;
     OlayKayit: TOlayKayit;
-    TiklamaSayisi: Integer;
-    procedure OlusturVeCalistir;
+    TiklamaSayisi: TSayi4;
+    procedure Olustur;
+    procedure Goster;
+    function OlaylariIsle: TISayi4;
   end;
 
 var
-  GAnaBirim: TAnaBirim;
+  Pencere1: TPencere1;
 
 implementation
 
 const
-  ProgramAdi: string = 'Temel Ýskelet';
+  PencereAdi: string = 'Ana Pencere';
 
-procedure TAnaBirim.OlusturVeCalistir;
+procedure TPencere1.Olustur;
 begin
-
-  Pencere.Olustur(-1, 100, 100, 200, 100, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);
-  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   TiklamaSayisi := 0;
 
+  Pencere.Olustur(-1, 100, 100, 300, 300, ptBoyutlanabilir, PencereAdi, RENK_BEYAZ);
+  if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
+
+  Dugme2.Olustur(Pencere.Kimlik, 10, 10, 280, 130, '2. Pencere');
+  Dugme3.Olustur(Pencere.Kimlik, 10, 150, 280, 130, '3. Pencere');
+
+//  SistemMesaj.YaziEkle('iskelet -> Pencere1 oluþturuldu...');
+end;
+
+procedure TPencere1.Goster;
+begin
+
+  Dugme2.Goster;
+  Dugme3.Goster;
+
   Pencere.Goster;
+end;
+
+function TPencere1.OlaylariIsle: TISayi4;
+begin
 
   while True do
   begin
@@ -51,18 +71,28 @@ begin
     if(OlayKayit.Olay = FO_TIKLAMA) then
     begin
 
-      Inc(TiklamaSayisi);
-      Pencere.Ciz;
+      if(OlayKayit.Kimlik = Dugme2.Kimlik) then
+        Pencere2.Goster
+      else if(OlayKayit.Kimlik = Dugme3.Kimlik) then
+        Pencere3.Goster
+      else
+      begin
+
+        Inc(TiklamaSayisi);
+        Pencere.Ciz;
+      end;
     end
 
     else if(OlayKayit.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere.Tuval.YaziYaz(8, 24, 'Týklama Sayýsý:');
-      Pencere.Tuval.SayiYaz10(17 * 8, 24, TiklamaSayisi);
+      Pencere.Tuval.YaziYaz(0, 0, 'Týklama Sayýsý:');
+      Pencere.Tuval.SayiYaz10(17 * 8, 0, TiklamaSayisi);
     end;
   end;
+
+  Result := -1;
 end;
 
 end.
