@@ -1,6 +1,9 @@
 ================================================================================
                         Gerçekleþtirilecek Çalýþmalar
 ================================================================================
+- listegorunum nesnesine eleman sayýsý, seçili eleman oku / yaz iþlevi eklenecek (görev yöneticisi için)
+
+
 - usb uhci kod çalýþmalarý (usb / uhci)
 - çekirdek sürücü model çalýþmalarý (görev)
 - ses kartý ile ilgili iþlevler aktif ve çalýþýr hale getirilecek

@@ -27,6 +27,9 @@ type
     procedure ElemanEkle(AElemanAdi: string);
     procedure Temizle;
     function SeciliYaziAl: string;
+    function ElemanSayisi: TSayi4;
+    procedure BaslikSiraNoYaz(ASiraNo: TISayi4);
+
     property Kimlik: TKimlik read FKimlik;
   end;
 
@@ -36,6 +39,8 @@ procedure _KarmaListeHizala(AKimlik: TKimlik; AHiza: THiza); assembler;
 procedure _KarmaListeElemanEkle(AKimlik: TKimlik; AElemanAdi: string); assembler;
 procedure _KarmaListeTemizle(AKimlik: TKimlik); assembler;
 procedure _KarmaListeSeciliYaziAl(AKimlik: TKimlik; AHedefBellek: Isaretci); assembler;
+function _KarmaListeElemanSayisi(AKimlik: TKimlik): TSayi4; assembler;
+procedure _KarmaListeBaslikSiraNoYaz(AKimlik: TKimlik; ASiraNo: TISayi4); assembler;
 
 implementation
 
@@ -77,6 +82,18 @@ begin
 
   _KarmaListeSeciliYaziAl(FKimlik, Isaretci(@s[0]));
   Result := s;
+end;
+
+function TKarmaListe.ElemanSayisi: TSayi4;
+begin
+
+  Result := _KarmaListeElemanSayisi(FKimlik);
+end;
+
+procedure TKarmaListe.BaslikSiraNoYaz(ASiraNo: TISayi4);
+begin
+
+  _KarmaListeBaslikSiraNoYaz(FKimlik, ASiraNo);
 end;
 
 function _KarmaListeOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4): TKimlik;
@@ -130,6 +147,23 @@ asm
   push  DWORD AHedefBellek
   push  DWORD AKimlik
   mov   eax,KARMALISTE_SECILIYAZIAL
+  int   $34
+  add   esp,8
+end;
+
+function _KarmaListeElemanSayisi(AKimlik: TKimlik): TSayi4; assembler;
+asm
+  push  DWORD AKimlik
+  mov   eax,KARMALISTE_TOPLAMAL
+  int   $34
+  add   esp,4
+end;
+
+procedure _KarmaListeBaslikSiraNoYaz(AKimlik: TKimlik; ASiraNo: TISayi4); assembler;
+asm
+  push  DWORD ASiraNo
+  push  DWORD AKimlik
+  mov   eax,KARMALISTE_BASLIKSNYAZ
   int   $34
   add   esp,8
 end;

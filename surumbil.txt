@@ -1,11 +1,13 @@
 *******************************************************************************
   Sürüm: 0.3.7 - 00.00.0000 (R33)
 *******************************************************************************
-  - TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
   - TAracCubugu (TToolBar) görsel nesne çalýþmalarý devam ediyor
   - TSayfaKontrol (TPageControl) görsel nesne çalýþmalarý devam ediyor
   - çoklu pencere çalýþmalarý devam ediyor
+  - giysi (skin) geçiþleri masaüstü ayarlarýna ekleme çalýþmalarý devam ediyor
+  - takvim çalýþmalarý devam ediyor. muyntcs.c programýna eklenecek
 
+  + TIzgara (TStringGrid) görsel nesnesi projeye eklendi
   + program çalýþtýrma (calistir.c) programý kodlandý (kýsayol tuþu olara ctrl+c atandý)
   + masaüstü yönetim programýna program çalýþtýrma menüsü eklendi
   + programýn tüm yazmaç içeriklerini görüntüleyen yazmaç içerik görüntüleyici (yzmcgor2) kodlandý

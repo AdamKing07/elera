@@ -34,6 +34,7 @@ type
     procedure AcilirMenuOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure ListeyeEkle(ADeger: string);
     procedure ListeyiTemizle;
+    procedure BaslikSiraNoYaz(ASiraNo: TISayi4);
   end;
 
 function KarmaListeCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
@@ -53,6 +54,7 @@ var
   KarmaListe: PKarmaListe;
   Hiza: THiza;
   p: PKarakterKatari;
+  i: ISayi4;
 begin
 
   case AIslevNo of
@@ -128,6 +130,25 @@ begin
       Pencere := PPencere(KarmaListe^.FAtaNesne);
       Pencere^.Guncelle;
     end;
+
+    $0102:
+    begin
+
+      KarmaListe := PKarmaListe(KarmaListe^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      if not(KarmaListe = nil) then Result := KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.ElemanSayisi;
+    end;
+
+    $0204:
+    begin
+
+      KarmaListe := PKarmaListe(KarmaListe^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      if not(KarmaListe = nil) then
+      begin
+
+        i := PISayi4(ADegiskenler + 04)^;
+        KarmaListe^.BaslikSiraNoYaz(i);
+      end;
+    end
 
     else Result := HATA_ISLEV;
   end;
@@ -351,7 +372,7 @@ end;
 
 procedure TKarmaListe.ListeyeEkle(ADeger: string);
 var
-  KarmaListe: PKarmaListe;
+  KarmaListe: PKarmaListe = nil;
   i: TISayi4;
 begin
 
@@ -383,6 +404,29 @@ begin
 
   KarmaListe^.FAcilirMenu^.Temizle;
   KarmaListe^.FAcilirMenu^.FBoyut.Yukseklik := 6;
+end;
+
+procedure TKarmaListe.BaslikSiraNoYaz(ASiraNo: TISayi4);
+var
+  KarmaListe: PKarmaListe = nil;
+  Olay: TOlay;
+begin
+
+  // nesnenin kimlik, tip deðerlerini denetle.
+  KarmaListe := PKarmaListe(KarmaListe^.NesneAl(Kimlik));
+  if(KarmaListe = nil) then Exit;
+
+  KarmaListe^.Baslik := KarmaListe^.FAcilirMenu^.FMenuBaslikListesi^.Eleman[ASiraNo];
+  KarmaListe^.Ciz;
+
+  // uygulamaya veya efendi nesneye mesaj gönder
+  Olay.Kimlik := KarmaListe^.Kimlik;
+  Olay.Olay := CO_SECIMDEGISTI;
+  Olay.Deger1 := ASiraNo;
+  Olay.Deger2 := 0;
+  if not(KarmaListe^.OlayYonlendirmeAdresi = nil) then
+    KarmaListe^.OlayYonlendirmeAdresi(KarmaListe, Olay)
+  else GorevListesi[KarmaListe^.GorevKimlik]^.OlayEkle(KarmaListe^.GorevKimlik, Olay);
 end;
 
 end.

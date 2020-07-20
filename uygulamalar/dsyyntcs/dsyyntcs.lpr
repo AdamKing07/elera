@@ -7,12 +7,13 @@ program dsyyntcs;
   Program Adý: dsyyntcs.lpr
   Program Ýþlevi: dosya yöneticisi
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 18/07/2020
 
  ==============================================================================}
 {$mode objfpc}
 {$asmmode intel}
-uses n_gorev, gn_pencere, gn_dugme, gn_listegorunum, gn_durumcubugu, gn_panel, n_genel;
+uses n_gorev, gn_pencere, gn_listegorunum, gn_durumcubugu, gn_panel, n_genel,
+  gn_etiket, gn_karmaliste;
 
 const
   ProgramAdi: string = 'Dosya Yöneticisi';
@@ -22,12 +23,13 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   Panel: TPanel;
+  etkSurucu: TEtiket;
+  klSurucu: TKarmaListe;
   DurumCubugu: TDurumCubugu;
   lgDosyaListesi: TListeGorunum;
-  dugSuruculer: array[1..6] of TDugme;
   OlayKayit: TOlayKayit;
-  MantiksalSurucuListesi: array[1..6] of TMantiksalSurucu3;
-  MantiksalDepolamaAygitSayisi, i, DugmeSol, DosyaSayisi: TSayi4;
+  MantiksalSurucu: TMantiksalSurucu3;
+  AygitSayisi, i, DosyaSayisi: TSayi4;
   GecerliSurucu, SeciliYazi, s: string;
 
 function MantiksalDepolamaAygitSayisiAl: TISayi4; assembler;
@@ -104,37 +106,33 @@ begin
   Pencere.Olustur(-1, 80, 80, 510, 355, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Panel.Olustur(Pencere.Kimlik, 0, 0, 100, 45, 0, 0, 0, 0, '');
+  Panel.Olustur(Pencere.Kimlik, 0, 0, 100, 30, 0, 0, 0, 0, '');
   Panel.Hizala(hzUst);
+
+  etkSurucu.Olustur(Panel.Kimlik, 6, 8, RENK_MAVI, 'Aktif Sürücü');
+  etkSurucu.Goster;
+
+  klSurucu.Olustur(Panel.Kimlik, 110, 4, 120, 20);
+  klSurucu.Goster;
+
   Panel.Goster;
-
-  // yerel deðiþkenleri sýfýrla
-  for i := 1 to 6 do
-  begin
-
-    FillByte(MantiksalSurucuListesi[i], SizeOf(TMantiksalSurucu3), 0);
-  end;
 
   // geçerli sürücü atamasý
   GecerliSurucu := '';
 
   // her mantýksal sürücü için bir adet düðme oluþtur
-  MantiksalDepolamaAygitSayisi := MantiksalDepolamaAygitSayisiAl;
-  if(MantiksalDepolamaAygitSayisi > 0) then
+  AygitSayisi := MantiksalDepolamaAygitSayisiAl;
+  if(AygitSayisi > 0) then
   begin
 
-    DugmeSol := 2;
-    for i := 1 to MantiksalDepolamaAygitSayisi do
+    for i := 1 to AygitSayisi do
     begin
 
-      if(MantiksalDepolamaAygitBilgisiAl(i, @MantiksalSurucuListesi[i])) then
-      begin
-
-        dugSuruculer[i].Olustur(Panel.Kimlik, DugmeSol, 2, 65, 22, MantiksalSurucuListesi[i].AygitAdi);
-        dugSuruculer[i].Goster;
-        DugmeSol += 70;
-      end;
+      if(MantiksalDepolamaAygitBilgisiAl(i, @MantiksalSurucu)) then
+        klSurucu.ElemanEkle(MantiksalSurucu.AygitAdi);
     end;
+
+    if(klSurucu.ElemanSayisi > 0) then klSurucu.BaslikSiraNoYaz(0);
   end;
 
   DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 100, 20, 'Toplam Dosya: -');
@@ -159,58 +157,25 @@ begin
 
     Gorev.OlayBekle(OlayKayit);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    // liste kutusuna týklanmasý halinde dosyayý çalýþtýr
+    if(OlayKayit.Olay = FO_TIKLAMA) and (OlayKayit.Kimlik = lgDosyaListesi.Kimlik) then
     begin
 
-      if(OlayKayit.Kimlik = Pencere.Kimlik) then
-      begin
+      SeciliYazi := lgDosyaListesi.SeciliYaziAl;
 
-      end
+      // dosya bilgisinden dosya ad ve uzantý bilgisini al
+      i := Pos('|', SeciliYazi);
+      if(i > 0) then
+        s := Copy(SeciliYazi, 1, i - 1)
+      else s := SeciliYazi;
 
-      // liste kutusuna týklanmasý halinde dosyayý çalýþtýr
-      else if(OlayKayit.Kimlik = lgDosyaListesi.Kimlik) then
-      begin
-
-        SeciliYazi := lgDosyaListesi.SeciliYaziAl;
-
-        // dosya bilgisinden dosya ad ve uzantý bilgisini al
-        i := Pos('|', SeciliYazi);
-        if(i > 0) then
-          s := Copy(SeciliYazi, 1, i - 1)
-        else s := SeciliYazi;
-
-        Gorev.Calistir(GecerliSurucu + ':\' + s);
-      end
-      else
-
-      // aksi durumda hangi düðmeye týklandý ?
-      begin
-
-        // bul.
-        for i := 1 to 6 do
-        begin
-
-          if(dugSuruculer[i].Kimlik = OlayKayit.Kimlik) then
-          begin
-
-            GecerliSurucu := MantiksalSurucuListesi[i].AygitAdi;
-            Break;
-          end;
-        end;
-
-        DosyalariListele;
-      end;
+      Gorev.Calistir(GecerliSurucu + ':\' + s);
     end
-
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(OlayKayit.Olay = CO_SECIMDEGISTI) and (OlayKayit.Kimlik = klSurucu.Kimlik) then
     begin
 
-      Pencere.Tuval.KalemRengi := RENK_MAVI;
-
-      if(GecerliSurucu = '') then
-
-        Pencere.Tuval.YaziYaz(2, 30, 'Aktif Sürücü: Yok')
-      else Pencere.Tuval.YaziYaz(2, 30, 'Aktif Sürücü: ' + GecerliSurucu);
+      GecerliSurucu := klSurucu.SeciliYaziAl;
+      DosyalariListele;
     end;
   end;
 end.

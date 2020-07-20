@@ -6,7 +6,7 @@
   Dosya Adı: k_sayac.pas
   Dosya İşlevi: sayaç kesme işlevlerini içerir
 
-  Güncelleme Tarihi: 15/05/2020
+  Güncelleme Tarihi: 19/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,30 +17,30 @@ interface
 
 uses paylasim;
 
-function SayacCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function SayacCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
 uses cmos;
 
-function SayacCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function SayacCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
   P1: PSayi1;
   P2: PSayi2;
   Deger4: TSayi4;
   Saat, Dakika, Saniye: TSayi1;
   Gun, Ay, Yil, HaftaninGunu: TSayi2;
-  _Islev: TSayi4;
+  Islev: TSayi4;
 begin
 
   // işlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   // geçerli saat değerini al
-  if(_Islev = 1) then
+  if(Islev = 1) then
   begin
 
-    P1 := Isaretci(PSayi4(Degiskenler)^ + CalisanGorevBellekAdresi);
+    P1 := Isaretci(PSayi4(ADegiskenler)^ + CalisanGorevBellekAdresi);
 
     SaatAl(Saat, Dakika, Saniye);
     P1^ := Saat;
@@ -50,10 +50,10 @@ begin
     P1^ := Saniye;
   end
   // geçerli tarih değerini al
-  else if(_Islev = 2) then
+  else if(Islev = 2) then
   begin
 
-    P2 := Isaretci(PSayi4(Degiskenler)^ + CalisanGorevBellekAdresi);
+    P2 := Isaretci(PSayi4(ADegiskenler)^ + CalisanGorevBellekAdresi);
 
     TarihAl(Gun, Ay, Yil, HaftaninGunu);
     P2^ := Gun;
@@ -65,10 +65,10 @@ begin
     P2^ := HaftaninGunu;
   end
   // belirtilen milisaniye kadar bekle
-  else if(_Islev = $10) then
+  else if(Islev = $10) then
   begin
 
-    Deger4 := PSayi4(Degiskenler)^;
+    Deger4 := PSayi4(ADegiskenler)^;
 
     Deger4 := ZamanlayiciSayaci + Deger4;
     while (Deger4 > ZamanlayiciSayaci) do begin asm int $20; end; end;

@@ -144,6 +144,10 @@ cd smsjgor
 call derle.bat
 cd..
 
+cd takvim
+call derle.bat
+cd..
+
 cd tarayici
 call derle.bat
 cd..

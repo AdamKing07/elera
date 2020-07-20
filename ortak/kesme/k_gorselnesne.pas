@@ -6,7 +6,7 @@
   Dosya Adı: k_gorselnesne.pas
   Dosya İşlevi: görsel nesne işlevlerini içerir
 
-  Güncelleme Tarihi: 13/07/2020
+  Güncelleme Tarihi: 20/07/2020
 
  ==============================================================================}
 {$mode objfpc}

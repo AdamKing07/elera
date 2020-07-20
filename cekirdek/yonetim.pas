@@ -52,7 +52,7 @@ type
 
   TArGe = object
   private
-    P2Dugmeler: array[0..44] of PGucDugmesi;
+    P1Dugmeler: array[0..44] of PGucDugmesi;
   public
     TestSinif: TTestSinif;
     Degerler: array[1..8] of TSayi4;
@@ -61,14 +61,14 @@ type
     BulunanCiftSayisi, TiklamaSayisi,
     SecilenEtiket, ToplamTiklamaSayisi: TSayi4;
     FCalisanBirim: TArgeProgram;
-    P5SayfaKontrol: PSayfaKontrol;
+    P3SayfaKontrol: PSayfaKontrol;
+    FSeciliYil, FSeciliAy: TISayi4;
+    BuAy, BuYil: TSayi2;
     procedure Olustur;
     procedure Program1Basla;
     procedure Program2Basla;
     procedure Program3Basla;
-    procedure Program4Basla;
     procedure P1NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-    procedure P2NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
@@ -76,20 +76,20 @@ type
 var
   SDPencere: PPencere = nil;
   SDZamanlayici, P1Zamanlayici: PZamanlayici;
-  P1Pencere, P2Pencere, P3Pencere, P4Pencere, P5Pencere: PPencere;
-  P4DurumCubugu: PDurumCubugu;
-  P4AracCubugu: PAracCubugu;
-  P4Etiket: PEtiket;
-  P4GirisKutusu: PGirisKutusu;
-  P4OnayKutusu: POnayKutusu;
-  P4ACDugmeler: array[0..4] of TISayi4;
+  P1Pencere, P2Pencere, P3Pencere: PPencere;
+  P2DurumCubugu: PDurumCubugu;
+  P2AracCubugu: PAracCubugu;
+  P4Dugme: PDugme;
+  P3Etiket: PEtiket;
+  P3GirisKutusu: PGirisKutusu;
+  P3OnayKutusu: POnayKutusu;
+  P2ACDugmeler: array[0..4] of TISayi4;
   P1Panel: PPanel;
   P1KarmaListe: PKarmaListe;
-  P1Dugme, P4Dugme: PDugme;
+  P1Dugme: PDugme;
   P1DegerListesi: PDegerListesi;
-  P3Izgara: PIzgara;
-  P5Panel: array[0..1] of PPanel;
-  P5Dugme: array[0..1] of PDugme;
+  P3Panel: array[0..1] of PPanel;
+  P3Dugme: array[0..1] of PDugme;
   GNEtiket: PEtiket;
   Resim: PResim;
   _DNS: PDNS = nil;
@@ -107,7 +107,7 @@ procedure SistemDegerleriOlayIsle;
 
 implementation
 
-uses gdt, gorev, src_klavye, genel, ag, dhcp, sistemmesaj, src_vesa20,
+uses gdt, gorev, src_klavye, genel, ag, dhcp, sistemmesaj, src_vesa20, cmos,
   gn_masaustu, donusum, gn_islevler, giysi_normal, giysi_mac;
 
 {==============================================================================
@@ -218,6 +218,7 @@ var
   Tus: Char;
   TusDurum: TTusDurum;
   AtaGorselNesne: PGorselNesne = nil;
+  D1, D2, D3: Integer;
 begin
 
 {  if(CalisanGorevSayisi = 1) then
@@ -268,14 +269,14 @@ begin
         else if(Tus = '3') then
         begin
 
-          Gorev^.Calistir('disk1:\iskelet.c');
+          Gorev^.Calistir('disk1:\takvim.c');
 
           //AktifGiysi := GiysiNormal;
           //GAktifMasaustu^.Ciz;
           //Gorev^.Calistir('disk1:\dnssorgu.c');
 
-          //SISTEM_MESAJ('Panel1 Alt NS: %d', [P5Panel[0]^.FAltNesneSayisi]);
-          //SISTEM_MESAJ('Panel2 Alt NS: %d', [P5Panel[1]^.FAltNesneSayisi]);
+          //SISTEM_MESAJ('Panel1 Alt NS: %d', [P3Panel[0]^.FAltNesneSayisi]);
+          //SISTEM_MESAJ('Panel2 Alt NS: %d', [P3Panel[1]^.FAltNesneSayisi]);
 
           {i := FindFirst('disk1:\kaynak\*.*', 0, AramaKaydi);
           while i = 0 do
@@ -312,7 +313,12 @@ begin
         // mesaj görüntüleme programýný çalýþtýr
         else if(Tus = 'm') then
 
-          Gorev^.Calistir('disk1:\smsjgor.c');
+          Gorev^.Calistir('disk1:\smsjgor.c')
+
+        // resim görüntüleme programýný çalýþtýr
+        else if(Tus = 'r') then
+
+          Gorev^.Calistir('disk1:\resimgor.c');
       end
       else
       begin
@@ -477,38 +483,38 @@ end;
 procedure TArGe.Olustur;
 begin
 
-  FCalisanBirim := nil; //@Program4Basla;
+  FCalisanBirim := nil; //@Program2Basla;
 end;
 
 procedure TArGe.Program1Basla;
 var
-  P2Masaustu: PMasaustu = nil;
+  P1Masaustu: PMasaustu = nil;
 begin
 
-  P2Masaustu := P2Masaustu^.Olustur('giriþ');
-  P2Masaustu^.MasaustuRenginiDegistir($9FB6BF);
-  //P2Masaustu^.Aktiflestir;
+  P1Masaustu := P1Masaustu^.Olustur('giriþ');
+  P1Masaustu^.MasaustuRenginiDegistir($9FB6BF);
+  //P1Masaustu^.Aktiflestir;
 
-  P2Pencere := P2Pencere^.Olustur(P2Masaustu, 100, 100, 500, 400, ptBoyutlanabilir,
+  P1Pencere := P1Pencere^.Olustur(P1Masaustu, 100, 100, 500, 400, ptBoyutlanabilir,
     'Görsel Nesne Yönetim', RENK_BEYAZ);
-  P2Pencere^.OlayYonlendirmeAdresi := @P1NesneTestOlayIsle;
+  P1Pencere^.OlayYonlendirmeAdresi := @P1NesneTestOlayIsle;
 
-  P2Dugmeler[0] := P2Dugmeler[0]^.Olustur(ktNesne, P2Pencere,
+  P1Dugmeler[0] := P1Dugmeler[0]^.Olustur(ktNesne, P1Pencere,
     10, 10, 100, 100, 'Artýr');
-  P2Dugmeler[0]^.OlayYonlendirmeAdresi := @P1NesneTestOlayIsle;
-  P2Dugmeler[0]^.Goster;
+  P1Dugmeler[0]^.OlayYonlendirmeAdresi := @P1NesneTestOlayIsle;
+  P1Dugmeler[0]^.Goster;
 
-  P2Dugmeler[1] := P2Dugmeler[1]^.Olustur(ktNesne, P2Pencere,
+  P1Dugmeler[1] := P1Dugmeler[1]^.Olustur(ktNesne, P1Pencere,
     120, 10, 100, 100, 'Eksilt');
-  P2Dugmeler[1]^.OlayYonlendirmeAdresi := @P1NesneTestOlayIsle;
-  P2Dugmeler[1]^.Goster;
+  P1Dugmeler[1]^.OlayYonlendirmeAdresi := @P1NesneTestOlayIsle;
+  P1Dugmeler[1]^.Goster;
 
 //  TestSinif := TTestSinif.Create;
 //  TestSinif.FDeger1 := 10;
 
-  P2Pencere^.Goster;
+  P1Pencere^.Goster;
 
-  P2Masaustu^.Gorunum := True;
+  P1Masaustu^.Gorunum := True;
 end;
 
 procedure TArGe.P1NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
@@ -517,80 +523,54 @@ begin
 end;
 
 procedure TArGe.Program2Basla;
-var
-  i: Integer;
 begin
 
-  P3Pencere := P3Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir, 'Izgara', RENK_BEYAZ);
-  P3Pencere^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
+  SonSecim := 0;
 
-  P3Izgara := P3Izgara^.Olustur(ktNesne, P3Pencere, 0, 0, 180, 180);
-  P3Izgara^.FHiza := hzTum;
-  P3Izgara^.HucreSayisiBelirle(10, 10);
-  P3Izgara^.HucreBoyutuBelirle(60, 25);
+  P2Pencere := P2Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir,
+    'Nesneler', RENK_BEYAZ);
+  P2Pencere^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
 
-  for i := 1 to 100 do P3Izgara^.DegerEkle(IntToStr(i));
+  P2AracCubugu := P2AracCubugu^.Olustur(ktNesne, P2Pencere);
+  P2ACDugmeler[0] := P2AracCubugu^.DugmeEkle(6);
+  P2ACDugmeler[1] := P2AracCubugu^.DugmeEkle(7);
+  P2ACDugmeler[2] := P2AracCubugu^.DugmeEkle(8);
+  P2ACDugmeler[3] := P2AracCubugu^.DugmeEkle(9);
+  P2ACDugmeler[4] := P2AracCubugu^.DugmeEkle(10);
+  P2AracCubugu^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
+  P2AracCubugu^.Goster;
 
-  //P3Izgara^.BaslikEkle('Yazmaç', 'Deðer', 80);
-  P3Izgara^.Goster;
+  P2DurumCubugu := P2DurumCubugu^.Olustur(ktNesne, P2Pencere, 0, 0, 10, 10, 'Konum: 0:0');
+  P2DurumCubugu^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
+  P2DurumCubugu^.Goster;
 
-  P3Pencere^.Goster;
-end;
-
-procedure TArGe.P2NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-begin
-
+  P2Pencere^.Goster;
 end;
 
 procedure TArGe.Program3Basla;
 begin
 
-  SonSecim := 0;
-
-  P4Pencere := P4Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir,
-    'Nesneler', RENK_BEYAZ);
-  P4Pencere^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
-
-  P4AracCubugu := P4AracCubugu^.Olustur(ktNesne, P4Pencere);
-  P4ACDugmeler[0] := P4AracCubugu^.DugmeEkle(6);
-  P4ACDugmeler[1] := P4AracCubugu^.DugmeEkle(7);
-  P4ACDugmeler[2] := P4AracCubugu^.DugmeEkle(8);
-  P4ACDugmeler[3] := P4AracCubugu^.DugmeEkle(9);
-  P4ACDugmeler[4] := P4AracCubugu^.DugmeEkle(10);
-  P4AracCubugu^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
-  P4AracCubugu^.Goster;
-
-  P4DurumCubugu := P4DurumCubugu^.Olustur(ktNesne, P4Pencere, 0, 0, 10, 10, 'Konum: 0:0');
-  P4DurumCubugu^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
-  P4DurumCubugu^.Goster;
-
-  P4Pencere^.Goster;
-end;
-
-procedure TArGe.Program4Basla;
-begin
-
-  P5Pencere := P5Pencere^.Olustur(nil, 10, 10, 400, 400, ptBoyutlanabilir,
+  P3Pencere := P3Pencere^.Olustur(nil, 10, 10, 400, 400, ptBoyutlanabilir,
     'Sayfa Kontrol', RENK_BEYAZ);
-  P5Pencere^.OlayYonlendirmeAdresi := @P4NesneTestOlayIsle;
+  P3Pencere^.OlayYonlendirmeAdresi := @P4NesneTestOlayIsle;
 
-  P5SayfaKontrol := P5SayfaKontrol^.Olustur(ktNesne, P5Pencere, 10, 10, 200, 200);
+  P3SayfaKontrol := P3SayfaKontrol^.Olustur(ktNesne, P3Pencere, 10, 10, 200, 200);
 
-  P4ACDugmeler[0] := P5SayfaKontrol^.SayfaEkle('Sistem Bilgisi');
-  P5Panel[0] := PPanel(P5Panel[0]^.NesneAl(P4ACDugmeler[0]));
+  P2ACDugmeler[0] := P3SayfaKontrol^.SayfaEkle('Sistem Bilgisi');
+  P3Panel[0] := PPanel(P3Panel[0]^.NesneAl(P2ACDugmeler[0]));
 
-  P4ACDugmeler[1] := P5SayfaKontrol^.SayfaEkle('Ýþlemci Bilgisi');
-  P5Panel[1] := PPanel(P5Panel[1]^.NesneAl(P4ACDugmeler[1]));
+  P2ACDugmeler[1] := P3SayfaKontrol^.SayfaEkle('Ýþlemci Bilgisi');
+  P3Panel[1] := PPanel(P3Panel[1]^.NesneAl(P2ACDugmeler[1]));
 
-//  P5Dugme[0]^.Olustur(ktBilesen, P5Panel[0]^.FTuvalNesne, 10, 10, 100, 100, 'Merhaba-1');
-//  P5Dugme[0]^.Goster;
+//  P3Dugme[0]^.Olustur(ktBilesen, P3Panel[0]^.FTuvalNesne, 10, 10, 100, 100, 'Merhaba-1');
+//  P3Dugme[0]^.Goster;
 
-  P5Dugme[1]^.Olustur(ktNesne, P5Panel[1], 10, 10, 100, 100, 'Merhaba-2');
-  P5Dugme[1]^.Goster;
+  P3Dugme[1]^.Olustur(ktNesne, P3Panel[1], 10, 10, 100, 100, 'Merhaba-2');
+  P3Dugme[1]^.Goster;
 
-  P5SayfaKontrol^.Goster;
+  P3SayfaKontrol^.Goster;
 
-  P5Pencere^.Goster;
+  P3Pencere^.Goster;
 end;
 
 procedure TArGe.P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
@@ -610,17 +590,17 @@ begin
     Ust := 5 + 28;
     repeat
 
-      Alan := P4Pencere^.FKalinlik;
-      for i := 0 to G div 10 do P4Pencere^.PixelYaz(P4Pencere, Alan.Sol + (i * 10) + 3,
+      Alan := P2Pencere^.FKalinlik;
+      for i := 0 to G div 10 do P2Pencere^.PixelYaz(P2Pencere, Alan.Sol + (i * 10) + 3,
         Alan.Ust + Ust, RENK_GRI);
       Inc(Ust, 10);
     until Ust > Y;
   end
-  else if(AOlay.Olay = FO_HAREKET) and (AOlay.Kimlik = P4Pencere^.Kimlik) then
+  else if(AOlay.Olay = FO_HAREKET) and (AOlay.Kimlik = P2Pencere^.Kimlik) then
   begin
 
-    SonKonumY := AOlay.Deger1 - P4Pencere^.FKalinlik.Sol;
-    SonKonumD := AOlay.Deger2 - P4Pencere^.FKalinlik.Ust;
+    SonKonumY := AOlay.Deger1 - P2Pencere^.FKalinlik.Sol;
+    SonKonumD := AOlay.Deger2 - P2Pencere^.FKalinlik.Ust;
 
     case SonSecim of
       0: s := '-';
@@ -630,52 +610,52 @@ begin
       4: s := 'TOnayKutusu';
     end;
 
-    P4DurumCubugu^.Baslik := 'Konum: ' + IntToStr(AOlay.Deger1) + ':' +
+    P2DurumCubugu^.Baslik := 'Konum: ' + IntToStr(AOlay.Deger1) + ':' +
       IntToStr(AOlay.Deger2) + ' - Seçili Nesne: ' + s;
-    P4DurumCubugu^.Ciz;
+    P2DurumCubugu^.Ciz;
   end
-  else if(AOlay.Olay = FO_SAGTUS_BIRAKILDI) and (AOlay.Kimlik = P4Pencere^.Kimlik) then
+  else if(AOlay.Olay = FO_SAGTUS_BIRAKILDI) and (AOlay.Kimlik = P2Pencere^.Kimlik) then
   begin
 
     if(SonSecim = 1) then
     begin
 
-      P4Dugme := P4Dugme^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD, 100, 20, 'Merhaba');
+      P4Dugme := P4Dugme^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, 100, 20, 'Merhaba');
       P4Dugme^.Goster;
     end
     else if(SonSecim = 2) then
     begin
 
-      P4Etiket := P4Etiket^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD, RENK_KIRMIZI, 'Merhaba');
-      P4Etiket^.Goster;
+      P3Etiket := P3Etiket^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, RENK_KIRMIZI, 'Merhaba');
+      P3Etiket^.Goster;
     end
     else if(SonSecim = 3) then
     begin
 
-      P4GirisKutusu := P4GirisKutusu^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD,
+      P3GirisKutusu := P3GirisKutusu^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD,
         100, 20, 'Merhaba');
-      P4GirisKutusu^.Goster;
+      P3GirisKutusu^.Goster;
     end
     else if(SonSecim = 4) then
     begin
 
-      P4OnayKutusu := P4OnayKutusu^.Olustur(ktNesne, P4Pencere, SonKonumY, SonKonumD,
+      P3OnayKutusu := P3OnayKutusu^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD,
         'Merhaba');
-      P4OnayKutusu^.Goster;
+      P3OnayKutusu^.Goster;
     end;
   end
   else if(AOlay.Olay = FO_TIKLAMA) then
   begin
 
-    if(AOlay.Kimlik = P4ACDugmeler[0]) then
+    if(AOlay.Kimlik = P2ACDugmeler[0]) then
       SonSecim := 0
-    else if(AOlay.Kimlik = P4ACDugmeler[1]) then
+    else if(AOlay.Kimlik = P2ACDugmeler[1]) then
       SonSecim := 1
-    else if(AOlay.Kimlik = P4ACDugmeler[2]) then
+    else if(AOlay.Kimlik = P2ACDugmeler[2]) then
       SonSecim := 2
-    else if(AOlay.Kimlik = P4ACDugmeler[3]) then
+    else if(AOlay.Kimlik = P2ACDugmeler[3]) then
       SonSecim := 3
-    else if(AOlay.Kimlik = P4ACDugmeler[4]) then
+    else if(AOlay.Kimlik = P2ACDugmeler[4]) then
       SonSecim := 4;
 
     //SISTEM_MESAJ('Kimlik: %d', [AOlay.Kimlik]);
