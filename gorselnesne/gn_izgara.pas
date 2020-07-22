@@ -6,7 +6,7 @@
   Dosya Adı: gn_izgara.pas
   Dosya İşlevi: ızgara nesnesi (TStringGrid) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 24/06/2020
+  Güncelleme Tarihi: 21/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -22,7 +22,7 @@ type
   private
     FYatayKCubugu, FDikeyKCubugu: PKaydirmaCubugu;
     FYatayKCGoster, FDikeyKCGoster: Boolean;
-    FSabitSutunSayisi, FSabitSatirSayisi: TSayi4;
+    FSabitSutunSayisi, FSabitSatirSayisi: TISayi4;
     FSutunSayisi, FSatirSayisi,
     FSutunGenislik, FSatirYukseklik: TISayi4;
     FSeciliSatir, FSeciliSutun: TISayi4;  // seçili satır ve sütun
@@ -56,16 +56,16 @@ function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik
 
 implementation
 
-uses genel, gn_islevler, gn_pencere, temelgorselnesne, donusum, sistemmesaj;
+uses genel, gn_islevler, gn_pencere, temelgorselnesne, sistemmesaj;
 
 {==============================================================================
   ızgara nesnesi kesme çağrılarını yönetir
  ==============================================================================}
 function IzgaraCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  GorselNesne: PGorselNesne;
-  Pencere: PPencere;
-  Izgara: PIzgara;
+  GorselNesne: PGorselNesne = nil;
+  Pencere: PPencere = nil;
+  Izgara: PIzgara = nil;
   Hiza: THiza;
 begin
 
@@ -172,8 +172,8 @@ begin
 
       Izgara := PIzgara(Izgara^.NesneAl(PKimlik(ADegiskenler + 00)^));
       if(Izgara <> nil) then Izgara^.SeciliHucreyiYaz(
-        PSayi4(ADegiskenler + 04)^, PSayi4(ADegiskenler + 08)^);
-    end;
+        PISayi4(ADegiskenler + 04)^, PISayi4(ADegiskenler + 08)^);
+    end
 
     else Result := HATA_ISLEV;
   end;
@@ -202,7 +202,6 @@ function TIzgara.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
   ASol, AUst, AGenislik, AYukseklik: TISayi4): PIzgara;
 var
   Izgara: PIzgara = nil;
-  i: TSayi4;
 begin
 
   Izgara := PIzgara(inherited Olustur(AKullanimTipi, AAtaNesne, ASol, AUst,
@@ -299,7 +298,7 @@ end;
  ==============================================================================}
 procedure TIzgara.Boyutlandir;
 var
-  Izgara: PIzgara;
+  Izgara: PIzgara = nil;
 begin
 
   Izgara := PIzgara(Izgara^.NesneAl(Kimlik));
@@ -351,12 +350,10 @@ end;
  ==============================================================================}
 procedure TIzgara.Ciz;
 var
-  Pencere: PPencere;
-  Izgara: PIzgara;
-  Alan1, Alan2: TAlan;
-  i, j, Sol, Sol2, Ust, Ust2,
-  G, Y, SolIlk, UstIlk, UstBaslangic2: TISayi4;
-  SolBaslangic2: Integer;
+  Pencere: PPencere = nil;
+  Izgara: PIzgara = nil;
+  Alan: TAlan;
+  i, j, SolIlk, UstIlk: TISayi4;
 begin
 
   Izgara := PIzgara(Izgara^.NesneAl(Kimlik));
@@ -364,8 +361,8 @@ begin
 
   inherited Ciz;
 
-  // liste kutusunun üst nesneye bağlı olarak koordinatlarını al
-  Alan1 := Izgara^.FCizimAlan;
+  // kaydırma çubuğunun çizim alan koordinatlarını al
+  Alan := Izgara^.FCizimAlan;
 
   // ata nesne bir pencere mi?
   Pencere := EnUstPencereNesnesiniAl(Izgara);
@@ -373,10 +370,6 @@ begin
 
   // tanımlanmış hiçbir kolon yok ise, çık
   if(FDegerler^.ElemanSayisi = 0) then Exit;
-
-  // yatay üst kolonların çizilmesi
-  Sol := Alan1.Sol + 1;
-  Ust := Alan1.Ust + 1;
 
   if(Izgara^.FYatayKCGoster) then
     SolIlk := Izgara^.FYatayKCubugu^.FMevcutDeger
@@ -386,11 +379,8 @@ begin
     UstIlk := Izgara^.FDikeyKCubugu^.FMevcutDeger
   else UstIlk := 0;
 
-  G := Alan1.Sol + 1 + ((FSutunSayisi - SolIlk) * (FSutunGenislik + 1)) - 1;
-  Y := Alan1.Ust + 1 + ((FSatirSayisi - UstIlk) * (FSatirYukseklik + 1)) - 1;
-
-  Alan2.Sol := 1;
-  Alan2.Ust := 1;
+  Alan.Sol := 1;
+  Alan.Ust := 1;
 
   // veriye göre yapılan döngü
   for i := UstIlk to FSatirSayisi - 1 do
@@ -399,27 +389,27 @@ begin
     for j := SolIlk to FSutunSayisi - 1 do
     begin
 
-      Alan2.Sag := Alan2.Sol + Izgara^.FSutunGenislik - 1;
-      Alan2.Alt := Alan2.Ust + Izgara^.FSatirYukseklik - 1;
+      Alan.Sag := Alan.Sol + Izgara^.FSutunGenislik - 1;
+      Alan.Alt := Alan.Ust + Izgara^.FSatirYukseklik - 1;
 
       if(i < Izgara^.FSabitSatirSayisi) then
-        Izgara^.EgimliDoldur3(Izgara, Alan2, $EAECEE, $ABB2B9)
+        Izgara^.EgimliDoldur3(Izgara, Alan, $EAECEE, $ABB2B9)
       else if(j < Izgara^.FSabitSutunSayisi) then
-        Izgara^.EgimliDoldur3(Izgara, Alan2, $EAECEE, $ABB2B9)
+        Izgara^.EgimliDoldur3(Izgara, Alan, $EAECEE, $ABB2B9)
 
       else if(Izgara^.FSeciliSatir = i) and (Izgara^.FSeciliSutun = j) then
-        Izgara^.DikdortgenDoldur(Izgara, Alan2, RENK_KIRMIZI, RENK_BEYAZ)
-      else Izgara^.DikdortgenDoldur(Izgara, Alan2, RENK_BEYAZ, RENK_BEYAZ);
+        Izgara^.DikdortgenDoldur(Izgara, Alan, RENK_KIRMIZI, RENK_BEYAZ)
+      else Izgara^.DikdortgenDoldur(Izgara, Alan, RENK_BEYAZ, RENK_BEYAZ);
 
       // başlık
-      Izgara^.AlanaYaziYaz(Izgara, Alan2, 4, 3, FDegerler^.Eleman[(i * (Izgara^.FSutunSayisi)) + j],
+      Izgara^.AlanaYaziYaz(Izgara, Alan, 4, 3, FDegerler^.Eleman[(i * (Izgara^.FSutunSayisi)) + j],
         RENK_LACIVERT);
 
-      Alan2.Sol += Izgara^.FSutunGenislik + 1;
+      Alan.Sol += Izgara^.FSutunGenislik + 1;
     end;
 
-    Alan2.Sol := 1;
-    Alan2.Ust += Izgara^.FSatirYukseklik + 1;
+    Alan.Sol := 1;
+    Alan.Ust += Izgara^.FSatirYukseklik + 1;
   end;
 
   // kaydırma çubuklarını en son çiz
@@ -459,15 +449,12 @@ begin
       // seçili sütün ve satır değerini yeniden belirle
       i := (AOlay.Deger1 + (Izgara^.FYatayKCubugu^.FMevcutDeger * Izgara^.FSutunGenislik)) div Izgara^.FSutunGenislik;
       j := (AOlay.Deger2 + (Izgara^.FDikeyKCubugu^.FMevcutDeger * Izgara^.FSatirYukseklik)) div Izgara^.FSatirYukseklik;
-      if(i > 0) and (j > 0) then
+      if(i >= Izgara^.FSabitSutunSayisi) and (j >= Izgara^.FSabitSatirSayisi) then
       begin
 
         Izgara^.FSeciliSutun := i;
         Izgara^.FSeciliSatir := j;
       end;
-
-      //SISTEM_MESAJ('DegerListesi^.FSeciliSutun: %d', [Izgara^.FSeciliSutun]);
-      //SISTEM_MESAJ('DegerListesi^.FSeciliSatir: %d', [Izgara^.FSeciliSatir]);
 
       // ızgara nesnesini yeniden çiz
       Izgara^.Ciz;
@@ -503,114 +490,16 @@ begin
     if not(Izgara^.OlayYonlendirmeAdresi = nil) then
       Izgara^.OlayYonlendirmeAdresi(Izgara, AOlay)
     else GorevListesi[Izgara^.GorevKimlik]^.OlayEkle(Izgara^.GorevKimlik, AOlay);
-  end
-
-  // fare hakeret işlemi
-  else if(AOlay.Olay = FO_HAREKET) then
-  begin
-
-    // eğer nesne yakalanmış ise
-    if(YakalananGorselNesne <> nil) then
-    begin
-
-      // fare ızgara nesnesinin yukarısında ise
-      if(AOlay.Deger2 < 0) then
-      begin
-
-        j := Izgara^.FGorunenIlkSiraNo;
-        Dec(j);
-        if(j >= 0) then
-        begin
-
-          Izgara^.FGorunenIlkSiraNo := j;
-          Izgara^.FSeciliSutun := j;
-        end;
-      end
-
-      // fare ızgara nesnesinin aşağısında ise
-      else if(AOlay.Deger2 > Izgara^.FBoyut.Yukseklik) then
-      begin
-
-        // azami kaydırma değeri
-        {i := Izgara^.FKolonAdlari^.ElemanSayisi - Izgara^.FGorunenElemanSayisi;
-        if(i < 0) then i := 0;
-
-        j := Izgara^.FGorunenIlkSiraNo;
-        Inc(j);
-        if(j < i) then
-        begin
-
-          Izgara^.FGorunenIlkSiraNo := j;
-          i := (AOlay.Deger2 - 24) div 21;
-          Izgara^.FSeciliSutun := i + Izgara^.FGorunenIlkSiraNo;
-        end}
-      end
-
-      // fare ızgara nesnesinin içerisinde ise
-      else
-      begin
-
-        i := (AOlay.Deger2 - 24) div 21;
-        Izgara^.FSeciliSutun := i + Izgara^.FGorunenIlkSiraNo;
-      end;
-
-      // ızgara nesnesini yeniden çiz
-      Izgara^.Ciz;
-
-      // uygulamaya veya efendi nesneye mesaj gönder
-      if not(Izgara^.OlayYonlendirmeAdresi = nil) then
-        Izgara^.OlayYonlendirmeAdresi(Izgara, AOlay)
-      else GorevListesi[Izgara^.GorevKimlik]^.OlayEkle(Izgara^.GorevKimlik, AOlay);
-    end
-
-    // nesne yakalanmamış ise uygulamaya sadece mesaj gönder
-    else
-    begin
-
-      // uygulamaya veya efendi nesneye mesaj gönder
-      if not(Izgara^.OlayYonlendirmeAdresi = nil) then
-        Izgara^.OlayYonlendirmeAdresi(Izgara, AOlay)
-      else GorevListesi[Izgara^.GorevKimlik]^.OlayEkle(Izgara^.GorevKimlik, AOlay);
-    end;
-  end
-
-  else if(AOlay.Olay = FO_KAYDIRMA) then
-  begin
-
-    // listeyi yukarı kaydırma işlemi. ilk elemana doğru
-    if(AOlay.Deger1 < 0) then
-    begin
-
-      j := Izgara^.FGorunenIlkSiraNo;
-      Dec(j);
-      if(j >= 0) then Izgara^.FGorunenIlkSiraNo := j;
-    end
-
-    // listeyi aşağıya kaydırma işlemi. son elemana doğru
-    else if(AOlay.Deger1 > 0) then
-    begin
-
-      // azami kaydırma değeri
-      i := Izgara^.FDegerler^.ElemanSayisi - Izgara^.FGorunenElemanSayisi;
-      if(i < 0) then i := 0;
-
-      j := Izgara^.FGorunenIlkSiraNo;
-      Inc(j);
-      if(j < i) then Izgara^.FGorunenIlkSiraNo := j;
-    end;
-
-    Izgara^.Ciz;
   end;
 
   // geçerli fare göstergesini güncelle
   GecerliFareGostegeTipi := Izgara^.FFareImlecTipi;
 end;
 
-procedure TIzgara.KaydirmaCubuguOlaylariniIsle(AGonderici: PGorselNesne;
-  AOlay: TOlay);
+procedure TIzgara.KaydirmaCubuguOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  Izgara: PIzgara;
-  KaydirmaCubugu: PKaydirmaCubugu;
+  Izgara: PIzgara = nil;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
 begin
 
   KaydirmaCubugu := PKaydirmaCubugu(AGonderici);
@@ -670,6 +559,16 @@ begin
 
   Izgara^.FYatayKCGoster := AYatayKCGoster;
   Izgara^.FDikeyKCGoster := ADikeyKCGoster;
+
+  if(Izgara^.FYatayKCGoster) then
+    Izgara^.FYatayKCubugu^.Goster
+  else Izgara^.FYatayKCubugu^.Gizle;
+
+  if(Izgara^.FDikeyKCGoster) then
+    Izgara^.FDikeyKCubugu^.Goster
+  else Izgara^.FDikeyKCubugu^.Gizle;
+
+  Izgara^.Ciz;
 end;
 
 procedure TIzgara.SeciliHucreyiYaz(ASatir, ASutun: TISayi4);
@@ -682,6 +581,12 @@ begin
 
   Izgara^.FSeciliSatir := ASatir;
   Izgara^.FSeciliSutun := ASutun;
+
+  { TODO : sütun değeri programdan hatalı geliyor }
+//  SISTEM_MESAJ('Satır: %d', [ASatir]);
+//  SISTEM_MESAJ('Sütun: %d', [ASutun]);
+
+  Izgara^.Ciz;
 end;
 
 {==============================================================================
@@ -765,6 +670,7 @@ begin
 
   Izgara^.FDegerler^.Temizle;
   Izgara^.FGorunenIlkSiraNo := 0;
+  Izgara^.FSeciliSatir := -1;
   Izgara^.FSeciliSutun := -1;
 
   Izgara^.Ciz;

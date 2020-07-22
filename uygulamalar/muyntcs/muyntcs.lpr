@@ -7,7 +7,7 @@ program muyntcs;
   Program Adý: muyntcs.lpr
   Program Ýþlevi: çoklu masaüstü yönetim programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 22/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -370,7 +370,13 @@ begin
         Gorev.Calistir(MasaustuMenuProgramAdi[i]);
       end
 
-      else if(OlayKayit.Kimlik = SaatDegeri.Kimlik) or (OlayKayit.Kimlik = TarihDegeri.Kimlik) then
+      else if(OlayKayit.Kimlik = TarihDegeri.Kimlik) then
+      begin
+
+        Gorev.Calistir('takvim.c');
+      end
+
+      else if(OlayKayit.Kimlik = SaatDegeri.Kimlik) then
       begin
 
         Gorev.Calistir('saat.c');

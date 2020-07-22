@@ -6,7 +6,7 @@
   Dosya Adý: yonetim.pas
   Dosya Ýþlevi: sistem ana yönetim / kontrol kýsmý
 
-  Güncelleme Tarihi: 21/06/2020
+  Güncelleme Tarihi: 22/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -269,9 +269,7 @@ begin
         else if(Tus = '3') then
         begin
 
-          Gorev^.Calistir('disk1:\takvim.c');
-
-          //AktifGiysi := GiysiNormal;
+          AktifGiysi := GiysiNormal;
           //GAktifMasaustu^.Ciz;
           //Gorev^.Calistir('disk1:\dnssorgu.c');
 

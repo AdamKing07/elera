@@ -7,7 +7,7 @@ program takvim;
   Program Adý: takvim.lpr
   Program Ýþlevi: takvim uygulamasý
 
-  Güncelleme Tarihi: 20/07/2020
+  Güncelleme Tarihi: 22/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -87,7 +87,7 @@ begin
 
     Izgara.ElemanEkle(IntToStr(i));
     if(AYil = BuYil) and (AAy = BuAy) and (i = ABuGun) then
-      Izgara.SeciliHucreyiYaz(((i + 1) mod 7), ((i + 1) div 7) + 1);
+      Izgara.SeciliHucreyiYaz((i + 1) mod 7, ((i + 1) div 7) + 1);
   end;
 
   Izgara.Ciz;
