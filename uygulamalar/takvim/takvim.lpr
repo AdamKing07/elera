@@ -24,7 +24,7 @@ var
   EtkAy, EtkYil: TEtiket;
   KLAy, KLYil: TKarmaListe;
   Izgara: TIzgara;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   BuYil, BuAy, BuGun,
   FIlkYil,                              // karma listedeki ilk yýl deðeri
   FSeciliYil, FSeciliAy, i: TISayi4;
@@ -159,19 +159,19 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_SECIMDEGISTI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_SECIMDEGISTI) then
     begin
 
-      if(OlayKayit.Kimlik = KLAy.Kimlik) then
+      if(Olay.Kimlik = KLAy.Kimlik) then
       begin
 
-        FSeciliAy := OlayKayit.Deger1 + 1;
+        FSeciliAy := Olay.Deger1 + 1;
       end
-      else if(OlayKayit.Kimlik = KLYil.Kimlik) then
+      else if(Olay.Kimlik = KLYil.Kimlik) then
       begin
 
-        FSeciliYil := OlayKayit.Deger1 + FIlkYil;
+        FSeciliYil := Olay.Deger1 + FIlkYil;
       end;
 
       TakvimiOlustur(FSeciliYil, FSeciliAy, BuGun);

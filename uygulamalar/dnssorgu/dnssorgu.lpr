@@ -27,7 +27,7 @@ var
   defSonuc: TDefter;
   DurumCubugu: TDurumCubugu;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   DNS: TDNS;
   DNSAdresSorgu, DNSAdresYanit: string;
   DNSDurum: TDNSDurum;
@@ -106,9 +106,9 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       if not(DNS.Kimlik = -1) then
@@ -208,15 +208,15 @@ begin
         end;
       end;
     end
-    else if(OlayKayit.Olay = CO_TUSBASILDI) then
+    else if(Olay.Olay = CO_TUSBASILDI) then
     begin
 
-      if(OlayKayit.Deger1 = 10) then Sorgula;
+      if(Olay.Deger1 = 10) then Sorgula;
     end
-    else if(OlayKayit.Olay = FO_TIKLAMA) then
+    else if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugSorgula.Kimlik) then Sorgula;
+      if(Olay.Kimlik = dugSorgula.Kimlik) then Sorgula;
     end;
   end;
 

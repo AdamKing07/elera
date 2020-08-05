@@ -36,6 +36,8 @@
         <Filename Value="kaydirma.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="6"/>
+        <CursorPos X="4" Y="24"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit0>

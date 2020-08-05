@@ -31,13 +31,13 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <Units Count="6">
+    <Units Count="7">
       <Unit0>
         <Filename Value="takvim.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="74"/>
-        <CursorPos X="67" Y="90"/>
+        <TopLine Value="9"/>
+        <CursorPos X="3" Y="27"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -65,8 +65,8 @@
       <Unit4>
         <Filename Value="..\..\rtl_uygulama\linux\paylasim.inc"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="197"/>
-        <CursorPos Y="228"/>
+        <TopLine Value="73"/>
+        <CursorPos X="31" Y="90"/>
         <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit4>
@@ -78,6 +78,14 @@
         <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="..\..\rtl_uygulama\linux\gn_pencere.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="67"/>
+        <CursorPos X="26" Y="67"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -38,7 +38,7 @@ var
   Pencere: TPencere;
   IslemGostergesi: TIslemGostergesi;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 begin
 
@@ -56,8 +56,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_CIZIM) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;
@@ -81,7 +81,7 @@ begin
 
       IslemGostergesi.KonumBelirle(KullanilmisRAMBlok);
     end
-    else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    else if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       Genel.CekirdekBellekBilgisiAl(@CekirdekBaslangicAdresi, @CekirdekBitisAdresi,

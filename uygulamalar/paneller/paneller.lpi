@@ -36,7 +36,8 @@
         <Filename Value="paneller.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="24" Y="10"/>
+        <TopLine Value="4"/>
+        <CursorPos X="3" Y="22"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit0>

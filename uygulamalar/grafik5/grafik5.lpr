@@ -29,7 +29,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   i, j, Sol, Ust: TISayi4;
   SayacListesi: array[0..USTDEGER_NOKTASAYISI - 1] of TSayac;
   HizListesi: array[0..7] of Double = (0.1, 1.0, 2.0, 3.0, 3.5, 2.5, 1.5, 0.5);
@@ -77,8 +77,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayAl(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    Gorev.OlayAl(Olay);
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       // tüm dikdörtgen / kare dikey değerlerini artır
@@ -97,7 +97,7 @@ begin
 
       Pencere.Ciz;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       // yeni koordinatlarla çizimleri yenile

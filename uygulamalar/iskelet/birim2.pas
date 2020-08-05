@@ -1,12 +1,12 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Program AdÄ±: birim2.pas
-  Program Ä°ÅŸlevi: 2. birim
+  Program Adý: birim2.pas
+  Program Ýþlevi: 2. birim
 
-  GÃ¼ncelleme Tarihi: 17/07/2020
+  Güncelleme Tarihi: 17/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -22,10 +22,10 @@ type
     Gorev: TGorev;
     Pencere: TPencere;
     Dugme1: TDugme;
-    OlayKayit: TOlayKayit;
+    Olay: TOlay;
     procedure Olustur;
     procedure Goster;
-    function OlaylariIsle: TISayi4;
+    function OlaylariIsle(AOlay: TOlay): TISayi4;
   end;
 
 var
@@ -33,18 +33,20 @@ var
 
 implementation
 
+uses birim3;
+
 const
-  PencereAdi: string = 'Pencere-2';
+  PencereAdi: string = 'Ýþlemler';
 
 procedure TPencere2.Olustur;
 begin
 
-  Pencere.Olustur(-1, 120, 120, 300, 300, ptIletisim, PencereAdi, RENK_SARI);
+  Pencere.Olustur(-1, 120, 120, 300, 300, ptBoyutlanabilir, PencereAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Dugme1.Olustur(Pencere.Kimlik, 100, 100, 100, 100, PencereAdi);
+  Dugme1.Olustur(Pencere.Kimlik, 50, 135, 200, 22, 'Ýþlemleri Gerçekleþtir');
 
-//  SistemMesaj.YaziEkle('iskelet -> Pencere2 oluÅŸturuldu...');
+//  SistemMesaj.YaziEkle('iskelet -> Pencere2 oluþturuldu...');
 end;
 
 procedure TPencere2.Goster;
@@ -54,16 +56,15 @@ begin
   Pencere.Goster;
 end;
 
-function TPencere2.OlaylariIsle: TISayi4;
+function TPencere2.OlaylariIsle(AOlay: TOlay): TISayi4;
 begin
 
-  while True do
+  if(AOlay.Olay = FO_TIKLAMA) and (AOlay.Kimlik = Dugme1.Kimlik) then
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-  end;
-
-  Result := -1;
+    Pencere3.Goster;
+    Result := 0;
+  end else Result := -1;
 end;
 
 end.

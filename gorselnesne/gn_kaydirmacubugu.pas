@@ -6,7 +6,7 @@
   Dosya Adý: gn_kaydirmacubugu.pp
   Dosya Ýþlevi: kaydýrma çubuðu (TScrollBar) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 20/06/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -51,9 +51,9 @@ uses genel, gn_islevler, temelgorselnesne;
  ==============================================================================}
 function KaydirmaCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  GorselNesne: PGorselNesne;
-  Pencere: PPencere;
-  KaydirmaCubugu: PKaydirmaCubugu;
+  GorselNesne: PGorselNesne = nil;
+  Pencere: PPencere = nil;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
   Hiza: THiza;
 begin
 
@@ -106,7 +106,7 @@ end;
 function NesneOlustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   AYon: TYon): TKimlik;
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
 begin
 
   KaydirmaCubugu := KaydirmaCubugu^.Olustur(ktNesne, AAtaNesne, ASol, AUst,
@@ -125,7 +125,7 @@ end;
 function TKaydirmaCubugu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne;
   ASol, AUst, AGenislik, AYukseklik: TISayi4; AYon: TYon): PKaydirmaCubugu;
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
   Genislik, Yukseklik: TISayi4;
 begin
 
@@ -205,7 +205,7 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.Goster;
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
 begin
 
   KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
@@ -231,7 +231,7 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.Boyutlandir;
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
 begin
 
   KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
@@ -274,7 +274,7 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.Ciz;
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
   Alan: TAlan;
   FYuzde1, FYuzde2: Double;
   i: TISayi4;
@@ -284,9 +284,6 @@ begin
 
   KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));
   if(KaydirmaCubugu = nil) then Exit;
-
-  KaydirmaCubugu^.FEksiltmeDugmesi^.Ciz;
-  KaydirmaCubugu^.FArtirmaDugmesi^.Ciz;
 
   // kaydýrma çubuðunun çizim alan koordinatlarýný al
   Alan := KaydirmaCubugu^.FCizimAlan;
@@ -324,8 +321,8 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  Pencere: PPencere;
-  KaydirmaCubugu: PKaydirmaCubugu;
+  Pencere: PPencere = nil;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
 begin
 
   KaydirmaCubugu := PKaydirmaCubugu(AGonderici);
@@ -351,8 +348,8 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.ResimDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
-  ResimDugmesi: PResimDugmesi;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
+  ResimDugmesi: PResimDugmesi = nil;
   i: TISayi4;
 begin
 
@@ -401,7 +398,7 @@ end;
  ==============================================================================}
 procedure TKaydirmaCubugu.DegerleriBelirle(AAltDeger, AUstDeger: TISayi4);
 var
-  KaydirmaCubugu: PKaydirmaCubugu;
+  KaydirmaCubugu: PKaydirmaCubugu = nil;
 begin
 
   KaydirmaCubugu := PKaydirmaCubugu(KaydirmaCubugu^.NesneAl(Kimlik));

@@ -25,7 +25,7 @@ var
   Yenile: TDugme;
   DegerListesi: TDegerListesi;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   GorevKayit: TGorevKayit;
   TSS: TTSS;
   GorevNo: TISayi4;
@@ -61,8 +61,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       if(GorevNo > -1) then
@@ -100,7 +100,7 @@ begin
         end;
       end;
     end
-    else if(OlayKayit.Olay = FO_TIKLAMA) and (OlayKayit.Kimlik = Yenile.Kimlik) then
+    else if(Olay.Olay = FO_TIKLAMA) and (Olay.Kimlik = Yenile.Kimlik) then
     begin
 
       GorevNo := -1;
@@ -127,7 +127,7 @@ begin
         end;
       end;
     end
-    else if(OlayKayit.Olay = CO_SECIMDEGISTI) and (OlayKayit.Kimlik = KarmaListe.Kimlik) then
+    else if(Olay.Olay = CO_SECIMDEGISTI) and (Olay.Kimlik = KarmaListe.Kimlik) then
     begin
 
       GorevNo := Gorev.GorevKimligiAl(KarmaListe.SeciliYaziAl);

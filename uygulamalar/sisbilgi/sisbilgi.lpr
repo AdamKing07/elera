@@ -7,11 +7,11 @@ program sisbilgi;
   Program Adý: sisbilgi.lpr
   Program Ýþlevi: sistem hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
-uses n_gorev, gn_pencere, gn_dugme;
+uses n_gorev, gn_pencere, gn_sayfakontrol, gn_dugme;
 
 const
   ProgramAdi: string = 'Sistem Bilgisi';
@@ -19,103 +19,55 @@ const
 var
   Gorev: TGorev;
   Pencere: TPencere;
-  dugSistem, dugIslemci, dugKapat: TDugme;
-  OlayKayit: TOlayKayit;
+  SayfaKontrol: TSayfaKontrol;
+  dugKapat: TDugme;
+  Olay: TOlay;
   SistemBilgisi: TSistemBilgisi;
   IslemciBilgisi: TIslemciBilgisi;
-  BolumSiraNo: TSayi4;
-
-procedure SayfayiYenile;
-begin
-
-  if(BolumSiraNo = 0) then
-  begin
-
-    Pencere.Tuval.KalemRengi := RENK_KIRMIZI;
-    Pencere.Tuval.YaziYaz(16, 96, 'Lütfen bir seçenek seçiniz');
-  end
-  else if(BolumSiraNo = 1) then
-  begin
-
-    Pencere.Tuval.KalemRengi := RENK_BORDO;
-    Pencere.Tuval.YaziYaz(8, 48, 'Sistem: ' + SistemBilgisi.SistemAdi);
-    Pencere.Tuval.YaziYaz(8, 64, 'Mimari: ' + SistemBilgisi.FPCMimari);
-    Pencere.Tuval.YaziYaz(8, 80, 'FPC Sürüm: ' + SistemBilgisi.FPCSurum);
-    Pencere.Tuval.YaziYaz(8, 96, 'Derleme Tarihi: ' + SistemBilgisi.DerlemeBilgisi);
-
-    Pencere.Tuval.YaziYaz(8, 128,  'Yatay Çözünürlük:');
-    Pencere.Tuval.SayiYaz16(8 + (18 * 8), 128, True, 4, SistemBilgisi.YatayCozunurluk);
-    Pencere.Tuval.YaziYaz(8, 144, 'Dikey Çözünürlük:');
-    Pencere.Tuval.SayiYaz16(8 + (18 * 8), 144, True, 4, SistemBilgisi.DikeyCozunurluk);
-  end
-  else if(BolumSiraNo = 2) then
-  begin
-
-    Pencere.Tuval.KalemRengi := RENK_MOR;
-    Pencere.Tuval.YaziYaz(8, 48, 'Ýþlemci: ' + IslemciBilgisi.Satici);
-
-    Pencere.Tuval.YaziYaz(8, 80, 'CPUID = 1 [EAX]:');
-    Pencere.Tuval.SayiYaz16(8 + (18 * 8), 80, True, 8, IslemciBilgisi.Ozellik1_EAX);
-    Pencere.Tuval.YaziYaz(8, 96, 'CPUID = 1 [EDX]:');
-    Pencere.Tuval.SayiYaz16(8 + (18 * 8), 96, True, 8, IslemciBilgisi.Ozellik1_EDX);
-    Pencere.Tuval.YaziYaz(8, 112, 'CPUID = 1 [ECX]:');
-    Pencere.Tuval.SayiYaz16(8 + (18 * 8), 112, True, 8, IslemciBilgisi.Ozellik1_ECX);
-  end;
-end;
 
 begin
 
-  Pencere.Olustur(-1, 100, 100, 375, 220, ptIletisim, ProgramAdi, $FEF5E7);
+  Pencere.Olustur(-1, 100, 100, 375, 160, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  dugSistem.Olustur(Pencere.Kimlik, 25, 5, 150, 22, 'Sistem Bilgisi');
-  dugSistem.Goster;
+  SayfaKontrol.Olustur(Pencere.Kimlik, 5, 5, 365, 120);
+  SayfaKontrol.SayfaEkle('Sistem');
+  SayfaKontrol.SayfaEkle('Ýþlemci');
+  SayfaKontrol.SayfaEkle('Ekran');
 
-  dugIslemci.Olustur(Pencere.Kimlik, 180, 5, 150, 22, 'Ýþlemci Bilgisi');
-  dugIslemci.Goster;
+  SayfaKontrol.Goster;
 
-  dugKapat.Olustur(Pencere.Kimlik, 300, 180, 60, 22, 'Kapat');
+  dugKapat.Olustur(Pencere.Kimlik, 300, 130, 70, 22, 'Kapat');
   dugKapat.Goster;
 
   Pencere.Goster;
 
+  // sistem bilgilerini al
   Gorev.SistemBilgisiAl(@SistemBilgisi);
   Gorev.IslemciBilgisiAl(@IslemciBilgisi);
 
-  BolumSiraNo := 0;
+  // 1. sayfa
+  SayfaKontrol.EtiketEkle(0, 8, 8, 'Sistem: ' + SistemBilgisi.SistemAdi);
+  SayfaKontrol.EtiketEkle(0, 8, 24, 'Mimari: ' + SistemBilgisi.FPCMimari);
+  SayfaKontrol.EtiketEkle(0, 8, 40, 'FPC Sürüm: ' + SistemBilgisi.FPCSurum);
+  SayfaKontrol.EtiketEkle(0, 8, 56, 'Derleme Tarihi: ' + SistemBilgisi.DerlemeBilgisi);
 
-  SayfayiYenile;
+  // 2. sayfa
+  SayfaKontrol.EtiketEkle(1, 8, 8, 'Ýþlemci: ' + IslemciBilgisi.Satici);
+  SayfaKontrol.EtiketEkle(1, 8, 40, 'CPUID = 1 [EAX]: ' + HexToStr(IslemciBilgisi.Ozellik1_EAX, True, 8));
+  SayfaKontrol.EtiketEkle(1, 8, 56, 'CPUID = 1 [EDX]: ' + HexToStr(IslemciBilgisi.Ozellik1_EDX, True, 8));
+  SayfaKontrol.EtiketEkle(1, 8, 72, 'CPUID = 1 [ECX]: ' + HexToStr(IslemciBilgisi.Ozellik1_ECX, True, 8));
+
+  // 3. sayfa
+  SayfaKontrol.EtiketEkle(2, 8, 8,  'Yatay Çözünürlük: ' + IntToStr(SistemBilgisi.YatayCozunurluk));
+  SayfaKontrol.EtiketEkle(2, 8, 24, 'Dikey Çözünürlük: ' + IntToStr(SistemBilgisi.DikeyCozunurluk));
 
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
-    begin
-
-      if(OlayKayit.Kimlik = dugSistem.Kimlik) then
-      begin
-
-        BolumSiraNo := 1;
-        Pencere.Ciz;
-      end
-      else if(OlayKayit.Kimlik = dugIslemci.Kimlik) then
-      begin
-
-        BolumSiraNo := 2;
-        Pencere.Ciz;
-      end
-      else if(OlayKayit.Kimlik = dugKapat.Kimlik) then
-      begin
-
-        Gorev.Sonlandir(-1);
-      end;
-    end
-    else if(OlayKayit.Olay = CO_CIZIM) then
-    begin
-
-      SayfayiYenile;
-    end;
+    if(Olay.Olay = FO_TIKLAMA) and (Olay.Kimlik = dugKapat.Kimlik) then
+      Gorev.Sonlandir(-1);
   end;
 end.

@@ -26,7 +26,7 @@ var
   gkMesaj: TGirisKutusu;
   klBaglanti: TKarmaListe;
   dugBaglan, dugGonder, dugBKes: TDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   Iletisim0: TIletisim;
   IPAdres, s: string;
   VeriUzunlugu: TISayi4;
@@ -78,9 +78,9 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       if(Iletisim0.BagliMi) then
@@ -101,10 +101,10 @@ begin
         end;
       end else DurumCubugu.DurumYazisiDegistir('Baðlantý yok!');
     end
-    else if(OlayKayit.Olay = FO_TIKLAMA) then
+    else if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugBaglan.Kimlik) then
+      if(Olay.Kimlik = dugBaglan.Kimlik) then
       begin
 
         s := klBaglanti.SeciliYaziAl;
@@ -112,14 +112,14 @@ begin
           Iletisim0.Baglan(ptTCP, IPAdres, 365)
         else Iletisim0.Baglan(ptUDP, IPAdres, 365)
       end
-      else if(OlayKayit.Kimlik = dugBKes.Kimlik) then
+      else if(Olay.Kimlik = dugBKes.Kimlik) then
       begin
 
         Iletisim0.BaglantiyiKes;
         Defter.Temizle;
         Pencere.Ciz;
       end
-      else if(OlayKayit.Kimlik = dugGonder.Kimlik) then
+      else if(Olay.Kimlik = dugGonder.Kimlik) then
       begin
 
         s := gkMesaj.IcerikAl + #13#10;
@@ -130,10 +130,10 @@ begin
         gkMesaj.IcerikYaz('');
       end;
     end
-    else if(OlayKayit.Olay = CO_TUSBASILDI) then
+    else if(Olay.Olay = CO_TUSBASILDI) then
     begin
 
-      if(OlayKayit.Deger1 = 10) then
+      if(Olay.Deger1 = 10) then
       begin
 
         s := gkMesaj.IcerikAl + #13#10;;
@@ -144,7 +144,7 @@ begin
         gkMesaj.IcerikYaz('');
       end;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := $000000;

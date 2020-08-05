@@ -27,7 +27,7 @@ var
   klSurucu: TKarmaListe;
   DurumCubugu: TDurumCubugu;
   lgDosyaListesi: TListeGorunum;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   MantiksalSurucu: TMantiksalSurucu3;
   AygitSayisi, i, DosyaSayisi: TSayi4;
   GecerliSurucu, SeciliYazi, s: string;
@@ -155,10 +155,10 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
     // liste kutusuna týklanmasý halinde dosyayý çalýþtýr
-    if(OlayKayit.Olay = FO_TIKLAMA) and (OlayKayit.Kimlik = lgDosyaListesi.Kimlik) then
+    if(Olay.Olay = FO_TIKLAMA) and (Olay.Kimlik = lgDosyaListesi.Kimlik) then
     begin
 
       SeciliYazi := lgDosyaListesi.SeciliYaziAl;
@@ -171,7 +171,7 @@ begin
 
       Gorev.Calistir(GecerliSurucu + ':\' + s);
     end
-    else if(OlayKayit.Olay = CO_SECIMDEGISTI) and (OlayKayit.Kimlik = klSurucu.Kimlik) then
+    else if(Olay.Olay = CO_SECIMDEGISTI) and (Olay.Kimlik = klSurucu.Kimlik) then
     begin
 
       GecerliSurucu := klSurucu.SeciliYaziAl;

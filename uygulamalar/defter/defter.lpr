@@ -31,7 +31,7 @@ var
   etiDosyaAdi: TEtiket;
   gkDosyaAdi: TGirisKutusu;
   dugYukle: TDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   DosyaKimlik: TKimlik;
   DosyaUzunluk: TSayi4;
   DosyaAdi: string;
@@ -141,11 +141,11 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_SOLTUS_BASILDI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_SOLTUS_BASILDI) then
     begin
 
-      if(OlayKayit.Olay = dugYukle.Kimlik) then
+      if(Olay.Olay = dugYukle.Kimlik) then
       begin
 
         DosyaAdi := gkDosyaAdi.IcerikAl;

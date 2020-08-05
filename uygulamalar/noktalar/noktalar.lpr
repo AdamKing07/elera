@@ -25,7 +25,7 @@ var
   Pencere: TPencere;
   OnayKutusu: TOnayKutusu;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 procedure NoktalariCiz;
 var
@@ -58,17 +58,17 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    if(Olay.Olay = CO_ZAMANLAYICI) then
 
       NoktalariCiz
 
-    else if(OlayKayit.Olay = CO_DURUMDEGISTI) then
+    else if(Olay.Olay = CO_DURUMDEGISTI) then
     begin
 
-      if(OlayKayit.Deger1 = 1) then Zamanlayici.Baslat
-      else if(OlayKayit.Deger1 = 0) then Zamanlayici.Durdur;
+      if(Olay.Deger1 = 1) then Zamanlayici.Baslat
+      else if(Olay.Deger1 = 0) then Zamanlayici.Durdur;
     end;
   end;
 end.

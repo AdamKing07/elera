@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1351329191"/>
-  <Params Value=" -Tlinux -Pi386 -MObjFPC -Scghi -CX -Os -Xs -XX -k-Tdefter.ld -l -vewnhibq -FiC:\Users\fkilic\Documents\elerais\uygulamalar\defter\dosyalar -FuC:\Users\fkilic\Documents\elerais\rtl_uygulama\linux\units\i386-linux -FuC:\Users\fkilic\Documents\elerais\uygulamalar\defter\ -FUC:\Users\fkilic\Documents\elerais\uygulamalar\defter\dosyalar\ -FEC:\Users\fkilic\Documents\elerais\uygulamalar\_\ -oC:\Users\fkilic\Documents\elerais\uygulamalar\_\defter.c defter.lpr"/>
+  <Params Value=" -Tlinux -Pi386 -MObjFPC -Scghi -CX -Os -Xs -XX -k-Tdefter.ld -l -vewnhibq -FiC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\defter\dosyalar -FuC:\Users\fatih\Documents\bitbucket\elerais\rtl_uygulama\linux\units\i386-linux -FuC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\defter\ -FUC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\defter\dosyalar\ -FEC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\_\ -oC:\Users\fatih\Documents\bitbucket\elerais\uygulamalar\_\defter.c defter.lpr"/>
 </CONFIG>

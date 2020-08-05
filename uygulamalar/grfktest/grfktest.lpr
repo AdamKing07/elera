@@ -23,7 +23,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   RenkSiraDegeri: TSayi4 = 0;
   FPSDegeri: TSayi4 = 0;
   FPSSayaci: TSayi4 = 0;
@@ -68,16 +68,16 @@ begin
   while True do
   begin
 
-    if(Gorev.OlayAl(OlayKayit) = 0) then
+    if(Gorev.OlayAl(Olay) = 0) then
 
       NoktalariCiz
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
 
       NoktalariCiz
 
     // her bir saniyede FPS deðerini kaydet ve yeniden FPS sayacýný baþlat
-    else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    else if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       FPSDegeri := FPSSayaci;

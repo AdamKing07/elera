@@ -4,9 +4,9 @@
   Telif Bilgisi: haklar.txt dosyasına bakınız
 
   Dosya Adı: gn_pencere.pas
-  Dosya İşlevi: pencere (TForm) yönetim işlevlerini içerir
+  Dosya İşlevi: pencere (TPencere) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 23/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -19,9 +19,6 @@ uses n_tuval;
 
 type
   PPencere = ^TPencere;
-
-  { TPencere }
-
   TPencere = object
   private
     FKimlik: TKimlik;
@@ -30,6 +27,7 @@ type
     procedure Olustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
       APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk);
     procedure Goster;
+    procedure Gizle;
     procedure Ciz;
     procedure DurumNormal(AKimlik: TKimlik);
     procedure DurumKucult(AKimlik: TKimlik);
@@ -40,6 +38,7 @@ type
 function _PencereOlustur(AAtaKimlik: TKimlik; ASol, AUst, AGenislik, AYukseklik: TISayi4;
   APencereTipi: TPencereTipi; ABaslik: string; AGovdeRenk: TRenk): TKimlik; assembler;
 procedure _PencereGoster(AKimlik: TKimlik); assembler;
+procedure _PencereGizle(AKimlik: TKimlik); assembler;
 procedure _PencereCiz(AKimlik: TKimlik); assembler;
 procedure _PencereDurumNormal(AKimlik: TKimlik); assembler;
 procedure _PencereDurumKucult(AKimlik: TKimlik); assembler;
@@ -60,6 +59,12 @@ procedure TPencere.Goster;
 begin
 
   _PencereGoster(FKimlik);
+end;
+
+procedure TPencere.Gizle;
+begin
+
+  _PencereGizle(FKimlik);
 end;
 
 procedure TPencere.Ciz;
@@ -100,6 +105,14 @@ procedure _PencereGoster(AKimlik: TKimlik);
 asm
   push  DWORD AKimlik
   mov   eax,PENCERE_GOSTER
+  int   $34
+  add   esp,4
+end;
+
+procedure _PencereGizle(AKimlik: TKimlik); assembler;
+asm
+  push  DWORD AKimlik
+  mov   eax,PENCERE_GIZLE
   int   $34
   add   esp,4
 end;

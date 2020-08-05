@@ -22,7 +22,7 @@ var
   Etiket: TEtiket;
   GirisKutusu: TGirisKutusu;
   gkCalistir: TDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 procedure ProgramCalistir;
 var
@@ -53,14 +53,14 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    if(Olay.Olay = FO_TIKLAMA) then
 
       ProgramCalistir
 
-    else if(OlayKayit.Olay = CO_TUSBASILDI) then
+    else if(Olay.Olay = CO_TUSBASILDI) then
 
-      if(OlayKayit.Deger1 = 10) then ProgramCalistir;
+      if(Olay.Deger1 = 10) then ProgramCalistir;
   end;
 end.

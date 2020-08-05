@@ -6,7 +6,7 @@
   Dosya Adý: gn_pencere.pas
   Dosya Ýþlevi: pencere (TForm) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 17/07/2020
+  Güncelleme Tarihi: 23/07/2020
 
   Önemli Bilgiler:
 
@@ -108,6 +108,13 @@ begin
       Pencere^.Goster;
     end;
 
+    ISLEV_GIZLE:
+    begin
+
+      Pencere := PPencere(Pencere^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Pencere^.Gizle;
+    end;
+
     ISLEV_CIZ:
     begin
 
@@ -179,15 +186,11 @@ begin
   // geçerli masaüstü yok ise hata kodunu ver ve çýk
   if(Masaustu = nil) then Exit(nil);
 
-  // 1. görevin ana penceresini ata
-  // 2. pencerenin ana pencere olup olmadýðýný tespit et
+  // pencerenin ana pencere olup olmadýðýný tespit et
   Gorev := Gorev^.GorevBul(CalisanGorev);
   if not(Gorev = nil) and (Gorev^.FAnaPencere = nil) then
-  begin
-
-    Gorev^.FAnaPencere := Pencere;
-    AnaPencere := True;
-  end else AnaPencere := False;
+    AnaPencere := True
+  else AnaPencere := False;
 
   // pencere limit kontrolleri - baþlýksýz pencere hariç
   if not(APencereTipi = ptBasliksiz) then
@@ -232,6 +235,9 @@ begin
   Pencere^.Baslik := ABaslik;
 
   Pencere^.FTuvalNesne := Pencere;
+
+  // görevin ana penceresini ata
+  Gorev^.FAnaPencere := Pencere;
 
   Pencere^.OlayCagriAdresi := @OlaylariIsle;
 

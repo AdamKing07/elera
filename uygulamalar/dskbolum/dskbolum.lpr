@@ -26,7 +26,7 @@ const
 
 var
   Gorev: TGorev;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   DiskSayisi, SeciliDisk,
   DugmeA1, i: TISayi4;
   MantiksalSurucuListesi: array[1..6] of TMantiksalSurucu3;
@@ -114,14 +114,14 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
       for i := 1 to 6 do
       begin
 
-        if(dugDepolama[i].Kimlik = OlayKayit.Kimlik) then
+        if(dugDepolama[i].Kimlik = Olay.Kimlik) then
         begin
 
           SeciliDisk := dugDepolama[i].Etiket;
@@ -132,7 +132,7 @@ begin
       Pencere.Ciz;
     end
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       if(DiskSayisi = 0) then

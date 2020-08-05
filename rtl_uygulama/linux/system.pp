@@ -31,7 +31,7 @@ unit system;
 {$i osdefs.inc}
 
 {$I sysunixh.inc}
-{$i elerah.inc}
+{$i elera.inc}
 type
   PHiza = ^THiza;
   THiza = (hzYok, hzUst, hzSag, hzAlt, hzSol, hzTum);

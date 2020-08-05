@@ -21,7 +21,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   dugKaydirmaCubugu: TKaydirmaCubugu;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 begin
   Pencere.Olustur(-1, 100, 100, 270, 260, ptBoyutlanabilir, ProgramAdi,
@@ -49,12 +49,12 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
     end;

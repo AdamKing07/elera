@@ -79,7 +79,7 @@ var
   ELERA: TGucDugmesi;
   SaatDegeri, TarihDegeri, AgBilgisi: TEtiket;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   i, j: TSayi4;
   s: string;
 
@@ -349,13 +349,13 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
       // baþlat menüsüne týklandýðýnda
-      if(OlayKayit.Kimlik = BaslatMenusu.Kimlik) then
+      if(Olay.Kimlik = BaslatMenusu.Kimlik) then
       begin
 
         ELERA.DurumDegistir(0);
@@ -363,70 +363,70 @@ begin
         Gorev.Calistir(Programlar[i]);
       end
       // masaüstü menüsüne týklandýðýnda
-      else if(OlayKayit.Kimlik = AcilirMenu.Kimlik) then
+      else if(Olay.Kimlik = AcilirMenu.Kimlik) then
       begin
 
         i := AcilirMenu.SeciliSiraNoAl;
         Gorev.Calistir(MasaustuMenuProgramAdi[i]);
       end
 
-      else if(OlayKayit.Kimlik = TarihDegeri.Kimlik) then
+      else if(Olay.Kimlik = TarihDegeri.Kimlik) then
       begin
 
         Gorev.Calistir('takvim.c');
       end
 
-      else if(OlayKayit.Kimlik = SaatDegeri.Kimlik) then
+      else if(Olay.Kimlik = SaatDegeri.Kimlik) then
       begin
 
         Gorev.Calistir('saat.c');
       end
 
-      else if(OlayKayit.Kimlik = AgBilgisi.Kimlik) then
+      else if(Olay.Kimlik = AgBilgisi.Kimlik) then
       begin
 
         Gorev.Calistir('agbilgi.c');
       end
     end
     // masaüstüne sað tuþ basýlýp býrakýldýðýnda
-    else if(OlayKayit.Olay = FO_SAGTUS_BIRAKILDI) then
+    else if(Olay.Olay = FO_SAGTUS_BIRAKILDI) then
     begin
 
-      if(OlayKayit.Kimlik = Masaustu.Kimlik) then AcilirMenu.Goster;
+      if(Olay.Kimlik = Masaustu.Kimlik) then AcilirMenu.Goster;
     end
     // baþlat düðmesi olaylarý
-    else if(OlayKayit.Olay = CO_DURUMDEGISTI) then
+    else if(Olay.Olay = CO_DURUMDEGISTI) then
     begin
 
-      if(OlayKayit.Kimlik = ELERA.Kimlik) then
+      if(Olay.Kimlik = ELERA.Kimlik) then
       begin
 
-        if(OlayKayit.Deger1 = 1) then
+        if(Olay.Deger1 = 1) then
           BaslatMenusu.Goster
-        else if(OlayKayit.Deger1 = 0) then
+        else if(Olay.Deger1 = 0) then
           BaslatMenusu.Gizle;
       end
       else
       begin
 
-        PencereKimlik := PencereKimliginiAl(OlayKayit.Kimlik);
+        PencereKimlik := PencereKimliginiAl(Olay.Kimlik);
         if(PencereKimlik > -1) then
-          if(OlayKayit.Deger1 = 1) then
+          if(Olay.Deger1 = 1) then
             GorevPenceresi.DurumNormal(PencereKimlik)
           else GorevPenceresi.DurumKucult(PencereKimlik);
       end;
     end
     // baþlat menüsü olaylarý
-    else if(OlayKayit.Kimlik = BaslatMenusu.Kimlik) then
+    else if(Olay.Kimlik = BaslatMenusu.Kimlik) then
     begin
 
-      if(OlayKayit.Olay = CO_MENUACILDI) then
+      if(Olay.Olay = CO_MENUACILDI) then
         ELERA.DurumDegistir(1)
-      else if(OlayKayit.Olay = CO_MENUKAPATILDI) then
+      else if(Olay.Olay = CO_MENUKAPATILDI) then
         ELERA.DurumDegistir(0);
     end
     // saat deðerini güncelleþtir
-    else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    else if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       TarihSaatBilgileriniGuncelle;

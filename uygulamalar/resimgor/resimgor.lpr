@@ -27,7 +27,7 @@ var
   lkDosyaListesi: TListeKutusu;
   DurumCubugu: TDurumCubugu;
   Resim: TResim;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   i: TISayi4;
   GoruntulenecekDosya: string;
 
@@ -98,13 +98,13 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
       // liste kutusuna týklanmasý halinde dosyayý çalýþtýr
-      if(OlayKayit.Kimlik = lkDosyaListesi.Kimlik) then
+      if(Olay.Kimlik = lkDosyaListesi.Kimlik) then
       begin
 
         i := lkDosyaListesi.SeciliSiraNoAl;

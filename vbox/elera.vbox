@@ -6,7 +6,7 @@
 ** Use VBoxManage or the VirtualBox Manager GUI to make changes.
 -->
 <VirtualBox xmlns="http://www.virtualbox.org/" version="1.15-windows">
-  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-07-22T05:41:06Z">
+  <Machine uuid="{c57f6602-509a-44df-9984-ee0a65931c4d}" name="elera" OSType="Other" snapshotFolder="Snapshots" lastStateChange="2020-08-05T11:02:05Z">
     <Description>ELERA &#x130;&#x15F;letim Sistemi (32 Bit)</Description>
     <MediaRegistry>
       <HardDisks>
@@ -21,7 +21,7 @@
       <ExtraDataItem name="GUI/InformationWindowGeometry" value="507,249,598,332"/>
       <ExtraDataItem name="GUI/LastCloseAction" value="PowerOff"/>
       <ExtraDataItem name="GUI/LastGuestSizeHint" value="800,600"/>
-      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="528,123,800,642"/>
+      <ExtraDataItem name="GUI/LastNormalWindowPosition" value="528,170,800,642"/>
       <ExtraDataItem name="GUI/LastScaleWindowPosition" value="189,230,1096,595"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeDevicesMenuActions" value="HardDrives"/>
       <ExtraDataItem name="GUI/RestrictedRuntimeMachineMenuActions" value="SaveState,PowerOff"/>
@@ -59,7 +59,7 @@
         </Controllers>
       </USB>
       <Network>
-        <Adapter slot="0" MACAddress="080011223344" cable="true" type="Am79C973">
+        <Adapter slot="0" enabled="true" MACAddress="080011223344" cable="true" type="Am79C973">
           <DisabledModes>
             <InternalNetwork name="intnet"/>
             <NATNetwork name="NatNetwork"/>
@@ -111,7 +111,7 @@
       <AudioAdapter controller="SB16" driver="DirectSound" enabled="false"/>
       <Clipboard mode="Bidirectional"/>
       <GuestProperties>
-        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1595349769852900500" flags=""/>
+        <GuestProperty name="/VirtualBox/HostInfo/GUI/LanguageID" value="tr_TR" timestamp="1596625325688500000" flags=""/>
       </GuestProperties>
     </Hardware>
     <StorageControllers>

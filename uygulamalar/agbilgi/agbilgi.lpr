@@ -23,7 +23,7 @@ var
   Pencere: TPencere;
   DegerListesi: TDegerListesi;
   dugYenile: TDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   AgBilgisi: TAgBilgisi;
 
 procedure IcerigiGuncelle;
@@ -59,18 +59,18 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugYenile.Kimlik) then
+      if(Olay.Kimlik = dugYenile.Kimlik) then
       begin
 
         Genel.AgBilgisiAl(@AgBilgisi);
         IcerigiGuncelle;
       end;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_KIRMIZI;

@@ -38,7 +38,8 @@
         <Filename Value="grfktest.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="24" Y="10"/>
+        <TopLine Value="8"/>
+        <CursorPos X="3" Y="26"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -137,120 +138,121 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="grfktest.lpr"/>
+        <Caret Line="55" Column="17" TopLine="33"/>
       </Position1>
       <Position2>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="29" Column="13" TopLine="6"/>
+        <Caret Line="79" Column="27" TopLine="56"/>
       </Position2>
       <Position3>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="55" Column="17" TopLine="33"/>
+        <Caret Line="80" Column="17" TopLine="56"/>
       </Position3>
       <Position4>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="79" Column="27" TopLine="56"/>
+        <Caret Line="28" Column="12" TopLine="14"/>
       </Position4>
       <Position5>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="80" Column="17" TopLine="56"/>
+        <Caret Line="72" Column="19" TopLine="56"/>
       </Position5>
       <Position6>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="28" Column="12" TopLine="14"/>
       </Position6>
       <Position7>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="72" Column="19" TopLine="56"/>
+        <Caret Line="31" Column="11" TopLine="17"/>
       </Position7>
       <Position8>
         <Filename Value="grfktest.lpr"/>
+        <Caret Line="72" Column="19" TopLine="49"/>
       </Position8>
       <Position9>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="31" Column="11" TopLine="17"/>
+        <Caret Line="33" Column="8" TopLine="31"/>
       </Position9>
       <Position10>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="72" Column="19" TopLine="49"/>
+        <Caret Line="34" Column="11" TopLine="19"/>
       </Position10>
       <Position11>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="33" Column="8" TopLine="31"/>
+        <Caret Line="27" Column="13" TopLine="19"/>
       </Position11>
       <Position12>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="34" Column="11" TopLine="19"/>
+        <Caret Line="37" Column="17" TopLine="19"/>
       </Position12>
       <Position13>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="27" Column="13" TopLine="19"/>
+        <Caret Line="38" Column="13" TopLine="19"/>
       </Position13>
       <Position14>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="37" Column="17" TopLine="19"/>
+        <Caret Line="27" Column="11" TopLine="19"/>
       </Position14>
       <Position15>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="38" Column="13" TopLine="19"/>
+        <Caret Line="37" Column="17" TopLine="19"/>
       </Position15>
       <Position16>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="27" Column="11" TopLine="19"/>
+        <Caret Line="27" Column="17" TopLine="13"/>
       </Position16>
       <Position17>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="37" Column="17" TopLine="19"/>
+        <Caret Line="24" Column="77" TopLine="6"/>
       </Position17>
       <Position18>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="27" Column="17" TopLine="13"/>
+        <Caret Line="8" Column="15"/>
       </Position18>
       <Position19>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="24" Column="77" TopLine="6"/>
       </Position19>
       <Position20>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="8" Column="15"/>
+        <Caret Line="33" Column="7" TopLine="16"/>
       </Position20>
       <Position21>
         <Filename Value="grfktest.lpr"/>
+        <Caret Line="34" Column="11" TopLine="21"/>
       </Position21>
       <Position22>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="33" Column="7" TopLine="16"/>
+        <Caret Line="74" Column="59" TopLine="55"/>
       </Position22>
       <Position23>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="34" Column="11" TopLine="21"/>
+        <Caret Line="10" Column="25"/>
       </Position23>
       <Position24>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="74" Column="59" TopLine="55"/>
+        <Caret Line="14" Column="8"/>
       </Position24>
       <Position25>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="10" Column="25"/>
+        <Caret Line="23" Column="8"/>
       </Position25>
       <Position26>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="14" Column="8"/>
+        <Caret Line="24" Column="10"/>
       </Position26>
       <Position27>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="23" Column="8"/>
+        <Caret Line="25" Column="14"/>
       </Position27>
       <Position28>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="24" Column="10"/>
+        <Caret Line="87" Column="8" TopLine="49"/>
       </Position28>
       <Position29>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="25" Column="14"/>
+        <Caret Line="10" Column="25"/>
       </Position29>
       <Position30>
         <Filename Value="grfktest.lpr"/>
-        <Caret Line="87" Column="8" TopLine="49"/>
+        <Caret Line="26" Column="7" TopLine="8"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

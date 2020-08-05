@@ -20,7 +20,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   dugKapat: TDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 begin
 
@@ -35,14 +35,14 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugKapat.Kimlik) then Gorev.Sonlandir(-1);
+      if(Olay.Kimlik = dugKapat.Kimlik) then Gorev.Sonlandir(-1);
     end
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;

@@ -6,7 +6,7 @@
   Program Adý: iskelet.lpr
   Program Ýþlevi: ana program iskeleti
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 23/07/2020
 
  ==============================================================================}
 {$mode objfpc}

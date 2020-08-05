@@ -36,6 +36,8 @@
         <Filename Value="dnssorgu.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="12"/>
+        <CursorPos X="3" Y="30"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit0>

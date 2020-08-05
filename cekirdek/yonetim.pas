@@ -67,10 +67,8 @@ type
     procedure Olustur;
     procedure Program1Basla;
     procedure Program2Basla;
-    procedure Program3Basla;
     procedure P1NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-    procedure P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-    procedure P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+    procedure P2NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   end;
 
 var
@@ -83,7 +81,7 @@ var
   P3Etiket: PEtiket;
   P3GirisKutusu: PGirisKutusu;
   P3OnayKutusu: POnayKutusu;
-  P2ACDugmeler: array[0..4] of TISayi4;
+  P2ACDugmeler: array[0..4] of TKimlik;
   P1Panel: PPanel;
   P1KarmaListe: PKarmaListe;
   P1Dugme: PDugme;
@@ -214,7 +212,7 @@ end;
  ==============================================================================}
 procedure SistemAnaKontrol;
 var
-  Gorev: PGorev;
+  Gorev: PGorev = nil;
   Tus: Char;
   TusDurum: TTusDurum;
   AtaGorselNesne: PGorselNesne = nil;
@@ -269,7 +267,8 @@ begin
         else if(Tus = '3') then
         begin
 
-          AktifGiysi := GiysiNormal;
+          Gorev^.Calistir('disk1:\kaydirma.c'); // iskelet.c');
+          //AktifGiysi := GiysiNormal;
           //GAktifMasaustu^.Ciz;
           //Gorev^.Calistir('disk1:\dnssorgu.c');
 
@@ -527,7 +526,7 @@ begin
 
   P2Pencere := P2Pencere^.Olustur(nil, 0, 0, 450, 300, ptBoyutlanabilir,
     'Nesneler', RENK_BEYAZ);
-  P2Pencere^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
+  P2Pencere^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
 
   P2AracCubugu := P2AracCubugu^.Olustur(ktNesne, P2Pencere);
   P2ACDugmeler[0] := P2AracCubugu^.DugmeEkle(6);
@@ -535,43 +534,17 @@ begin
   P2ACDugmeler[2] := P2AracCubugu^.DugmeEkle(8);
   P2ACDugmeler[3] := P2AracCubugu^.DugmeEkle(9);
   P2ACDugmeler[4] := P2AracCubugu^.DugmeEkle(10);
-  P2AracCubugu^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
+  P2AracCubugu^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
   P2AracCubugu^.Goster;
 
   P2DurumCubugu := P2DurumCubugu^.Olustur(ktNesne, P2Pencere, 0, 0, 10, 10, 'Konum: 0:0');
-  P2DurumCubugu^.OlayYonlendirmeAdresi := @P3NesneTestOlayIsle;
+  P2DurumCubugu^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
   P2DurumCubugu^.Goster;
 
   P2Pencere^.Goster;
 end;
 
-procedure TArGe.Program3Basla;
-begin
-
-  P3Pencere := P3Pencere^.Olustur(nil, 10, 10, 400, 400, ptBoyutlanabilir,
-    'Sayfa Kontrol', RENK_BEYAZ);
-  P3Pencere^.OlayYonlendirmeAdresi := @P4NesneTestOlayIsle;
-
-  P3SayfaKontrol := P3SayfaKontrol^.Olustur(ktNesne, P3Pencere, 10, 10, 200, 200);
-
-  P2ACDugmeler[0] := P3SayfaKontrol^.SayfaEkle('Sistem Bilgisi');
-  P3Panel[0] := PPanel(P3Panel[0]^.NesneAl(P2ACDugmeler[0]));
-
-  P2ACDugmeler[1] := P3SayfaKontrol^.SayfaEkle('Ýþlemci Bilgisi');
-  P3Panel[1] := PPanel(P3Panel[1]^.NesneAl(P2ACDugmeler[1]));
-
-//  P3Dugme[0]^.Olustur(ktBilesen, P3Panel[0]^.FTuvalNesne, 10, 10, 100, 100, 'Merhaba-1');
-//  P3Dugme[0]^.Goster;
-
-  P3Dugme[1]^.Olustur(ktNesne, P3Panel[1], 10, 10, 100, 100, 'Merhaba-2');
-  P3Dugme[1]^.Goster;
-
-  P3SayfaKontrol^.Goster;
-
-  P3Pencere^.Goster;
-end;
-
-procedure TArGe.P3NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
+procedure TArGe.P2NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
   Sol, Ust, G, Y, i: TISayi4;
   Alan: TAlan;
@@ -658,12 +631,6 @@ begin
 
     //SISTEM_MESAJ('Kimlik: %d', [AOlay.Kimlik]);
   end;
-end;
-
-procedure TArGe.P4NesneTestOlayIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-begin
-
-
 end;
 
 end.

@@ -19,7 +19,7 @@ const
 var
   Gorev: TGorev;
   Pencere: TPencere;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   gkAdres: TGirisKutusu;
   Sayi, Sonuc: TISayi4;
   Hata: Boolean;
@@ -41,8 +41,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_TUSBASILDI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_TUSBASILDI) then
     begin
 
       s := gkAdres.IcerikAl;
@@ -55,7 +55,7 @@ begin
 
       Pencere.Ciz;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;

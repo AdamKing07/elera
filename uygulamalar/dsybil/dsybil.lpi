@@ -39,7 +39,8 @@
         <Filename Value="dsybil.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="51" Y="19"/>
+        <TopLine Value="5"/>
+        <CursorPos X="3" Y="23"/>
         <UsageCount Value="72"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -165,7 +166,7 @@
         <UsageCount Value="10"/>
       </Unit21>
     </Units>
-    <JumpHistory Count="25" HistoryIndex="24">
+    <JumpHistory Count="27" HistoryIndex="26">
       <Position1>
         <Filename Value="dsybil.lpr"/>
         <Caret Line="20" Column="23" TopLine="6"/>
@@ -264,6 +265,14 @@
         <Filename Value="dsybil.lpr"/>
         <Caret Line="23" Column="29"/>
       </Position25>
+      <Position26>
+        <Filename Value="dsybil.lpr"/>
+        <Caret Line="19" Column="51"/>
+      </Position26>
+      <Position27>
+        <Filename Value="dsybil.lpr"/>
+        <Caret Line="23" Column="7" TopLine="5"/>
+      </Position27>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

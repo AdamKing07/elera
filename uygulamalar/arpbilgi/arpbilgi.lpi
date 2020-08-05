@@ -38,8 +38,8 @@
         <Filename Value="arpbilgi.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="47"/>
-        <CursorPos X="22" Y="70"/>
+        <TopLine Value="10"/>
+        <CursorPos X="6" Y="28"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -214,7 +214,7 @@
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit31>
     </Units>
-    <JumpHistory Count="22" HistoryIndex="21">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="arpbilgi.lpr"/>
         <Caret Line="15" Column="11"/>
@@ -302,6 +302,14 @@
         <Filename Value="arpbilgi.lpr"/>
         <Caret Line="51" Column="25" TopLine="33"/>
       </Position22>
+      <Position23>
+        <Filename Value="arpbilgi.lpr"/>
+        <Caret Line="70" Column="22" TopLine="46"/>
+      </Position23>
+      <Position24>
+        <Filename Value="arpbilgi.lpr"/>
+        <Caret Line="28" Column="7" TopLine="10"/>
+      </Position24>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

@@ -6,7 +6,7 @@
   Dosya Adı: paylasim.pas
   Dosya İşlevi: program arabiriminde kullanılacak sabit değerleri içerir
 
-  Güncelleme Tarihi: 10/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -87,6 +87,7 @@ const
 
   PENCERE_OLUSTUR	            = $00010200 + SAC_GNESNE;
   PENCERE_GOSTER              = $00080200 + SAC_GNESNE;
+  PENCERE_GIZLE	              = $00200200 + SAC_GNESNE;
   PENCERE_CIZ		              = $00100200 + SAC_GNESNE;
   PENCERE_DRM_NORMAL          = $01800200 + SAC_GNESNE;
   PENCERE_DRM_KUCULT          = $02800200 + SAC_GNESNE;
@@ -228,6 +229,12 @@ const
 
   RENKSECICI_OLUSTUR	        = $00011A00 + SAC_GNESNE;
   RENKSECICI_GOSTER	          = $00081A00 + SAC_GNESNE;
+
+  SAYFAKONTROL_OLUSTUR	      = $00011B00 + SAC_GNESNE;
+  SAYFAKONTROL_GOSTER	        = $00081B00 + SAC_GNESNE;
+  SAYFAKONTROL_GIZLE	        = $00201B00 + SAC_GNESNE;
+  SAYFAKONTROL_SAYFAEKLE      = $01041B00 + SAC_GNESNE;
+  SAYFAKONTROL_ETIKETEKLE     = $02041B00 + SAC_GNESNE;
 
   // görsel nesne çağrı tanımları sonu
 

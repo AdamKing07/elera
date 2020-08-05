@@ -33,7 +33,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   rdDugmeler: array[0..15] of TResimDugmesi;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   Sol, Ust, i: TISayi4;
 
 begin
@@ -64,12 +64,12 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
     end;

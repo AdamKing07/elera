@@ -25,7 +25,7 @@ var
   DurumCubugu: TDurumCubugu;
   lgGorevListesi: TListeGorunum;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   GorevKayit: TGorevKayit;
   UstSinirGorevSayisi, CalisanGorevSayisi: TSayi4;
   SeciliGorevNo, Sonuc: TISayi4;
@@ -71,12 +71,12 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugSonlandir.Kimlik) then
+      if(Olay.Kimlik = dugSonlandir.Kimlik) then
       begin
 
         if(SeciliGorevNo > 0) then Gorev.Sonlandir(SeciliGorevNo);
@@ -84,7 +84,7 @@ begin
         // seçilen görev deðerini sýfýrla
         SeciliGorevNo := 0;
       end
-      else if(OlayKayit.Kimlik = lgGorevListesi.Kimlik) then
+      else if(Olay.Kimlik = lgGorevListesi.Kimlik) then
       begin
 
         SeciliYazi := lgGorevListesi.SeciliYaziAl;
@@ -101,7 +101,7 @@ begin
         end;
       end
     end
-    else if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    else if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       // her tetiklemede iþlem sayýsýný denetle ve

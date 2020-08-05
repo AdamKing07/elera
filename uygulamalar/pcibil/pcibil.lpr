@@ -271,7 +271,7 @@ var
   ToplamPCIAygitSayisi, AygitSiraNo,
   TemelAdres, Deger32, i, k: TSayi4;
   PCIAygitBilgisi: TPCIAygitBilgisi;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   Deger8: TSayi1;
   SinifKod, SaticiKimlik, AygitAdi: string;
 
@@ -351,14 +351,14 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = DegerDugmesi.Kimlik) then
+      if(Olay.Kimlik = DegerDugmesi.Kimlik) then
       begin
 
-        if(OlayKayit.Deger1 = 0) then
+        if(Olay.Deger1 = 0) then
         begin
 
           if(AygitSiraNo + 1 < ToplamPCIAygitSayisi) then
@@ -369,7 +369,7 @@ begin
             Pencere.Ciz;
           end;
         end
-        else if(OlayKayit.Deger1 = 1) then
+        else if(Olay.Deger1 = 1) then
         begin
 
           if(AygitSiraNo - 1 >= 0) then
@@ -383,7 +383,7 @@ begin
       end;
     end
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;

@@ -40,6 +40,8 @@
         <Filename Value="iletisim.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
+        <TopLine Value="11"/>
+        <CursorPos X="3" Y="29"/>
         <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -418,7 +420,7 @@
         <UsageCount Value="10"/>
       </Unit63>
     </Units>
-    <JumpHistory Count="22" HistoryIndex="21">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="iletisim.lpr"/>
         <Caret Line="90" Column="34" TopLine="67"/>
@@ -507,6 +509,13 @@
         <Filename Value="iletisim.lpr"/>
         <Caret Line="10" Column="25"/>
       </Position22>
+      <Position23>
+        <Filename Value="iletisim.lpr"/>
+      </Position23>
+      <Position24>
+        <Filename Value="iletisim.lpr"/>
+        <Caret Line="29" Column="7" TopLine="11"/>
+      </Position24>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

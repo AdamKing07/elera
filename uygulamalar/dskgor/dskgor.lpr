@@ -32,7 +32,7 @@ var
   dugAzalt, dugArtir, dugYenile: TDugme;
   dugDepolamaAygitlari: array[1..6] of TDugme;
   gkAdres: TGirisKutusu;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   FizikselDepolamaAygitSayisi, SeciliAygitSiraNo,
   DugmeA1, i: TSayi4;
   AygitOkumaDurumu, ToplamSektor, MevcutSektor: TISayi4;
@@ -196,12 +196,12 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_TUSBASILDI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_TUSBASILDI) then
     begin
 
       // sektör no giriþte ENTER tuþuna basýlmýþsa...
-      if(OlayKayit.Deger1 = 10) then
+      if(Olay.Deger1 = 10) then
       begin
 
         s := gkAdres.IcerikAl;
@@ -223,10 +223,10 @@ begin
       end;
     end
 
-    else if(OlayKayit.Olay = FO_TIKLAMA) then
+    else if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugYenile.Kimlik) then
+      if(Olay.Kimlik = dugYenile.Kimlik) then
       begin
 
         // kod bloðu sonunda okuma iþlevi gerçekleþtirilmektedir
@@ -234,7 +234,7 @@ begin
       end
 
       // bir önceki sektörü okuma düðmesi
-      else if(OlayKayit.Kimlik = dugAzalt.Kimlik) then
+      else if(Olay.Kimlik = dugAzalt.Kimlik) then
       begin
 
         // eðer disk seçili ise
@@ -247,7 +247,7 @@ begin
       end
 
       // bir sonraki sektörü okuma düðmesi
-      else if(OlayKayit.Kimlik = dugArtir.Kimlik) then
+      else if(Olay.Kimlik = dugArtir.Kimlik) then
       begin
 
         // eðer disk seçili ise
@@ -265,7 +265,7 @@ begin
         for i := 1 to 6 do
         begin
 
-          if(dugDepolamaAygitlari[i].Kimlik = OlayKayit.Kimlik) then
+          if(dugDepolamaAygitlari[i].Kimlik = Olay.Kimlik) then
           begin
 
             SeciliAygitSiraNo := dugDepolamaAygitlari[i].Etiket;
@@ -292,7 +292,7 @@ begin
       end;
     end
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       if(FizikselDepolamaAygitSayisi = 0) then

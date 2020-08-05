@@ -29,7 +29,7 @@ var
 var
   Genel: TGenel;
   Gorev: TGorev;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   gkAdres: TGirisKutusu;
   dugArtir, dugAzalt,
   dugYenile: TDugme;
@@ -142,11 +142,11 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_TUSBASILDI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_TUSBASILDI) then
     begin
 
-      if(OlayKayit.Deger1 = 10) then
+      if(Olay.Deger1 = 10) then
       begin
 
         s := gkAdres.IcerikAl;
@@ -160,17 +160,17 @@ begin
         Pencere.Ciz;
       end;
     end
-    else if(OlayKayit.Olay = FO_TIKLAMA) then
+    else if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugArtir.Kimlik) then
+      if(Olay.Kimlik = dugArtir.Kimlik) then
       begin
 
         if(MevcutBellekAdresi + 512 > ToplamRAMUzunlugu) then
           MevcutBellekAdresi := ToplamRAMUzunlugu - 512
         else MevcutBellekAdresi := MevcutBellekAdresi + 512;
       end
-      else if(OlayKayit.Kimlik = dugAzalt.Kimlik) then
+      else if(Olay.Kimlik = dugAzalt.Kimlik) then
       begin
 
         if(MevcutBellekAdresi - 512 < 0) then
@@ -185,7 +185,7 @@ begin
 
       Pencere.Ciz;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;

@@ -38,8 +38,8 @@
         <Filename Value="muyntcs.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="346"/>
-        <CursorPos X="53" Y="379"/>
+        <TopLine Value="64"/>
+        <CursorPos X="23" Y="87"/>
         <UsageCount Value="93"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -601,7 +601,7 @@
         <UsageCount Value="13"/>
       </Unit106>
     </Units>
-    <JumpHistory Count="23" HistoryIndex="22">
+    <JumpHistory Count="25" HistoryIndex="24">
       <Position1>
         <Filename Value="muyntcs.lpr"/>
         <Caret Line="195" Column="9" TopLine="177"/>
@@ -692,6 +692,14 @@
         <Filename Value="muyntcs.lpr"/>
         <Caret Line="70" Column="8" TopLine="55"/>
       </Position23>
+      <Position24>
+        <Filename Value="muyntcs.lpr"/>
+        <Caret Line="379" Column="53" TopLine="346"/>
+      </Position24>
+      <Position25>
+        <Filename Value="muyntcs.lpr"/>
+        <Caret Line="82" Column="7" TopLine="64"/>
+      </Position25>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

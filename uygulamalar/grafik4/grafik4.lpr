@@ -28,7 +28,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   Noktalar: array[0..USTDEGER_NOKTASAYISI - 1] of TNoktaKayit;
   Sol, Ust, i: TISayi4;
 
@@ -80,13 +80,13 @@ begin
   while True do
   begin
 
-    Gorev.OlayAl(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    Gorev.OlayAl(Olay);
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       Pencere.Ciz;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       // yeni nokta koordinatlarını çiz

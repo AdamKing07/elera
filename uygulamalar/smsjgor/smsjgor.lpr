@@ -27,7 +27,7 @@ var
   SistemMesaj: TSistemMesaj;
   Zamanlayici: TZamanlayici;
   Mesaj: TMesaj;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   SistemdekiToplamMesaj, ToplamMesaj,
   IlkMesajNo, i, SatirNo: TSayi4;
 
@@ -47,8 +47,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       SistemdekiToplamMesaj := SistemMesaj.Toplam;
@@ -57,7 +57,7 @@ begin
       Pencere.Ciz;
     end
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := $32323E;

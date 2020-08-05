@@ -28,7 +28,7 @@ var
   lkDosyaListesi: TListeKutusu;
   etiBilgi: array[0..1] of TEtiket;
   RenkSecici: TRenkSecici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   i: TISayi4;
 
 procedure DosyalariListele;
@@ -93,23 +93,23 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
+    Gorev.OlayBekle(Olay);
 
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
       // liste kutusuna týklanmasý halinde dosyayý çalýþtýr
-      if(OlayKayit.Kimlik = lkDosyaListesi.Kimlik) then
+      if(Olay.Kimlik = lkDosyaListesi.Kimlik) then
       begin
 
         i := lkDosyaListesi.SeciliSiraNoAl;
         masELERA.MasaustuResminiDegistir('disk1:\' + DosyaAramaListesi[i].DosyaAdi);
         masELERA.Guncelle;
       end
-      else if(OlayKayit.Kimlik = RenkSecici.Kimlik) then
+      else if(Olay.Kimlik = RenkSecici.Kimlik) then
       begin
 
-        masELERA.MasaustuRenginiDegistir(OlayKayit.Deger1);
+        masELERA.MasaustuRenginiDegistir(Olay.Deger1);
         masELERA.Guncelle;
       end;
     end

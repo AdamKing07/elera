@@ -127,8 +127,9 @@ type
   TPencereDurum = (pdNormal, pdKucultuldu, pdBuyutuldu);
 
 type
-  POlayKayit = ^TOlayKayit;
-  TOlayKayit = record
+  PPOlay = ^POlay;
+  POlay = ^TOlay;
+  TOlay = record
     Kimlik: TKimlik;
     Olay, Deger1, Deger2: TISayi4;
   end;

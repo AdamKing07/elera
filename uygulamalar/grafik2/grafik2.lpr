@@ -20,7 +20,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   Renkler: array[0..7] of TRenk = (
     $000000, $4D001F, $99003D, $E6005C,
     $FF1A75, $FF66A3, $FFB3D1, $FFE6f0);
@@ -44,8 +44,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       Inc(i);

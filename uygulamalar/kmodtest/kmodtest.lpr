@@ -22,7 +22,7 @@ var
   Pencere: TPencere;
   bagKomutIN, bagKomutCLI,
   bagKomutJMP, bagKomutMOV: TBaglanti;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 begin
 
@@ -43,24 +43,24 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = bagKomutIN.Kimlik) then
+      if(Olay.Kimlik = bagKomutIN.Kimlik) then
       begin
       asm
         mov   dx,$1F0
         in    al,dx
       end;
       end
-      else if(OlayKayit.Kimlik = bagKomutCLI.Kimlik) then
+      else if(Olay.Kimlik = bagKomutCLI.Kimlik) then
       begin
       asm
         cli
       end;
       end
-      else if(OlayKayit.Kimlik = bagKomutJMP.Kimlik) then
+      else if(Olay.Kimlik = bagKomutJMP.Kimlik) then
       begin
       asm
         db  $EA
@@ -68,7 +68,7 @@ begin
         dw  8
       end;
       end
-      else if(OlayKayit.Kimlik = bagKomutMOV.Kimlik) then
+      else if(Olay.Kimlik = bagKomutMOV.Kimlik) then
       begin
       asm
         mov   esi,[$FFFFFFFF]

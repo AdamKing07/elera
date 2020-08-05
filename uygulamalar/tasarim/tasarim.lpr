@@ -21,7 +21,7 @@ var
   Pencere: TPencere;
   dugSol, dugSag, dugUst, dugAlt,
   dugIlkDurum, dugTestDugmesi: TDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
 
 begin
 
@@ -51,31 +51,31 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = dugSol.Kimlik) then
+      if(Olay.Kimlik = dugSol.Kimlik) then
       begin
 
         dugTestDugmesi.Hizala(hzSol);
       end
-      else if(OlayKayit.Kimlik = dugUst.Kimlik) then
+      else if(Olay.Kimlik = dugUst.Kimlik) then
       begin
 
         dugTestDugmesi.Hizala(hzUst);
       end
-      else if(OlayKayit.Kimlik = dugSag.Kimlik) then
+      else if(Olay.Kimlik = dugSag.Kimlik) then
       begin
 
         dugTestDugmesi.Hizala(hzSag);
       end
-      else if(OlayKayit.Kimlik = dugAlt.Kimlik) then
+      else if(Olay.Kimlik = dugAlt.Kimlik) then
       begin
 
         dugTestDugmesi.Hizala(hzAlt);
       end
-      else if(OlayKayit.Kimlik = dugIlkDurum.Kimlik) then
+      else if(Olay.Kimlik = dugIlkDurum.Kimlik) then
       begin
 
         dugTestDugmesi.Hizala(hzYok);

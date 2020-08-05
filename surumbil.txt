@@ -1,12 +1,12 @@
 *******************************************************************************
   Sürüm: 0.3.7 - 00.00.0000 (R33)
 *******************************************************************************
-  - TIzgara (TStringGrid) görsel nesne çalýþmalarý devam ediyor
   - TAracCubugu (TToolBar) görsel nesne çalýþmalarý devam ediyor
-  - TSayfaKontrol (TPageControl) görsel nesne çalýþmalarý devam ediyor
   - çoklu pencere çalýþmalarý devam ediyor
   - giysi (skin) geçiþleri masaüstü ayarlarýna ekleme çalýþmalarý devam ediyor
 
+  + TSayfaKontrol (TPageControl) görsel nesnesi projeye eklendi
+  + TIzgara (TStringGrid) görsel nesnesi projeye eklendi
   + takvim programý kodlandý. masaüstü programý tarih deðeri týklama iþlevine takvimin açýlmasý iþlevi eklendi
   + program çalýþtýrma (calistir.c) programý kodlandý (kýsayol tuþu olara ctrl+c atandý)
   + masaüstü yönetim programýna program çalýþtýrma menüsü eklendi
@@ -19,7 +19,7 @@
   + yatay / dikey düz çizgi tipine noktalý çizgi tipi eklendi
   + programa ait her yeni açýlan pencerenin masaüstünde ortalanmasý saðlandý
   + pencere nesnesine mac pencere görünümü (skin) uygulandý
-  + TDegerListesi (valuelisteditor) görsel nesnesi projeye eklendi
+  + TDegerListesi (TValueListEditor) görsel nesnesi projeye eklendi
   + tasarýmsal olarak her bir göreve tek bir ana pencere atamasý gerçekleþtirildi
   + pencere küçültme iþlevi uygulandý
 

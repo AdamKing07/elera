@@ -29,8 +29,8 @@ type
     function GorevBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
     function GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4;
     function GorevKimligiAl(AGorevAdi: string): TKimlik;
-    function OlayAl(var AOlayKayit: TOlayKayit): TISayi4;
-    function OlayBekle(var AOlayKayit: TOlayKayit): TISayi4;
+    function OlayAl(var AOlay: TOlay): TISayi4;
+    function OlayBekle(var AOlay: TOlay): TISayi4;
     procedure SistemBilgisiAl(ABellekAdresi: Isaretci);
     procedure IslemciBilgisiAl(ABellekAdresi: Isaretci);
     function FarePozisyonunuAl: TNokta;
@@ -87,16 +87,16 @@ begin
   Result := _GorevKimligiAl(AGorevAdi);
 end;
 
-function TGorev.OlayAl(var AOlayKayit: TOlayKayit): TISayi4;
+function TGorev.OlayAl(var AOlay: TOlay): TISayi4;
 begin
 
-  Result := FGenel.OlayAl(AOlayKayit);
+  Result := FGenel.OlayAl(AOlay);
 end;
 
-function TGorev.OlayBekle(var AOlayKayit: TOlayKayit): TISayi4;
+function TGorev.OlayBekle(var AOlay: TOlay): TISayi4;
 begin
 
-  Result := FGenel.OlayBekle(AOlayKayit);
+  Result := FGenel.OlayBekle(AOlay);
 end;
 
 procedure TGorev.SistemBilgisiAl(ABellekAdresi: Isaretci);

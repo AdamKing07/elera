@@ -25,7 +25,7 @@ var
   Gorev: TGorev;
   Pencere: TPencere;
   Zamanlayici: TZamanlayici;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   ARPKayit: TARPKayit;
   ARPKayitSayisi, i, j: TSayi4;
 
@@ -44,14 +44,14 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = CO_ZAMANLAYICI) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = CO_ZAMANLAYICI) then
     begin
 
       ARPKayitSayisi := Genel.ARPKayitSayisiAl;
       Pencere.Ciz;
     end
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := $39525E;

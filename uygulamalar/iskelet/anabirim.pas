@@ -6,7 +6,7 @@
   Program Adý: anabirim.pas
   Program Ýþlevi: ana programýn ana birimi
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 23/07/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -21,9 +21,9 @@ type
   public
     Gorev: TGorev;
     Pencere: TPencere;
-    Dugme2, Dugme3: TDugme;
+    Dugme2: TDugme;
 //    SistemMesaj: TSistemMesaj;
-    OlayKayit: TOlayKayit;
+    Olay: TOlay;
     TiklamaSayisi: TSayi4;
     procedure Olustur;
     procedure Goster;
@@ -36,18 +36,17 @@ var
 implementation
 
 const
-  PencereAdi: string = 'Ana Pencere';
+  PencereAdi: string = 'Tüm Ýþlemler';
 
 procedure TPencere1.Olustur;
 begin
 
   TiklamaSayisi := 0;
 
-  Pencere.Olustur(-1, 100, 100, 300, 300, ptBoyutlanabilir, PencereAdi, RENK_BEYAZ);
+  Pencere.Olustur(-1, 100, 100, 400, 400, ptBoyutlanabilir, PencereAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
-  Dugme2.Olustur(Pencere.Kimlik, 10, 10, 280, 130, '2. Pencere');
-  Dugme3.Olustur(Pencere.Kimlik, 10, 150, 280, 130, '3. Pencere');
+  Dugme2.Olustur(Pencere.Kimlik, 50, 10, 300, 100, 'Sistem Ýþlemleri');
 
 //  SistemMesaj.YaziEkle('iskelet -> Pencere1 oluþturuldu...');
 end;
@@ -56,7 +55,6 @@ procedure TPencere1.Goster;
 begin
 
   Dugme2.Goster;
-  Dugme3.Goster;
 
   Pencere.Goster;
 end;
@@ -67,28 +65,29 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
-      if(OlayKayit.Kimlik = Dugme2.Kimlik) then
+      if(Olay.Kimlik = Dugme2.Kimlik) then
         Pencere2.Goster
-      else if(OlayKayit.Kimlik = Dugme3.Kimlik) then
-        Pencere3.Goster
       else
       begin
 
         Inc(TiklamaSayisi);
         Pencere.Ciz;
+
+        if(Pencere2.OlaylariIsle(Olay) = -1) then
+          Pencere3.OlaylariIsle(Olay);
       end;
     end
 
-    else if(OlayKayit.Olay = CO_CIZIM) then
+    else if(Olay.Olay = CO_CIZIM) then
     begin
 
       Pencere.Tuval.KalemRengi := RENK_SIYAH;
-      Pencere.Tuval.YaziYaz(0, 0, 'Týklama Sayýsý:');
-      Pencere.Tuval.SayiYaz10(17 * 8, 0, TiklamaSayisi);
+      Pencere.Tuval.YaziYaz(50, 20, '');
+//      Pencere.Tuval.SayiYaz10(17 * 8, 10, TiklamaSayisi);
     end;
   end;
 

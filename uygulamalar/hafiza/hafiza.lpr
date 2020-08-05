@@ -24,7 +24,7 @@ var
   Durum: TEtiket;
   Dugmeler: array[0..15] of TDugme;
   SeciliDugme1, SeciliDugme2: PDugme;
-  OlayKayit: TOlayKayit;
+  Olay: TOlay;
   CiftDegerDizisi: array[1..8] of TSayi4;     // her 2 düðmeye daðýtýlan tek (eþ) deðerler
   BulunanCiftSayisi, TiklamaSayisi,
   ToplamTiklamaSayisi, i: TSayi4;
@@ -122,8 +122,8 @@ begin
   while True do
   begin
 
-    Gorev.OlayBekle(OlayKayit);
-    if(OlayKayit.Olay = FO_TIKLAMA) then
+    Gorev.OlayBekle(Olay);
+    if(Olay.Olay = FO_TIKLAMA) then
     begin
 
       Inc(TiklamaSayisi);
@@ -134,7 +134,7 @@ begin
       if(TiklamaSayisi = 1) then
       begin
 
-        SeciliDugme1 := DugmeAl(OlayKayit.Kimlik);
+        SeciliDugme1 := DugmeAl(Olay.Kimlik);
         if not(SeciliDugme1 = nil) then
           SeciliDugme1^.BaslikDegistir(IntToStr(SeciliDugme1^.Etiket));
       end
@@ -142,7 +142,7 @@ begin
       else if(TiklamaSayisi = 2) then
       begin
 
-        SeciliDugme2 := DugmeAl(OlayKayit.Kimlik);
+        SeciliDugme2 := DugmeAl(Olay.Kimlik);
 
         // 1. ve 2. týklama ayný düðmeye mi yapýldý?
         if(SeciliDugme1^.Kimlik = SeciliDugme2^.Kimlik) then
