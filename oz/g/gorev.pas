@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 18/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -57,7 +57,8 @@ type
     FGorevDurum: TGorevDurum;             // iþlem durumu
     FGorevSayaci: TSayi4;                 // görev deðiþim sayacý
     FBellekBaslangicAdresi: TSayi4;       // iþlemin yüklendiði bellek adresi
-    FProgramAdi: string;                  // iþlem adý
+    FDosyaAdi,                            // görevin yüklendiði dosya adý
+    FProgramAdi: string;                  // program adý
     procedure Yukle;
     function Calistir(ATamDosyaYolu: string): PGorev;
     procedure DurumDegistir(AGorevKimlik: TKimlik; AGorevDurum: TGorevDurum);
@@ -317,7 +318,10 @@ begin
     Gorev^.FOlayBellekAdresi := Olay;
 
     // iþlemin adý
-    Gorev^.FProgramAdi := DosyaAdi;
+    Gorev^.FDosyaAdi := DosyaAdi;
+
+    // program öndeðer adý
+    Gorev^.FProgramAdi := '';
 
     // deðiþken gönderimi
     // ilk deðiþken - çalýþan iþlemin adý
@@ -621,13 +625,13 @@ begin
   if(ASonlanmaSebebi = -1) then
   begin
 
-    SISTEM_MESAJ('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FProgramAdi +
+    SISTEM_MESAJ('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FDosyaAdi +
       ' normal bir þekilde sonlandýrýldý.', []);
   end
   else
   begin
 
-    SISTEM_MESAJ('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FProgramAdi +
+    SISTEM_MESAJ('GOREV.PAS: ' + GorevListesi[AGorevKimlik]^.FDosyaAdi +
       ' programý sonlandýrýldý', []);
     SISTEM_MESAJ('GOREV.PAS: Hata Kodu: ' + IntToStr(ASonlanmaSebebi) + ' - ' +
       IstisnaAciklamaListesi[ASonlanmaSebebi], []);
@@ -742,7 +746,7 @@ begin
       Result.GorevKimlik := GorevListesi[i]^.GorevKimlik;
       Result.PencereTipi := GorevListesi[i]^.FAnaPencere^.FPencereTipi;
       Result.PencereDurum := GorevListesi[i]^.FAnaPencere^.FPencereDurum;
-      Result.ProgramAdi := GorevListesi[i]^.FProgramAdi;
+      Result.DosyaAdi := GorevListesi[i]^.FDosyaAdi;
       Exit;
     end;
   end;
@@ -793,7 +797,7 @@ begin
 
     // görev boþ deðil ise görev sýra numarasýný bir artýr
     if not(GorevListesi[i]^.FGorevDurum = gdBos) and
-      (GorevListesi[i]^.FProgramAdi = AGorevAdi) then Exit(GorevListesi[i]^.GorevKimlik);
+      (GorevListesi[i]^.FDosyaAdi = AGorevAdi) then Exit(GorevListesi[i]^.GorevKimlik);
   end;
 
   Result := -1;

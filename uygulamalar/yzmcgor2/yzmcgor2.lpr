@@ -7,7 +7,7 @@ program yzmcgor2;
   Program Adý: yzmcgor2.lpr
   Program Ýþlevi: programýn yazmaç içeriðini görüntüler
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -32,6 +32,9 @@ var
   UstSinirGorevSayisi, CalisanGorevSayisi, i: TSayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   GorevNo := -1;
 

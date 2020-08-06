@@ -7,7 +7,7 @@ program kmodtest;
   Program Adý: kmodtest.lpr
   Program Ýþlevi: ring3 seviyesi korumalý mod test programý
 
-  Güncelleme Tarihi: 22/06/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -25,6 +25,9 @@ var
   Olay: TOlay;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 200, 200, 250, 130, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

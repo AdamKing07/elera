@@ -6,7 +6,7 @@
   Program Adý: dugmeler.lpr
   Program Ýþlevi: resim düðme test programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -37,6 +37,9 @@ var
   Sol, Ust, i: TISayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 200, 200, 128, 128, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

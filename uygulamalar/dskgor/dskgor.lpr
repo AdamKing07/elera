@@ -7,7 +7,7 @@ program dskgor;
   Program Adý: dskgor.lpr
   Program Ýþlevi: depolama aygýtý sektör içeriðini görüntüler
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -135,7 +135,10 @@ end;
 
 begin
 
-  // ana form oluþtur
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
+
+  // ana pencere oluþtur
   Pencere.Olustur(-1, 100, 20, 615, 400, ptBoyutlanabilir, ProgramAdi, $D1F0ED);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 

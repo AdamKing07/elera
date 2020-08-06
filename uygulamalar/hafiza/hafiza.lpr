@@ -7,7 +7,7 @@ program hafiza;
   Program Adý: hafiza.lpr
   Program Ýþlevi: hafýza güçlendirmek için geliþtirilmiþ uygulama
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -108,6 +108,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 328, 360, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

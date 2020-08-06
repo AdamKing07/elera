@@ -7,7 +7,7 @@ program tarayici;
   Program Adý: tarayici.lpr
   Program Ýþlevi: internet tarayýcý programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -31,6 +31,9 @@ var
   IPAdres, s: string;
   VeriUzunlugu: Integer;
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   IPAdres := '193.1.1.1';
 

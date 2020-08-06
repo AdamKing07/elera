@@ -7,7 +7,7 @@ program grfktest;
   Program Adý: grfktest.lpr
   Program Ýþlevi: grafik test programý (fps deðerini ölçer)
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,6 +15,7 @@ uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik Test - 200x200';
+
   RenkListesi: array[0..7] of TRenk = (
     $00FF8080, $00FF6060, $00FF4040, $00FF2020,
     $00FF2020, $00FF4040, $00FF6060, $00FF8080);
@@ -56,6 +57,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 200, 200, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

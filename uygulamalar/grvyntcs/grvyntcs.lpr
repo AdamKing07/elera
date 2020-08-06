@@ -7,7 +7,7 @@ program grvyntcs;
   Program Adý: grvyntcs.lpr
   Program Ýþlevi: görev yöneticisi
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -33,6 +33,9 @@ var
   SeciliYazi, s: string;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 150, 600, 300, ptBoyutlanabilir, ProgramAdi, $E3DBC8);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

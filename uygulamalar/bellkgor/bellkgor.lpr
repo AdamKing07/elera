@@ -7,7 +7,7 @@ program bellkgor;
   Program Adý: bellkgor.lpr
   Program Ýþlevi: bellek içerik görüntüleme programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -104,6 +104,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 5, 5, 615, 400, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

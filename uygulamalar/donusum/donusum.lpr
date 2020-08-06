@@ -7,7 +7,7 @@ program donusum;
   Program Adý: donusum.lpr
   Program Ýþlevi: sayýsal deðer çevrim / dönüþüm programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -26,6 +26,9 @@ var
   s: string;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 15, 15, 285, 140, ptIletisim, ProgramAdi, $CDF0DB);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

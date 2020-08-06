@@ -7,7 +7,7 @@ program grafik3;
   Program Adı: grafik3.lpr
   Program İşlevi: çoklu yönlendirilmiş nokta (pixel) işaretleme programı
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,6 +15,7 @@ uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik-3';
+
   RenkListesi: array[0..15] of TRenk = (
       $FFFFFF, $C0C0C0, $808080, $000000,
       $FF0000, $800000, $FFFF00, $808000,
@@ -36,6 +37,9 @@ var
   YatayDeger, DikeyDeger, i, Renk: TISayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 50, 50, 400, 300, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

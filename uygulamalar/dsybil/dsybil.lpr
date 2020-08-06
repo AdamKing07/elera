@@ -7,7 +7,7 @@ program dsybil;
   Program Adý: dsybil.lpr
   Program Ýþlevi: dosyalar hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -23,6 +23,9 @@ var
   Olay: TOlay;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 300, 150, ptIletisim, ProgramAdi, $EADEA5);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

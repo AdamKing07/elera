@@ -27,6 +27,9 @@ var
 
 begin
 
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
+
   Pencere.Olustur(-1, 100, 100, 375, 160, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 

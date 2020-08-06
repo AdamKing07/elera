@@ -6,7 +6,7 @@
   Dosya Adı: gn_masaustu.pas
   Dosya İşlevi: masaüstü yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 13/06/2020
+  Güncelleme Tarihi: 06/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -55,8 +55,17 @@ begin
 
   case AIslevNo of
 
-    ISLEV_OLUSTUR: Result := NesneOlustur(PKarakterKatari(PSayi4(ADegiskenler + 04)^ +
-      CalisanGorevBellekAdresi)^);
+    ISLEV_OLUSTUR:
+
+      Result := NesneOlustur(PKarakterKatari(PSayi4(ADegiskenler + 04)^ +
+        CalisanGorevBellekAdresi)^);
+
+    ISLEV_GOSTER:
+    begin
+
+      Masaustu := PMasaustu(Masaustu^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Masaustu^.Goster;
+    end;
 
     // oluşturulmuş toplam masaüstü sayısı
     $0102:
@@ -128,14 +137,9 @@ begin
       Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(
         PKimlik(ADegiskenler + 00)^, gntMasaustu));
       if(Masaustu <> nil) then Masaustu^.Ciz;
-    end;
+    end
 
-    ISLEV_GOSTER:
-    begin
-
-      Masaustu := PMasaustu(Masaustu^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      Masaustu^.Goster;
-    end else Result := HATA_ISLEV;
+    else Result := HATA_ISLEV;
   end;
 end;
 

@@ -6,7 +6,7 @@
   Program Adı: noktalar.lpr
   Program İşlevi: nokta işaretleme test programı
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,6 +16,7 @@ uses n_gorev, gn_pencere, gn_dugme, n_zamanlayici, gn_islemgostergesi, gn_onayku
 
 const
   ProgramAdi: string = 'Noktalar (300 x 300) - 0.5 saniye';
+
   Renkler: array[0..7] of TRenk = (
       $D2691E, $7FFF00, $00008B, $008B8B,
       $9932CC, $8FBC8F, $9400D3, $FFD700);
@@ -44,6 +45,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 300, 300 + 20, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

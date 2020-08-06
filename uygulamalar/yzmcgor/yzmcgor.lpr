@@ -7,7 +7,7 @@ program yzmcgor;
   Program Adý: yzmcgor.lpr
   Program Ýþlevi: programýn yazmaç içeriðini görüntüler
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -15,7 +15,8 @@ uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Program Yazmaç Görüntüleyici';
-  Baslik0: string = 'GRV     eax      ebx      ecx      edx      esi      edi      ebp      esp';
+
+  Baslik0: string = 'GRV     EAX      EBX      ECX      EDX      ESI      EDI      EBP      ESP';
   Baslik1: string = '----  -------- -------- -------- -------- -------- -------- -------- --------';
 
 var
@@ -28,6 +29,9 @@ var
   i: TSayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 5, 55, 630, 300, ptBoyutlanabilir, ProgramAdi, $E6EAED);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

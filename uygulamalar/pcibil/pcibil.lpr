@@ -7,7 +7,7 @@ program pcibil;
   Program Adý: pcibil.lpr
   Program Ýþlevi: pci aygýtlarý hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -324,6 +324,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 50, 10, 500, 450, ptBoyutlanabilir, ProgramAdi, $FFE0CC);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

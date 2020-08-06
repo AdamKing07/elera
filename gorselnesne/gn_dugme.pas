@@ -66,16 +66,6 @@ begin
         PKarakterKatari(PSayi4(ADegiskenler + 20)^ + CalisanGorevBellekAdresi)^);
     end;
 
-    ISLEV_YOKET:
-    begin
-
-      Dugme := PDugme(Dugme^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      Pencere := PPencere(Dugme^.AtaNesne);
-
-      Dugme^.YokEt;
-      Pencere^.Ciz;
-    end;
-
     ISLEV_GOSTER:
     begin
 
@@ -90,6 +80,16 @@ begin
       Pencere := PPencere(Dugme^.AtaNesne);
 
       Dugme^.Gizle;
+      Pencere^.Ciz;
+    end;
+
+    ISLEV_YOKET:
+    begin
+
+      Dugme := PDugme(Dugme^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      Pencere := PPencere(Dugme^.AtaNesne);
+
+      Dugme^.YokEt;
       Pencere^.Ciz;
     end;
 

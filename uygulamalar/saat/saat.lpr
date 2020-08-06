@@ -7,11 +7,14 @@ program saat;
   Program Adý: saat.lpr
   Program Ýþlevi: dijital tarih / saat programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
 uses n_gorev, gn_pencere, n_zamanlayici, n_genel;
+
+const
+  ProgramAdi: string = 'Dijital Saat';
 
 var
   Genel: TGenel;
@@ -24,6 +27,9 @@ var
   s: string;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 200, 200, 160, 52, ptIletisim, 'Tarih / Saat', $E3F5AB);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

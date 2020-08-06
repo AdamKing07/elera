@@ -7,7 +7,7 @@ program bharita;
   Program Adý: bharita.lpr
   Program Ýþlevi: bellek içerik harita programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
   Not:
     programýn çalýþmasý için gereken 8K bellek makinenin kilitlenmesine sebep olduðu
@@ -55,6 +55,9 @@ var
   Veriler: array[0..4095] of TSayi1;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 5, 5, (128 * 3) - 1, (64 * 3) + 20 - 1, ptBoyutlanabilir,
     ProgramAdi, RENK_SIYAH);

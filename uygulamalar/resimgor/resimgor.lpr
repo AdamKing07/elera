@@ -7,7 +7,7 @@ program resimgor;
   Program Adý: resimgor.lpr
   Program Ýþlevi: resim görüntüleyici program
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -64,6 +64,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 50, 50, 400, 300, ptBoyutlanabilir, ProgramAdi, $C0C4C3);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

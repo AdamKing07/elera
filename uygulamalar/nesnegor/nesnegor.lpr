@@ -7,7 +7,7 @@ program nesnegor;
   Program Adý: nesnegor.lpr
   Program Ýþlevi: Görsel nesneler hakkýnda bilgiler verir.
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -27,6 +27,9 @@ var
   NesneAdi: string[40];
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 110, 110, 250, 130, ptBoyutlanabilir, ProgramAdi, $906AD1);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

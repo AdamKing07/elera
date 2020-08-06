@@ -7,7 +7,7 @@ program takvim;
   Program Adý: takvim.lpr
   Program Ýþlevi: takvim uygulamasý
 
-  Güncelleme Tarihi: 22/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -94,6 +94,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Genel.TarihAl(@TarihDizi);
 

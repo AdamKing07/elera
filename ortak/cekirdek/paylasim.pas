@@ -649,6 +649,7 @@ type
   TKesmeCagrisi = function(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
 
 type
+  PCizgiTipi = ^TCizgiTipi;
   TCizgiTipi = (ctDuz, ctNokta);
 
 type
@@ -699,13 +700,15 @@ type
   end;
 
 const
-  ISLEV_OLUSTUR   = $01;
+  ISLEV_OLUSTUR     = $0001;
+  ISLEV_GOSTER      = $0002;
+  ISLEV_GIZLE       = $0003;
+  ISLEV_CIZ         = $0004;
+  ISLEV_BOYUTLANDIR = $0005;
+  ISLEV_YOKET       = $0006;
+
   ISLEV_AL        = $02;
   ISLEV_YAZ       = $04;
-  ISLEV_GOSTER    = $08;
-  ISLEV_CIZ       = $10;
-  ISLEV_GIZLE     = $20;
-  ISLEV_YOKET     = $40;
 
 type
   PSecimDurumu = ^TSecimDurumu;
@@ -913,7 +916,7 @@ type
     BellekBaslangicAdresi: TSayi4;      // görevin yerleþtirildiði bellek adresi
     BellekUzunlugu: TSayi4;             // görev bellek uzunluðu
     OlaySayisi: TSayi4;                 // görev için iþlenmeyi bekleyen olay sayýsý
-    ProgramAdi: string;                 // program adý
+    DosyaAdi: string;                   // programýn yüklendiði dosya adý
   end;
 
 type
@@ -924,7 +927,7 @@ type
     GorevKimlik: TKimlik;               // görev kimliði
     PencereTipi: TPencereTipi;          // pencere tipi
     PencereDurum: TPencereDurum;        // pencere durumu
-    ProgramAdi: string;                 // program adý
+    DosyaAdi: string;                   // programýn yüklendiði dosya adý
   end;
 
 type

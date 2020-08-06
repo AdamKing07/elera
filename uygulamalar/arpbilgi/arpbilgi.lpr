@@ -6,7 +6,7 @@
   Program Adý: arpbilgi.lpr
   Program Ýþlevi: ARP girdileri hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -30,6 +30,9 @@ var
   ARPKayitSayisi, i, j: TSayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 50, 50, 340, 280, ptIletisim, ProgramAdi, $D8DFB4);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

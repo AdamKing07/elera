@@ -6,7 +6,7 @@
   Dosya Adı: k_gorev.pas
   Dosya İşlevi: görev (program) yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -107,7 +107,7 @@ begin
         GorevKayit^.BellekBaslangicAdresi := p^.BellekBaslangicAdresi;
         GorevKayit^.BellekUzunlugu := p^.BellekUzunlugu;
         GorevKayit^.OlaySayisi := p^.OlaySayisi;
-        GorevKayit^.ProgramAdi := p^.FProgramAdi;
+        GorevKayit^.DosyaAdi := p^.FDosyaAdi;
 
         Result := HATA_YOK;
       end else Result := HATA_GOREVNO;
@@ -154,7 +154,7 @@ begin
     ProgramKayit2^.GorevKimlik := ProgramKayit.GorevKimlik;
     ProgramKayit2^.PencereTipi := ProgramKayit.PencereTipi;
     ProgramKayit2^.PencereDurum := ProgramKayit.PencereDurum;
-    ProgramKayit2^.ProgramAdi := ProgramKayit.ProgramAdi;
+    ProgramKayit2^.DosyaAdi := ProgramKayit.DosyaAdi;
   end
 
   // pencereye sahip aktif programı al
@@ -170,6 +170,14 @@ begin
 
     s := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi)^;
     Result := p^.GorevKimligiAl(s);
+  end
+
+  // görev / program adını belirle
+  else if(IslevNo = $A) then
+  begin
+
+    s := PKarakterKatari(PSayi4(ADegiskenler + 00)^ + CalisanGorevBellekAdresi)^;
+    p^.FProgramAdi := s;
   end
 
   // işlev belirtilen aralıkta değilse hata kodunu geri döndür

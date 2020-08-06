@@ -89,6 +89,13 @@ begin
         CalisanGorevBellekAdresi)^);
     end;
 
+    ISLEV_GOSTER:
+    begin
+
+      SecimDugmesi := PSecimDugmesi(SecimDugmesi^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      SecimDugmesi^.Goster;
+    end;
+
     $0104:
     begin
 
@@ -97,13 +104,6 @@ begin
 
       Pencere := PPencere(SecimDugmesi^.AtaNesne);
       if not(Pencere = nil) then Pencere^.Guncelle;
-    end;
-
-    ISLEV_GOSTER:
-    begin
-
-      SecimDugmesi := PSecimDugmesi(SecimDugmesi^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      SecimDugmesi^.Goster;
     end
 
     else Result := HATA_ISLEV;

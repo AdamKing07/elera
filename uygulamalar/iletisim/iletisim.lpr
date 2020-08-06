@@ -4,10 +4,10 @@ program iletisim;
   Kodlayan: Fatih KILIÇ
   Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Program Adý: udptest.lpr
-  Program Ýþlevi: udp test programý
+  Program Adý: iletisim.lpr
+  Program Ýþlevi: tcp / udp test programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -31,6 +31,9 @@ var
   IPAdres, s: string;
   VeriUzunlugu: TISayi4;
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 50, 50, 434, 260, ptIletisim, ProgramAdi, $D9F2E6);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

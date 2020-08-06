@@ -7,7 +7,7 @@ program dnssorgu;
   Program Adý: dnssorgu.lpr
   Program Ýþlevi: dns adres sorgulama programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -76,6 +76,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   DNSAdresSorgu := 'lazarus-ide.org';
 

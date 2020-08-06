@@ -7,7 +7,7 @@ program defter;
   Program Adý: defter.lpr
   Program Ýþlevi: metin düzenleme programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
   Bilgi: çekirdek tarafýndan defter.c programýna bilgileri iþlemesi için
     Isaretci(4)^ adresinde 4096 * 10 byte yer tahsis edilmiþtir.
@@ -95,6 +95,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 10, 10, 400 + 10, 300 + 85, ptBoyutlanabilir, ProgramAdi,
     RENK_BEYAZ);

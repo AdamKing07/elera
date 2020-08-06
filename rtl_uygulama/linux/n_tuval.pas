@@ -46,7 +46,7 @@ type
     procedure IPAdresiYaz(ASol, AUst: TISayi4; AIPAdres: PIPAdres);
     procedure MACAdresiYaz(ASol, AUst: TISayi4; AMACAdres: PMACAdres);
     procedure PixelYaz(ASol, AUst: TISayi4; ARenk: TRenk);
-    procedure Cizgi(ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk);
+    procedure Cizgi(ASol, AUst, ASag, AAlt: TISayi4; ACizgiTipi: TCizgiTipi; ARenk: TRenk);
     procedure Dikdortgen(ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk; ADoldur: Boolean);
     procedure Daire(ASol, AUst, AYariCap: TISayi4; ARenk: TRenk; ADoldur: Boolean);
     property FircaRengi: TColor read FircaRengiAl write FircaRengiYaz;
@@ -63,7 +63,8 @@ procedure _SaatYaz(AKimlik: TKimlik; ASol, AUst: TISayi4; ARenk: TRenk; ASaat: T
 procedure _MACAdresiYaz(AKimlik: TKimlik; ASol, AUst: TISayi4; ARenk: TRenk; AMACAdres: PMACAdres); assembler;
 procedure _IPAdresiYaz(AKimlik: TKimlik; ASol, AUst: TISayi4; ARenk: TRenk; AIPAdres: PIPAdres); assembler;
 procedure _PixelYaz(AKimlik: TKimlik; ASol, AUst: TISayi4; ARenk: TRenk); assembler;
-procedure _Cizgi(AKimlik: TKimlik; ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk); assembler;
+procedure _Cizgi(AKimlik: TKimlik; ASol, AUst, ASag, AAlt: TISayi4;
+  ACizgiTipi: TCizgiTipi; ARenk: TRenk); assembler;
 procedure _Dikdortgen(AKimlik: TKimlik; ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk; ADoldur: LongBool); assembler;
 procedure _Daire(AKimlik: TKimlik; ASol, AUst, AYariCap: TISayi4; ARenk: TRenk; ADoldur: LongBool); assembler;
 
@@ -150,10 +151,10 @@ begin
   _PixelYaz(FKimlik, ASol, AUst, ARenk);
 end;
 
-procedure TTuval.Cizgi(ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk);
+procedure TTuval.Cizgi(ASol, AUst, ASag, AAlt: TISayi4; ACizgiTipi: TCizgiTipi; ARenk: TRenk);
 begin
 
-  _Cizgi(FKimlik, ASol, AUst, ASag, AAlt, ARenk);
+  _Cizgi(FKimlik, ASol, AUst, ASag, AAlt, ACizgiTipi, ARenk);
 end;
 
 procedure TTuval.Dikdortgen(ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk; ADoldur: Boolean);
@@ -271,9 +272,11 @@ asm
   add   esp,16
 end;
 
-procedure _Cizgi(AKimlik: TKimlik; ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk);
+procedure _Cizgi(AKimlik: TKimlik; ASol, AUst, ASag, AAlt: TISayi4;
+  ACizgiTipi: TCizgiTipi; ARenk: TRenk);
 asm
   push  DWORD ARenk
+  push  DWORD ACizgiTipi
   push  DWORD AAlt
   push  DWORD ASag
   push  DWORD AUst
@@ -281,7 +284,7 @@ asm
   push  DWORD AKimlik
   mov   eax,CIZGI_CIZ
   int   $34
-  add   esp,24
+  add   esp,28
 end;
 
 procedure _Dikdortgen(AKimlik: TKimlik; ASol, AUst, ASag, AAlt: TISayi4; ARenk: TRenk; ADoldur: LongBool);

@@ -67,13 +67,6 @@ begin
         PKarakterKatari(PSayi4(ADegiskenler + 20)^ + CalisanGorevBellekAdresi)^);
     end;
 
-    ISLEV_YOKET:
-    begin
-
-      GucDugmesi := PGucDugmesi(GucDugmesi^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      GucDugmesi^.YokEt;
-    end;
-
     ISLEV_GOSTER:
     begin
 
@@ -86,6 +79,13 @@ begin
 
       GucDugmesi := PGucDugmesi(GucDugmesi^.NesneAl(PKimlik(ADegiskenler + 00)^));
       GucDugmesi^.Gizle;
+    end;
+
+    ISLEV_YOKET:
+    begin
+
+      GucDugmesi := PGucDugmesi(GucDugmesi^.NesneAl(PKimlik(ADegiskenler + 00)^));
+      GucDugmesi^.YokEt;
     end;
 
     $0204:

@@ -6,7 +6,7 @@
   Program Adý: agbilgi.lpr
   Program Ýþlevi: að yapýlandýrmasý hakkýnda bilgi verir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -40,6 +40,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 300, 200, 330, 255, ptIletisim, ProgramAdi, $FAE6FF);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

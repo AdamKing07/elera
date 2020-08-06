@@ -477,8 +477,8 @@ asm
   mov   ds,ax
   mov   es,ax
 
-  //mov eax,esp
-  //call  YazmacGoruntuleHY
+  mov eax,esp
+  call  YazmacGoruntuleHY
 
 // programý sonlandýr
   mov eax,CalisanGorev
@@ -509,6 +509,7 @@ end;
  ==============================================================================}
 procedure KesmeIslevi07; nostackframe; assembler;
 asm
+
   cli
   pushad
   pushfd
@@ -635,6 +636,9 @@ asm
   mov   ds,ax
   mov   es,ax
 
+  mov eax,esp
+  call  YazmacGoruntuleHV
+
 // programý sonlandýr
   mov eax,CalisanGorev
   dec eax
@@ -725,8 +729,8 @@ asm
   mov   ds,ax
   mov   es,ax
 
-  //mov eax,esp
-  //call  YazmacGoruntuleHV
+  mov eax,esp
+  call  YazmacGoruntuleHV
 
 // programý sonlandýr
   mov eax,CalisanGorev
@@ -1659,6 +1663,7 @@ begin
   SISTEM_MESAJ('  ECX: %x, EDX: %x', [AYazmaclar0^.ECX, AYazmaclar0^.EDX]);
   SISTEM_MESAJ('  ESI: %x, EDI: %x', [AYazmaclar0^.ESI, AYazmaclar0^.EDI]);
   SISTEM_MESAJ('  EBP: %x, FLG: %x', [AYazmaclar0^.EBP, AYazmaclar0^.EFLAGS]);
+  asm @@abc: jmp @@abc end;
 end;
 
 {==============================================================================
@@ -1678,6 +1683,7 @@ begin
   SISTEM_MESAJ('  ECX: %x, EDX: %x', [AYazmaclar1^.ECX, AYazmaclar1^.EDX]);
   SISTEM_MESAJ('  ESI: %x, EDI: %x', [AYazmaclar1^.ESI, AYazmaclar1^.EDI]);
   SISTEM_MESAJ('  EBP: %x, FLG: %x', [AYazmaclar1^.EBP, AYazmaclar1^.EFLAGS]);
+  asm @@abc: jmp @@abc end;
 end;
 
 end.

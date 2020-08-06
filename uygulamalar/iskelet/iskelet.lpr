@@ -6,15 +6,24 @@
   Program Adý: iskelet.lpr
   Program Ýþlevi: ana program iskeleti
 
-  Güncelleme Tarihi: 23/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
 program iskelet;
 
-uses anabirim, birim2, birim3;
+uses n_gorev, anabirim, birim2, birim3;
+
+const
+  ProgramAdi: string = 'Temel Ýskelet';
+
+var
+  Gorev: TGorev;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere1.Olustur;
   Pencere2.Olustur;

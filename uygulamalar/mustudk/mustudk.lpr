@@ -7,7 +7,7 @@ program mustudk;
   Program Adý: mustudk.lpr
   Program Ýþlevi: masaüstü duvar kaðýt yönetim programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -65,6 +65,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 200, 190, ptIletisim, ProgramAdi, $F9FAF9);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

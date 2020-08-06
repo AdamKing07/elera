@@ -7,7 +7,7 @@ program dskbolum;
   Program Adý: dskbolum.lpr
   Program Ýþlevi: sistemdeki mantýksal sürücü bilgisini verir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -83,6 +83,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 50, 50, 310, 95, ptBoyutlanabilir, ProgramAdi, $EEF0D1);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

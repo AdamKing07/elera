@@ -7,7 +7,7 @@ program smsjgor;
   Program Adý: smsjgor.lpr
   Program Ýþlevi: sistem tarafýndan üretilen mesajlarý görüntüleme programý
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -32,6 +32,9 @@ var
   IlkMesajNo, i, SatirNo: TSayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 20, 600, PENCERE_YUKSEKLIK, ptBoyutlanabilir,
     ProgramAdi, $E2E2E2);

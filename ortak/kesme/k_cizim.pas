@@ -6,7 +6,7 @@
   Dosya Adı: k_cizim.pas
   Dosya İşlevi: grafiksel ekrana çizim işlevlerini içerir
 
-  Güncelleme Tarihi: 07/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -105,7 +105,8 @@ begin
     Sag := PISayi4(ADegiskenler + 12)^ + Alan.Sol;
     Alt := PISayi4(ADegiskenler + 16)^ + Alan.Ust;
 
-    GorselNesne^.Cizgi(GorselNesne, ctDuz, Sol, Ust, Sag, Alt, PRenk(ADegiskenler + 20)^);
+    GorselNesne^.Cizgi(GorselNesne, PCizgiTipi(ADegiskenler + 20)^, Sol, Ust,
+      Sag, Alt, PRenk(ADegiskenler + 24)^);
   end
 
   // daire çiz

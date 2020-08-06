@@ -7,7 +7,7 @@ program paneller;
   Program Adı: paneller.lpr
   Program İşlevi: panel test programı
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -23,6 +23,9 @@ var
   PanelListesi: array[0..8] of TPanel;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 10, 10, 700, 450, ptBoyutlanabilir, ProgramAdi, $EBEBE0);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

@@ -51,8 +51,8 @@ asm
   mov   es,bx
 
   // uygulamanın yığına sürdüğü değişken adresine konumlan
-  mov   edx,[esp + 12 + 04]             // sistem esp (ring0)
-  mov   edx,[edx + 12]                  // program esp (ring3)
+  mov   edx,[esp + 12 + 04]               // sistem esp (ring0)
+  mov   edx,[edx + 12]                    // program esp (ring3)
   add   edx,CalisanGorevBellekAdresi      // + program bellek başlangıç adresi
   mov   UygulamaYiginAdresi,edx
 

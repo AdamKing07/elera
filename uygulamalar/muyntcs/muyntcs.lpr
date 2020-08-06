@@ -7,7 +7,7 @@ program muyntcs;
   Program Adý: muyntcs.lpr
   Program Ýþlevi: çoklu masaüstü yönetim programý
 
-  Güncelleme Tarihi: 22/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -22,9 +22,9 @@ const
   ProgramAdi: string = 'Masaüstü Yöneticisi';
 
   Programlar: array[0..BASLATMENUSU_PSAYISI - 1] of string = (
-    ('bellkbil.c'),
-    ('dskgor.c'),
     ('dsyyntcs.c'),
+    ('resimgor.c'),
+    ('dskgor.c'),
     ('defter.c'),
     ('saat.c'),
     ('iskelet.c'),
@@ -35,9 +35,9 @@ const
     ('calistir.c'));
 
   ProgramAciklamalari: array[0..BASLATMENUSU_PSAYISI - 1] of string = (
-    ('Bellek Kullaným Bilgisi'),
-    ('Disk Ýçerik Görüntüleyisi'),
     ('Dosya Yöneticisi'),
+    ('Resim Görüntüleyici'),
+    ('Disk Ýçerik Görüntüleyisi'),
     ('Dijital Defter'),
     ('Dijital Saat'),
     ('Ana Ýskelet Programý'),
@@ -262,6 +262,9 @@ end;
 
 begin
 
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
+
   for i := 0 to CALISAN_PROGRAM_SAYISI - 1 do
     CalisanProgramlar[i].ProgramKayit.PencereKimlik := -1;
 
@@ -324,14 +327,14 @@ begin
   begin
 
     case i of
-      0: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 05);
-      1: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 06);
-      2: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 01);
+      0: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 01);
+      1: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 10);
+      2: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 06);
       3: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 07);
       4: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 08);
       5: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 14);
       6: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 09);
-      7: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 10);
+      7: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 05);
       8: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 15);
       9: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 04);
      10: BaslatMenusu.ElemanEkle(ProgramAciklamalari[i], 16);

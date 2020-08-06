@@ -17,7 +17,8 @@ interface
 
 uses paylasim, gn_pencere, gn_etiket, zamanlayici, dns, gn_panel, gorselnesne,
   gn_gucdugmesi, gn_resim, gn_karmaliste, gn_degerlistesi, gn_dugme, gn_izgara,
-  gn_araccubugu, gn_durumcubugu, gn_giriskutusu, gn_onaykutusu, gn_sayfakontrol;
+  gn_araccubugu, gn_durumcubugu, gn_giriskutusu, gn_onaykutusu, gn_sayfakontrol,
+  gn_defter, gn_kaydirmacubugu;
 
 type
   // gerçek moddan gelen veri yapýsý
@@ -81,7 +82,9 @@ var
   P3Etiket: PEtiket;
   P3GirisKutusu: PGirisKutusu;
   P3OnayKutusu: POnayKutusu;
-  P2ACDugmeler: array[0..4] of TKimlik;
+  P3KaydirmaCubugu: PKaydirmaCubugu;
+  P3Defter: PDefter;
+  P2ACDugmeler: array[0..7] of TKimlik;
   P1Panel: PPanel;
   P1KarmaListe: PKarmaListe;
   P1Dugme: PDugme;
@@ -176,7 +179,7 @@ begin
   GorevListesi[1]^.OlayBellekAdresi := nil;
   GorevListesi[1]^.FAnaPencere := nil;
 
-  GorevListesi[1]^.FProgramAdi := 'cekirdek.bin';
+  GorevListesi[1]^.FDosyaAdi := 'cekirdek.bin';
 
   // sistem görevini çalýþýyor olarak iþaretle
   Gorev := GorevListesi[1];
@@ -267,7 +270,7 @@ begin
         else if(Tus = '3') then
         begin
 
-          Gorev^.Calistir('disk1:\kaydirma.c'); // iskelet.c');
+          Gorev^.Calistir('disk1:\iskelet.c'); // iskelet.c');
           //AktifGiysi := GiysiNormal;
           //GAktifMasaustu^.Ciz;
           //Gorev^.Calistir('disk1:\dnssorgu.c');
@@ -380,7 +383,7 @@ begin
   GorevListesi[2]^.FAnaPencere := nil;
 
   // sistem görev adý (dosya adý)
-  GorevListesi[2]^.FProgramAdi := 'denetci.???';
+  GorevListesi[2]^.FDosyaAdi := 'denetci.???';
 
   // sistem görevini çalýþýyor olarak iþaretle
   Gorev := GorevListesi[2];
@@ -447,12 +450,10 @@ begin
     else if(Olay.Olay = CO_CIZIM) then
     begin
 
-      //SDPencere^.YaziYaz(SDPencere, 12, 10, 'EIP:', RENK_LACIVERT);
-      //SDPencere^.YaziYaz(SDPencere, 46, 10, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), RENK_LACIVERT);
-      SDPencere^.YaziYaz(SDPencere, 12, 10, 'GDS:', RENK_LACIVERT);
-      SDPencere^.YaziYaz(SDPencere, 46, 10, '0x' + hexStr(GorevDegisimSayisi, 8), RENK_LACIVERT);
-      SDPencere^.YaziYaz(SDPencere, 12, 28, 'DNT:', RENK_MAVI);
-      SDPencere^.YaziYaz(SDPencere, 46, 28, '0x' + hexStr(SistemKontrolSayaci, 8), RENK_MAVI);
+      SDPencere^.YaziYaz(SDPencere, 12, 10, 'EIP:', RENK_LACIVERT);
+      SDPencere^.YaziYaz(SDPencere, 46, 10, '0x' + hexStr(GorevTSSListesi[1]^.EIP, 8), RENK_LACIVERT);
+      SDPencere^.YaziYaz(SDPencere, 12, 28, 'ESP:', RENK_MAVI);
+      SDPencere^.YaziYaz(SDPencere, 46, 28, '0x' + hexStr(GorevTSSListesi[1]^.ESP, 8), RENK_MAVI);
     end;
   end;
 end;
@@ -534,6 +535,9 @@ begin
   P2ACDugmeler[2] := P2AracCubugu^.DugmeEkle(8);
   P2ACDugmeler[3] := P2AracCubugu^.DugmeEkle(9);
   P2ACDugmeler[4] := P2AracCubugu^.DugmeEkle(10);
+  P2ACDugmeler[5] := P2AracCubugu^.DugmeEkle(11);
+  P2ACDugmeler[6] := P2AracCubugu^.DugmeEkle(12);
+  P2ACDugmeler[7] := P2AracCubugu^.DugmeEkle(13);
   P2AracCubugu^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
   P2AracCubugu^.Goster;
 
@@ -575,10 +579,13 @@ begin
 
     case SonSecim of
       0: s := '-';
-      1: s := 'TDüðme';
-      2: s := 'TEtiket';
-      3: s := 'TGiriþKutusu';
-      4: s := 'TOnayKutusu';
+      1: s := '-';
+      2: s := 'TDüðme';
+      3: s := 'TEtiket';
+      4: s := 'TGiriþKutusu';
+      5: s := 'TDefter';
+      6: s := 'TOnayKutusu';
+      7: s := 'TKaydýrmaÇubuðu';
     end;
 
     P2DurumCubugu^.Baslik := 'Konum: ' + IntToStr(AOlay.Deger1) + ':' +
@@ -588,31 +595,48 @@ begin
   else if(AOlay.Olay = FO_SAGTUS_BIRAKILDI) and (AOlay.Kimlik = P2Pencere^.Kimlik) then
   begin
 
-    if(SonSecim = 1) then
+    if(SonSecim = 2) then
     begin
 
-      P4Dugme := P4Dugme^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, 100, 20, 'Merhaba');
+      P4Dugme := P4Dugme^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, 100, 20, 'TDüðme');
       P4Dugme^.Goster;
-    end
-    else if(SonSecim = 2) then
-    begin
-
-      P3Etiket := P3Etiket^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, RENK_KIRMIZI, 'Merhaba');
-      P3Etiket^.Goster;
     end
     else if(SonSecim = 3) then
     begin
 
-      P3GirisKutusu := P3GirisKutusu^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD,
-        100, 20, 'Merhaba');
-      P3GirisKutusu^.Goster;
+      P3Etiket := P3Etiket^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, RENK_KIRMIZI, 'TEtiket');
+      P3Etiket^.Goster;
     end
     else if(SonSecim = 4) then
     begin
 
+      P3GirisKutusu := P3GirisKutusu^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD,
+        120, 20, 'TGiriþKutusu');
+      P3GirisKutusu^.Goster;
+    end
+    else if(SonSecim = 5) then
+    begin
+
+      P3Defter := P3Defter^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD, 200, 200,
+        $FCFCFC, RENK_SIYAH);
+      P3Defter^.YaziEkle('TDefter');
+      P3Defter^.Goster;
+    end
+    else if(SonSecim = 6) then
+    begin
+
       P3OnayKutusu := P3OnayKutusu^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD,
-        'Merhaba');
+        'TOnayKutusu');
       P3OnayKutusu^.Goster;
+    end
+    else if(SonSecim = 7) then
+    begin
+
+      P3KaydirmaCubugu := P3KaydirmaCubugu^.Olustur(ktNesne, P2Pencere, SonKonumY, SonKonumD,
+        100, 24, yYatay);
+      P3KaydirmaCubugu^.DegerleriBelirle(0, 100);
+      P3KaydirmaCubugu^.FMevcutDeger := 50;
+      P3KaydirmaCubugu^.Goster;
     end;
   end
   else if(AOlay.Olay = FO_TIKLAMA) then
@@ -627,7 +651,13 @@ begin
     else if(AOlay.Kimlik = P2ACDugmeler[3]) then
       SonSecim := 3
     else if(AOlay.Kimlik = P2ACDugmeler[4]) then
-      SonSecim := 4;
+      SonSecim := 4
+    else if(AOlay.Kimlik = P2ACDugmeler[5]) then
+      SonSecim := 5
+    else if(AOlay.Kimlik = P2ACDugmeler[6]) then
+      SonSecim := 6
+    else if(AOlay.Kimlik = P2ACDugmeler[7]) then
+      SonSecim := 7;
 
     //SISTEM_MESAJ('Kimlik: %d', [AOlay.Kimlik]);
   end;

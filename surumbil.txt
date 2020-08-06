@@ -5,6 +5,9 @@
   - çoklu pencere çalýþmalarý devam ediyor
   - giysi (skin) geçiþleri masaüstü ayarlarýna ekleme çalýþmalarý devam ediyor
 
+  + tüm programlara daha önce eklenen ProgramAdi deðiþkeni görev / program adý olarak
+    belirlendi ve gerekli iþlevler yazýldý
+  + API iþlevleri standart çalýþmalarý gerçekleþtirildi
   + TSayfaKontrol (TPageControl) görsel nesnesi projeye eklendi
   + TIzgara (TStringGrid) görsel nesnesi projeye eklendi
   + takvim programý kodlandý. masaüstü programý tarih deðeri týklama iþlevine takvimin açýlmasý iþlevi eklendi

@@ -7,7 +7,7 @@ program dsyyntcs;
   Program Adý: dsyyntcs.lpr
   Program Ýþlevi: dosya yöneticisi
 
-  Güncelleme Tarihi: 18/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -102,6 +102,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 80, 80, 510, 355, ptBoyutlanabilir, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

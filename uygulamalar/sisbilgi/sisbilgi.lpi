@@ -440,7 +440,7 @@
       </Position29>
       <Position30>
         <Filename Value="sisbilgi.lpr"/>
-        <Caret Line="32" Column="44" TopLine="28"/>
+        <Caret Line="32" Column="3" TopLine="13"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

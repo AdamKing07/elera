@@ -21,8 +21,11 @@ type
   PGorev = ^TGorev;
   TGorev = object
   private
+    FAd: string;
     FGenel: TGenel;
+    procedure AdYaz(AGorevAdi: string);
   public
+    procedure Yukle;
     function Calistir(ADosyaTamYol: string): TKimlik;
     function Sonlandir(AGorevNo: TISayi4): TISayi4;
     procedure GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSayi4);
@@ -37,9 +40,12 @@ type
     function GorselNesneKimlikAl(ANokta: TNokta): TKimlik;
     procedure GorselNesneAdiAl(ANokta: TNokta; ANesneAdi: Isaretci);
     function GorselNesneBilgisiAl(AKimlik: TKimlik; AHedefBellek: Isaretci): TISayi4;
+
     function CalisanProgramSayisiniAl: TSayi4; assembler;
     procedure CalisanProgramBilgisiAl(ASiraNo: TSayi4; var AProgramKayit: TProgramKayit); assembler;
     function AktifProgramiAl: TSayi4; assembler;
+  published
+    property Ad: string read FAd write AdYaz;
   end;
 
 function _GorevCalistir(ADosyaTamYol: string): TKimlik; assembler;
@@ -48,8 +54,22 @@ procedure _GorevSayilariniAl(var AUstSinirGorevSayisi, ACalisanGorevSayisi: TSay
 function _GorevBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4; assembler;
 function _GorevYazmacBilgisiAl(AKimlik: TKimlik; ABellekAdresi: Isaretci): TISayi4; assembler;
 function _GorevKimligiAl(AGorevAdi: string): TKimlik; assembler;
+procedure _GorevAdYaz(AGorevAdi: string); assembler;
 
 implementation
+
+procedure TGorev.AdYaz(AGorevAdi: string);
+begin
+
+  FAd := AGorevAdi;
+  _GorevAdYaz(FAd);
+end;
+
+procedure TGorev.Yukle;
+begin
+
+  Ad := 'Yeni Program';
+end;
 
 function TGorev.Calistir(ADosyaTamYol: string): TKimlik;
 begin
@@ -139,13 +159,14 @@ begin
   // bu işlevin alt yapı çalışması yapılacak
 end;
 
-function TGorev.CalisanProgramSayisiniAl: TSayi4;
+function TGorev.CalisanProgramSayisiniAl: TSayi4; assembler;
 asm
   mov	  eax,GOREV_CALISANPSAYISINIAL
   int	  $34
 end;
 
-procedure TGorev.CalisanProgramBilgisiAl(ASiraNo: TSayi4; var AProgramKayit: TProgramKayit);
+procedure TGorev.CalisanProgramBilgisiAl(ASiraNo: TSayi4;
+  var AProgramKayit: TProgramKayit); assembler;
 asm
   push  DWORD AProgramKayit
   push  DWORD ASiraNo
@@ -154,7 +175,7 @@ asm
   add   esp,8
 end;
 
-function TGorev.AktifProgramiAl: TSayi4;
+function TGorev.AktifProgramiAl: TSayi4; assembler;
 asm
   mov	  eax,GOREV_AKTIFPROGRAMIAL
   int	  $34
@@ -207,6 +228,14 @@ function _GorevKimligiAl(AGorevAdi: string): TKimlik;
 asm
   push	DWORD AGorevAdi
   mov	  eax,GOREV_KIMLIGIAL
+  int	  $34
+  add	  esp,4
+end;
+
+procedure _GorevAdYaz(AGorevAdi: string); assembler;
+asm
+  push	DWORD AGorevAdi
+  mov	  eax,GOREV_ADYAZ
   int	  $34
   add	  esp,4
 end;

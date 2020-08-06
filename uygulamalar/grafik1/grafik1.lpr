@@ -7,7 +7,7 @@ program grafik1;
   Program Adı: grafik1.lpr
   Program İşlevi: grafik test programı
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -27,6 +27,9 @@ var
   i: TSayi4;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 150, 50, ptIletisim, ProgramAdi, RENK_SIYAH);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
@@ -66,7 +69,8 @@ begin
       for i := 1 to 149 do
       begin
 
-        Pencere.Tuval.Cizgi(i - 1, 50 - Dizi[i - 1], i, 50 - Dizi[i], RENK_BEYAZ);
+        Pencere.Tuval.Cizgi(i - 1, 50 - Dizi[i - 1], i, 50 - Dizi[i],
+          ctDuz, RENK_BEYAZ);
       end;
     end;
   end;

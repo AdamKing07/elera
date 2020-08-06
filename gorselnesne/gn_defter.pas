@@ -299,14 +299,12 @@ end;
  ==============================================================================}
 procedure TDefter.Ciz;
 var
-  Pencere: PPencere;
-  Defter: PDefter;
+  Defter: PDefter = nil;
   Alan: TAlan;
   Sol, Ust: TISayi4;
   YaziBellekAdresi: PChar;
-  SatirNo: TISayi4;
+  SatirNo, DikeySinir: TISayi4;
   SutunNo: Integer;
-  DikeySinir: TSayi4;
 begin
 
   Defter := PDefter(Defter^.NesneAl(Kimlik));
@@ -384,8 +382,8 @@ begin
   end;
 
   // kaydırma çubuklarını en son çiz
-  Defter^.FYatayKCubugu^.Ciz;
-  Defter^.FDikeyKCubugu^.Ciz;
+  //Defter^.FYatayKCubugu^.Ciz;
+  //Defter^.FDikeyKCubugu^.Ciz;
 end;
 
 {==============================================================================
@@ -443,19 +441,19 @@ var
 begin
 
   // karakter katarı için bellek ayrılmış mı ?
-  if(FYaziBellekAdresi = nil) then Exit;
+  if(Self.FYaziBellekAdresi = nil) then Exit;
 
   // verinin uzunluğunu al
   Uzunluk := Length(ADeger);
   if(Uzunluk = 0) or (Uzunluk > (4096 * 10)) then Exit;
 
   // karakter katarını hedef bölgeye kopyala
-  p := PByte(TSayi4(FYaziBellekAdresi) + FYaziUzunlugu);
+  p := PByte(TSayi4(Self.FYaziBellekAdresi) + Self.FYaziUzunlugu);
   Tasi2(@ADeger[1], p, Uzunluk);
 
   // sıfır sonlandırma işaretini ekle
-  FYaziUzunlugu += Uzunluk;
-  p := PByte(TSayi4(FYaziBellekAdresi) + FYaziUzunlugu);
+  Self.FYaziUzunlugu += Uzunluk;
+  p := PByte(TSayi4(Self.FYaziBellekAdresi) + Self.FYaziUzunlugu);
   p^ := 0;
 
   YatayDikeyKarakterSayisiniAl;

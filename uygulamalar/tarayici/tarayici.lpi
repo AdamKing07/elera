@@ -40,8 +40,6 @@
         <Filename Value="tarayici.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="11"/>
-        <CursorPos X="3" Y="29"/>
         <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -421,7 +419,7 @@
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit62>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="tarayici.lpr"/>
         <Caret Line="43" TopLine="30"/>
@@ -533,6 +531,10 @@
         <Filename Value="tarayici.lpr"/>
         <Caret Line="29" Column="7" TopLine="11"/>
       </Position28>
+      <Position29>
+        <Filename Value="tarayici.lpr"/>
+        <Caret Line="37" Column="3" TopLine="19"/>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

@@ -15,12 +15,10 @@
 - sayfalama (paging) özelliði çekirdeðe eklenecek
 - tüm aygýt sürücülerinin (device driver) standartlaþmasý
 - ELF biçimindeki dosyalar hakkýnda bilgi veren bir program yazýlacak
-- dosya viçim bilgileri alýnarak program için gereken bellek belirlenecek
+- dosya biçim bilgileri alýnarak program için gereken bellek belirlenecek
 - cdrom desteði eklenecek
 - sistem imajýnýn iso formatýnda oluþturulmasý saðlanacak
 - thread desteði eklenecek
-- sistemin RAM kullanýmý $100000 (1MB) adresinin üzerinde olacak, alt belleðin
-  deðiþmeyeceði garanti altýna alýnacaktýr. BIOS kullaným haritasý için: https://wiki.osdev.org/Memory_Map_(x86)
 - kum saati fare iþlevi dýþarý taþma problemi giderilecek
 - deðiþik geniþliðe sahip font tip(ler)i tanýmlanacak
 - lost_focus + got_focus olaylarý oluþturularak tüm nesnelere uygulanacak

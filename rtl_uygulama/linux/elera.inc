@@ -98,6 +98,10 @@ type
   end;
 
 type
+  PCizgiTipi = ^TCizgiTipi;
+  TCizgiTipi = (ctDuz, ctNokta);
+
+type
   PKonum = ^TKonum;
   TKonum = record
     Sol, Ust: TISayi4;

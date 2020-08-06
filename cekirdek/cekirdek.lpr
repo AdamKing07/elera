@@ -33,7 +33,7 @@ program cekirdek;
 uses paylasim, yukleyici, gorev, yonetim, genel, sistemmesaj, bmp, sanalbellek;
 
 var
-  _Gorev: PGorev;
+  _Gorev: PGorev = nil;
 
 begin
 

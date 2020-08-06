@@ -7,7 +7,7 @@ program calistir;
   Program Adý: calistir.lpr
   Program Ýþlevi: komut satýrýndan çalýþtýrýlabilir programlarý çalýþtýrýr
 
-  Güncelleme Tarihi: 16/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -35,6 +35,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 100, 100, 365, 30, ptIletisim, ProgramAdi, RENK_BEYAZ);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);

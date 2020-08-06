@@ -7,7 +7,7 @@ program grafik5;
   Program Adı: grafik5.lpr
   Program İşlevi: çoklu dikdörtgen / kare çizim programı - double değer testi
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 05/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -16,6 +16,7 @@ uses n_gorev, gn_pencere, n_zamanlayici;
 
 const
   ProgramAdi: string = 'Grafik-5';
+
   USTDEGER_NOKTASAYISI = 55;
 
 type
@@ -52,6 +53,9 @@ begin
 end;
 
 begin
+
+  Gorev.Yukle;
+  Gorev.Ad := ProgramAdi;
 
   Pencere.Olustur(-1, 150, 150, 450, 300, ptIletisim, ProgramAdi, $F7EEF3);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
