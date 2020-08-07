@@ -75,7 +75,7 @@ const
   ACILIRMENU                  = $16 shl 8;
   DEGERLISTESI                = $17 shl 8;
   IZGARA                      = $18 shl 8;
-  // = $19 shl 8;   eklenecek
+  ARACCUBUGU                  = $19 shl 8;
   RENKSECICI                  = $1A shl 8;
   SAYFAKONTROL                = $1B shl 8;
 
@@ -86,9 +86,8 @@ const
   CIZ                         = $0004 shl 16;
   BOYUTLANDIR                 = $0005 shl 16;
   YOKET                       = $0006 shl 16;
-
-  FUNC_GET                    = $02;
-  FUNC_SET                    = $04;
+  AL                          = $1000 shl 16;
+  YAZ                         = $2000 shl 16;
 
   // yeni sistem çağrılarının tanımlanacağı alan
   
@@ -123,11 +122,14 @@ const
 
   LISTEKUTUSU_OLUSTUR	        = OLUSTUR + LISTEKUTUSU + SAC_GNESNE;
   LISTEKUTUSU_GOSTER	        = GOSTER + LISTEKUTUSU + SAC_GNESNE;
+  LISTEKUTUSU_GIZLE	          = GIZLE + LISTEKUTUSU + SAC_GNESNE;
   LISTEKUTUSU_ELEMANEKLE	    = $01000500 + SAC_GNESNE;
-  LISTEKUTUSU_SECILISIRANOAL  = $02000500 + SAC_GNESNE;
   LISTEKUTUSU_TEMIZLE 	      = $03000500 + SAC_GNESNE;
-  LISTEKUTUSU_SECILISIRAYAZIAL= $04000500 + SAC_GNESNE;
   LISTEKUTUSU_HIZALA          = $01040500 + SAC_GNESNE;
+  LISTEKUTUSU_TELEMANSAYISIAL = AL  + $00010000 + LISTEKUTUSU + SAC_GNESNE;
+  LISTEKUTUSU_SECILISIRANOAL  = AL  + $00020000 + LISTEKUTUSU + SAC_GNESNE;
+  LISTEKUTUSU_SECILISIRANOYAZ = YAZ + $00020000 + LISTEKUTUSU + SAC_GNESNE;
+  LISTEKUTUSU_SECILIYAZIAL    = AL  + $00030000 + LISTEKUTUSU + SAC_GNESNE;
 
   MENU_OLUSTUR	              = OLUSTUR + MENU + SAC_GNESNE;
   MENU_GOSTER	                = GOSTER + MENU + SAC_GNESNE;
@@ -240,7 +242,10 @@ const
   IZGARA_KCUBUGUGORUNUMYAZ    = $07041800 + SAC_GNESNE;
   IZGARA_SECILIHUCREYIYAZ     = $08041800 + SAC_GNESNE;
 
-  // = $19 shl 8;   eklenecek
+  ARACCUBUGU_OLUSTUR	        = OLUSTUR + ARACCUBUGU + SAC_GNESNE;
+  ARACCUBUGU_GOSTER	          = GOSTER + ARACCUBUGU + SAC_GNESNE;
+  ARACCUBUGU_DUGMEEKLE	      = $01040000 + ARACCUBUGU + SAC_GNESNE;
+
   RENKSECICI_OLUSTUR	        = OLUSTUR + RENKSECICI + SAC_GNESNE;
   RENKSECICI_GOSTER	          = GOSTER + RENKSECICI + SAC_GNESNE;
 

@@ -7,12 +7,12 @@ program resimgor;
   Program Adý: resimgor.lpr
   Program Ýþlevi: resim görüntüleyici program
 
-  Güncelleme Tarihi: 05/08/2020
+  Güncelleme Tarihi: 07/08/2020
 
  ==============================================================================}
 {$mode objfpc}
 uses gn_masaustu, n_gorev, gn_pencere, gn_dugme, gn_etiket, gn_listekutusu,
-  gn_resim, gn_durumcubugu, n_genel;
+  gn_resim, gn_araccubugu, gn_durumcubugu, n_genel;
 
 const
   ProgramAdi: string = 'Resim Görüntüleyici';
@@ -24,11 +24,13 @@ var
   Genel: TGenel;
   Gorev: TGorev;
   Pencere: TPencere;
+  AracCubugu: TAracCubugu;
   lkDosyaListesi: TListeKutusu;
   DurumCubugu: TDurumCubugu;
   Resim: TResim;
+  Dugmeler: array[0..2] of TKimlik;
   Olay: TOlay;
-  i: TISayi4;
+  i, ToplamEleman, SeciliSiraNo: TISayi4;
   GoruntulenecekDosya: string;
 
 procedure DosyalariListele;
@@ -68,8 +70,14 @@ begin
   Gorev.Yukle;
   Gorev.Ad := ProgramAdi;
 
-  Pencere.Olustur(-1, 50, 50, 400, 300, ptBoyutlanabilir, ProgramAdi, $C0C4C3);
+  Pencere.Olustur(-1, 50, 50, 600, 450, ptBoyutlanabilir, ProgramAdi, $C0C4C3);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
+
+  AracCubugu.Olustur(Pencere.Kimlik);
+  Dugmeler[0] := AracCubugu.DugmeEkle(6);
+  Dugmeler[1] := AracCubugu.DugmeEkle(7);
+  Dugmeler[2] := AracCubugu.DugmeEkle(8);
+  AracCubugu.Goster;
 
   DurumCubugu.Olustur(Pencere.Kimlik, 0, 0, 10, 22, 'Dosya: -');
   DurumCubugu.Goster;
@@ -95,6 +103,11 @@ begin
     GoruntulenecekDosya := ParamStr1(1);
     Resim.Degistir(GoruntulenecekDosya);
     DurumCubugu.DurumYazisiDegistir('Dosya: ' + GoruntulenecekDosya);
+  end
+  else
+  begin
+
+    if(lkDosyaListesi.ToplamElemanSayisiAl > 0) then lkDosyaListesi.SeciliSiraNoYaz(0);
   end;
 
   // ana döngü
@@ -115,6 +128,42 @@ begin
         Resim.Degistir(GoruntulenecekDosya);
         DurumCubugu.DurumYazisiDegistir('Dosya: ' + GoruntulenecekDosya);
       end
+      // dosya listesini göster / gizle
+      else if(Olay.Kimlik = Dugmeler[0]) then
+      begin
+
+        if(lkDosyaListesi.Gorunum) then
+          lkDosyaListesi.Gizle
+        else lkDosyaListesi.Goster;
+      end
+      // bir önceki düðmesi
+      else if(Olay.Kimlik = Dugmeler[1]) then
+      begin
+
+        ToplamEleman := lkDosyaListesi.ToplamElemanSayisiAl;
+        if(ToplamEleman > 0) then
+        begin
+
+          SeciliSiraNo := lkDosyaListesi.SeciliSiraNoAl;
+          Dec(SeciliSiraNo);
+          if(SeciliSiraNo < 0) then SeciliSiraNo := ToplamEleman - 1;
+          lkDosyaListesi.SeciliSiraNoYaz(SeciliSiraNo);
+        end;
+      end
+      // bir sonraki düðmesi
+      else if(Olay.Kimlik = Dugmeler[2]) then
+      begin
+
+        ToplamEleman := lkDosyaListesi.ToplamElemanSayisiAl;
+        if(ToplamEleman > 0) then
+        begin
+
+          SeciliSiraNo := lkDosyaListesi.SeciliSiraNoAl;
+          Inc(SeciliSiraNo);
+          if(SeciliSiraNo >= ToplamEleman) then SeciliSiraNo := 0;
+          lkDosyaListesi.SeciliSiraNoYaz(SeciliSiraNo);
+        end;
+      end;
     end;
   end;
 end.

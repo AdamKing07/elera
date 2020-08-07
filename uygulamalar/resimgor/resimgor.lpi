@@ -34,13 +34,12 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="62">
+    <Units Count="69">
       <Unit0>
         <Filename Value="resimgor.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="76"/>
-        <CursorPos X="19" Y="83"/>
-        <UsageCount Value="38"/>
+        <IsVisibleTab Value="True"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -267,14 +266,14 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit45>
       <Unit46>
         <Filename Value="derle.bat"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Bat"/>
       </Unit46>
       <Unit47>
@@ -284,7 +283,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit47>
       <Unit48>
@@ -355,147 +354,195 @@
       </Unit58>
       <Unit59>
         <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="88"/>
-        <CursorPos X="31" Y="114"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="56"/>
+        <CursorPos X="20" Y="74"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit59>
       <Unit60>
         <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="170"/>
-        <CursorPos X="15" Y="180"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="111"/>
+        <CursorPos X="20" Y="125"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit60>
       <Unit61>
         <Filename Value="../../rtl_uygulama/linux/gn_resim.pas"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="74"/>
         <CursorPos X="25" Y="100"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit61>
+      <Unit62>
+        <Filename Value="../../rtl_uygulama/linux/gn_araccubugu.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="54"/>
+        <CursorPos X="30" Y="71"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="../../rtl_uygulama/linux/system.pp"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="20"/>
+        <CursorPos X="5" Y="33"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="../../rtl_uygulama/linux/linux.pp"/>
+        <UnitName Value="Linux"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="../../rtl_uygulama/linux/n_genel.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="../../rtl_uygulama/linux/n_gorev.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="62" Y="36"/>
+        <UsageCount Value="10"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="../../rtl_uygulama/linux/n_iletisim.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="../../rtl_uygulama/linux/n_sistemmesaj.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="16"/>
+        <CursorPos X="36" Y="28"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit68>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="115" Column="7" TopLine="78"/>
+        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Caret Line="209" Column="48" TopLine="187"/>
       </Position1>
       <Position2>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="10" Column="25"/>
+        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Caret Line="210" Column="9" TopLine="188"/>
       </Position2>
       <Position3>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="43" Column="17" TopLine="25"/>
+        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Caret Line="211" Column="9" TopLine="189"/>
       </Position3>
       <Position4>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="15" Column="36"/>
+        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Caret Line="212" Column="26" TopLine="190"/>
       </Position4>
       <Position5>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="43" Column="17" TopLine="25"/>
+        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Caret Line="213" Column="19" TopLine="191"/>
       </Position5>
       <Position6>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="24" Column="17" TopLine="19"/>
+        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Caret Line="214" Column="22" TopLine="192"/>
       </Position6>
       <Position7>
         <Filename Value="resimgor.lpr"/>
-        <Caret Line="44" Column="23" TopLine="26"/>
+        <Caret Line="135" Column="9" TopLine="112"/>
       </Position7>
       <Position8>
         <Filename Value="resimgor.lpr"/>
-        <Caret Line="60" Column="25" TopLine="43"/>
+        <Caret Line="33" Column="18" TopLine="22"/>
       </Position8>
       <Position9>
         <Filename Value="resimgor.lpr"/>
-        <Caret Line="63" Column="9" TopLine="46"/>
+        <Caret Line="137" Column="18" TopLine="114"/>
       </Position9>
       <Position10>
         <Filename Value="resimgor.lpr"/>
-        <Caret Line="30" Column="7" TopLine="12"/>
+        <Caret Line="139" Column="57" TopLine="120"/>
       </Position10>
       <Position11>
         <Filename Value="resimgor.lpr"/>
-        <Caret Line="70" Column="3" TopLine="55"/>
+        <Caret Line="155" Column="57" TopLine="135"/>
       </Position11>
       <Position12>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="98" Column="8" TopLine="94"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
+        <Caret Line="32" Column="15" TopLine="19"/>
       </Position12>
       <Position13>
         <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="29" Column="14" TopLine="16"/>
+        <Caret Line="103" Column="30" TopLine="98"/>
       </Position13>
       <Position14>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="20" Column="28" TopLine="16"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="148" Column="8" TopLine="69"/>
       </Position14>
       <Position15>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="111" Column="73" TopLine="96"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_araccubugu.pas"/>
+        <Caret Line="26" Column="14" TopLine="13"/>
       </Position15>
       <Position16>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_araccubugu.pas"/>
+        <Caret Line="52" Column="33" TopLine="47"/>
       </Position16>
       <Position17>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="205" Column="3" TopLine="191"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="158" Column="19" TopLine="135"/>
       </Position17>
       <Position18>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="74" Column="37" TopLine="67"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="15" Column="66" TopLine="4"/>
       </Position18>
       <Position19>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="110" Column="44" TopLine="94"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="158" Column="28" TopLine="135"/>
       </Position19>
       <Position20>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="201" Column="14" TopLine="179"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="15" Column="51" TopLine="4"/>
       </Position20>
       <Position21>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="83" Column="19" TopLine="76"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
+        <Caret Line="29" Column="20" TopLine="10"/>
       </Position21>
       <Position22>
         <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="26" Column="15" TopLine="13"/>
+        <Caret Line="68" Column="3" TopLine="65"/>
       </Position22>
       <Position23>
         <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
-        <Caret Line="60" Column="21" TopLine="55"/>
+        <Caret Line="42" Column="28" TopLine="16"/>
       </Position23>
       <Position24>
         <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="153" Column="57" TopLine="142"/>
+        <Caret Line="125" Column="49" TopLine="117"/>
       </Position24>
       <Position25>
         <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
       </Position25>
       <Position26>
-        <Filename Value="resimgor.lpr"/>
-        <Caret Line="83" Column="19" TopLine="76"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
+        <Caret Line="140" Column="40" TopLine="125"/>
       </Position26>
       <Position27>
-        <Filename Value="../../rtl_uygulama/linux/gn_resim.pas"/>
-        <Caret Line="27" Column="15" TopLine="13"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
+        <Caret Line="29" Column="11" TopLine="26"/>
       </Position27>
       <Position28>
-        <Filename Value="../../rtl_uygulama/linux/gn_resim.pas"/>
-        <Caret Line="59" Column="15" TopLine="54"/>
+        <Filename Value="../../rtl_uygulama/linux/gn_listekutusu.pas"/>
+        <Caret Line="28" Column="19" TopLine="16"/>
       </Position28>
       <Position29>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
-        <Caret Line="130" Column="21" TopLine="115"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="137" Column="36" TopLine="120"/>
       </Position29>
       <Position30>
-        <Filename Value="../../rtl_uygulama/linux/paylasim.inc"/>
+        <Filename Value="resimgor.lpr"/>
+        <Caret Line="10" Column="25"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

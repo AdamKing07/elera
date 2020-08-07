@@ -7,15 +7,13 @@ call temizle.bat
 cd..
 
 @echo uygulamalar dizini temizleniyor...
-cd uygulamalar\mod_g
+cd uygulamalar
 call temizle.bat
-cd..
-del _g\*.* /Q
 cd..
 
 @echo rtl dizini temizleniyor...
-rmdir .\rtl_cekirdek\linux\units /S /Q
-rmdir .\rtl_uygulama\linux\units /S /Q
+rmdir rtl_cekirdek\linux\units /S /Q
+rmdir rtl_uygulama\linux\units /S /Q
 
 @echo vbox dizini temizleniyor...
 cd vbox

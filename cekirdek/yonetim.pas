@@ -530,14 +530,14 @@ begin
   P2Pencere^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
 
   P2AracCubugu := P2AracCubugu^.Olustur(ktNesne, P2Pencere);
-  P2ACDugmeler[0] := P2AracCubugu^.DugmeEkle(6);
-  P2ACDugmeler[1] := P2AracCubugu^.DugmeEkle(7);
-  P2ACDugmeler[2] := P2AracCubugu^.DugmeEkle(8);
-  P2ACDugmeler[3] := P2AracCubugu^.DugmeEkle(9);
-  P2ACDugmeler[4] := P2AracCubugu^.DugmeEkle(10);
-  P2ACDugmeler[5] := P2AracCubugu^.DugmeEkle(11);
-  P2ACDugmeler[6] := P2AracCubugu^.DugmeEkle(12);
-  P2ACDugmeler[7] := P2AracCubugu^.DugmeEkle(13);
+  P2ACDugmeler[0] := P2AracCubugu^.DugmeEkle(9);
+  P2ACDugmeler[1] := P2AracCubugu^.DugmeEkle(10);
+  P2ACDugmeler[2] := P2AracCubugu^.DugmeEkle(11);
+  P2ACDugmeler[3] := P2AracCubugu^.DugmeEkle(12);
+  P2ACDugmeler[4] := P2AracCubugu^.DugmeEkle(13);
+  P2ACDugmeler[5] := P2AracCubugu^.DugmeEkle(14);
+  P2ACDugmeler[6] := P2AracCubugu^.DugmeEkle(15);
+  P2ACDugmeler[7] := P2AracCubugu^.DugmeEkle(16);
   P2AracCubugu^.OlayYonlendirmeAdresi := @P2NesneTestOlayIsle;
   P2AracCubugu^.Goster;
 

@@ -35,7 +35,7 @@ begin
   Islev := (AIslevNo and $FF);
 
   // AL'ma işlevi
-  if(Islev = ISLEV_AL) then
+  if(Islev = 2) then
   begin
 
     Islev := ((AIslevNo shr 8) and $FF);

@@ -706,9 +706,8 @@ const
   ISLEV_CIZ         = $0004;
   ISLEV_BOYUTLANDIR = $0005;
   ISLEV_YOKET       = $0006;
-
-  ISLEV_AL        = $02;
-  ISLEV_YAZ       = $04;
+  ISLEV_AL          = $1000;
+  ISLEV_YAZ         = $2000;
 
 type
   PSecimDurumu = ^TSecimDurumu;

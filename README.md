@@ -9,11 +9,11 @@ Kullanılan Yazılım Araçları:
 * Virtualbox 6.1.12
 
 ---
-Ekran Görüntüleri
+* Masaüstü
+![Masaüstü](masaustu.png)
 
-![Görüntü1](elera1.png)
-
-![Görüntü2](elera2.png)
+* Resim Görüntüleyici
+![Resim Görüntüleyici](resimgor.png)
 
 ![Görüntü3](elera3.png)
 

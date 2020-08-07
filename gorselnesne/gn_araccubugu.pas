@@ -1,12 +1,12 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasýna bakýnýz
 
-  Dosya AdÄ±: gn_araccubugu.pas
-  Dosya Ä°ÅŸlevi: araÃ§ Ã§ubuÄŸu (TToolBar) nesne yÃ¶netim iÅŸlevlerini iÃ§erir
+  Dosya Adý: gn_araccubugu.pas
+  Dosya Ýþlevi: araç çubuðu (TToolBar) nesne yönetim iþlevlerini içerir
 
-  GÃ¼ncelleme Tarihi: 08/07/2020
+  Güncelleme Tarihi: 07/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -14,7 +14,7 @@ unit gn_araccubugu;
 
 interface
 
-uses gorselnesne, paylasim, gn_panel, gn_resimdugmesi, sistemmesaj;
+uses gorselnesne, paylasim, gn_panel, gn_resimdugmesi;
 
 const
   AZAMI_DUGME_SAYISI = 50;
@@ -23,7 +23,7 @@ type
   PAracCubugu = ^TAracCubugu;
   TAracCubugu = object(TPanel)
   private
-    // araÃ§ Ã§ubuÄŸunda yer alacak dÃ¼ÄŸme listesi
+    // araç çubuðunda yer alacak düðme listesi
     FDugmeSayisi: TSayi4;
     FDugmeler: array[0..AZAMI_DUGME_SAYISI - 1] of PResimDugmesi;
   public
@@ -35,7 +35,7 @@ type
     procedure Ciz;
     procedure OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
     procedure ResimDugmeOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
-    function DugmeEkle(ADugmeSiraNo: TSayi4): TKimlik;
+    function DugmeEkle(AResimSiraNo: TSayi4): TKimlik;
   end;
 
 function AracCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
@@ -43,17 +43,15 @@ function NesneOlustur(AAtaNesne: PGorselNesne): TKimlik;
 
 implementation
 
-uses genel, gn_pencere, gn_islevler, temelgorselnesne;
+uses genel, temelgorselnesne;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesne kesme Ã§aÄŸrÄ±larÄ±nÄ± yÃ¶netir
+  araç çubuðu nesne kesme çaðrýlarýný yönetir
  ==============================================================================}
 function AracCubuguCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
   GorselNesne: PGorselNesne = nil;
-  Pencere: PPencere = nil;
   AracCubugu: PAracCubugu = nil;
-  p: PKarakterKatari;
 begin
 
   case AIslevNo of
@@ -72,17 +70,12 @@ begin
       AracCubugu^.Goster;
     end;
 
-    // AracCubugu baÅŸlÄ±ÄŸÄ±nÄ± deÄŸiÅŸtir
+    // araç çubuðuna düðme ekle
     $0104:
     begin
 
       AracCubugu := PAracCubugu(AracCubugu^.NesneAl(PKimlik(ADegiskenler + 00)^));
-      p := PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi);
-      AracCubugu^.Baslik := p^;
-
-      // araÃ§ Ã§ubuÄŸunun baÄŸlÄ± olduÄŸu pencere nesnesini gÃ¼ncelle
-      Pencere := EnUstPencereNesnesiniAl(AracCubugu);
-      if not(Pencere = nil) then Pencere^.Guncelle;
+      Result := AracCubugu^.DugmeEkle(PISayi4(ADegiskenler + 04)^);
     end
 
     else Result := HATA_ISLEV;
@@ -90,11 +83,11 @@ begin
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini oluÅŸturur
+  araç çubuðu nesnesini oluþturur
  ==============================================================================}
 function NesneOlustur(AAtaNesne: PGorselNesne): TKimlik;
 var
-  AracCubugu: PAracCubugu;
+  AracCubugu: PAracCubugu = nil;
 begin
 
   AracCubugu := AracCubugu^.Olustur(ktNesne, AAtaNesne);
@@ -107,18 +100,18 @@ begin
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini oluÅŸturur
+  araç çubuðu nesnesini oluþturur
  ==============================================================================}
 function TAracCubugu.Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne): PAracCubugu;
 var
-  AracCubugu: PAracCubugu;
+  AracCubugu: PAracCubugu = nil;
   i: TSayi4;
 begin
 
   AracCubugu := PAracCubugu(inherited Olustur(AKullanimTipi, AAtaNesne, 0, 0, 10,
-    28, 2, RENK_GUMUS {$F0F0F0}, RENK_BEYAZ {$F0F0F0}, 0, ''));
+    28, 2, RENK_GUMUS, RENK_BEYAZ, 0, ''));
 
-  // nesnenin ad deÄŸeri
+  // nesnenin ad deðeri
   AracCubugu^.NesneTipi := gntAracCubugu;
 
   AracCubugu^.FTuvalNesne := AAtaNesne^.FTuvalNesne;
@@ -127,16 +120,16 @@ begin
 
   AracCubugu^.FHiza := hzUst;
 
-  // dÃ¼ÄŸme deÄŸerlerinin ilk deÄŸerlerle yÃ¼klenmesi
+  // düðme deðerlerinin ilk deðerlerle yüklenmesi
   FDugmeSayisi := 0;
   for i := 0 to AZAMI_DUGME_SAYISI - 1 do FDugmeler[i] := nil;
 
-  // nesne adresini geri dÃ¶ndÃ¼r
+  // nesne adresini geri döndür
   Result := AracCubugu;
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini yok eder
+  araç çubuðu nesnesini yok eder
  ==============================================================================}
 procedure TAracCubugu.YokEt;
 begin
@@ -145,19 +138,19 @@ begin
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini gÃ¶rÃ¼ntÃ¼ler
+  araç çubuðu nesnesini görüntüler
  ==============================================================================}
 procedure TAracCubugu.Goster;
 var
-  AracCubugu: PAracCubugu;
-  i: TSayi4;
+  AracCubugu: PAracCubugu = nil;
+//  i: TSayi4;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip deðerlerini denetle.
   AracCubugu := PAracCubugu(AracCubugu^.NesneAl(Kimlik));
   if(AracCubugu = nil) then Exit;
 
-  if(AracCubugu^.FDugmeSayisi > 0) then
+{  if(AracCubugu^.FDugmeSayisi > 0) then
   begin
 
     for i := 0 to AracCubugu^.FDugmeSayisi - 1 do
@@ -166,23 +159,23 @@ begin
       if not(AracCubugu^.FDugmeler[i] = nil) then AracCubugu^.FDugmeler[i]^.Goster;
     end;
   end;
-
+}
   inherited Goster;
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini gizler
+  araç çubuðu nesnesini gizler
  ==============================================================================}
 procedure TAracCubugu.Gizle;
 var
-  AracCubugu: PAracCubugu;
-  i: TSayi4;
+  AracCubugu: PAracCubugu = nil;
+//  i: TSayi4;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip deðerlerini denetle.
   AracCubugu := PAracCubugu(AracCubugu^.NesneAl(Kimlik));
   if(AracCubugu = nil) then Exit;
-
+{
   if(AracCubugu^.FDugmeSayisi > 0) then
   begin
 
@@ -192,12 +185,12 @@ begin
       if not(AracCubugu^.FDugmeler[i] = nil) then AracCubugu^.FDugmeler[i]^.Gizle;
     end;
   end;
-
+}
   inherited Gizle;
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini boyutlandÄ±rÄ±r
+  araç çubuðu nesnesini boyutlandýrýr
  ==============================================================================}
 procedure TAracCubugu.Boyutlandir;
 begin
@@ -206,21 +199,21 @@ begin
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesnesini Ã§izer
+  araç çubuðu nesnesini çizer
  ==============================================================================}
 procedure TAracCubugu.Ciz;
 var
-  AracCubugu: PAracCubugu;
-  i: Integer;
+  AracCubugu: PAracCubugu = nil;
+//  i: Integer;
 begin
 
   AracCubugu := PAracCubugu(AracCubugu^.NesneAl(Kimlik));
   if(AracCubugu = nil) then Exit;
 
-  // Ã¶ncelikle kendini Ã§iz
+  // öncelikle kendini çiz
   inherited Ciz;
-
-  // daha sonra alt nesne dÃ¼ÄŸmeleri
+{
+  // daha sonra alt nesne düðmeleri
   if(AracCubugu^.FDugmeSayisi > 0) then
   begin
 
@@ -229,117 +222,62 @@ begin
 
       if not(AracCubugu^.FDugmeler[i] = nil) then AracCubugu^.FDugmeler[i]^.Ciz;
     end;
-  end;
+  end; }
 end;
 
 {==============================================================================
-  araÃ§ Ã§ubuÄŸu nesne olaylarÄ±nÄ± iÅŸler
+  araç çubuðu nesne olaylarýný iþler
  ==============================================================================}
 procedure TAracCubugu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  Pencere: PPencere;
-  AracCubugu: PAracCubugu;
+  AracCubugu: PAracCubugu = nil;
 begin
 
   AracCubugu := PAracCubugu(AGonderici);
+  if(AracCubugu = nil) then Exit;
 
-  // farenin sol tuÅŸuna basÄ±m iÅŸlemi
-{  if(AOlay.Olay = FO_SOLTUS_BASILDI) then
-  begin
-
-    // araÃ§ Ã§ubuÄŸunun sahibi olan pencere en Ã¼stte mi ? kontrol et
-    Pencere := EnUstPencereNesnesiniAl(AracCubugu);
-
-    // en Ã¼stte olmamasÄ± durumunda en Ã¼ste getir
-    if not(Pencere = nil) and (Pencere <> AktifPencere) then Pencere^.EnUsteGetir(Pencere);
-
-    // fare olaylarÄ±nÄ± yakala
-    OlayYakalamayaBasla(AracCubugu);
-
-    // AracCubugu nesnesini yeniden Ã§iz
-    AracCubugu^.Ciz;
-
-    // uygulamaya veya efendi nesneye mesaj gÃ¶nder
-    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
-      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
-    else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
-  end
-  else if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
-  begin
-
-    // fare olaylarÄ±nÄ± almayÄ± bÄ±rak
-    OlayYakalamayiBirak(AracCubugu);
-
-    // AracCubugu nesnesini yeniden Ã§iz
-    AracCubugu^.Ciz;
-
-    // farenin tuÅŸ bÄ±rakma iÅŸlemi nesnenin olay alanÄ±nda mÄ± gerÃ§ekleÅŸti ?
-    if(AracCubugu^.FareNesneOlayAlanindaMi(AracCubugu)) then
-    begin
-
-      // yakalama & bÄ±rakma iÅŸlemi bu nesnede olduÄŸu iÃ§in
-      // uygulamaya veya efendi nesneye FO_TIKLAMA mesajÄ± gÃ¶nder
-      AOlay.Olay := FO_TIKLAMA;
-      if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
-        AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
-      else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
-    end;
-
-    // uygulamaya veya efendi nesneye mesaj gÃ¶nder
-    AOlay.Olay := FO_SOLTUS_BIRAKILDI;
-    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
-      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
-    else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
-  end
-  else if(AOlay.Olay = FO_HAREKET) then
-  begin
-
-    // AracCubugu nesnesini yeniden Ã§iz
-    AracCubugu^.Ciz;
-
-    // uygulamaya veya efendi nesneye mesaj gÃ¶nder
-    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
-      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
-    else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
-  end;
-}
-  // geÃ§erli fare gÃ¶stergesini gÃ¼ncelle
+  // geçerli fare göstergesini güncelle
   GecerliFareGostegeTipi := AracCubugu^.FFareImlecTipi;
 end;
 
-procedure TAracCubugu.ResimDugmeOlaylariniIsle(AGonderici: PGorselNesne;
-  AOlay: TOlay);
-var
-  AracCubugu: PAracCubugu;
-begin
-
-  AracCubugu := PAracCubugu(AracCubugu^.NesneAl(Kimlik));
-  if(AracCubugu = nil) then Exit;
-
-  if(AOlay.Olay = FO_TIKLAMA) then
-  begin
-
-    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
-      AracCubugu^.OlayYonlendirmeAdresi(AracCubugu, AOlay)
-    else GorevListesi[AracCubugu^.GorevKimlik]^.OlayEkle(AracCubugu^.GorevKimlik, AOlay);
-  end;
-end;
-
-function TAracCubugu.DugmeEkle(ADugmeSiraNo: TSayi4): TKimlik;
+procedure TAracCubugu.ResimDugmeOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
   AracCubugu: PAracCubugu = nil;
   ResimDugmesi: PResimDugmesi = nil;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  ResimDugmesi := PResimDugmesi(AGonderici);
+  if(ResimDugmesi = nil) then Exit;
+
+  AracCubugu := PAracCubugu(ResimDugmesi^.AtaNesne);
+
+  if(AOlay.Olay = FO_TIKLAMA) then
+  begin
+
+    AOlay.Kimlik := ResimDugmesi^.Kimlik;
+
+    if not(AracCubugu^.OlayYonlendirmeAdresi = nil) then
+      AracCubugu^.OlayYonlendirmeAdresi(ResimDugmesi, AOlay)
+    else GorevListesi[ResimDugmesi^.GorevKimlik]^.OlayEkle(ResimDugmesi^.GorevKimlik, AOlay);
+  end;
+end;
+
+function TAracCubugu.DugmeEkle(AResimSiraNo: TSayi4): TKimlik;
+var
+  AracCubugu: PAracCubugu = nil;
+  ResimDugmesi: PResimDugmesi = nil;
+begin
+
+  // nesnenin kimlik, tip deðerlerini denetle.
   AracCubugu := PAracCubugu(AracCubugu^.NesneAl(Kimlik));
   if(AracCubugu = nil) then Exit;
 
   if(AracCubugu^.FDugmeSayisi > AZAMI_DUGME_SAYISI) then Exit;
 
   ResimDugmesi := ResimDugmesi^.Olustur(ktBilesen, AracCubugu,
-    (FDugmeSayisi * 30) + 4, 1, 24, 24, $10000000 + ADugmeSiraNo, False);
+    (FDugmeSayisi * 30) + 4, 1, 24, 24, $10000000 + AResimSiraNo, False);
   ResimDugmesi^.OlayYonlendirmeAdresi := @ResimDugmeOlaylariniIsle;
+  ResimDugmesi^.Gorunum := True;
 
   FDugmeler[FDugmeSayisi] := ResimDugmesi;
 
