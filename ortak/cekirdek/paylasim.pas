@@ -786,6 +786,7 @@ type
   end;
 
 type
+  PGiysi = ^TGiysi;
   TGiysi = record
     BaslikYukseklik,
 
@@ -822,7 +823,7 @@ type
     KucultmeDugmesiSol,
     KucultmeDugmesiUst,
     KucultmeDugmesiGenislik,
-    KucultmeDugmesiYukseklik: TSayi4;
+    KucultmeDugmesiYukseklik: TISayi4;
 
     ResimSolUstA, ResimSolUstP,
     ResimUstA, ResimUstP,
@@ -832,10 +833,15 @@ type
     ResimSolAltA, ResimSolAltP,
     ResimAltA, ResimAltP,
     ResimSagAltA, ResimSagAltP: TGiysiResim;
+
+    // A(ktif), (P)asif kontrol düðme (R)esim (S)ýra numaralarý
+    AKapatmaDugmesiRSNo, ABuyutmeDugmesiRSNo, AKucultmeDugmesiRSNo,
+    PKapatmaDugmesiRSNo, PBuyutmeDugmesiRSNo, PKucultmeDugmesiRSNo: TSayi4;
   end;
 
 var
   AktifGiysi: TGiysi;
+  AktifGiysiSiraNo: TISayi4 = 0;
 
 type
   PTSS = ^TTSS;

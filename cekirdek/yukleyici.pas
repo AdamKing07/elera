@@ -6,7 +6,7 @@
   Dosya Adý: yukleyici.pas
   Dosya Ýþlevi: sistem ilk açýlýþ yükleme iþlevleri gerçekleþtirir
 
-  Güncelleme Tarihi: 05/07/2020
+  Güncelleme Tarihi: 11/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -26,7 +26,7 @@ implementation
 
 uses yonetim, gdt, idt, irq, pic, aygityonetimi, pci, src_klavye, genel, gorev,
   gn_islevler, dosya, sistemmesaj, bolumleme, islemci, paylasim, usb, zamanlayici,
-  ag, src_vesa20, src_com, src_sb, bmp, acpi, giysi_mac, giysi_normal;
+  ag, src_vesa20, src_com, src_sb, bmp, acpi, k_giysi, giysi_mac, giysi_normal;
 
 {==============================================================================
   çekirdek çevre donaným yükleme iþlevlerini gerçekleþtir
@@ -144,7 +144,8 @@ begin
   YukleIslevindenSonraCalistir;
 
   // aktif pencere giysisi tanýmlanýyor
-  AktifGiysi := GiysiMac; //GiysiNormal;
+  AktifGiysiSiraNo := 0;
+  AktifGiysi := GiysiListesi[AktifGiysiSiraNo].Adres^;
 
   // sistem mesajlarýný görmek için bekleme süresi.
   Bekle(50);

@@ -17,9 +17,6 @@ interface
 
 type
   PListeKutusu = ^TListeKutusu;
-
-  { TListeKutusu }
-
   TListeKutusu = object
   private
     FKimlik: TKimlik;

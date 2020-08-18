@@ -180,6 +180,7 @@ begin
   GorevListesi[1]^.FAnaPencere := nil;
 
   GorevListesi[1]^.FDosyaAdi := 'cekirdek.bin';
+  GorevListesi[1]^.FProgramAdi := 'Sistem Çekirdeði';
 
   // sistem görevini çalýþýyor olarak iþaretle
   Gorev := GorevListesi[1];
@@ -270,9 +271,7 @@ begin
         else if(Tus = '3') then
         begin
 
-          Gorev^.Calistir('disk1:\iskelet.c'); // iskelet.c');
-          //AktifGiysi := GiysiNormal;
-          //GAktifMasaustu^.Ciz;
+          Gorev^.Calistir('disk1:\iskelet.c');
           //Gorev^.Calistir('disk1:\dnssorgu.c');
 
           //SISTEM_MESAJ('Panel1 Alt NS: %d', [P3Panel[0]^.FAltNesneSayisi]);
@@ -288,11 +287,6 @@ begin
           FindClose(AramaKaydi);}
           //Gorev^.Calistir('disk1:\6.bmp');
           //Gorev^.Calistir('disk1:\hafiza.c');
-        end
-        else if(Tus = '4') then
-        begin
-
-          AktifGiysi := GiysiMac;
         end
         // program çalýþtýrma programýný çalýþtýr
         else if(Tus = 'c') then
@@ -383,7 +377,8 @@ begin
   GorevListesi[2]^.FAnaPencere := nil;
 
   // sistem görev adý (dosya adý)
-  GorevListesi[2]^.FDosyaAdi := 'denetci.???';
+  GorevListesi[2]^.FDosyaAdi := 'denetim.???';
+  GorevListesi[2]^.FProgramAdi := 'Sistem Denetimi';
 
   // sistem görevini çalýþýyor olarak iþaretle
   Gorev := GorevListesi[2];

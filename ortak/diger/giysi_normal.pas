@@ -6,10 +6,10 @@
   Dosya Adı: giysi_normal.pas
   Dosya İşlevi: pencere nesnesine normal görünüm uygular
 
-  Güncelleme Tarihi: 06/07/2020
+  Güncelleme Tarihi: 09/08/2020
 
   Önemli Notlar:
-    1. renk değeri olarak kullanılan $FFFFFFFF değeri renk değerinin olmadığını gösterir
+    1. renk değeri olarak kullanılan -1 değeri renk değerinin olmadığını gösterir
     2. aşağıdaki const kısmındaki isimlendirmeler son bitişine göre aşağıdaki anlamları taşır
       _S = sol, _U = üst, _G = genişlik, _Y = yükseklik
 
@@ -43,9 +43,9 @@ const
 
   AKTIF_BASLIK_YAZIRENGI  = RENK_BEYAZ;
   PASIF_BASLIK_YAZIRENGI  = RENK_GUMUS;
-  IC_DOLGU_RENGI          = $FFFFFFFF;
-  BASLIK_YAZI_S           = $FFFFFFFF;
-  BASLIK_YAZI_U           = $FFFFFFFF;
+  IC_DOLGU_RENGI          = -1;
+  BASLIK_YAZI_S           = -1;
+  BASLIK_YAZI_U           = -1;
 
   // yeni değerler
   KAPATMA_DUGMESI_S       = -25;
@@ -471,7 +471,15 @@ var
     ResimAltA:    (Genislik: RESIM_ALT_G;     Yukseklik: RESIM_ALT_Y;     BellekAdresi: @ResimAltA);
     ResimAltP:    (Genislik: RESIM_ALT_G;     Yukseklik: RESIM_ALT_Y;     BellekAdresi: @ResimAltP);
     ResimSagAltA: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltA);
-    ResimSagAltP: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltP));
+    ResimSagAltP: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltP);
+
+    AKapatmaDugmesiRSNo   : 6;
+    ABuyutmeDugmesiRSNo   : 8;
+    AKucultmeDugmesiRSNo  : 10;
+    PKapatmaDugmesiRSNo   : 7;
+    PBuyutmeDugmesiRSNo   : 9;
+    PKucultmeDugmesiRSNo  : 11;
+);
 
 implementation
 

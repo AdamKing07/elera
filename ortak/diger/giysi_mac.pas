@@ -6,10 +6,10 @@
   Dosya Adı: giysi_mac.pas
   Dosya İşlevi: pencere nesnesine mac görünümünü uygular
 
-  Güncelleme Tarihi: 06/07/2020
+  Güncelleme Tarihi: 09/08/2020
 
   Önemli Notlar:
-    1. renk değeri olarak kullanılan $FFFFFFFF değeri renk değerinin olmadığını gösterir
+    1. renk değeri olarak kullanılan -1 değeri renk değerinin olmadığını gösterir
     2. aşağıdaki const kısmındaki isimlendirmeler son bitişine göre aşağıdaki anlamları taşır
       _S = sol, _U = üst, _G = genişlik, _Y = yükseklik
 
@@ -375,7 +375,14 @@ var
     ResimAltA:    (Genislik: RESIM_ALT_G;     Yukseklik: RESIM_ALT_Y;     BellekAdresi: @ResimAltA);
     ResimAltP:    (Genislik: RESIM_ALT_G;     Yukseklik: RESIM_ALT_Y;     BellekAdresi: @ResimAltP);
     ResimSagAltA: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltA);
-    ResimSagAltP: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltP));
+    ResimSagAltP: (Genislik: RESIM_SAGALT_G;  Yukseklik: RESIM_SAGALT_Y;  BellekAdresi: @ResimSagAltP);
+
+    AKapatmaDugmesiRSNo   : 0;
+    ABuyutmeDugmesiRSNo   : 2;
+    AKucultmeDugmesiRSNo  : 4;
+    PKapatmaDugmesiRSNo   : 1;
+    PBuyutmeDugmesiRSNo   : 3;
+    PKucultmeDugmesiRSNo  : 5);
 
 implementation
 

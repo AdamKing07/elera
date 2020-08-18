@@ -1,12 +1,12 @@
 {==============================================================================
 
-  Kodlayan: Fatih KILIÃ‡
-  Telif Bilgisi: haklar.txt dosyasÄ±na bakÄ±nÄ±z
+  Kodlayan: Fatih KILIÇ
+  Telif Bilgisi: haklar.txt dosyasına bakınız
 
-  Dosya AdÄ±: gn_masaustu.pas
-  Dosya Ä°ÅŸlevi: masaÃ¼stÃ¼ yÃ¶netim iÅŸlevlerini iÃ§erir
+  Dosya Adı: gn_masaustu.pas
+  Dosya İşlevi: masaüstü yönetim işlevlerini içerir
 
-  GÃ¼ncelleme Tarihi: 06/08/2020
+  Güncelleme Tarihi: 06/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -20,7 +20,7 @@ type
   PMasaustu = ^TMasaustu;
   TMasaustu = object(TPanel)
   public
-    FMasaustuArkaPlan: TISayi4;       // 1 = renk deÄŸeri, 2 = resim
+    FMasaustuArkaPlan: TISayi4;       // 1 = renk değeri, 2 = resim
     FMasaustuRenk: TRenk;
     FGoruntuYapi: TGoruntuYapi;
     function Olustur(AMasaustuAdi: string): PMasaustu;
@@ -42,14 +42,14 @@ function NesneOlustur(AMasaustuAdi: string): TKimlik;
 
 implementation
 
-uses gn_islevler, genel, bmp, temelgorselnesne, sistemmesaj, gn_pencere;
+uses gn_islevler, genel, bmp, temelgorselnesne, gn_pencere;
 
 {==============================================================================
-  masaÃ¼stÃ¼ kesme Ã§aÄŸrÄ±larÄ±nÄ± yÃ¶netir
+  masaüstü kesme çağrılarını yönetir
  ==============================================================================}
 function MasaustuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
   i: TISayi4;
 begin
 
@@ -67,14 +67,14 @@ begin
       Masaustu^.Goster;
     end;
 
-    // oluÅŸturulmuÅŸ toplam masaÃ¼stÃ¼ sayÄ±sÄ±
+    // oluşturulmuş toplam masaüstü sayısı
     $0102:
     begin
 
       Result := ToplamMasaustu;
     end;
 
-    // aktif masaÃ¼stÃ¼ kimliÄŸi
+    // aktif masaüstü kimliği
     $0402:
     begin
 
@@ -84,33 +84,33 @@ begin
     $0104:
     begin
 
-      // aktifleÅŸtirilecek masaÃ¼stÃ¼ sÄ±ra numarasÄ±nÄ± al
+      // aktifleştirilecek masaüstü sıra numarasını al
       i := PISayi4(ADegiskenler + 00)^;
 
-      // eÄŸer belirtilen aralÄ±ktaysa ...
+      // eğer belirtilen aralıktaysa ...
       if(i > 0) and (i <= USTSINIR_MASAUSTU) then
       begin
 
-        // belirlenen sÄ±radaki masÃ¼stÃ¼ mevcut ise
+        // belirlenen sıradaki masüstü mevcut ise
         if(MasaustuListesi[i] <> nil) then
         begin
 
-          // masaÃ¼stÃ¼nÃ¼ aktif olarak iÅŸaretle
+          // masaüstünü aktif olarak işaretle
           GAktifMasaustu := MasaustuListesi[i];
 
           GAktifMasaustu^.Aktiflestir;
 
-          // masaÃ¼stÃ¼nÃ¼ Ã§iz
+          // masaüstünü çiz
           GAktifMasaustu^.Ciz;
 
-          // iÅŸlemin baÅŸarÄ±lÄ± olduÄŸuna dair mesajÄ± geri dÃ¶ndÃ¼r
+          // işlemin başarılı olduğuna dair mesajı geri döndür
           Result := TISayi4(True);
 
         end else Result := TISayi4(False);
       end else Result := TISayi4(False);
     end;
 
-    // masaÃ¼stÃ¼ rengini deÄŸiÅŸtir
+    // masaüstü rengini değiştir
     $0204:
     begin
 
@@ -120,7 +120,7 @@ begin
         PRenk(ADegiskenler + 04)^);
     end;
 
-    // masaÃ¼stÃ¼ resmini deÄŸiÅŸtir
+    // masaüstü resmini değiştir
     $0404:
     begin
 
@@ -130,7 +130,7 @@ begin
         PKarakterKatari(PSayi4(ADegiskenler + 04)^ + CalisanGorevBellekAdresi)^);
     end;
 
-    // masaÃ¼stÃ¼nÃ¼ gÃ¼ncelleÅŸtir (yeniden Ã§iz)
+    // masaüstünü güncelleştir (yeniden çiz)
     $0804:
     begin
 
@@ -144,11 +144,11 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼ nesnesini oluÅŸturur
+  masaüstü nesnesini oluşturur
  ==============================================================================}
 function NesneOlustur(AMasaustuAdi: string): TKimlik;
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
 begin
 
   Masaustu := Masaustu^.Olustur(AMasaustuAdi);
@@ -160,14 +160,14 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼ nesnesini oluÅŸturur
+  masaüstü nesnesini oluşturur
  ==============================================================================}
 function TMasaustu.Olustur(AMasaustuAdi: string): PMasaustu;
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
 begin
 
-  // masaÃ¼stÃ¼ nesnesi oluÅŸtur
+  // masaüstü nesnesi oluştur
   Masaustu := Olustur2(AMasaustuAdi);
   if(Masaustu = nil) then
   begin
@@ -176,33 +176,32 @@ begin
     Exit;
   end;
 
-  Masaustu^.FMasaustuArkaPlan := 1;        // masaÃ¼stÃ¼ arkaplan renk deÄŸeri kullanÄ±lacak
+  Masaustu^.FMasaustuArkaPlan := 1;        // masaüstü arkaplan renk değeri kullanılacak
   Masaustu^.FMasaustuRenk := RENK_ZEYTINYESILI;
 
-  // masaÃ¼stÃ¼nÃ¼n Ã§izileceÄŸi bellek adresi
+  // masaüstünün çizileceği bellek adresi
   Masaustu^.FCizimBellekAdresi := GGercekBellek.Ayir(Masaustu^.FBoyut.Genislik *
     Masaustu^.FBoyut.Yukseklik * 4);
 
-  // masaÃ¼stÃ¼ne Ã§izilecek resmin bellek bilgileri
+  // masaüstüne çizilecek resmin bellek bilgileri
   Masaustu^.FGoruntuYapi.BellekAdresi := nil;
 
-  // nesne adresini geri dÃ¶ndÃ¼r
+  // nesne adresini geri döndür
   Result := Masaustu;
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼ nesnesi iÃ§in yer tahsis eder
+  masaüstü nesnesi için yer tahsis eder
  ==============================================================================}
 function TMasaustu.Olustur2(AMasaustuAdi: string): PMasaustu;
 var
-  Masaustu: PMasaustu;
-  Genislik, Yukseklik: TISayi4;
-  i: TSayi4;
+  Masaustu: PMasaustu = nil;
+  Genislik, Yukseklik, i: TISayi4;
 begin
 
   Result := nil;
 
-  // tÃ¼m masaÃ¼stÃ¼ nesneleri oluÅŸturulduysa Ã§Ä±k
+  // tüm masaüstü nesneleri oluşturulduysa çık
   if(ToplamMasaustu >= USTSINIR_MASAUSTU) then Exit;
 
   Genislik := GEkranKartSurucusu.KartBilgisi.YatayCozunurluk;
@@ -222,20 +221,20 @@ begin
   Masaustu^.FCizimBaslangic.Sol := 0;
   Masaustu^.FCizimBaslangic.Ust := 0;
 
-  // masaÃ¼stÃ¼ nesnesi iÃ§in bellekte boÅŸ yer bul
+  // masaüstü nesnesi için bellekte boş yer bul
   for i := 1 to USTSINIR_MASAUSTU do
   begin
 
     if(MasaustuListesi[i] = nil) then
     begin
 
-      // 1. masaÃ¼stÃ¼ kimliÄŸini boÅŸ olarak bulunan yere kaydet
-      // 2. oluÅŸturulan masaÃ¼stÃ¼ nesne sayÄ±sÄ±nÄ± artÄ±r
-      // 3. geriye nesneyi dÃ¶ndÃ¼r
+      // 1. masaüstü kimliğini boş olarak bulunan yere kaydet
+      // 2. oluşturulan masaüstü nesne sayısını artır
+      // 3. geriye nesneyi döndür
       MasaustuListesi[i] := Masaustu;
       Inc(ToplamMasaustu);
 
-      // nesne adresini geri dÃ¶ndÃ¼r
+      // nesne adresini geri döndür
       Exit(Masaustu);
     end;
   end;
@@ -244,40 +243,40 @@ end;
 procedure TMasaustu.YokEt;
 begin
 
-  { TODO : Ã¶ncelikle ayrÄ±lan bellek serbest bÄ±rakÄ±lacak }
+  { TODO : öncelikle ayrılan bellek serbest bırakılacak }
 
   inherited YokEt;
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼nÃ¼ aktifleÅŸtirir / gÃ¶rÃ¼ntÃ¼ler
+  masaüstünü aktifleştirir / görüntüler
  ==============================================================================}
 procedure TMasaustu.Goster;
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
   AltNesneler: PPGorselNesne;
-  Pencere: PGorselNesne;
+  Pencere: PGorselNesne = nil;
   i: Integer;
 begin
 
   inherited Goster;
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip değerlerini denetle.
   Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(Kimlik, gntMasaustu));
   if(Masaustu = nil) then Exit;
 
-  // masaÃ¼stÃ¼nÃ¼ aktifleÅŸtir
+  // masaüstünü aktifleştir
   Masaustu^.Aktiflestir;
 
   Masaustu^.Ciz;
 
-  // masaÃ¼stÃ¼ alt nesnesi olan pencereleri Ã§iz
+  // masaüstü alt nesnesi olan pencereleri çiz
   if(Masaustu^.FAltNesneSayisi > 0) then
   begin
 
     AltNesneler := Masaustu^.FAltNesneBellekAdresi;
 
-    // ilk oluÅŸturulan pencereden son oluÅŸturulan pencereye doÄŸru nesneleri Ã§iz
+    // ilk oluşturulan pencereden son oluşturulan pencereye doğru nesneleri çiz
     for i := 0 to Masaustu^.FAltNesneSayisi - 1 do
     begin
 
@@ -289,7 +288,7 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼nÃ¼ gizler
+  masaüstünü gizler
  ==============================================================================}
 procedure TMasaustu.Gizle;
 begin
@@ -298,7 +297,7 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼nÃ¼ boyutlandÄ±rÄ±r
+  masaüstünü boyutlandırır
  ==============================================================================}
 procedure TMasaustu.Boyutlandir;
 begin
@@ -306,18 +305,18 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼nÃ¼ Ã§izer
+  masaüstünü çizer
  ==============================================================================}
 procedure TMasaustu.Ciz;
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip değerlerini denetle.
   Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(Kimlik, gntMasaustu));
   if(Masaustu = nil) then Exit;
 
-  // masaÃ¼stÃ¼ arka plan resmini Ã§iz
+  // masaüstü arka plan resmini çiz
   if(Masaustu^.Gorunum) then
   begin
 
@@ -325,90 +324,93 @@ begin
       MasaustunuRenkIleDoldur
     else BMPGoruntusuCiz(gntMasaustu, Masaustu, Masaustu^.FGoruntuYapi);
   end;
+
+  // tüm pencereleri yeniden çiz
+  PencereleriYenidenCiz;
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼ olaylarÄ±nÄ± iÅŸler
+  masaüstü olaylarını işler
  ==============================================================================}
 procedure TMasaustu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
   BirOncekiOlay: TISayi4;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip değerlerini denetle.
   Masaustu := PMasaustu(AGonderici);
 
-  // saÄŸ / sol fare tuÅŸ basÄ±mÄ±
+  // sağ / sol fare tuş basımı
   if(AOlay.Olay = FO_SAGTUS_BASILDI) or (AOlay.Olay = FO_SOLTUS_BASILDI) then
   begin
 
-    // olaylarÄ± bu nesneye yÃ¶nlendir
+    // olayları bu nesneye yönlendir
     OlayYakalamayaBasla(Masaustu);
 
-    // uygulamaya veya efendi nesneye mesaj gÃ¶nder
+    // uygulamaya veya efendi nesneye mesaj gönder
     if not(Masaustu^.OlayYonlendirmeAdresi = nil) then
       Masaustu^.OlayYonlendirmeAdresi(Masaustu, AOlay)
     else GorevListesi[Masaustu^.GorevKimlik]^.OlayEkle(Masaustu^.GorevKimlik, AOlay);
   end
 
-  // saÄŸ / sol fare tuÅŸ bÄ±rakÄ±mÄ±
+  // sağ / sol fare tuş bırakımı
   else if(AOlay.Olay = FO_SAGTUS_BIRAKILDI) or (AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
   begin
 
-    // olaylarÄ± bu nesneye yÃ¶nlendirmeyi iptal et
+    // olayları bu nesneye yönlendirmeyi iptal et
     OlayYakalamayiBirak(Masaustu);
 
     BirOncekiOlay := AOlay.Olay;
 
-    // uygulamaya mesaj gÃ¶nder
+    // uygulamaya mesaj gönder
     if(AOlay.Olay = FO_SOLTUS_BIRAKILDI) then
     begin
 
-      // uygulamaya veya efendi nesneye mesaj gÃ¶nder
+      // uygulamaya veya efendi nesneye mesaj gönder
       AOlay.Olay := FO_TIKLAMA;
       if not(Masaustu^.OlayYonlendirmeAdresi = nil) then
         Masaustu^.OlayYonlendirmeAdresi(Masaustu, AOlay)
       else GorevListesi[Masaustu^.GorevKimlik]^.OlayEkle(Masaustu^.GorevKimlik, AOlay);
     end;
 
-    // uygulamaya veya efendi nesneye mesaj gÃ¶nder
+    // uygulamaya veya efendi nesneye mesaj gönder
     AOlay.Olay := BirOncekiOlay;
     if not(Masaustu^.OlayYonlendirmeAdresi = nil) then
       Masaustu^.OlayYonlendirmeAdresi(Masaustu, AOlay)
     else GorevListesi[Masaustu^.GorevKimlik]^.OlayEkle(Masaustu^.GorevKimlik, AOlay);
   end;
 
-  // geÃ§erli fare gÃ¶stergesini gÃ¼ncelle
+  // geçerli fare göstergesini güncelle
   GecerliFareGostegeTipi := Masaustu^.FFareImlecTipi;
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼nÃ¼ aktifleÅŸtirir
+  masaüstünü aktifleştirir
  ==============================================================================}
 procedure TMasaustu.Aktiflestir;
 begin
 
-  // eÄŸer masaÃ¼stÃ¼ nesnesi aktif deÄŸil ise
+  // eğer masaüstü nesnesi aktif değil ise
   if(@Self <> GAktifMasaustu) then
   begin
 
-    // aktif masaÃ¼stÃ¼ olarak belirle
+    // aktif masaüstü olarak belirle
     GAktifMasaustu := @Self;
   end;
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼nÃ¼ belirtilen renk deÄŸeri ile boyar
+  masaüstünü belirtilen renk değeri ile boyar
  ==============================================================================}
 procedure TMasaustu.MasaustunuRenkIleDoldur;
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
   Sol, Ust: TISayi4;
   Renk: TRenk;
 begin
 
-  // nesnenin kimlik, tip deÄŸerlerini denetle.
+  // nesnenin kimlik, tip değerlerini denetle.
   Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(Kimlik, gntMasaustu));
   if(Masaustu = nil) then Exit;
 
@@ -428,17 +430,17 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼ renk deÄŸerini deÄŸiÅŸtirir
+  masaüstü renk değerini değiştirir
  ==============================================================================}
 procedure TMasaustu.MasaustuRenginiDegistir(ARenk: TRenk);
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
 begin
 
   Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(Kimlik, gntMasaustu));
   if(Masaustu = nil) then Exit;
 
-  // masaÃ¼stÃ¼nÃ¼n renk deÄŸerini deÄŸiÅŸtir
+  // masaüstünün renk değerini değiştir
   Masaustu^.FMasaustuArkaPlan := 1;
   Masaustu^.FMasaustuRenk := ARenk;
 
@@ -446,20 +448,20 @@ begin
 end;
 
 {==============================================================================
-  masaÃ¼stÃ¼ resmini deÄŸiÅŸtirir - kesme iÅŸlevi
+  masaüstü resmini değiştirir - kesme işlevi
  ==============================================================================}
 procedure TMasaustu.MasaustuResminiDegistir(ADosyaYolu: string);
 var
-  Masaustu: PMasaustu;
+  Masaustu: PMasaustu = nil;
 begin
 
   Masaustu := PMasaustu(Masaustu^.NesneTipiniKontrolEt(Kimlik, gntMasaustu));
   if(Masaustu = nil) then Exit;
 
-  // masaÃ¼stÃ¼ resmini deÄŸiÅŸtir
+  // masaüstü resmini değiştir
   Masaustu^.FMasaustuArkaPlan := 2;
 
-  // daha Ã¶nce masaÃ¼stÃ¼ resmi iÃ§in bellek ayrÄ±ldÄ±ysa belleÄŸi iptal et
+  // daha önce masaüstü resmi için bellek ayrıldıysa belleği iptal et
   if not(Masaustu^.FGoruntuYapi.BellekAdresi = nil) then
   begin
 
@@ -469,7 +471,7 @@ begin
     Masaustu^.FGoruntuYapi.BellekAdresi := nil;
   end;
 
-  // resim dosyasÄ±nÄ± masaÃ¼stÃ¼ yapÄ±sÄ±na yÃ¼kle
+  // resim dosyasını masaüstü yapısına yükle
   Masaustu^.FGoruntuYapi := BMPDosyasiYukle(ADosyaYolu);
 
   if(Masaustu^.Gorunum) then Masaustu^.Ciz;

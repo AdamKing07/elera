@@ -2,8 +2,8 @@
   Sürüm: 0.3.7 - 00.00.0000 (R33)
 *******************************************************************************
   - çoklu pencere çalýþmalarý devam ediyor
-  - giysi (skin) geçiþleri masaüstü ayarlarýna ekleme çalýþmalarý devam ediyor
 
+  + giysilerarasý geçiþ iþlemleri yapýlandýrýldý ve ayar olarak masaüstü duvar kaðýdý (mustudk.c) programýna eklendi
   + TAracCubugu (TToolBar) görsel nesnesi projeye eklendi
   + tüm programlara daha önce eklenen ProgramAdi deðiþkeni görev / program adý olarak
     belirlendi ve gerekli iþlevler yazýldý

@@ -513,11 +513,11 @@ begin
 
       // kontrol düðmelerini aktifleþtir
       if not(Pencere^.FKucultmeDugmesi = nil) then
-        Pencere^.FKucultmeDugmesi^.Deger := $20000000 + 4;
+        Pencere^.FKucultmeDugmesi^.Deger := $20000000 + AktifGiysi.AKucultmeDugmesiRSNo;
       if not(Pencere^.FBuyutmeDugmesi = nil) then
-        Pencere^.FBuyutmeDugmesi^.Deger := $20000000 + 2;
+        Pencere^.FBuyutmeDugmesi^.Deger := $20000000 + AktifGiysi.ABuyutmeDugmesiRSNo;
       if not(Pencere^.FKapatmaDugmesi = nil) then
-        Pencere^.FKapatmaDugmesi^.Deger := $20000000 + 0;
+        Pencere^.FKapatmaDugmesi^.Deger := $20000000 + AktifGiysi.AKapatmaDugmesiRSNo;
     end
     else
     begin
@@ -534,11 +534,11 @@ begin
 
       // kontrol düðmelerini pasifleþtir
       if not(Pencere^.FKucultmeDugmesi = nil) then
-        Pencere^.FKucultmeDugmesi^.Deger := $20000000 + 5;
+        Pencere^.FKucultmeDugmesi^.Deger := $20000000 + AktifGiysi.PKucultmeDugmesiRSNo;
       if not(Pencere^.FBuyutmeDugmesi = nil) then
-        Pencere^.FBuyutmeDugmesi^.Deger := $20000000 + 3;
+        Pencere^.FBuyutmeDugmesi^.Deger := $20000000 + AktifGiysi.PBuyutmeDugmesiRSNo;
       if not(Pencere^.FKapatmaDugmesi = nil) then
-        Pencere^.FKapatmaDugmesi^.Deger := $20000000 + 1;
+        Pencere^.FKapatmaDugmesi^.Deger := $20000000 + AktifGiysi.PKapatmaDugmesiRSNo;
     end;
 
     // pencerenin giydirilmesi

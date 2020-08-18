@@ -6,7 +6,7 @@
   Dosya Adı: gn_islevler.pas
   Dosya İşlevi: görsel nesne (visual object) işlevlerini içerir
 
-  Güncelleme Tarihi: 21/06/2020
+  Güncelleme Tarihi: 09/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -23,6 +23,7 @@ var
 procedure Yukle;
 function GorselNesneIslevCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 procedure GorevGorselNesneleriniYokEt(AGorevKimlik: TKimlik);
+procedure PencereleriYenidenCiz;
 function GorselNesneBul(var AKonum: TKonum): PGorselNesne;
 function EnUstNesneyiAl(AGorselNesne: PGorselNesne): PGorselNesne;
 function EnUstPencereNesnesiniAl(AGorselNesne: PGorselNesne): PPencere;
@@ -203,6 +204,41 @@ begin
           // bir sonraki döngüye devam etmeden çık
           Exit;
         end;
+      end;
+    end;
+  end;
+end;
+
+{==============================================================================
+  tüm pencere nesnelerini yeniden çizer
+  bilgi: pencere giysi (skin) işlemleri için kodlanmıştır
+ ==============================================================================}
+procedure PencereleriYenidenCiz;
+var
+  Masaustu: PMasaustu;
+  Pencere: PGorselNesne;
+  AltNesneBellekAdresi: PPGorselNesne;
+  i: TISayi4;
+begin
+
+  // geçerli bir masaüstü var mı ?
+  Masaustu := GAktifMasaustu;
+  if not(Masaustu = nil) then
+  begin
+
+    // masaüstü nesnesinin alt nesnesi var ise
+    if(Masaustu^.FAltNesneSayisi > 0) then
+    begin
+
+      // masaüstünün alt nesnelerinin bellek adresini al
+      AltNesneBellekAdresi := Masaustu^.FAltNesneBellekAdresi;
+
+      // masaüstü alt nesnelerini teker teker ara
+      for i := 0 to Masaustu^.FAltNesneSayisi - 1 do
+      begin
+
+        Pencere := AltNesneBellekAdresi[i];
+        if(Pencere^.NesneTipi = gntPencere) then PPencere(Pencere)^.Ciz;
       end;
     end;
   end;

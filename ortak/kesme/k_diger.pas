@@ -17,7 +17,7 @@ interface
 
 uses paylasim;
 
-function DigerCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function DigerCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 
 implementation
 
@@ -26,29 +26,29 @@ uses sistemmesaj;
 {==============================================================================
   kategorik olmayan kesme çağrılarını yönetir
  ==============================================================================}
-function DigerCagriIslevleri(IslevNo: TSayi4; Degiskenler: Isaretci): TISayi4;
+function DigerCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  _Islev, _Sayi4: TSayi4;
+  Islev, Sayi4: TSayi4;
 begin
 
   // işlev no
-  _Islev := (IslevNo and $FF);
+  Islev := (AIslevNo and $FF);
 
   // test işlevi
   // zamanlayıcı sayacını geri döndür
-  //if(_Islev = 1) then
+  //if(Islev = 1) then
   begin
 
     asm
       rdtsc
-      mov _Sayi4,eax
+      mov Sayi4,eax
     end;
 
-    SISTEM_MESAJ_S16('Değer: ', _Sayi4, 8);
-    Result := _Sayi4;
+    //SISTEM_MESAJ_S16('Değer: ', Sayi4, 8);
+    Result := Sayi4;
   end
 
-  // işlev belirtilen aralıkta değil ise hata kodunu geri döndü_Sayi4
+  // işlev belirtilen aralıkta değil ise hata kodunu geri döndüSayi4
   //else Result := HATA_ISLEV;
 end;
 

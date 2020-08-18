@@ -7,12 +7,12 @@ program mustudk;
   Program Adý: mustudk.lpr
   Program Ýþlevi: masaüstü duvar kaðýt yönetim programý
 
-  Güncelleme Tarihi: 05/08/2020
+  Güncelleme Tarihi: 10/08/2020
 
  ==============================================================================}
 {$mode objfpc}
 uses gn_masaustu, n_gorev, gn_pencere, gn_dugme, gn_etiket, gn_secimdugmesi,
-  gn_listekutusu, gn_renksecici, n_genel;
+  gn_listekutusu, gn_renksecici, gn_karmaliste, n_genel, n_giysi;
 
 const
   ProgramAdi: string = 'Masaüstü Duvar Kaðýdý';
@@ -26,10 +26,13 @@ var
   masELERA: TMasaustu;
   Pencere: TPencere;
   lkDosyaListesi: TListeKutusu;
-  etiBilgi: array[0..1] of TEtiket;
+  etiBilgi: array[0..2] of TEtiket;
   RenkSecici: TRenkSecici;
+  GiysiListesi: TKarmaListe;
+  Giysi: TGiysi;
   Olay: TOlay;
-  i: TISayi4;
+  GiysiAdi: string;
+  i, j: TISayi4;
 
 procedure DosyalariListele;
 var
@@ -69,13 +72,13 @@ begin
   Gorev.Yukle;
   Gorev.Ad := ProgramAdi;
 
-  Pencere.Olustur(-1, 100, 100, 200, 190, ptIletisim, ProgramAdi, $F9FAF9);
+  Pencere.Olustur(-1, 100, 100, 200, 240, ptIletisim, ProgramAdi, $F9FAF9);
   if(Pencere.Kimlik < 0) then Gorev.Sonlandir(-1);
 
   etiBilgi[0].Olustur(Pencere.Kimlik, 5, 0, $FF0000, 'Masaüstü Renkleri:');
   etiBilgi[0].Goster;
 
-  RenkSecici.Olustur(Pencere.Kimlik, 5, 21, 190, 32);
+  RenkSecici.Olustur(Pencere.Kimlik, 5, 19, 190, 32);
   RenkSecici.Goster;
 
   etiBilgi[1].Olustur(Pencere.Kimlik, 5, 60, $FF0000, 'Masaüstü Resimleri:');
@@ -86,6 +89,27 @@ begin
   lkDosyaListesi.Goster;
 
   DosyalariListele;
+
+  etiBilgi[2].Olustur(Pencere.Kimlik, 5, 192, $FF0000, 'Giysiler:');
+  etiBilgi[2].Goster;
+
+  GiysiListesi.Olustur(Pencere.Kimlik, 5, 210, 190, 25);
+
+  i := Giysi.Toplam;
+  if(i > 0) then
+  begin
+
+    for j := 0 to i - 1 do
+    begin
+
+      Giysi.AdAl(j, @GiysiAdi);
+      GiysiListesi.ElemanEkle(GiysiAdi);
+    end;
+
+    j := Giysi.AktifSiraNoAl;
+    GiysiListesi.BaslikSiraNoYaz(j);
+  end;
+  GiysiListesi.Goster;
 
   // pencereyi görüntüle
   Pencere.Goster;
@@ -116,5 +140,10 @@ begin
         masELERA.Guncelle;
       end;
     end
+    else if(Olay.Olay = CO_SECIMDEGISTI) then
+    begin
+
+      Giysi.Aktiflestir(Olay.Deger1);
+    end;
   end;
 end.

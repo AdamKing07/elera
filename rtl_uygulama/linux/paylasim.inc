@@ -47,7 +47,7 @@ const
   SAC_PCI		                  = $0D;
   SAC_AG	                    = $0E;
   SAC_FARE	                  = $10;
-  IPTAL_FUNCTION_TMODE        = $11;
+  SAC_GIYSI                   = $11;
   SAC_ILETISIM                = $12;
 
   // nesneler
@@ -335,6 +335,11 @@ const
   ARP_KAYITBILGISIAL	        = $00020200 + SAC_AG;
  
   FARE_KONUMAL                = $00000100 + SAC_FARE;
+
+  GIYSI_TOPLAMAL              = $00000100 + SAC_GIYSI;
+  GIYSI_ADAL                  = $00000200 + SAC_GIYSI;
+  GIYSI_AKTIFSIRANOAL         = $00000300 + SAC_GIYSI;
+  GIYSI_AKTIFLESTIR           = $00000400 + SAC_GIYSI;
 
   // tcp / udp ham bağlantı işlevleri
   ILETISIM_BAGLAN             = $00010100 + SAC_ILETISIM;
