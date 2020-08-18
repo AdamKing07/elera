@@ -9,10 +9,8 @@ Kullanılan Yazılım Araçları:
 * Virtualbox 6.1.12
 
 ---
-Masaüstü
 ![Masaüstü](masaustu.png)
 
-Resim Görüntüleyici
 ![Resim Görüntüleyici](resimgor.png)
 
 ![Görüntü3](elera3.png)
