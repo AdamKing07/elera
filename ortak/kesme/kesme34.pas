@@ -46,7 +46,7 @@ asm
   push  ebx
 
   // bölütleri sistem bölütlerine ayarla
-  mov   bx,SECICI_SISTEM_VERI * 8
+  mov   bx,SECICI_CAGRI_VERI * 8
   mov   ds,bx
   mov   es,bx
 

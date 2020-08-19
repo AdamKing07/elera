@@ -6,7 +6,7 @@
   Dosya Adý: paylasim.pas
   Dosya Ýþlevi: tüm birimler için ortak paylaþýlan iþlevleri içerir
 
-  Güncelleme Tarihi: 11/07/2020
+  Güncelleme Tarihi: 18/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -49,15 +49,30 @@ const
   GERCEKBELLEK_DIZINADRESI = $600000;
   GERCEKBELLEK_TABLOADRESI = $610000;
 
+  // sistem için ayrýlmýþ görev sayýsý
+  AYRILMIS_GOREV_SAYISI = 3;
+
   // seçici (selector) sabitleri
-  SECICI_SISTEM_KOD     = 1;      // seçici = selector
+  AYRILMIS_SECICISAYISI = 11;      // ayrýlmýþ seçici sayýsý
+
+  // boþ seçici
+  SECICI_SISTEM_BOS     = 0;
+
+  // sistem seçicileri
+  SECICI_SISTEM_KOD     = 1;
   SECICI_SISTEM_VERI    = 2;
   SECICI_SISTEM_TSS     = 3;
-  SECICI_DENETIM_KOD    = 4;
-  SECICI_DENETIM_VERI   = 5;
-  SECICI_DENETIM_TSS    = 6;
-  SECICI_SISTEM_GRAFIK  = 7;
-  AYRILMIS_SECICISAYISI = 8;      // ayrýlmýþ seçici sayýsý
+
+  // çaðrý yanýtlayýcý seçicileri
+  SECICI_CAGRI_KOD      = 4;
+  SECICI_CAGRI_VERI     = 5;
+  SECICI_CAGRI_TSS      = 6;
+
+  SECICI_GRAFIK_KOD     = 7;
+  SECICI_GRAFIK_VERI    = 8;
+  SECICI_GRAFIK_TSS     = 9;
+
+  SECICI_GRAFIK_LFB     = 10;
 
   // PIC sabitleri
   PIC1_KOMUT  = $20;
@@ -130,14 +145,19 @@ type
   end;
 
 const
-  SISTEME_AYRILMIS_RAM  = $0A00000;         // çekirdek için ayrýlmýþ RAM = 10MB
+  SISTEME_AYRILMIS_RAM  = $0A00000;             // sistem için ayrýlmýþ RAM = 10MB
 
   BELLEK_HARITA_ADRESI: PByte = PByte($510000);
 
-  // alttaki satýrlar yeni tasarým çerçevesinde onaylanacak veya deðiþtirilecek
-  GOREV0_ESP        = $510000 - $1000;
-  GOREV3_ESP        = $570D00;
-  GOREV3_ESP_U      = $2000;           // 2048 byte
+  SISTEM_ESP        = $300000 + $10000;
+  CAGRI_ESP         = SISTEM_ESP + $10000;
+  GRAFIK_ESP        = CAGRI_ESP + $10000;
+
+  // program için ESP bellek adresi ve ESP uzunluðu
+  // $2000 (GOREV3_ESP_U) * $20 (USTSINIR_GOREVSAYISI) = $40000
+  // $400000..$440000 arasý program ESP belleði için ayrýlmýþtýr
+  GOREV3_ESP_U      = $2000;                    // her bir ESP bellek uzunluðu (8192 byte)
+  GOREV3_ESP        = $400000 + GOREV3_ESP_U;   // ilk program ESP bellek adresi
 
   BILDEN_VERIADRESI = $10008;
 
@@ -874,8 +894,7 @@ type
 var
   AgYuklendi: Boolean = False;
 
-  SistemSayaci: TSayi4;
-  SistemKontrolSayaci: TSayi4 = 0;
+  SistemSayaci, CagriSayaci, GrafikSayaci: TSayi4;
   ZamanlayiciSayaci: TSayi4 = 0;
   // görev deðiþiminin yapýlýp yapýlmamasý deðiþkeni.
   // 0 = görev deðiþtirme, 1 = görev deðiþtir

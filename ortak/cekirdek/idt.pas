@@ -149,7 +149,7 @@ begin
 
   // sistem ana kesmesi
   // %11101110 = 1 = mevcut, 11 = DPL3, 0, 1 = 32 bit kod, 110 - kesme kapýsý
-  KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_SISTEM_KOD * 8, %11101110);
+  KesmeGirisiBelirle($34, @Kesme34CagriIslevleri, SECICI_CAGRI_KOD * 8, %11101110);
 
   // IDTYazmac'ý yükle
   asm
@@ -163,7 +163,7 @@ end;
 procedure KesmeGirisiBelirle(AGirdiNo: TSayi4; ABaslangicAdresi: Isaretci;
   ASecici: TSayi2; ABayrak: TSayi1);
 var
-  _BaslangicAdresi: TSayi4;
+  BaslangicAdresi: TSayi4;
 begin
 {
       +-----------------------------------------------------+
@@ -180,13 +180,13 @@ begin
                         D = 1 = 32 bit kod  <-+          +-> kullanýlmýyor
 }
 
-  _BaslangicAdresi := TSayi4(ABaslangicAdresi);
+  BaslangicAdresi := TSayi4(ABaslangicAdresi);
 
   // temel bellek adresi (ABaslangicAdresi) - IDT: 15..00
-  IDTGirdiListesi[AGirdiNo].BaslangicAdresi00_15 := (_BaslangicAdresi and $FFFF);
+  IDTGirdiListesi[AGirdiNo].BaslangicAdresi00_15 := (BaslangicAdresi and $FFFF);
 
   // temel bellek adresi (ABaslangicAdresi) - IDT: 63..48
-  IDTGirdiListesi[AGirdiNo].BaslangicAdresi16_31 := (_BaslangicAdresi shr 16) and $FFFF;
+  IDTGirdiListesi[AGirdiNo].BaslangicAdresi16_31 := (BaslangicAdresi shr 16) and $FFFF;
 
   // seçici - IDT: 31..16
   IDTGirdiListesi[AGirdiNo].Secici := ASecici;

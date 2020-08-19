@@ -43,7 +43,7 @@ begin
   asm
     cli
 
-    mov eax,GOREV0_ESP
+    mov eax,SISTEM_ESP
     mov esp,eax
 
     fninit
@@ -79,4 +79,5 @@ begin
 
   // sistem ana kontrol kýsmýna geçiþ yap
   SistemAnaKontrol;
+  while True do begin end;
 end.

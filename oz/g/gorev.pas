@@ -6,7 +6,7 @@
   Dosya Adý: gorev.pas
   Dosya Ýþlevi: görev (program) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 05/08/2020
+  Güncelleme Tarihi: 19/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -430,7 +430,7 @@ begin
 
   // uygulamanýn TSS, CS, DS seçicilerini belirle
   // uygulamanýn ilk görev kimliði 2'dir. her bir program 3 seçici içerir
-  SeciciCSSiraNo := ((i - 2) * 3) + AYRILMIS_SECICISAYISI;
+  SeciciCSSiraNo := ((i - (AYRILMIS_GOREV_SAYISI + 1)) * 3) + AYRILMIS_SECICISAYISI;
   SeciciDSSiraNo := SeciciCSSiraNo + 1;
   SeciciTSSSiraNo := SeciciDSSiraNo + 1;
 

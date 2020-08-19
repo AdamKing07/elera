@@ -6,7 +6,7 @@
   Dosya Adý: zamanlayici.pas
   Dosya Ýþlevi: zamanlayýcý yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 15/07/2020
+  Güncelleme Tarihi: 19/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -338,7 +338,7 @@ asm
 
 @@kontrol1:
 
-  // rutin iþlev kontrollerinin gerçekleþtirildiði kýsým
+  { rutin iþlev kontrollerinin gerçekleþtirildiði kýsým }
 
   // uygulamalar tarafýndan oluþturulan zamanlayýcý nesnelerini denetle
   call  ZamanlayicilariKontrolEt
@@ -388,12 +388,14 @@ asm
   // görevin devredileceði TSS giriþini belirle
   mov   ecx,CalisanGorev
   cmp   ecx,1
-  je    @@TSS_SIS
+  je    @@TSS_SISTEM
   cmp   ecx,2
-  je    @@TSS_GOZETCI
+  je    @@TSS_CAGRI
+  cmp   ecx,3
+  je    @@TSS_GRAFIK
 
-@@TSS_UYG:
-  sub   ecx,2
+@@TSS_UYGULAMA:
+  sub   ecx,AYRILMIS_GOREV_SAYISI + 1
   imul  ecx,3
   add   ecx,AYRILMIS_SECICISAYISI + 2
   imul  ecx,8
@@ -401,13 +403,19 @@ asm
   mov   @@SECICI,cx
   jmp   @@son
 
-@@TSS_SIS:
+@@TSS_SISTEM:
   mov   ecx,SECICI_SISTEM_TSS * 8         // DPL0 - sistem
   mov   @@SECICI,cx
   jmp   @@son
 
-@@TSS_GOZETCI:
-  mov   ecx,SECICI_DENETIM_TSS * 8        // DPL0 - sistem
+@@TSS_CAGRI:
+  mov   ecx,SECICI_CAGRI_TSS * 8          // DPL0 - sistem
+//  add   ecx,3
+  mov   @@SECICI,cx
+  jmp   @@son
+
+@@TSS_GRAFIK:
+  mov   ecx,SECICI_GRAFIK_TSS * 8         // DPL0 - sistem
 //  add   ecx,3
   mov   @@SECICI,cx
 
@@ -490,13 +498,15 @@ asm
   mov [esi + TGorev.FGorevSayaci],eax
 
   cmp   CalisanGorev,1
-  je    @@TSS_SIS
-  cmp   ecx,2
-  je    @@TSS_GOZETCI
+  je    @@TSS_SISTEM
+  cmp   CalisanGorev,2
+  je    @@TSS_CAGRI
+  cmp   CalisanGorev,3
+  je    @@TSS_GRAFIK
 
-@@TSS_UYG:
+@@TSS_UYGULAMA:
   mov   eax,CalisanGorev
-  sub   eax,2
+  sub   eax,AYRILMIS_GOREV_SAYISI + 1
   imul  eax,3
   add   eax,AYRILMIS_SECICISAYISI + 2
   imul  eax,8
@@ -504,13 +514,19 @@ asm
   mov   @@SECICI,ax
   jmp   @@son
 
-@@TSS_SIS:
+@@TSS_SISTEM:
   mov   eax,SECICI_SISTEM_TSS * 8         // DPL0 - sistem
   mov   @@SECICI,ax
   jmp   @@son
 
-@@TSS_GOZETCI:
-  mov   ecx,SECICI_DENETIM_TSS * 8        // DPL0 - sistem
+@@TSS_CAGRI:
+  mov   ecx,SECICI_CAGRI_TSS * 8          // DPL0 - sistem
+//  add   ecx,3
+  mov   @@SECICI,cx
+  jmp   @@son
+
+@@TSS_GRAFIK:
+  mov   ecx,SECICI_GRAFIK_TSS * 8         // DPL0 - sistem
 //  add   ecx,3
   mov   @@SECICI,cx
 

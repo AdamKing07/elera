@@ -3,6 +3,8 @@
 *******************************************************************************
   - çoklu pencere çalýþmalarý devam ediyor
 
+  + çaðrý ve grafik iþlemleri mevcut çekirdek görevinden ayrýlarak ayrý bir görev olarak
+    yeniden tasarlandý. böylece sistemi yöneten görev sayýsý 1'den 3'e çýkarýldý
   + giysilerarasý geçiþ iþlemleri yapýlandýrýldý ve ayar olarak masaüstü duvar kaðýdý (mustudk.c) programýna eklendi
   + TAracCubugu (TToolBar) görsel nesnesi projeye eklendi
   + tüm programlara daha önce eklenen ProgramAdi deðiþkeni görev / program adý olarak

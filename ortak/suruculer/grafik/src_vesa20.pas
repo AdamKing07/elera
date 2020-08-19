@@ -6,7 +6,7 @@
   Dosya Adı: src_vesa20.pas
   Dosya İşlevi: genel vesa 2.0 grafik kartı sürücüsü
 
-  Güncelleme Tarihi: 14/06/2020
+  Güncelleme Tarihi: 19/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -55,7 +55,7 @@ procedure TEkranKartSurucusu.Yukle;
 begin
 
   // grafik
-  GDTRGirdisiEkle(SECICI_SISTEM_GRAFIK, KartBilgisi.BellekAdresi, $FFFFFF, $92, $D0);
+  GDTRGirdisiEkle(SECICI_GRAFIK_LFB, KartBilgisi.BellekAdresi, $FFFFFF, $92, $D0);
 
   // arka plan için bellek ayır
   ArkaBellek := GGercekBellek.Ayir(GEkranKartSurucusu.KartBilgisi.YatayCozunurluk *
@@ -266,7 +266,7 @@ begin
   { TODO : ileride 2 ve 4 byte'lık taşımalar gerçekleştirilerek hızlandırma artırılabilir }
   asm
     pushad
-    mov eax,SECICI_SISTEM_GRAFIK * 8
+    mov eax,SECICI_GRAFIK_LFB * 8
     mov gs,ax
     mov esi,ArkaBellek
     mov edi,0
