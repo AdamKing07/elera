@@ -6,7 +6,7 @@
   Dosya Adı: islemci.pas
   Dosya İşlevi: işlemci (cpu) işlevlerini içerir
 
-  Güncelleme Tarihi: 15/09/2019
+  Güncelleme Tarihi: 23/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,8 +17,13 @@ interface
 
 uses paylasim;
 
+var
+  // işlemci kabiliyetleri
+  iFPU, iTSC, iMSR, iAPIC, iMTRR, iACPI, iMMX,
+  iSSE, iSSE2, iSSE3, iVMX, iSSE41, iSSE42, iAVX: Boolean;
+
 function IslemciSaticisiniAl: string;
-procedure IslemciOzellikleriniAl1(var _EAX, _EDX, _ECX: TSayi4);
+procedure IslemciOzellikleriniAl1(var Aeax, Aedx, Aecx: TSayi4);
 
 implementation
 
@@ -49,10 +54,10 @@ end;
   işlemci bilgisi ve özelliklerini döndürür
   https://en.wikipedia.org/wiki/CPUID adresinden ayrıntılı bilgilere bakılabilir.
  ==============================================================================}
-procedure IslemciOzellikleriniAl1(var _EAX, _EDX, _ECX: TSayi4);
+procedure IslemciOzellikleriniAl1(var Aeax, Aedx, Aecx: TSayi4);
 var
-  _reg_eax, _reg_edx,
-  _reg_ecx: TSayi4;
+  _eax, _edx,
+  _ecx: TSayi4;
 begin
 
   asm
@@ -62,19 +67,35 @@ begin
     inc eax
     cpuid
 
-    lea edi,_reg_eax;
+    lea edi,_eax
     mov [edi],eax
-    lea edi,_reg_edx;
+    lea edi,_edx
     mov [edi],edx
-    lea edi,_reg_ecx;
+    lea edi,_ecx
     mov [edi],ecx
 
     popad
   end;
 
-  _EAX := _reg_eax;
-  _EDX := _reg_edx;
-  _ECX := _reg_ecx;
+  Aeax := _eax;
+  Aedx := _edx;
+  Aecx := _ecx;
+
+  iFPU  := (Aedx and (1 shl 00)) = (1 shl 00);
+  iTSC  := (Aedx and (1 shl 04)) = (1 shl 04);
+  iMSR  := (Aedx and (1 shl 05)) = (1 shl 05);
+  iAPIC := (Aedx and (1 shl 09)) = (1 shl 09);
+  iMTRR := (Aedx and (1 shl 12)) = (1 shl 12);
+  iACPI := (Aedx and (1 shl 22)) = (1 shl 22);
+  iMMX  := (Aedx and (1 shl 23)) = (1 shl 23);
+  iSSE  := (Aedx and (1 shl 25)) = (1 shl 25);
+  iSSE2 := (Aedx and (1 shl 26)) = (1 shl 26);
+
+  iSSE3 := (Aecx and (1 shl 00)) = (1 shl 00);
+  iVMX  := (Aecx and (1 shl 05)) = (1 shl 05);
+  iSSE41:= (Aecx and (1 shl 19)) = (1 shl 19);
+  iSSE42:= (Aecx and (1 shl 20)) = (1 shl 20);
+  iAVX  := (Aecx and (1 shl 28)) = (1 shl 28);
 end;
 
 end.

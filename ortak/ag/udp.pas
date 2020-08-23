@@ -18,8 +18,8 @@ interface
 uses paylasim;
 
 const
-  UDP_BASLIK_UZUNLUGU = 8;
-  UDP_SOZDE_UZUNLUGU  = 12;
+  UDP_BASLIK_U = 8;
+  UDP_SOZDEBASLIK_U  = 12;
 
 procedure UDPPaketleriniIsle(AUDPBaslik: PUDPPaket);
 procedure UDPPaketGonder(AMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdres;
@@ -34,12 +34,12 @@ uses genel, saglama, ip, donusum, sistemmesaj, dhcp, iletisim, dns;
  ==============================================================================}
 procedure UDPPaketleriniIsle(AUDPBaslik: PUDPPaket);
 var
-  _DNSPacket: PDNSPaket;
-  _IPAdres: TIPAdres;
-  _Baglanti: PBaglanti;
-  _KaynakPort, _HedefPort,
-  _SorguSayisi, _DigerSayisi: TSayi2;
-  _NetBIOSAdi: string;
+  DNSPacket: PDNSPaket;
+  IPAdres: TIPAdres;
+  Baglanti: PBaglanti;
+  KaynakPort, HedefPort,
+  SorguSayisi, DigerSayisi: TSayi2;
+  NetBIOSAdi: string;
   _B1: PByte;
   B1, B2, B3: TSayi1;
   _B2: PSayi2;
@@ -55,44 +55,44 @@ begin
   //SISTEM_MESAJ('UDP Veri: ' + s, []);
   {$ENDIF}
 
-  _KaynakPort := Takas2(AUDPBaslik^.KaynakPort);
-  _HedefPort := Takas2(AUDPBaslik^.HedefPort);
+  KaynakPort := Takas2(AUDPBaslik^.KaynakPort);
+  HedefPort := Takas2(AUDPBaslik^.HedefPort);
 
   // dns port = 53
-  if(_KaynakPort = 53) then
+  if(KaynakPort = 53) then
   begin
 
     DNSPaketleriniIsle(AUDPBaslik);
   end
-  else if(_HedefPort = 68) then
+  else if(HedefPort = 68) then
   begin
 
     DHCPPaketleriniIsle(@AUDPBaslik^.Veri);
   end
-  else if(_KaynakPort = 137) and (_HedefPort = 137) then
+  else if(KaynakPort = 137) and (HedefPort = 137) then
   begin
 
-    _DNSPacket := @AUDPBaslik^.Veri;
+    DNSPacket := @AUDPBaslik^.Veri;
 
     {SISTEM_MESAJ('UDP: NetBios', []);
-    SISTEM_MESAJ_S16('-> IslemKimlik: ', Takas2(_DNSPacket^.Tanimlayici), 4);
-    SISTEM_MESAJ_S16('-> Bayrak: ', Takas2(_DNSPacket^.Bayrak), 4);
-    SISTEM_MESAJ_S16('-> SorguSayisi: ', Takas2(_DNSPacket^.SorguSayisi), 4);
-    SISTEM_MESAJ_S16('-> YanitSayisi: ', Takas2(_DNSPacket^.YanitSayisi), 4);
-    SISTEM_MESAJ_S16('-> YetkiSayisi: ', Takas2(_DNSPacket^.YetkiSayisi), 4);
-    SISTEM_MESAJ_S16('-> DigerSayisi: ', Takas2(_DNSPacket^.DigerSayisi), 4);}
+    SISTEM_MESAJ_S16('-> IslemKimlik: ', Takas2(DNSPacket^.Tanimlayici), 4);
+    SISTEM_MESAJ_S16('-> Bayrak: ', Takas2(DNSPacket^.Bayrak), 4);
+    SISTEM_MESAJ_S16('-> SorguSayisi: ', Takas2(DNSPacket^.SorguSayisi), 4);
+    SISTEM_MESAJ_S16('-> YanitSayisi: ', Takas2(DNSPacket^.YanitSayisi), 4);
+    SISTEM_MESAJ_S16('-> YetkiSayisi: ', Takas2(DNSPacket^.YetkiSayisi), 4);
+    SISTEM_MESAJ_S16('-> DigerSayisi: ', Takas2(DNSPacket^.DigerSayisi), 4);}
 
     // sorgu sayýsý ve yanýt sayýsý kontrolü
-    _SorguSayisi := Takas2(_DNSPacket^.SorguSayisi);
-    _DigerSayisi := Takas2(_DNSPacket^.DigerSayisi);
+    SorguSayisi := Takas2(DNSPacket^.SorguSayisi);
+    DigerSayisi := Takas2(DNSPacket^.DigerSayisi);
 
     // SADECE 1 adet sorguya sahip baþlýk deðerlendirilecek
-    if(_SorguSayisi <> 1) then Exit;
-    if(_DigerSayisi <> 1) then Exit;
+    if(SorguSayisi <> 1) then Exit;
+    if(DigerSayisi <> 1) then Exit;
 
-    _NetBIOSAdi := '';
+    NetBIOSAdi := '';
 
-    _B1 := @_DNSPacket^.Veriler;
+    _B1 := @DNSPacket^.Veriler;
     Inc(_B1);    // uzunluðu atla
     while _B1^ <> 0 do
     begin
@@ -105,7 +105,7 @@ begin
       B3 := (B1 - Ord('A')) shl 4;
       B3 := (B2 - Ord('A')) or B3;
 
-      _NetBIOSAdi := _NetBIOSAdi + Char(B3);
+      NetBIOSAdi := NetBIOSAdi + Char(B3);
     end;
 
     // sýfýr sonlandýrmayý atla
@@ -120,7 +120,7 @@ begin
     Inc(_B2);
 
     SISTEM_MESAJ('NetBios Bilgileri: ', []);
-    SISTEM_MESAJ_YAZI('-> Ad: ', _NetBIOSAdi);
+    SISTEM_MESAJ_YAZI('-> Ad: ', NetBIOSAdi);
 
     SISTEM_MESAJ_S16('-> Tip: ', Takas2(_B2^), 4);
     Inc(_B2);
@@ -141,28 +141,28 @@ begin
     _B1 := PSayi1(_B2);
 
     // ip adresi
-    _IPAdres[0] := _B1^;
+    IPAdres[0] := _B1^;
     Inc(_B1);
-    _IPAdres[1] := _B1^;
+    IPAdres[1] := _B1^;
     Inc(_B1);
-    _IPAdres[2] := _B1^;
+    IPAdres[2] := _B1^;
     Inc(_B1);
-    _IPAdres[3] := _B1^;
+    IPAdres[3] := _B1^;
 
-    SISTEM_MESAJ_IP('-> IP Adresi: ', _IPAdres);
+    SISTEM_MESAJ_IP('-> IP Adresi: ', IPAdres);
   end
   else
   begin
 
     {SISTEM_MESAJ('UDP: Bilinmeyen istek', []);
-    SISTEM_MESAJ('  -> Kaynak Port: %d', [_KaynakPort]);
-    SISTEM_MESAJ('  -> Hedef Port: %d', [_HedefPort]);}
+    SISTEM_MESAJ('  -> Kaynak Port: %d', [KaynakPort]);
+    SISTEM_MESAJ('  -> Hedef Port: %d', [HedefPort]);}
 
-    _Baglanti := _Baglanti^.UDPBaglantiAl(_HedefPort);
-    if(_Baglanti = nil) then
+    Baglanti := Baglanti^.UDPBaglantiAl(HedefPort);
+    if(Baglanti = nil) then
     begin
 
-      SISTEM_MESAJ('Eþleþen UDP port bulunamadý: %d', [_HedefPort]);
+      SISTEM_MESAJ('Eþleþen UDP port bulunamadý: %d', [HedefPort]);
       Exit;
     end
     else
@@ -173,7 +173,7 @@ begin
       //SISTEM_MESAJ('UDP Veri Uzunluðu: %d', [B2]);
 
       // 8 byte, udp paket baþlýk uzunluðu
-      if(B2 > 8) then _Baglanti^.BellegeEkle(@AUDPBaslik^.Veri, B2 - 8);
+      if(B2 > 8) then Baglanti^.BellegeEkle(@AUDPBaslik^.Veri, B2 - 8);
     end;
   end;
 end;
@@ -184,36 +184,36 @@ end;
 procedure UDPPaketGonder(AMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdres;
   AKaynakPort, AHedefPort: TSayi2; AVeri: Isaretci; AVeriUzunlugu: TISayi4);
 var
-  _UDPBaslik: PUDPPaket;
-  _SozdeBaslik: TSozdeBaslik;
-  _SaglamaDeger: TSayi2;
-  _B1: PSayi1;
+  UDPBaslik: PUDPPaket;
+  SozdeBaslik: TSozdeBaslik;
+  SaglamaDeger: TSayi2;
+  B1: PSayi1;
 begin
 
-  _UDPBaslik := GGercekBellek.Ayir(AVeriUzunlugu + UDP_BASLIK_UZUNLUGU);
+  UDPBaslik := GGercekBellek.Ayir(AVeriUzunlugu + UDP_BASLIK_U);
 
   // udp için ek baþlýk hesaplanýyor
-  _SozdeBaslik.KaynakIPAdres := AKaynakAdres;
-  _SozdeBaslik.HedefIPAdres := AHedefAdres;
-  _SozdeBaslik.Sifir := 0;
-  _SozdeBaslik.Protokol := PROTOKOL_UDP;
-  _SozdeBaslik.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + UDP_BASLIK_UZUNLUGU));
+  SozdeBaslik.KaynakIPAdres := AKaynakAdres;
+  SozdeBaslik.HedefIPAdres := AHedefAdres;
+  SozdeBaslik.Sifir := 0;
+  SozdeBaslik.Protokol := PROTOKOL_UDP;
+  SozdeBaslik.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + UDP_BASLIK_U));
 
   // udp paketi hazýrlanýyor
-  _UDPBaslik^.KaynakPort := Takas2(TSayi2(AKaynakPort));
-  _UDPBaslik^.HedefPort := Takas2(TSayi2(AHedefPort));
-  _UDPBaslik^.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + UDP_BASLIK_UZUNLUGU));
-  _UDPBaslik^.SaglamaToplam := $0000;
-  _B1 := @_UDPBaslik^.Veri;
-  Tasi2(PSayi1(AVeri), _B1, AVeriUzunlugu);
-  _SaglamaDeger := SaglamasiniYap(_UDPBaslik, AVeriUzunlugu + UDP_BASLIK_UZUNLUGU,
-    @_SozdeBaslik, UDP_SOZDE_UZUNLUGU);
-  _UDPBaslik^.SaglamaToplam := Takas2(TSayi2(_SaglamaDeger));
+  UDPBaslik^.KaynakPort := Takas2(TSayi2(AKaynakPort));
+  UDPBaslik^.HedefPort := Takas2(TSayi2(AHedefPort));
+  UDPBaslik^.Uzunluk := Takas2(TSayi2(AVeriUzunlugu + UDP_BASLIK_U));
+  UDPBaslik^.SaglamaToplam := $0000;
+  B1 := @UDPBaslik^.Veri;
+  Tasi2(PSayi1(AVeri), B1, AVeriUzunlugu);
+  SaglamaDeger := SaglamasiniYap(UDPBaslik, AVeriUzunlugu + UDP_BASLIK_U,
+    @SozdeBaslik, UDP_SOZDEBASLIK_U);
+  UDPBaslik^.SaglamaToplam := Takas2(TSayi2(SaglamaDeger));
 
-  IPPaketGonder(AMACAdres, AKaynakAdres, AHedefAdres, ptUDP, 0, _UDPBaslik,
-    AVeriUzunlugu + UDP_BASLIK_UZUNLUGU);
+  IPPaketGonder(AMACAdres, AKaynakAdres, AHedefAdres, ptUDP, 0, UDPBaslik,
+    AVeriUzunlugu + UDP_BASLIK_U);
 
-  GGercekBellek.YokEt(_UDPBaslik, AVeriUzunlugu + UDP_BASLIK_UZUNLUGU);
+  GGercekBellek.YokEt(UDPBaslik, AVeriUzunlugu + UDP_BASLIK_U);
 end;
 
 end.

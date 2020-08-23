@@ -49,7 +49,7 @@ type
     function BosGorevBul: PGorev;
     procedure SecicileriOlustur;
   public
-    FAnaPencere: PPencere;
+    FAktifPencere: PPencere;              // görevin aktif penceresi
     FOlayBellekAdresi: POlay;             // olaylarýn yerleþtirileceði bellek bölgesi
     FOlaySayisi: TSayi4;                  // olay sayacý
 
@@ -110,14 +110,16 @@ const
     ('Hata No: 15 - Tanýmlanmamýþ'));
 
 const
-  ILISKILI_UYGULAMA_SAYISI = 7;
+  ILISKILI_UYGULAMA_SAYISI = 9;
   IliskiliUygulamaListesi: array[0..ILISKILI_UYGULAMA_SAYISI - 1] of TDosyaIliskisi = (
     (Uzanti: '';     Uygulama: 'dsybil.c';     DosyaTip: dtDiger),
     (Uzanti: 'c';    Uygulama: '';             DosyaTip: dtCalistirilabilir),
     (Uzanti: 's';    Uygulama: '';             DosyaTip: dtSurucu),
     (Uzanti: 'bmp';  Uygulama: 'resimgor.c';   DosyaTip: dtResim),
-    (Uzanti: 'txt';  Uygulama: 'defter.c';     DosyaTip: dtBelge),
+    (Uzanti: 'bat';  Uygulama: 'defter.c';     DosyaTip: dtBelge),
     (Uzanti: 'lpr';  Uygulama: 'defter.c';     DosyaTip: dtBelge),
+    (Uzanti: 'md';   Uygulama: 'defter.c';     DosyaTip: dtBelge),
+    (Uzanti: 'txt';  Uygulama: 'defter.c';     DosyaTip: dtBelge),
     (Uzanti: 'pas';  Uygulama: 'defter.c';     DosyaTip: dtBelge));
 
 {==============================================================================
@@ -142,7 +144,7 @@ begin
     Gorev^.FGorevDurum := gdBos;
     Gorev^.FGorevKimlik := i;
     Gorev^.FOlayBellekBosta := True;
-    Gorev^.FAnaPencere := nil;
+    Gorev^.FAktifPencere := nil;
 
     Inc(Gorev);
   end;
@@ -711,8 +713,8 @@ begin
     // 2. pencereye sahip ise
     // 3. pencere tipi baþlýksýz deðilse
     if not(GorevListesi[i]^.FGorevDurum = gdBos) and
-      not(GorevListesi[i]^.FAnaPencere = nil) and
-      not(GorevListesi[i]^.FAnaPencere^.FPencereTipi = ptBasliksiz) then Inc(Result);
+      not(GorevListesi[i]^.FAktifPencere = nil) and
+      not(GorevListesi[i]^.FAktifPencere^.FPencereTipi = ptBasliksiz) then Inc(Result);
   end;
 end;
 
@@ -735,17 +737,17 @@ begin
     // 2. pencereye sahip ise
     // 3. pencere tipi baþlýksýz deðilse
     if not(GorevListesi[i]^.FGorevDurum = gdBos) and
-      not(GorevListesi[i]^.FAnaPencere = nil) and
-      not(GorevListesi[i]^.FAnaPencere^.FPencereTipi = ptBasliksiz) then Inc(ArananGorev);
+      not(GorevListesi[i]^.FAktifPencere = nil) and
+      not(GorevListesi[i]^.FAktifPencere^.FPencereTipi = ptBasliksiz) then Inc(ArananGorev);
 
     // görev sýra no aranan görev ise iþlem bellek bölgesini geri döndür
     if(AGorevSiraNo = ArananGorev) then
     begin
 
-      Result.PencereKimlik := GorevListesi[i]^.FAnaPencere^.Kimlik;
+      Result.PencereKimlik := GorevListesi[i]^.FAktifPencere^.Kimlik;
       Result.GorevKimlik := GorevListesi[i]^.GorevKimlik;
-      Result.PencereTipi := GorevListesi[i]^.FAnaPencere^.FPencereTipi;
-      Result.PencereDurum := GorevListesi[i]^.FAnaPencere^.FPencereDurum;
+      Result.PencereTipi := GorevListesi[i]^.FAktifPencere^.FPencereTipi;
+      Result.PencereDurum := GorevListesi[i]^.FAktifPencere^.FPencereDurum;
       Result.DosyaAdi := GorevListesi[i]^.FDosyaAdi;
       Exit;
     end;

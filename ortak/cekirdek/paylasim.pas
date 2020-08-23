@@ -907,6 +907,12 @@ var
 
   ToplamGNSayisi, ToplamMasaustu: TSayi4;
 
+  // að - gelen paket sayýlarý
+  ICMPPaketSayisi: TSayi4 = 0;
+  TCPPaketSayisi: TSayi4 = 0;
+  UDPPaketSayisi: TSayi4 = 0;
+  GAEPaketSayisi: TSayi4 = 0;     // GözArdýEdilen paket sayýsý
+
 const
   TSS_UZUNLUK = 104 + 8192;   // 104 byte TSS, 8192 byte giriþ / çýkýþ port izin haritasý
 
@@ -927,6 +933,7 @@ type
   PPencereTipi = ^TPencereTipi;
   TPencereTipi = (ptBasliksiz, ptIletisim, ptBoyutlanabilir);
 
+  { TODO : sadece baþlýðýn görüntüleneceði bir durum eklenecek }
   PPencereDurum = ^TPencereDurum;
   TPencereDurum = (pdNormal, pdKucultuldu, pdBuyutuldu);
 

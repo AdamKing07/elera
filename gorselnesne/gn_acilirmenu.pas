@@ -50,7 +50,7 @@ uses genel, temelgorselnesne;
  ==============================================================================}
 function AcilirMenuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
   AElemanAdi: string;
   AResimSiraNo: TISayi4;
 begin
@@ -115,7 +115,7 @@ end;
 function NesneOlustur(AKenarlikRengi, AGovdeRengi, ASecimRengi, ANormalYaziRengi,
   ASeciliYaziRengi: TRenk): TKimlik;
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
 begin
 
   { TODO : GAktifMasaustu deðeri API iþlevlerinde deðiþtirilerek nesnenin sahibi olan nesne atanacak }
@@ -136,7 +136,7 @@ function TAcilirMenu.Olustur(AAtaNesne: PGorselNesne; ASol, AUst, AGenislik, AYu
   AElemanYukseklik: TISayi4; AKenarlikRengi, AGovdeRengi, ASecimRengi, ANormalYaziRengi,
   ASeciliYaziRengi: TRenk): PAcilirMenu;
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
 begin
 
   AcilirMenu := PAcilirMenu(inherited Olustur(AAtaNesne, gntAcilirMenu, ASol, AUst,
@@ -169,7 +169,7 @@ end;
  ==============================================================================}
 procedure TAcilirMenu.Goster;
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
   Olay: TOlay;
 begin
 
@@ -205,7 +205,7 @@ end;
  ==============================================================================}
 procedure TAcilirMenu.Gizle;
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
   Olay: TOlay;
 begin
 
@@ -247,7 +247,7 @@ end;
  ==============================================================================}
 procedure TAcilirMenu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
 begin
 
   AcilirMenu := PAcilirMenu(AGonderici);
@@ -264,7 +264,7 @@ end;
 function TAcilirMenu.MenuEkle(ADeger: string; AResimSiraNo: TISayi4 = -1;
   AMenuBoyutDegistir: Boolean = False): Boolean;
 var
-  AcilirMenu: PAcilirMenu;
+  AcilirMenu: PAcilirMenu = nil;
   i: TISayi4;
 begin
 

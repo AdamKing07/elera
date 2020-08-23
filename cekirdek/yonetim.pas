@@ -18,7 +18,7 @@ interface
 uses paylasim, gn_pencere, gn_etiket, zamanlayici, dns, gn_panel, gorselnesne,
   gn_gucdugmesi, gn_resim, gn_karmaliste, gn_degerlistesi, gn_dugme, gn_izgara,
   gn_araccubugu, gn_durumcubugu, gn_giriskutusu, gn_onaykutusu, gn_sayfakontrol,
-  gn_defter, gn_kaydirmacubugu;
+  gn_defter, gn_kaydirmacubugu, islemci;
 
 type
   // gerçek moddan gelen veri yapýsý
@@ -180,7 +180,7 @@ begin
   GorevListesi[1]^.BellekUzunlugu := CekirdekUzunlugu;
   GorevListesi[1]^.OlaySayisi := 0;
   GorevListesi[1]^.OlayBellekAdresi := nil;
-  GorevListesi[1]^.FAnaPencere := nil;
+  GorevListesi[1]^.FAktifPencere := nil;
 
   GorevListesi[1]^.FDosyaAdi := 'cekirdek.bin';
   GorevListesi[1]^.FProgramAdi := 'Sistem Çekirdeði';
@@ -277,6 +277,10 @@ begin
         // test amaçlý
         else if(Tus = '3') then
         begin
+
+          if(iMTRR) then
+            SISTEM_MESAJ('MTRR Mevcut', [])
+          else SISTEM_MESAJ('MTRR Yok', []);
 
           Gorev^.Calistir('disk1:\iskelet.c');
           //Gorev^.Calistir('disk1:\dnssorgu.c');
@@ -379,7 +383,7 @@ begin
   GorevListesi[2]^.BellekUzunlugu := $FFFFFFFF;
   GorevListesi[2]^.OlaySayisi := 0;
   GorevListesi[2]^.OlayBellekAdresi := nil;
-  GorevListesi[2]^.FAnaPencere := nil;
+  GorevListesi[2]^.FAktifPencere := nil;
 
   // sistem görev adý (dosya adý)
   GorevListesi[2]^.FDosyaAdi := 'çaðrý.bin';
@@ -436,7 +440,7 @@ begin
   GorevListesi[3]^.BellekUzunlugu := $FFFFFFFF;
   GorevListesi[3]^.OlaySayisi := 0;
   GorevListesi[3]^.OlayBellekAdresi := nil;
-  GorevListesi[3]^.FAnaPencere := nil;
+  GorevListesi[3]^.FAktifPencere := nil;
 
   // sistem görev adý (dosya adý)
   GorevListesi[3]^.FDosyaAdi := 'grafik.bin';

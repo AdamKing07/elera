@@ -496,30 +496,30 @@ end;
 // bilgi: fat32 dosya sistemi uzun dosya adları için
 function WideChar2String(ABellek: PWideChar): string;
 var
-  _p: PByte;
-  _B1, _B2: TSayi1;
-  _WideCharKod: TISayi4;
+  p: PByte;
+  B1, B2: TSayi1;
+  WideCharKod: TISayi4;
 begin
 
   Result := '';
 
-  _p := PByte(ABellek);
+  p := PByte(ABellek);
 
-  _B1 := _p^;
-  Inc(_p);
-  _B2 := _p^;
-  Inc(_p);
+  B1 := p^;
+  Inc(p);
+  B2 := p^;
+  Inc(p);
 
-  while (_B1 <> 0) or (_B2 <> 0) do
+  while (B1 <> 0) or (B2 <> 0) do
   begin
 
-    _WideCharKod := (_B2 shl 8) or _B1;
-    Result += WideChar2Char(_WideCharKod);
+    WideCharKod := (B2 shl 8) or B1;
+    Result += WideChar2Char(WideCharKod);
 
-    _B1 := Byte(_p^);
-    Inc(_p);
-    _B2 := Byte(_p^);
-    Inc(_p);
+    B1 := Byte(p^);
+    Inc(p);
+    B2 := Byte(p^);
+    Inc(p);
   end;
 end;
 
@@ -579,7 +579,7 @@ end;
  ==============================================================================}
 function HamDosyaAdiniDosyaAdinaCevir(ADizinGirdisi: PDizinGirdisi): string;
 var
-  _NoktaEklendi: Boolean;
+  NoktaEklendi: Boolean;
   i: TSayi4;
 begin
 
@@ -597,16 +597,16 @@ begin
   end;
 
   // dosya uzantısını çevir
-  _NoktaEklendi := False;
+  NoktaEklendi := False;
   i := 0;
   while (i < 3) and (ADizinGirdisi^.Uzanti[i] <> ' ') do
   begin
 
-    if(_NoktaEklendi = False) then
+    if(NoktaEklendi = False) then
     begin
 
       Result := Result + '.';
-      _NoktaEklendi := True;
+      NoktaEklendi := True;
     end;
 
     Result := Result + LowerCase(ADizinGirdisi^.Uzanti[i]);

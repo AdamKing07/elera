@@ -6,7 +6,7 @@
   Dosya Adý: gn_pencere.pas
   Dosya Ýþlevi: pencere (TForm) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 23/07/2020
+  Güncelleme Tarihi: 20/08/2020
 
   Önemli Bilgiler:
 
@@ -36,6 +36,7 @@ type
     procedure IcBilesenleriKonumlandir(var APencere: PPencere);
     procedure KontrolDugmesiOlaylariniIsle(AGonderici: PGorselNesne; AOlay: TOlay);
   public
+    FAtaPencere: PPencere;          // pencerenin (varsa) bir üst penceresi
     FPencereDurum: TPencereDurum;
     FPencereTipi: TPencereTipi;
     FKucultmeDugmesi, FBuyutmeDugmesi, FKapatmaDugmesi: PResimDugmesi;
@@ -188,7 +189,7 @@ begin
 
   // pencerenin ana pencere olup olmadýðýný tespit et
   Gorev := Gorev^.GorevBul(CalisanGorev);
-  if not(Gorev = nil) and (Gorev^.FAnaPencere = nil) then
+  if not(Gorev = nil) and (Gorev^.FAktifPencere = nil) then
     AnaPencere := True
   else AnaPencere := False;
 
@@ -236,8 +237,9 @@ begin
 
   Pencere^.FTuvalNesne := Pencere;
 
-  // görevin ana penceresini ata
-  Gorev^.FAnaPencere := Pencere;
+  // görevin ata penceresini ve pencerenin aktif penceresini belirle
+  Pencere^.FAtaPencere := Gorev^.FAktifPencere;
+  Gorev^.FAktifPencere := Pencere;
 
   Pencere^.OlayCagriAdresi := @OlaylariIsle;
 

@@ -6,7 +6,7 @@
   Dosya Adı: ip.pas
   Dosya İşlevi: ip paket yönetim işlevlerini içerir
 
-  Güncelleme Tarihi: 30/03/2020
+  Güncelleme Tarihi: 20/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -17,7 +17,7 @@ interface
 uses paylasim, genel, saglama, ag, sistemmesaj;
 
 const
-  IP_BASLIKU = 20;
+  IP_BASLIK_U = 20;
 
 procedure IPPaketleriniIsle(AIPPaket: PIPPaket; AIPPaketUzunluk: TISayi4);
 procedure IPPaketGonder(AHedefMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TIPAdres;
@@ -43,22 +43,30 @@ begin
 
     // icmp protokolü
     if(AIPPaket^.Protokol = PROTOKOL_ICMP) then
+    begin
 
-      ICMPPaketleriniIsle(@AIPPaket^.Veri, AIPPaketUzunluk - IP_BASLIKU, AIPPaket^.KaynakIP)
-
+      Inc(ICMPPaketSayisi);
+      ICMPPaketleriniIsle(@AIPPaket^.Veri, AIPPaketUzunluk - IP_BASLIK_U, AIPPaket^.KaynakIP)
+    end
     // tcp protokolü
     else if(AIPPaket^.Protokol = PROTOKOL_TCP) then
+    begin
 
+      Inc(TCPPaketSayisi);
       TCPPaketleriniIsle(AIPPaket)
-
+    end
     // udp protokolü
     else if(AIPPaket^.Protokol = PROTOKOL_UDP) then
+    begin
 
+      Inc(UDPPaketSayisi);
       UDPPaketleriniIsle(PUDPPaket(@AIPPaket^.Veri));
+    end;
   end
   else
   begin
 
+    Inc(GAEPaketSayisi);
     SISTEM_MESAJ('IP.PAS: bilinmeyen IP paketi:', []);
     SISTEM_MESAJ_IP('  -> Hedef IP adresi: ', AIPPaket^.HedefIP);
     SISTEM_MESAJ('  -> Hedef protokol: %d', [AIPPaket^.Protokol]);
@@ -70,44 +78,44 @@ procedure IPPaketGonder(AHedefMACAdres: TMACAdres; AKaynakAdres, AHedefAdres: TI
   AProtokolTip: TProtokolTip; ABayrakVeParcaSiraNo: TSayi2; AVeri: Isaretci;
   AVeriUzunlugu: TSayi2);
 var
-  _IPPaket: PIPPaket;
-  _Veri: PByte;
+  IPPaket: PIPPaket;
+  Veri: PByte;
   SaglamaToplam: TSayi2;
 begin
 
   // paket için bellek bölgesi oluştur
-  _IPPaket := GGercekBellek.Ayir(AVeriUzunlugu + IP_BASLIKU);
+  IPPaket := GGercekBellek.Ayir(AVeriUzunlugu + IP_BASLIK_U);
 
   // ip paketi hazırlanıyor
-  _IPPaket^.SurumVeBaslikUzunlugu := $45;     // 4 = ip4; 5 * 4 = ip başlık uzunluğu
-  _IPPaket^.ServisTipi := $00;
-  _IPPaket^.ToplamUzunluk := Takas2(AVeriUzunlugu + IP_BASLIKU);
-  _IPPaket^.Tanimlayici := Takas2(GIPTanimlayici);
+  IPPaket^.SurumVeBaslikUzunlugu := $45;     // 4 = ip4; 5 * 4 = ip başlık uzunluğu
+  IPPaket^.ServisTipi := $00;
+  IPPaket^.ToplamUzunluk := Takas2(AVeriUzunlugu + IP_BASLIK_U);
+  IPPaket^.Tanimlayici := Takas2(GIPTanimlayici);
   // BayrakVeParcaSiraNo: $4000 = tcp / http, $0000 = dns
-  _IPPaket^.BayrakVeParcaSiraNo := Takas2(ABayrakVeParcaSiraNo);
-  _IPPaket^.YasamSuresi := $80;
+  IPPaket^.BayrakVeParcaSiraNo := Takas2(ABayrakVeParcaSiraNo);
+  IPPaket^.YasamSuresi := $80;
   case AProtokolTip of
-    ptICMP: _IPPaket^.Protokol := PROTOKOL_ICMP;
-    ptTCP : _IPPaket^.Protokol := PROTOKOL_TCP;
-    ptUDP : _IPPaket^.Protokol := PROTOKOL_UDP;
+    ptICMP: IPPaket^.Protokol := PROTOKOL_ICMP;
+    ptTCP : IPPaket^.Protokol := PROTOKOL_TCP;
+    ptUDP : IPPaket^.Protokol := PROTOKOL_UDP;
   end;
-  _IPPaket^.KaynakIP := AKaynakAdres;
-  _IPPaket^.HedefIP := AHedefAdres;
+  IPPaket^.KaynakIP := AKaynakAdres;
+  IPPaket^.HedefIP := AHedefAdres;
 
   // sağlama öncesi BaslikSaglamaToplami değeri sıfırlanıyor
-  _IPPaket^.BaslikSaglamaToplami := $0000;
-  SaglamaToplam := SaglamasiniYap(_IPPaket, IP_BASLIKU, nil, 0);
-  _IPPaket^.BaslikSaglamaToplami := Takas2(SaglamaToplam);
+  IPPaket^.BaslikSaglamaToplami := $0000;
+  SaglamaToplam := SaglamasiniYap(IPPaket, IP_BASLIK_U, nil, 0);
+  IPPaket^.BaslikSaglamaToplami := Takas2(SaglamaToplam);
 
   Inc(GIPTanimlayici);
 
-  _Veri := @_IPPaket^.Veri;
-  Tasi2(AVeri, _Veri, AVeriUzunlugu);
+  Veri := @IPPaket^.Veri;
+  Tasi2(AVeri, Veri, AVeriUzunlugu);
 
   // paketi donanıma (ethernet) gönder
-  AgKartinaVeriGonder(AHedefMACAdres, ptIP, _IPPaket, AVeriUzunlugu + IP_BASLIKU);
+  AgKartinaVeriGonder(AHedefMACAdres, ptIP, IPPaket, AVeriUzunlugu + IP_BASLIK_U);
 
-  GGercekBellek.YokEt(_IPPaket, AVeriUzunlugu + IP_BASLIKU);
+  GGercekBellek.YokEt(IPPaket, AVeriUzunlugu + IP_BASLIK_U);
 end;
 
 end.

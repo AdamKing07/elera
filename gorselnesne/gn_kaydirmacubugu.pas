@@ -6,7 +6,7 @@
   Dosya Adý: gn_kaydirmacubugu.pp
   Dosya Ýþlevi: kaydýrma çubuðu (TScrollBar) yönetim iþlevlerini içerir
 
-  Güncelleme Tarihi: 05/08/2020
+  Güncelleme Tarihi: 20/08/2020
 
  ==============================================================================}
 {$mode objfpc}
@@ -24,8 +24,6 @@ type
   public
     FYon: TYon;
     FMevcutDeger, FAltDeger, FUstDeger: TISayi4;
-    // kaydýrma çubuðunun ortasýndaki çubuðun uzunluðu
-    FCubukU: TISayi4;
     FEksiltmeDugmesi, FArtirmaDugmesi: PResimDugmesi;
     function Olustur(AKullanimTipi: TKullanimTipi; AAtaNesne: PGorselNesne; ASol, AUst,
       AGenislik, AYukseklik: TISayi4; AYon: TYon): PKaydirmaCubugu;
@@ -134,12 +132,12 @@ begin
 
   // dikey kaydýrma çubuðunun geniþliði 15px (0..15 = 16px) olarak sabitleniyor
   if(AYon = yDikey) then
-    Genislik := 15
+    Genislik := 16
   else Genislik := AGenislik;
 
   // yatay kaydýrma çubuðunun yüksekliði 15px (0..15 = 16px) olarak sabitleniyor
   if(AYon = yYatay) then
-    Yukseklik := 15
+    Yukseklik := 16
   else Yukseklik := AYukseklik;
 
   KaydirmaCubugu := PKaydirmaCubugu(inherited Olustur(AKullanimTipi, AAtaNesne,
@@ -276,8 +274,8 @@ procedure TKaydirmaCubugu.Ciz;
 var
   KaydirmaCubugu: PKaydirmaCubugu = nil;
   Alan: TAlan;
-  FYuzde1, FYuzde2: Double;
-  i: TISayi4;
+  Frekans: Double;
+  AraBoslukU, i: TISayi4;
 begin
 
   inherited Ciz;
@@ -291,28 +289,24 @@ begin
   if(KaydirmaCubugu^.FYon = yDikey) then
   begin
 
-    // kaydýrma çubuk uzunluðu = ara boþluðun yarýsý
-    KaydirmaCubugu^.FCubukU := (Alan.Alt - ((KaydirmaCubugu^.FBoyut.Genislik + 1) * 2)) div 2;
+    AraBoslukU := KaydirmaCubugu^.FBoyut.Yukseklik - (16 * 3);
+    Frekans := AraBoslukU / KaydirmaCubugu^.FUstDeger;
 
-    FYuzde1 := (KaydirmaCubugu^.FMevcutDeger * 100) / KaydirmaCubugu^.FUstDeger;
-    FYuzde2 := KaydirmaCubugu^.FCubukU / 100;
-    i := Round(FYuzde1 * FYuzde2);
+    i := Round(KaydirmaCubugu^.FMevcutDeger * Frekans);
 
     DikdortgenDoldur(KaydirmaCubugu, Alan.Sol + 2, Alan.Ust + 16 + i,
-      Alan.Sag - 2, Alan.Ust + 16 + i + KaydirmaCubugu^.FCubukU, $7F7F7F, $7F7F7F);
+      Alan.Sag - 2, Alan.Ust + 16 + i + 16, $7F7F7F, $7F7F7F);
   end
   else
   begin
 
-    // kaydýrma çubuk uzunluðu = ara boþluðun yarýsý
-    KaydirmaCubugu^.FCubukU := (Alan.Sag - ((KaydirmaCubugu^.FBoyut.Yukseklik + 1) * 2)) div 2;
+    AraBoslukU := KaydirmaCubugu^.FBoyut.Genislik - (16 * 3);
+    Frekans := AraBoslukU / KaydirmaCubugu^.FUstDeger;
 
-    FYuzde1 := (KaydirmaCubugu^.FMevcutDeger * 100) / KaydirmaCubugu^.FUstDeger;
-    FYuzde2 := KaydirmaCubugu^.FCubukU / 100;
-    i := Round(FYuzde1 * FYuzde2);
+    i := Round(KaydirmaCubugu^.FMevcutDeger * Frekans);
 
     DikdortgenDoldur(KaydirmaCubugu, Alan.Sol + 16 + i, Alan.Ust + 2,
-      Alan.Sol + 16 + i + KaydirmaCubugu^.FCubukU, Alan.Alt - 2, $7F7F7F, $7F7F7F);
+      Alan.Sol + 16 + i + 16, Alan.Alt - 2, $7F7F7F, $7F7F7F);
   end;
 end;
 

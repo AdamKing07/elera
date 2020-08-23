@@ -55,7 +55,7 @@ uses genel, temelgorselnesne, gn_islevler, sistemmesaj;
  ==============================================================================}
 function MenuCagriIslevleri(AIslevNo: TSayi4; ADegiskenler: Isaretci): TISayi4;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
   AElemanAdi: string;
   AResimSiraNo: TISayi4;
 begin
@@ -119,7 +119,7 @@ end;
  ==============================================================================}
 function NesneOlustur(ASol, AUst, AGenislik, AYukseklik, AElemanYukseklik: TISayi4): TKimlik;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
 begin
 
   { TODO : GAktifMasaustu nesnesi ileride değiştirilerek nesnenin sahibi ata nesne olarak atanabilir }
@@ -139,7 +139,7 @@ end;
 function TMenu.Olustur(AAtaNesne: PGorselNesne; AGNTip: TGNTip; ASol, AUst,
   AGenislik, AYukseklik, AElemanYukseklik: TISayi4; AKenarlikRengi, AGovdeRengi: TRenk): PMenu;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
 begin
 
   Menu := PMenu(inherited Olustur(ktTuvalNesne, AAtaNesne, ASol, AUst,
@@ -195,7 +195,7 @@ end;
  ==============================================================================}
 procedure TMenu.YokEt;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
 begin
 
   Menu := PMenu(Menu^.NesneAl(Kimlik));
@@ -212,7 +212,7 @@ end;
  ==============================================================================}
 procedure TMenu.Goster;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
   Olay: TOlay;
 begin
 
@@ -241,7 +241,7 @@ end;
  ==============================================================================}
 procedure TMenu.Gizle;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
   Olay: TOlay;
 begin
 
@@ -267,7 +267,7 @@ end;
  ==============================================================================}
 procedure TMenu.Boyutlandir;
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
 begin
 
   Menu := PMenu(Menu^.NesneAl(Kimlik));
@@ -295,9 +295,9 @@ end;
  ==============================================================================}
 procedure TMenu.Ciz;
 var
-  Menu: PMenu;
-  YL: PYaziListesi;
-  SL: PSayiListesi;
+  Menu: PMenu = nil;
+  YL: PYaziListesi = nil;
+  SL: PSayiListesi = nil;
   Alan: TAlan;
   SiraNo, Sol, Ust, Genislik,
   MenudekiElemanSayisi: TISayi4;
@@ -392,7 +392,7 @@ end;
  ==============================================================================}
 procedure TMenu.OlaylariIsle(AGonderici: PGorselNesne; AOlay: TOlay);
 var
-  Menu: PMenu;
+  Menu: PMenu = nil;
 begin
 
   Menu := PMenu(AGonderici);

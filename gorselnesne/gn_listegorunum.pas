@@ -14,7 +14,7 @@ unit gn_listegorunum;
 
 interface
 
-uses gorselnesne, paylasim, n_yazilistesi, n_sayilistesi, gn_panel;
+uses gorselnesne, paylasim, n_yazilistesi, n_sayilistesi, gn_panel, sistemmesaj;
 
 type
   PListeGorunum = ^TListeGorunum;
@@ -551,6 +551,8 @@ begin
 
   else if(AOlay.Olay = FO_KAYDIRMA) then
   begin
+
+    //SISTEM_MESAJ('Kaydýrma Deðeri: %d', [AOlay.Deger1]);
 
     // listeyi yukarý kaydýrma iþlemi. ilk elemana doðru
     if(AOlay.Deger1 < 0) then
